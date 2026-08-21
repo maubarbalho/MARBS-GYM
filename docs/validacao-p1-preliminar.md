@@ -59,3 +59,7 @@ O treino guiado local foi aberto apenas para inspeção do Modo foco. O estado o
 A abertura temporária do Treino A confirmou a presença de **Encerrar exercício**, **Encerrar treino agora** e do identificador do exercício no Modo foco. A sessão foi fechada sem preencher séries ou pesos; portanto, nenhum registro de teste foi salvo no armazenamento local.
 
 Um segundo teste controlado marcou uma série temporária e confirmou que o histórico recebeu `status: "interrupted"`, o treino A, uma série registrada e o fechamento do overlay. O valor original de `marsbGym_v2` foi restaurado em seguida. Após recarregar, a tela retornou ao estado local original, sem sessão interrompida de teste no histórico; qualquer metadado de sessão em andamento anterior foi preservado como já existia.
+
+## Verificação inicial da publicação
+
+A nova versão foi aberta no GitHub Pages após o build concluído. Uma primeira sessão retornou os cartões antes de a interface concluir sua renderização; uma recarga limpa confirmou a biblioteca inicial completa, com os quatro cartões A/B/C/D, o resumo de ritmo e os atalhos corretos. Não foi necessária correção adicional na lógica do início.
