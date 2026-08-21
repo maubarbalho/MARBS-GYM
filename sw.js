@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v45-focus-flow';
+const CACHE_NAME = 'marsb-gym-v46-guided-inline-rest';
 const APP_SHELL = [
   './',
   './index.html',

@@ -16,6 +16,8 @@ for (const [index, script] of scripts.entries()) {
 const requiredTokens = [
   'guidedFocusToggle',
   'toggleGuidedFocus',
+  'guidedRestPanel',
+  'syncGuidedRestPanel',
   'profileAllowReuse',
   'dietFoodSearch',
   'renderDietWeekAdherence',
@@ -26,5 +28,9 @@ const requiredTokens = [
 
 const missing = requiredTokens.filter((token) => !html.includes(token));
 if (missing.length) throw new Error(`Fluxos esperados ausentes: ${missing.join(', ')}`);
+
+if (html.includes('.guided-set-row:not(.focus-active)')) {
+  throw new Error('O modo foco ainda está ocultando as séries que não estão ativas.');
+}
 
 console.log(`OK: ${scripts.length} script(s) compilado(s) e ${requiredTokens.length} fluxos essenciais encontrados.`);

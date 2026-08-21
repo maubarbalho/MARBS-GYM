@@ -632,6 +632,16 @@
     .guided-focus-rpe { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 10px; border:1px solid var(--border); border-radius:12px; color:var(--text-muted); font-size:.74rem; }
     .guided-focus-rpe select { min-height:36px; padding:4px 7px; border:0; border-radius:8px; background:var(--bg); color:var(--text); font:inherit; font-weight:800; }
     .guided-focus-rest { min-height:44px; padding:0 12px; border:0; border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; }
+    .guided-rest-panel { display:none; align-items:center; gap:10px; margin:12px 0 4px; padding:10px 12px; border:1px solid color-mix(in srgb, var(--primary) 36%, var(--border)); border-radius:16px; background:color-mix(in srgb, var(--primary) 9%, var(--bg-card)); }
+    .guided-rest-panel.active { display:flex; }
+    .guided-rest-start { display:inline-flex; align-items:center; justify-content:center; min-height:42px; margin:10px 0 2px; padding:0 12px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .guided-rest-start[hidden] { display:none; }
+    .guided-rest-copy { min-width:0; flex:1; }
+    .guided-rest-kicker { display:block; color:var(--text-muted); font-size:.63rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .guided-rest-display { display:block; margin-top:2px; color:var(--text); font-size:1.2rem; font-weight:900; font-variant-numeric:tabular-nums; }
+    .guided-rest-actions { display:flex; align-items:center; gap:5px; }
+    .guided-rest-action { min-width:44px; min-height:44px; padding:0 8px; border:0; border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.75rem; font-weight:800; cursor:pointer; }
+    .guided-rest-action.primary { background:var(--primary); color:#fff; }
     .guided-overlay.focus-mode .guided-media-card,
     .guided-overlay.focus-mode .guided-record,
     .guided-overlay.focus-mode .guided-tech-note,
@@ -639,8 +649,6 @@
     .guided-overlay.focus-mode .guided-prev-btn { display:none; }
     .guided-overlay.focus-mode .guided-focus-current { display:flex; }
     .guided-overlay.focus-mode .guided-focus-controls { display:grid; }
-    .guided-overlay.focus-mode .guided-set-row:not(.focus-active),
-    .guided-overlay.focus-mode .guided-set-head { display:none; }
     .guided-overlay.focus-mode .guided-activity-card { padding:18px 14px; }
     .guided-overlay.focus-mode .guided-section-label { margin-top:14px; }
     .guided-nav-row { margin-top:16px; }
@@ -2421,7 +2429,7 @@
         <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Exercício 1/6</div>
       </div>
       <div class="guided-header-actions">
-        <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="true" onclick="toggleGuidedFocus()">Completo</button>
+        <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="false" onclick="toggleGuidedFocus()">Foco</button>
         <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
       </div>
     </div>
@@ -4084,7 +4092,9 @@
       renderTimerPresets(requested);
       const pauseBtn = document.getElementById('timerPauseBtn');
       if (pauseBtn) pauseBtn.textContent = 'Pausar';
-      document.getElementById('timerOverlay').classList.add('show');
+      const useIntegratedGuidedTimer = guidedState.active && document.getElementById('guidedOverlay')?.classList.contains('show');
+      document.getElementById('timerOverlay').classList.toggle('show', !useIntegratedGuidedTimer);
+      syncGuidedRestPanel();
       doVibrate(50);
       requestWakeLock();
 
@@ -4100,6 +4110,7 @@
           showToast('Descanso finalizado! 💪');
           setTimeout(() => {
             document.getElementById('timerOverlay').classList.remove('show');
+            syncGuidedRestPanel();
           }, 1500);
         }
       }, 1000);
@@ -4108,14 +4119,30 @@
     function updateTimerDisplay() {
       const m = Math.floor(Math.max(0, timerSeconds) / 60);
       const s = Math.max(0, timerSeconds) % 60;
-      document.getElementById('timerDisplay').textContent =
-        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const formatted = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const overlayDisplay = document.getElementById('timerDisplay');
+      if (overlayDisplay) overlayDisplay.textContent = formatted;
+      const guidedDisplay = document.getElementById('guidedRestDisplay');
+      if (guidedDisplay) guidedDisplay.textContent = formatted;
+    }
+
+    function syncGuidedRestPanel() {
+      const panel = document.getElementById('guidedRestPanel');
+      if (!panel) return;
+      const active = guidedState.active && Boolean(timerInterval) && timerSeconds > 0;
+      panel.classList.toggle('active', active);
+      const startButton = document.getElementById('guidedRestStart');
+      if (startButton) startButton.hidden = active;
+      const pauseBtn = document.getElementById('guidedRestPause');
+      if (pauseBtn) pauseBtn.textContent = timerPaused ? 'Retomar' : 'Pausar';
+      updateTimerDisplay();
     }
 
     function togglePauseTimer() {
       timerPaused = !timerPaused;
       const pauseBtn = document.getElementById('timerPauseBtn');
       if (pauseBtn) pauseBtn.textContent = timerPaused ? 'Retomar' : 'Pausar';
+      syncGuidedRestPanel();
     }
 
     function skipTimer() {
@@ -4124,12 +4151,14 @@
       timerPaused = false;
       releaseWakeLock();
       document.getElementById('timerOverlay').classList.remove('show');
+      syncGuidedRestPanel();
     }
 
     function adjustTimer(deltaSeconds) {
       const delta = Number(deltaSeconds) || 0;
       timerSeconds = Math.max(0, Math.min(600, timerSeconds + delta));
       updateTimerDisplay();
+      syncGuidedRestPanel();
       doVibrate(20);
     }
 
@@ -4343,7 +4372,7 @@
     }
 
     // ===================== GUIDED WORKOUT MODE =====================
-    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: true };
+    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false };
 
     function formatGuidedElapsed(seconds) {
       const safe = Math.max(0, Number(seconds) || 0);
@@ -4383,19 +4412,20 @@
       guidedState.treinoId = treinoId;
       guidedState.exercises = exercises;
       guidedState.index = 0;
-      guidedState.focusMode = true;
+      guidedState.focusMode = false;
       guidedState.startedAt = Date.now();
       guidedState.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       if (guidedState.clockId) clearInterval(guidedState.clockId);
       guidedState.clockId = setInterval(updateGuidedClock, 1000);
       const overlay = document.getElementById('guidedOverlay');
       overlay.classList.add('show');
-      overlay.classList.add('focus-mode');
+      overlay.classList.remove('focus-mode');
       renderGuidedStep();
       requestAnimationFrame(() => overlay.focus({ preventScroll: true }));
     }
 
     function exitGuided() {
+      skipTimer();
       guidedState.active = false;
       if (guidedState.advanceTimeout) clearTimeout(guidedState.advanceTimeout);
       if (guidedState.clockId) clearInterval(guidedState.clockId);
@@ -4504,6 +4534,16 @@
               <label class="guided-focus-rpe">RIR/RPE <select class="js-guided-rpe" aria-label="RIR ou RPE médio de ${escapeHtml(ex.nome)}"><option value="">—</option>${Array.from({length:11}, (_, i) => `<option value="${i}" ${focusRpe === String(i) ? 'selected' : ''}>${i}</option>`).join('')}</select></label>
               <button class="guided-focus-rest js-guided-rest" type="button">⏱ ${escapeHtml(formatRest(ex.descanso))}</button>
             </div>
+            <button class="guided-rest-start js-guided-rest" id="guidedRestStart" type="button">⏱ Iniciar descanso • ${escapeHtml(formatRest(ex.descanso))}</button>
+            <div class="guided-rest-panel" id="guidedRestPanel" aria-live="polite">
+              <div class="guided-rest-copy"><span class="guided-rest-kicker">Descanso em andamento</span><strong class="guided-rest-display" id="guidedRestDisplay">01:30</strong></div>
+              <div class="guided-rest-actions" aria-label="Controles do descanso">
+                <button class="guided-rest-action" type="button" onclick="adjustTimer(-15)">−15</button>
+                <button class="guided-rest-action" id="guidedRestPause" type="button" onclick="togglePauseTimer()">Pausar</button>
+                <button class="guided-rest-action primary" type="button" onclick="adjustTimer(15)">+15</button>
+                <button class="guided-rest-action" type="button" onclick="skipTimer()">Pular</button>
+              </div>
+            </div>
             <div class="guided-history-card">
               <span class="guided-history-icon" aria-hidden="true">↶</span>
               <div><span class="guided-history-title">Histórico da atividade</span><span class="guided-history-detail">${lastEntry ? `Último registro: ${escapeHtml(lastEntry.weight)} kg • Semana ${escapeHtml(lastEntry.week)}` : 'Marque séries e registre peso e repetições para criar seu histórico.'}</span></div>
@@ -4524,7 +4564,7 @@
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
       });
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
-      guidedBody.querySelector('.js-guided-rest')?.addEventListener('click', () => startTimer(ex.descanso));
+      guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => guidedGoTo(guidedState.index + 1));
       const focusToggle = document.getElementById('guidedFocusToggle');
@@ -4533,6 +4573,7 @@
         focusToggle.textContent = guidedState.focusMode ? 'Completo' : 'Foco';
       }
       updateGuidedSessionChrome();
+      syncGuidedRestPanel();
     }
 
     function renderGuidedComplete() {
