@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v44-daily-flow';
+const CACHE_NAME = 'marsb-gym-v45-focus-flow';
 const APP_SHELL = [
   './',
   './index.html',

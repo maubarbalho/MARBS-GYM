@@ -579,6 +579,9 @@
 
     /* ===== Guided mode: activity-first layout ===== */
     .guided-header-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .guided-header-actions { display:flex; align-items:center; gap:8px; }
+    .guided-focus-toggle { min-height:44px; padding:0 12px; border:1px solid var(--border); border-radius:999px; background:var(--bg-elevated); color:var(--text); font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; }
+    .guided-focus-toggle[aria-pressed="true"] { background:var(--primary); border-color:var(--primary); color:#fff; }
     .guided-kicker { color:var(--text-muted); font-size:0.66rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; }
     .guided-progress-label { color:var(--text); font-size:0.82rem; }
     .guided-session-footer {
@@ -624,6 +627,22 @@
     .guided-history-icon { font-size:1.65rem; color:var(--text); }
     .guided-history-title { display:block; font-size:0.86rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; }
     .guided-history-detail { display:block; margin-top:3px; color:var(--text-muted); font-size:0.72rem; }
+    .guided-focus-current { display:none; align-items:center; justify-content:space-between; gap:10px; margin:2px 0 12px; padding:10px 12px; border-radius:14px; background:color-mix(in srgb, var(--primary) 11%, var(--bg)); color:var(--text); font-size:.8rem; font-weight:800; }
+    .guided-focus-controls { display:none; grid-template-columns:minmax(0, 1fr) auto; gap:8px; margin:12px 0 4px; }
+    .guided-focus-rpe { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 10px; border:1px solid var(--border); border-radius:12px; color:var(--text-muted); font-size:.74rem; }
+    .guided-focus-rpe select { min-height:36px; padding:4px 7px; border:0; border-radius:8px; background:var(--bg); color:var(--text); font:inherit; font-weight:800; }
+    .guided-focus-rest { min-height:44px; padding:0 12px; border:0; border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; }
+    .guided-overlay.focus-mode .guided-media-card,
+    .guided-overlay.focus-mode .guided-record,
+    .guided-overlay.focus-mode .guided-tech-note,
+    .guided-overlay.focus-mode .guided-history-card,
+    .guided-overlay.focus-mode .guided-prev-btn { display:none; }
+    .guided-overlay.focus-mode .guided-focus-current { display:flex; }
+    .guided-overlay.focus-mode .guided-focus-controls { display:grid; }
+    .guided-overlay.focus-mode .guided-set-row:not(.focus-active),
+    .guided-overlay.focus-mode .guided-set-head { display:none; }
+    .guided-overlay.focus-mode .guided-activity-card { padding:18px 14px; }
+    .guided-overlay.focus-mode .guided-section-label { margin-top:14px; }
     .guided-nav-row { margin-top:16px; }
     @media (max-width:430px) {
       .guided-body { padding:14px 12px 18px; }
@@ -1266,11 +1285,12 @@
     .config-option[data-config-window="notificacoes"] { order: 3; }
     .config-option[data-config-window="unidades"] { order: 4; }
     .config-option[data-config-window="progresso"] { order: 5; }
-    .config-option[data-config-window="plano"] { order: 6; }
-    .config-option[data-config-window="dados"] { order: 7; }
-    .config-option[data-config-window="privacidade"] { order: 8; }
-    .config-option[data-config-window="coach"] { order: 9; }
-    .config-option[data-config-window="sobre"] { order: 10; }
+    .config-option[data-config-window="dados"] { order: 6; }
+    .config-option[data-config-window="privacidade"] { order: 7; }
+    .config-option[data-config-window="coach"] { order: 8; }
+    .config-option[data-config-window="plano"] { order: 9; }
+    .config-option[data-config-window="personal"] { order: 10; }
+    .config-option[data-config-window="sobre"] { order: 11; }
     .config-option {
       width: 100%; display: flex; align-items: center; gap: 12px; text-align: left;
       padding: 14px 15px; border: 1px solid var(--border); border-radius: 16px;
@@ -1584,36 +1604,11 @@
     <div class="page" id="page-config">
       <div class="config-page">
         <div class="section-title">Configuração</div>
-        <p class="config-page-intro">Acesse seu perfil, o progresso, o plano do personal e as informações do MARSB-GYM em janelas separadas.</p>
+        <p class="config-page-intro">Organize seu uso diário, seus dados locais e as preferências do app em janelas separadas.</p>
         <div class="config-option-list" role="list">
           <button type="button" class="config-option" data-config-window="perfil" onclick="openConfigWindow('perfil', this)">
             <span class="config-option-icon" aria-hidden="true">◎</span>
             <span class="config-option-copy"><span class="config-option-title">Perfil</span><span class="config-option-desc">Adicione seu nome e uma foto para personalizar o app.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="progresso" onclick="openConfigWindow('progresso', this)">
-            <span class="config-option-icon" aria-hidden="true">▥</span>
-            <span class="config-option-copy"><span class="config-option-title">Progresso</span><span class="config-option-desc">Estatísticas, histórico, preferências e backups.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="plano" onclick="openConfigWindow('plano', this)">
-            <span class="config-option-icon" aria-hidden="true">☷</span>
-            <span class="config-option-copy"><span class="config-option-title">Plano</span><span class="config-option-desc">Editar, importar e exportar treinos do personal.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="personal" onclick="openConfigWindow('personal', this)">
-            <span class="config-option-icon" aria-hidden="true">♧</span>
-            <span class="config-option-copy"><span class="config-option-title">Modo Personal</span><span class="config-option-desc">Perfis locais de alunos e envio de plano por código.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="sobre" onclick="openConfigWindow('sobre', this)">
-            <span class="config-option-icon" aria-hidden="true">ⓘ</span>
-            <span class="config-option-copy"><span class="config-option-title">Sobre</span><span class="config-option-desc">Estrutura do programa e instruções de uso.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="dados" onclick="openConfigWindow('dados', this)">
-            <span class="config-option-icon" aria-hidden="true">▣</span>
-            <span class="config-option-copy"><span class="config-option-title">Dados e backup</span><span class="config-option-desc">Status do armazenamento, exportação e restauração completa.</span></span>
             <span class="config-option-chevron" aria-hidden="true">›</span>
           </button>
           <button type="button" class="config-option" data-config-window="aparencia" onclick="openConfigWindow('aparencia', this)">
@@ -1631,6 +1626,16 @@
             <span class="config-option-copy"><span class="config-option-title">Unidades</span><span class="config-option-desc">Quilogramas, libras, centímetros e polegadas.</span></span>
             <span class="config-option-chevron" aria-hidden="true">›</span>
           </button>
+          <button type="button" class="config-option" data-config-window="progresso" onclick="openConfigWindow('progresso', this)">
+            <span class="config-option-icon" aria-hidden="true">▥</span>
+            <span class="config-option-copy"><span class="config-option-title">Progresso</span><span class="config-option-desc">Estatísticas, histórico e preferências do treino.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="config-option" data-config-window="dados" onclick="openConfigWindow('dados', this)">
+            <span class="config-option-icon" aria-hidden="true">▣</span>
+            <span class="config-option-copy"><span class="config-option-title">Dados e backup</span><span class="config-option-desc">Status do armazenamento, exportação e restauração completa.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
           <button type="button" class="config-option" data-config-window="privacidade" onclick="openConfigWindow('privacidade', this)">
             <span class="config-option-icon" aria-hidden="true">⌁</span>
             <span class="config-option-copy"><span class="config-option-title">Privacidade</span><span class="config-option-desc">O que fica no dispositivo e o que pode ser enviado ao Coach.</span></span>
@@ -1639,6 +1644,21 @@
           <button type="button" class="config-option" data-config-window="coach" onclick="openConfigWindow('coach', this)">
             <span class="config-option-icon" aria-hidden="true">✦</span>
             <span class="config-option-copy"><span class="config-option-title">Coach IA</span><span class="config-option-desc">Provedor, modelo, contexto e limites da assistência.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="config-option" style="margin-top:12px;" data-config-window="plano" onclick="openConfigWindow('plano', this)">
+            <span class="config-option-icon" aria-hidden="true">☷</span>
+            <span class="config-option-copy"><span class="config-option-title">Plano</span><span class="config-option-desc">Editar, importar e exportar treinos do personal.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="config-option" data-config-window="personal" onclick="openConfigWindow('personal', this)">
+            <span class="config-option-icon" aria-hidden="true">♧</span>
+            <span class="config-option-copy"><span class="config-option-title">Modo Personal</span><span class="config-option-desc">Perfis locais de alunos e envio de plano por código.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="config-option" data-config-window="sobre" onclick="openConfigWindow('sobre', this)">
+            <span class="config-option-icon" aria-hidden="true">ⓘ</span>
+            <span class="config-option-copy"><span class="config-option-title">Sobre</span><span class="config-option-desc">Estrutura do programa e instruções de uso.</span></span>
             <span class="config-option-chevron" aria-hidden="true">›</span>
           </button>
         </div>
@@ -1666,6 +1686,19 @@
           <button type="button" class="btn-action danger" id="profileRemovePhoto" onclick="clearUserPhoto()">Remover foto</button>
         </div>
         <p class="config-profile-hint" id="profilePhotoHint">Use uma imagem JPG, PNG ou WebP de até 4 MB. O app reduz a foto para economizar espaço.</p>
+        <details class="diet-meal-add">
+          <summary>Dados para Calculadora e Dieta</summary>
+          <p class="config-profile-hint">Opcional. Se você autorizar, estes dados locais só preenchem campos vazios da Calculadora e do cardápio; nada é enviado para a internet.</p>
+          <div class="form-row">
+            <div class="form-field"><label for="profileCalcWeight">Peso (kg)</label><input type="number" id="profileCalcWeight" inputmode="decimal" min="30" max="300" step="0.1" placeholder="Ex: 80" /></div>
+            <div class="form-field"><label for="profileCalcHeight">Altura (cm)</label><input type="number" id="profileCalcHeight" inputmode="numeric" min="120" max="230" placeholder="Ex: 175" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label for="profileCalcAge">Idade</label><input type="number" id="profileCalcAge" inputmode="numeric" min="14" max="100" placeholder="Ex: 28" /></div>
+            <div class="form-field"><label for="profileCalcSex">Sexo para estimativas</label><select id="profileCalcSex"><option value="m">Masculino</option><option value="f">Feminino</option></select></div>
+          </div>
+          <label class="setting-row" for="profileAllowReuse"><span>Usar estes dados locais em Calculadora e Dieta</span><input type="checkbox" id="profileAllowReuse" /></label>
+        </details>
         <button type="button" class="btn-action primary" onclick="saveUserProfile()">Salvar perfil</button>
       </div>
       <div class="calc-card" style="margin-top:12px;">
@@ -1740,6 +1773,7 @@
         <div class="coach-context-bar"><label for="coachContext">Contexto</label><select id="coachContext"><option value="treino">Treino atual e técnica</option><option value="progresso">Progresso e cargas</option><option value="dieta">Nutrição esportiva</option></select><span id="coachConnection" class="coach-connection">Verificando conexão…</span></div>
         <div class="coach-privacy-note"><strong>Coach focado em academia.</strong> O contexto selecionado pode ser enviado ao provedor configurado. Não envie dados pessoais sensíveis. Em caso de dor intensa, lesão, sintomas ou dúvida médica, interrompa o treino e procure um profissional de saúde.</div>
         <div class="ai-layout">
+        <p class="calc-hint" style="margin:0 0 8px;">Comece por um dos exemplos abaixo ou descreva a sua dúvida. O Coach não substitui avaliação médica ou de um profissional presencial.</p>
         <div class="ai-quick" id="aiQuick">
           <button type="button" onclick="aiQuickAsk('Monte um aquecimento de 8 minutos para o treino de hoje')">Aquecimento</button>
           <button type="button" onclick="aiQuickAsk('Com base nos meus pesos e na semana atual, o que devo priorizar hoje?')">Prioridade do dia</button>
@@ -1827,6 +1861,7 @@
       <div class="calc-card" data-calc-group="nutrition">
         <h3>🍽 Calorias & macros (hipertrofia)</h3>
         <p class="calc-desc">Estima gasto e macros com base no seu peso. Ajuste conforme evolução semanal (+0,25 a 0,5% do peso corporal/semana).</p>
+        <div id="calcProfileFillHint" class="decision-card" style="display:none;margin-bottom:12px;"></div>
 
         <div class="form-row">
           <div class="form-field">
@@ -1945,14 +1980,16 @@
     <!-- SOBRE -->
         <div class="page" id="page-dieta">
     <div class="content">
-      <div class="section-title">Cardápio</div>
+      <div class="section-title">Diário alimentar</div>
+      <p class="calc-hint" style="margin-top:-6px;">Registre o que comeu primeiro. Use o gerador abaixo quando quiser planejar um dia completo.</p>
 
-      <div class="calc-card">
+      <details class="diet-meal-add"><summary>Planejar cardápio do dia (opcional)</summary><div class="calc-card" style="margin-top:10px;">
         <h3>🍽 Montar dieta do dia</h3>
         <p class="calc-desc">
           Informe seus dados para gerar <strong>hipertrofia</strong> ou <strong>déficit (−400 kcal)</strong>
           com 3 refeições, quantidades em gramas e macros (base TACO).
         </p>
+        <div id="menuProfileFillHint" class="decision-card" style="display:none;margin-bottom:12px;"></div>
 
         <div class="form-field">
           <label>Objetivo</label>
@@ -2000,16 +2037,17 @@
 
         <button class="btn-action primary" onclick="runMenuCalc()">Gerar dieta</button>
         <div id="menuResult" class="calc-result" style="display:none;"></div>
-      </div>
+      </div></details>
 
-      <div class="section-title">Diário alimentar</div>
+      <div class="section-title" style="margin-top:16px;">Registro de hoje</div>
       <div class="calc-card diet-diary-card">
         <div class="diet-day-tools"><div class="form-field"><label for="dietDate">Dia</label><input type="date" id="dietDate" /></div><div class="form-field"><label for="dietWaterInput">Água registrada</label><div class="diet-water-input"><input type="number" id="dietWaterInput" min="100" max="5000" step="100" inputmode="numeric" placeholder="250" /><button type="button" onclick="addDietWater()">Adicionar ml</button></div></div></div>
         <div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button></div>
         <div class="diet-water-bar"><div class="diet-water-fill" id="dietWaterFill"></div></div><div class="diet-water-label" id="dietWaterLabel">0 ml registrados</div>
         <details class="diet-meal-add"><summary>Metas diárias e consumo</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietTargetKcal">Calorias (kcal)</label><input type="number" id="dietTargetKcal" min="0" max="10000" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetProtein">Proteína (g)</label><input type="number" id="dietTargetProtein" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetCarbs">Carboidratos (g)</label><input type="number" id="dietTargetCarbs" min="0" max="1200" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetFats">Gorduras (g)</label><input type="number" id="dietTargetFats" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetWater">Água (ml)</label><input type="number" id="dietTargetWater" min="500" max="15000" step="100" inputmode="numeric" /></div><button type="button" class="btn-action" onclick="saveDietTargets()">Salvar metas</button></div></details>
-        <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
+        <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSearch">Buscar na base TACO</label><input type="search" id="dietFoodSearch" placeholder="Ex: frango, arroz, banana" autocomplete="off" /></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
         <div class="diet-recent-wrap" id="dietRecentWrap" hidden><strong>Recentes</strong><div class="diet-recent-list" id="dietRecentList"></div></div>
+        <p id="dietWeekAdherence" class="calc-hint" aria-live="polite"></p>
         <div id="dietDiaryList" class="diet-diary-list"></div>
         <details class="diet-meal-add"><summary>Restrições e alergias</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietRestrictions">Restrições alimentares</label><input id="dietRestrictions" maxlength="300" placeholder="Ex: vegetariano, sem lactose" /></div><div class="form-field"><label for="dietAllergies">Alergias</label><input id="dietAllergies" maxlength="300" placeholder="Ex: amendoim" /></div><button type="button" class="btn-action" onclick="saveDietPrefs()">Salvar preferências alimentares</button></div></details>
         <div class="diet-shopping-head"><strong>Lista de compras do dia</strong><button type="button" class="chart-link-btn" onclick="copyDietShoppingList()">Copiar lista</button></div><div id="dietShoppingList" class="diet-shopping-list"></div>
@@ -2382,7 +2420,10 @@
         <div class="guided-kicker">MARSB • Treino guiado</div>
         <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Exercício 1/6</div>
       </div>
-      <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
+      <div class="guided-header-actions">
+        <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="true" onclick="toggleGuidedFocus()">Completo</button>
+        <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
+      </div>
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>
     <div class="guided-body" id="guidedBody" tabindex="-1"></div>
@@ -2516,7 +2557,7 @@
         bodyMeta: { heightCm: null, goalKg: null },
         customProgram: null,
         customProgramMeta: null,
-        profile: { name: '', photo: '' },
+        profile: { name: '', photo: '', metrics: { weightKg: null, heightCm: null, age: null, sex: 'm', allowReuse: false } },
         personalProfiles: []
       };
     }
@@ -2761,7 +2802,14 @@
       });
       clean.profile = {
         name: boundedText(source.profile?.name, 80),
-        photo: sanitizeProfilePhoto(source.profile?.photo)
+        photo: sanitizeProfilePhoto(source.profile?.photo),
+        metrics: {
+          weightKg: safeNumber(source.profile?.metrics?.weightKg, 30, 300, null),
+          heightCm: safeNumber(source.profile?.metrics?.heightCm, 120, 230, null),
+          age: Math.round(safeNumber(source.profile?.metrics?.age, 14, 100, null)),
+          sex: source.profile?.metrics?.sex === 'f' ? 'f' : 'm',
+          allowReuse: source.profile?.metrics?.allowReuse === true
+        }
       };
       const legacyActivity = Boolean(clean.profile.name || (source.completedWorkouts || []).length || Object.keys(source.sets || {}).length || Object.keys(source.weights || {}).length);
       clean.onboarding = {
@@ -3133,7 +3181,7 @@
       const calendar = getConsistencyCalendar(28);
       const activeDays = calendar.filter((day) => day.count > 0).length;
       const calendarHtml = `<div class="consistency-wrap"><div class="weekly-head"><div><div class="daily-action-kicker">Consistência</div><h3>${activeDays} dia${activeDays === 1 ? '' : 's'} treinado${activeDays === 1 ? '' : 's'} em 28</h3></div><span class="weekly-summary">4 semanas</span></div><div class="consistency-grid">${calendar.map((day) => `<div class="consistency-day ${day.count ? 'has-activity' : ''} ${day.key === todayKey() ? 'today' : ''}" title="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}" aria-label="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}">${day.day}</div>`).join('')}</div><p class="weekly-note">Dias treinados ficam marcados.</p></div>`;
-      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Evolução semanal</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${totalSets ? `${totalSets} séries hoje` : 'Consistência primeiro'}</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">Registre treinos completos para acompanhar sua consistência. Um dia sem treino também faz parte da recuperação.</p>${calendarHtml}`;
+      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Evolução semanal</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${totalSets ? `${totalSets} séries hoje` : 'Consistência primeiro'}</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">Registre treinos completos para acompanhar sua consistência. Um dia sem treino também faz parte da recuperação.</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução</button></div>${calendarHtml}`;
     }
 
     let workoutFilterState = { treino: 'all', query: '', pendingOnly: true };
@@ -4295,7 +4343,7 @@
     }
 
     // ===================== GUIDED WORKOUT MODE =====================
-    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null };
+    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: true };
 
     function formatGuidedElapsed(seconds) {
       const safe = Math.max(0, Number(seconds) || 0);
@@ -4335,12 +4383,14 @@
       guidedState.treinoId = treinoId;
       guidedState.exercises = exercises;
       guidedState.index = 0;
+      guidedState.focusMode = true;
       guidedState.startedAt = Date.now();
       guidedState.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       if (guidedState.clockId) clearInterval(guidedState.clockId);
       guidedState.clockId = setInterval(updateGuidedClock, 1000);
       const overlay = document.getElementById('guidedOverlay');
       overlay.classList.add('show');
+      overlay.classList.add('focus-mode');
       renderGuidedStep();
       requestAnimationFrame(() => overlay.focus({ preventScroll: true }));
     }
@@ -4354,6 +4404,7 @@
       const returnFocus = guidedState.returnFocus;
       guidedState.returnFocus = null;
       document.getElementById('guidedOverlay').classList.remove('show');
+      document.getElementById('guidedOverlay').classList.remove('focus-mode');
       renderTreinos();
       renderQuickStart();
       updateStats();
@@ -4368,6 +4419,13 @@
         return;
       }
       guidedState.index = i;
+      renderGuidedStep();
+    }
+
+    function toggleGuidedFocus() {
+      if (!guidedState.active) return;
+      guidedState.focusMode = !guidedState.focusMode;
+      document.getElementById('guidedOverlay').classList.toggle('focus-mode', guidedState.focusMode);
       renderGuidedStep();
     }
 
@@ -4396,6 +4454,8 @@
       const fullHist = (state.weightHistory[ex.id] || []);
       const lastEntry = fullHist[fullHist.length - 1];
       const personalRecord = fullHist.reduce((max, entry) => Math.max(max, Number(entry.weight) || 0), 0);
+      const focusSetIndex = Math.max(0, doneArr.findIndex((done) => !done));
+      const focusRpe = String((state.rpe?.[ex.id] || [])[0] || '');
       const guidedBody = document.getElementById('guidedBody');
 
       document.getElementById('guidedTitle').textContent = `Exercício ${guidedState.index + 1}/${total}`;
@@ -4414,6 +4474,7 @@
               </div>
             </div>
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
+            <div class="guided-focus-current"><span>Série atual</span><strong>${Math.min(ex.series, focusSetIndex + 1)} de ${ex.series}</strong></div>
             <div class="guided-section-label">Progressão de carga</div>
             <div class="guided-metric-grid">
               <div class="guided-metric">Repetições alvo<strong>${escapeHtml(ex.reps)}</strong></div>
@@ -4428,7 +4489,7 @@
                 const repsId = `guidedReps-${encodeData(ex.id)}-${i}`;
                 const weightId = `guidedWeight-${encodeData(ex.id)}-${i}`;
                 return `
-                <div class="guided-set-row ${doneArr[i] ? 'done' : ''}" data-set-index="${i}">
+                <div class="guided-set-row ${doneArr[i] ? 'done' : ''} ${i === focusSetIndex ? 'focus-active' : ''}" data-set-index="${i}">
                   <span class="guided-set-number">${i + 1}</span>
                   <label class="sr-only" for="${repsId}">Repetições da série ${i + 1} de ${escapeHtml(ex.nome)}</label>
                   <input id="${repsId}" class="guided-set-input js-guided-set-field" type="number" inputmode="numeric" min="0" max="2000" step="1" placeholder="${escapeHtml(ex.reps)}" value="${escapeHtml(detail.reps)}" data-set-index="${i}" data-field="reps" aria-label="Repetições da série ${i + 1}" />
@@ -4438,6 +4499,10 @@
                 </div>
               `;
               }).join('')}
+            </div>
+            <div class="guided-focus-controls">
+              <label class="guided-focus-rpe">RIR/RPE <select class="js-guided-rpe" aria-label="RIR ou RPE médio de ${escapeHtml(ex.nome)}"><option value="">—</option>${Array.from({length:11}, (_, i) => `<option value="${i}" ${focusRpe === String(i) ? 'selected' : ''}>${i}</option>`).join('')}</select></label>
+              <button class="guided-focus-rest js-guided-rest" type="button">⏱ ${escapeHtml(formatRest(ex.descanso))}</button>
             </div>
             <div class="guided-history-card">
               <span class="guided-history-icon" aria-hidden="true">↶</span>
@@ -4458,8 +4523,15 @@
       guidedBody.querySelectorAll('.js-guided-set-toggle').forEach((button) => {
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
       });
+      guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
+      guidedBody.querySelector('.js-guided-rest')?.addEventListener('click', () => startTimer(ex.descanso));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => guidedGoTo(guidedState.index + 1));
+      const focusToggle = document.getElementById('guidedFocusToggle');
+      if (focusToggle) {
+        focusToggle.setAttribute('aria-pressed', String(guidedState.focusMode));
+        focusToggle.textContent = guidedState.focusMode ? 'Completo' : 'Foco';
+      }
       updateGuidedSessionChrome();
     }
 
@@ -4829,7 +4901,8 @@
     document.addEventListener('pointerdown', () => installSwipeDismiss(), { capture: true, once: true });
 
     function renderUserProfile() {
-      const profile = state.profile || { name: '', photo: '' };
+      const profile = state.profile || { name: '', photo: '', metrics: {} };
+      const metrics = profile.metrics || {};
       const nameInput = document.getElementById('profileName');
       const preview = document.getElementById('profilePreview');
       const removeButton = document.getElementById('profileRemovePhoto');
@@ -4850,6 +4923,15 @@
         removeButton.disabled = !photo;
         removeButton.setAttribute('aria-disabled', String(!photo));
       }
+      const metricValues = { profileCalcWeight: metrics.weightKg, profileCalcHeight: metrics.heightCm, profileCalcAge: metrics.age };
+      Object.entries(metricValues).forEach(([id, value]) => {
+        const field = document.getElementById(id);
+        if (field && document.activeElement !== field) field.value = value ?? '';
+      });
+      const sexField = document.getElementById('profileCalcSex');
+      if (sexField) sexField.value = metrics.sex === 'f' ? 'f' : 'm';
+      const allowReuse = document.getElementById('profileAllowReuse');
+      if (allowReuse) allowReuse.checked = metrics.allowReuse === true;
     }
 
     function profileOnPhotoChosen(event) {
@@ -4903,11 +4985,20 @@
 
     function saveUserProfile() {
       const nameInput = document.getElementById('profileName');
-      const profile = state.profile || { name: '', photo: '' };
+      const profile = state.profile || { name: '', photo: '', metrics: {} };
       const photo = profilePhotoCleared ? '' : (profileDraftPhoto !== null ? profileDraftPhoto : sanitizeProfilePhoto(profile.photo));
+      const metricField = (id, min, max) => safeNumber(document.getElementById(id)?.value, min, max, null);
+      const savedAge = metricField('profileCalcAge', 14, 100);
       state.profile = {
         name: boundedText(profileDraftName !== null ? profileDraftName : (nameInput ? nameInput.value : profile.name), 80),
-        photo: sanitizeProfilePhoto(photo)
+        photo: sanitizeProfilePhoto(photo),
+        metrics: {
+          weightKg: metricField('profileCalcWeight', 30, 300),
+          heightCm: metricField('profileCalcHeight', 120, 230),
+          age: Number.isFinite(savedAge) ? Math.round(savedAge) : null,
+          sex: document.getElementById('profileCalcSex')?.value === 'f' ? 'f' : 'm',
+          allowReuse: document.getElementById('profileAllowReuse')?.checked === true
+        }
       };
       profileDraftName = null;
       profileDraftPhoto = null;
@@ -4915,9 +5006,66 @@
       saveState();
       renderUserProfile();
       renderHomeProfile();
+      applyProfileDataToTools('all', false);
       const hint = document.getElementById('profilePhotoHint');
       if (hint) hint.textContent = 'Use uma imagem JPG, PNG ou WebP de até 4 MB. O app reduz a foto para economizar espaço.';
-      showToast('Perfil salvo neste dispositivo');
+      showToast(state.profile.metrics.allowReuse ? 'Perfil salvo e dados locais autorizados' : 'Perfil salvo neste dispositivo');
+    }
+
+    function setSegmentChoice(containerId, attribute, value) {
+      const container = document.getElementById(containerId);
+      if (!container || value === null || value === undefined) return;
+      const target = Array.from(container.querySelectorAll('button')).find((button) => String(button.getAttribute(attribute)) === String(value));
+      if (!target) return;
+      container.querySelectorAll('button').forEach((button) => button.classList.toggle('active', button === target));
+    }
+
+    function getReusableProfileMetrics() {
+      const metrics = state.profile?.metrics;
+      if (!metrics?.allowReuse) return null;
+      const latest = getBodyWeightsSorted().slice(-1)[0]?.kg || null;
+      return {
+        weightKg: metrics.weightKg || latest,
+        heightCm: metrics.heightCm || state.bodyMeta?.heightCm || null,
+        age: metrics.age || null,
+        sex: metrics.sex === 'f' ? 'f' : 'm',
+        frequency: state.onboarding?.frequency || 4,
+        goal: state.onboarding?.goal || 'hipertrofia'
+      };
+    }
+
+    function applyProfileDataToTools(scope = 'all', overwrite = false) {
+      const metrics = getReusableProfileMetrics();
+      const setValue = (id, value) => {
+        const field = document.getElementById(id);
+        if (field && value && (overwrite || !field.value)) field.value = value;
+      };
+      const setHint = (id, text) => {
+        const box = document.getElementById(id);
+        if (!box) return;
+        if (!metrics) { box.style.display = 'none'; return; }
+        box.style.display = '';
+        box.innerHTML = `<strong>Dados locais prontos</strong><span>${text} Você pode ajustar qualquer campo antes de calcular.</span>`;
+      };
+      if (scope === 'all' || scope === 'calc') {
+        if (metrics) {
+          setValue('calcWeight', metrics.weightKg); setValue('calcHeight', metrics.heightCm); setValue('calcAge', metrics.age); setValue('foodWeight', metrics.weightKg);
+          setSegmentChoice('calcSex', 'data-sex', metrics.sex);
+          setSegmentChoice('calcActivity', 'data-act', metrics.frequency >= 6 ? '1.725' : metrics.frequency >= 4 ? '1.55' : '1.375');
+          setSegmentChoice('calcGoal', 'data-goal', metrics.goal === 'forca' ? '450' : metrics.goal === 'condicionamento' ? '0' : '300');
+        }
+        setHint('calcProfileFillHint', 'O preenchimento usa os dados autorizados do seu perfil, somente neste dispositivo.');
+      }
+      if (scope === 'all' || scope === 'menu') {
+        if (metrics) {
+          setValue('menuWeight', metrics.weightKg); setValue('menuHeight', metrics.heightCm); setValue('menuAge', metrics.age);
+          setSegmentChoice('menuSex', 'data-sex', metrics.sex === 'f' ? 'F' : 'M');
+          setSegmentChoice('menuActivity', 'data-act', metrics.frequency >= 6 ? '1.725' : metrics.frequency >= 4 ? '1.55' : '1.2');
+          setSegmentChoice('menuGoal', 'data-goal', metrics.goal === 'condicionamento' ? 'deficit' : 'hipertrofia');
+        }
+        setHint('menuProfileFillHint', 'O preenchimento usa os dados autorizados do seu perfil, somente neste dispositivo.');
+      }
+      return Boolean(metrics);
     }
 
     function renderHomeProfile() {
@@ -5101,6 +5249,11 @@
       const s = loadAiSettings();
       const el = document.getElementById('aiStatus');
       if (!el) return;
+      if (!navigator.onLine) {
+        el.textContent = 'Sem conexão · Coach indisponível offline';
+        el.className = 'ai-status warn';
+        return;
+      }
       if (s.mode === 'custom' && s.apiKey && s.baseUrl) {
         el.textContent = 'API própria · ' + (s.model || 'modelo');
         el.className = 'ai-status ok';
@@ -5270,6 +5423,11 @@
     function updateCoachConnection() {
       const status = document.getElementById('coachConnection');
       if (!status) return;
+      if (!navigator.onLine) {
+        status.textContent = 'Sem conexão — o Coach precisa de internet';
+        status.className = 'coach-connection warn';
+        return;
+      }
       const settings = loadAiSettings();
       if (settings.mode === 'custom' && settings.apiKey && settings.baseUrl) {
         status.textContent = `API própria configurada · ${settings.model || 'modelo selecionado'}`;
@@ -5937,8 +6095,8 @@
           <div class="calc-metric"><div class="val">${carbG}g</div><div class="lbl">Carboidratos</div></div>
           <div class="calc-metric"><div class="val">${fatG}g</div><div class="lbl">Gorduras</div></div>
         </div>
-        <div class="decision-grid"><div class="decision-card"><strong>Decisão inicial</strong><span>Use ${calories} kcal/dia como ponto de partida e acompanhe o peso por 2 semanas.</span></div><div class="decision-card"><strong>Água estimada</strong><span>~${Math.round(weight * 37)} ml/dia, ajustando conforme sede, clima e treino.</span></div></div>
-        <div class="calc-warning">Estimativa: TMB, TDEE e macros variam entre pessoas. Não substitui avaliação de nutricionista; ajuste pela evolução e pelo contexto individual.</div>
+        <div class="decision-grid"><div class="decision-card"><strong>Etapa 1 · ponto de partida</strong><span>Use ${calories} kcal/dia por 14 dias antes de mudar qualquer variável.</span></div><div class="decision-card"><strong>Etapa 2 · acompanhe</strong><span>Registre peso e adesão semanal; compare a média, não apenas um dia isolado.</span></div><div class="decision-card"><strong>Etapa 3 · ajuste com cuidado</strong><span>Se não houver evolução, ajuste com um nutricionista conforme desempenho e recuperação.</span></div><div class="decision-card"><strong>Água estimada</strong><span>~${Math.round(weight * 37)} ml/dia, ajustando conforme sede, clima e treino.</span></div></div>
+        <div class="calc-warning"><strong>Estimativa, não prescrição:</strong> TMB, TDEE e macros variam entre pessoas. Não substitui avaliação de nutricionista; ajuste pela evolução e pelo contexto individual.</div>
         <p class="calc-hint">Proteína ~2,0 g/kg e gordura ~0,8 g/kg; o restante em carboidratos para treino. Se não houver evolução em 2 semanas, reavalie com seu profissional.</p>
       `;
       // Sync food weight field
@@ -6744,11 +6902,17 @@
       date?.addEventListener('change', () => renderDietDiary());
       const select = document.getElementById('dietFoodSelect');
       if (select && !select.options.length) select.innerHTML = Object.entries(TACO_DIARY_FOODS).map(([key, food]) => `<option value="${key}">${escapeHtml(food.name)} · TACO</option>`).join('');
+      const search = document.getElementById('dietFoodSearch');
+      if (search && !search.dataset.bound) {
+        search.dataset.bound = 'true';
+        search.addEventListener('input', () => renderDietFoodOptions(search.value));
+      }
       const prefs = state.dietPrefs || {};
       const restrictions = document.getElementById('dietRestrictions');
       const allergies = document.getElementById('dietAllergies');
       if (restrictions && !restrictions.value) restrictions.value = prefs.restrictions || '';
       if (allergies && !allergies.value) allergies.value = prefs.allergies || '';
+      applyProfileDataToTools('menu', false);
       renderDietDiary();
     }
 
@@ -6777,7 +6941,7 @@
       const day = getDietDay();
       const list = document.getElementById('dietDiaryList');
       const foodSelect = document.getElementById('dietFoodSelect');
-      if (foodSelect && !foodSelect.options.length) foodSelect.innerHTML = Object.entries(TACO_DIARY_FOODS).map(([key, food]) => `<option value="${key}">${escapeHtml(food.name)} · TACO</option>`).join('');
+      if (foodSelect && !foodSelect.options.length) renderDietFoodOptions(document.getElementById('dietFoodSearch')?.value || '');
       if (!list) return;
       const totals = getDietTotals(day);
       const targets = getDietTargets();
@@ -6798,12 +6962,41 @@
         recentWrap.hidden = !recent.length;
         recentList.innerHTML = recent.map((item, index) => `<button type="button" onclick="addRecentDietMeal(${index})">${escapeHtml(TACO_DIARY_FOODS[item.foodKey].name)} · ${item.grams} g</button>`).join('');
       }
+      renderDietWeekAdherence();
       renderDietShoppingList();
+    }
+
+    function renderDietFoodOptions(query) {
+      const select = document.getElementById('dietFoodSelect');
+      if (!select) return;
+      const previous = select.value;
+      const term = String(query || '').trim().toLocaleLowerCase('pt-BR');
+      const options = Object.entries(TACO_DIARY_FOODS).filter(([, food]) => !term || `${food.name} ${food.group || ''}`.toLocaleLowerCase('pt-BR').includes(term));
+      select.innerHTML = options.length ? options.map(([key, food]) => `<option value="${key}">${escapeHtml(food.name)} · TACO</option>`).join('') : '<option value="">Nenhum alimento encontrado</option>';
+      if (previous && options.some(([key]) => key === previous)) select.value = previous;
+    }
+
+    function renderDietWeekAdherence() {
+      const target = document.getElementById('dietWeekAdherence');
+      if (!target) return;
+      const selected = new Date(`${getDietDate()}T12:00:00`);
+      let registered = 0;
+      let completed = 0;
+      for (let offset = 0; offset < 7; offset++) {
+        const day = new Date(selected);
+        day.setDate(day.getDate() - offset);
+        const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+        const meals = state.dietDiary?.[key]?.meals || [];
+        if (meals.length) registered++;
+        if (meals.some((meal) => meal.completed)) completed++;
+      }
+      target.textContent = `Aderência de 7 dias: ${registered}/7 dia${registered === 1 ? '' : 's'} com refeições registradas${completed ? ` · ${completed} dia${completed === 1 ? '' : 's'} com refeições marcadas` : ''}.`;
     }
 
     function addDietMeal() {
       const day = getDietDay();
       const foodKey = document.getElementById('dietFoodSelect')?.value || 'frango';
+      if (!TACO_DIARY_FOODS[foodKey]) { showToast('Escolha um alimento válido da base TACO'); return; }
       const grams = Math.round(safeNumber(document.getElementById('dietFoodGrams')?.value, 1, 3000, 100));
       const mealType = boundedText(document.getElementById('dietMealType')?.value || 'Refeição', 50);
       day.meals.push({ id: `meal_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, name: TACO_DIARY_FOODS[foodKey].name, mealType, completed: false, foodKey, grams });
@@ -7685,7 +7878,8 @@
       const brzycki = reps < 37 ? weight * (36 / (37 - reps)) : epley;
       const estimate = Math.round(((epley + brzycki) / 2) * 10) / 10;
       box.style.display = 'block';
-      box.innerHTML = `<div class="decision-card"><strong>1RM estimado: ${estimate} kg</strong><span>Faixa aproximada pelos métodos Epley e Brzycki, a partir de ${weight} kg × ${reps} reps.</span></div><div class="calc-warning">Estimativa: não teste 1RM máximo sozinho. Priorize técnica, segurança e orientação profissional.</div>`;
+      const confidence = reps <= 10 ? 'melhor referência' : 'referência mais incerta';
+      box.innerHTML = `<div class="decision-card"><strong>1RM estimado: ${estimate} kg</strong><span>Faixa aproximada pelos métodos Epley e Brzycki, a partir de ${weight} kg × ${reps} reps · ${confidence}.</span></div><div class="decision-card"><strong>Como usar</strong><span>Use como referência para acompanhar sua evolução ou definir cargas submáximas; compare sempre o mesmo exercício e uma faixa de repetições semelhante.</span></div><div class="calc-warning"><strong>Estimativa, não teste obrigatório:</strong> não teste 1RM máximo sozinho. Priorize técnica, segurança e orientação profissional.</div>`;
     }
 
     function runUnitConversion() {
@@ -7730,6 +7924,7 @@
           ch.value = state.bodyMeta.heightCm;
         }
       }
+      applyProfileDataToTools('calc', false);
       initBodyWeightFields();
     }
 
@@ -7757,7 +7952,10 @@
       if (reminder) {
         const lastBackup = state.storageMeta?.lastBackupAt ? Date.parse(state.storageMeta.lastBackupAt) : 0;
         const days = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : Infinity;
-        reminder.textContent = days > 21 ? 'Recomendado: exporte um backup agora para proteger seu histórico local.' : `Último backup: ${new Date(lastBackup).toLocaleDateString('pt-BR')}.`;
+        if (!lastBackup) reminder.textContent = 'Nenhum backup exportado ainda. Crie uma cópia antes de trocar de aparelho ou navegador.';
+        else if (days === 0) reminder.textContent = `Último backup: hoje, às ${new Date(lastBackup).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}. Seus dados locais estão protegidos nesta cópia.`;
+        else if (days > 21) reminder.textContent = `Último backup: há ${days} dias. Recomendado: exporte uma nova cópia agora.`;
+        else reminder.textContent = `Último backup: há ${days} dia${days === 1 ? '' : 's'} (${new Date(lastBackup).toLocaleDateString('pt-BR')}).`;
       }
     }
 

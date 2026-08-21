@@ -17,3 +17,13 @@
 - [x] Adicionar lembrete contextual de backup somente em Configurações quando necessário.
 - [x] Melhorar a comunicação de instalação, modo offline e atualização do PWA.
 - [x] Reforçar acessibilidade móvel com contraste, alvos de toque, foco e gestos de retorno.
+- [x] Auditar todas as abas em uso móvel e documentar melhorias priorizadas antes de uma nova implementação.
+- [x] Criar modo foco no treino guiado, priorizando série atual, carga, RIR/RPE, descanso e avanço.
+- [x] Reordenar Configurações para priorizar uso individual e agrupar recursos de personal como secundários.
+- [x] Reaproveitar, mediante consentimento local, os dados do perfil no onboarding, Calculadora e gerador de cardápio.
+- [x] Separar o fluxo principal de diário alimentar da geração de cardápio e ampliar a agilidade de busca e aderência semanal.
+- [x] Melhorar o primeiro uso e a disponibilidade percebida do Coach IA com exemplos e estados claros.
+- [x] Exibir a data do último backup e tornar o lembrete contextual à defasagem da cópia local.
+- [x] Destacar que macros, gasto e 1RM são estimativas e tornar os resultados de cálculo progressivos.
+- [x] Tornar os indicadores da tela inicial mais acionáveis para o próximo treino e a evolução semanal.
+- [ ] Validar em fluxos controlados, revisar cache offline e publicar a nova versão no GitHub Pages.
