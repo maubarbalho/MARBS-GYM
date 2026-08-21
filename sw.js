@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v52-guided-interrupt';
+const CACHE_NAME = 'marsb-gym-v53-sem-coach-sessao-clara';
 const APP_SHELL = [
   './',
   './index.html',

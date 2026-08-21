@@ -47,3 +47,5 @@
 - [x] Exibir no Modo foco o exercício atual, sua posição no treino e o progresso de séries sem ocultar os demais exercícios.
 - [x] Remover a coluna Tipo da tabela de séries do treino guiado, sem apagar as classificações já salvas no histórico.
 - [x] Permitir encerrar o exercício atual ou finalizar o treino guiado parcialmente, preservando as séries preenchidas e identificando a interrupção no histórico.
+- [x] Remover a aba, os atalhos e a interface do Coach IA, preservando todos os dados existentes no armazenamento local sem exclusão ou migração destrutiva.
+- [x] Reformular o cartão Sessão em andamento para deixar treino, progresso, próximo exercício e ações de retomar ou encerrar imediatamente compreensíveis, preservando a sessão e as séries já registradas.

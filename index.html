@@ -1320,10 +1320,9 @@
     .config-option[data-config-window="progresso"] { order: 5; }
     .config-option[data-config-window="dados"] { order: 6; }
     .config-option[data-config-window="privacidade"] { order: 7; }
-    .config-option[data-config-window="coach"] { order: 8; }
-    .config-option[data-config-window="plano"] { order: 9; }
-    .config-option[data-config-window="personal"] { order: 10; }
-    .config-option[data-config-window="sobre"] { order: 11; }
+    .config-option[data-config-window="plano"] { order: 8; }
+    .config-option[data-config-window="personal"] { order: 9; }
+    .config-option[data-config-window="sobre"] { order: 10; }
     .config-option {
       width: 100%; display: flex; align-items: center; gap: 12px; text-align: left;
       padding: 14px 15px; border: 1px solid var(--border); border-radius: 16px;
@@ -1429,6 +1428,19 @@
     .daily-action-card p, .weekly-note { color: var(--text-muted); font-size: .82rem; line-height: 1.45; margin: 0 0 12px; }
     .daily-action-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
     .daily-action-buttons .btn-action { flex: 1 1 150px; }
+    .active-session-card { border-left-color: var(--primary); background: color-mix(in srgb, var(--card) 90%, var(--primary) 10%); }
+    .active-session-summary { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .active-session-summary h3 { margin-bottom:4px; }
+    .active-session-elapsed { flex:0 0 auto; padding:6px 8px; border-radius:10px; background:color-mix(in srgb, var(--primary) 15%, var(--card)); color:var(--primary); font-size:.72rem; font-weight:800; white-space:nowrap; }
+    .session-progress-head { display:flex; justify-content:space-between; gap:10px; margin-bottom:6px; color:var(--text-muted); font-size:.76rem; }
+    .session-progress-head strong { color:var(--text); }
+    .session-progress-track { height:9px; overflow:hidden; margin-bottom:13px; border-radius:999px; background:color-mix(in srgb, var(--primary) 15%, var(--bg)); }
+    .session-progress-track > span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--primary), var(--cyan)); }
+    .session-next { display:grid; gap:2px; padding:11px 12px; margin-bottom:13px; border-radius:14px; background:color-mix(in srgb, var(--card) 70%, var(--primary) 12%); }
+    .session-next span { color:var(--text-muted); font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+    .session-next strong { font-size:.88rem; line-height:1.3; }
+    .session-next small { color:var(--text-muted); font-size:.74rem; }
+    .session-pause-btn { color:var(--text-muted); }
     .weekly-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
     .weekly-summary { color:var(--text-muted); font-size:.72rem; text-align:right; }
     .weekly-bars { display:flex; align-items:flex-end; justify-content:space-between; gap:7px; height:100px; margin:14px 0 8px; }
@@ -1680,12 +1692,7 @@
           </button>
           <button type="button" class="config-option" data-config-window="privacidade" onclick="openConfigWindow('privacidade', this)">
             <span class="config-option-icon" aria-hidden="true">⌁</span>
-            <span class="config-option-copy"><span class="config-option-title">Privacidade</span><span class="config-option-desc">O que fica no dispositivo e o que pode ser enviado ao Coach.</span></span>
-            <span class="config-option-chevron" aria-hidden="true">›</span>
-          </button>
-          <button type="button" class="config-option" data-config-window="coach" onclick="openConfigWindow('coach', this)">
-            <span class="config-option-icon" aria-hidden="true">✦</span>
-            <span class="config-option-copy"><span class="config-option-title">Coach IA</span><span class="config-option-desc">Provedor, modelo, contexto e limites da assistência.</span></span>
+            <span class="config-option-copy"><span class="config-option-title">Privacidade</span><span class="config-option-desc">O que fica neste dispositivo e o que você escolhe compartilhar.</span></span>
             <span class="config-option-chevron" aria-hidden="true">›</span>
           </button>
           <button type="button" class="config-option" style="margin-top:12px;" data-config-window="plano" onclick="openConfigWindow('plano', this)">
@@ -1802,38 +1809,6 @@
       <div class="section-title">Histórico de Treinos</div>
       <div id="historyList">
         <p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px;">Nenhum treino completo ainda.</p>
-      </div>
-    </div>
-
-    <!-- AI COACH -->
-    <div class="page" id="page-ai">
-      <div class="ai-header-row">
-        <div>
-          <h2>🤖 Coach IA</h2>
-          <div class="ai-status warn" id="aiStatus">IA grátis pronta · só academia</div>
-        </div>
-        <button type="button" class="ai-settings-btn" onclick="openAiSettings()">⚙ Config</button>
-      </div>
-
-        <div class="coach-context-bar"><label for="coachContext">Contexto</label><select id="coachContext"><option value="treino">Treino atual e técnica</option><option value="progresso">Progresso e cargas</option><option value="dieta">Nutrição esportiva</option></select><span id="coachConnection" class="coach-connection">Verificando conexão…</span></div>
-        <div class="coach-privacy-note"><strong>Coach focado em academia.</strong> O contexto selecionado pode ser enviado ao provedor configurado. Não envie dados pessoais sensíveis. Em caso de dor intensa, lesão, sintomas ou dúvida médica, interrompa o treino e procure um profissional de saúde.</div>
-        <div class="ai-layout">
-        <p class="calc-hint" style="margin:0 0 8px;">Comece por um dos exemplos abaixo ou descreva a sua dúvida. O Coach não substitui avaliação médica ou de um profissional presencial.</p>
-        <div class="ai-quick" id="aiQuick">
-          <button type="button" onclick="aiQuickAsk('Monte um aquecimento de 8 minutos para o treino de hoje')">Aquecimento</button>
-          <button type="button" onclick="aiQuickAsk('Com base nos meus pesos e na semana atual, o que devo priorizar hoje?')">Prioridade do dia</button>
-          <button type="button" onclick="aiQuickAsk('Sugira progressão de carga para os compostos principais da semana')">Progressão</button>
-          <button type="button" onclick="aiQuickAsk('Estou com dor leve no ombro no desenvolvimento. Como adaptar o treino D com segurança?')">Adaptar dor</button>
-          <button type="button" onclick="aiQuickAsk('Resuma meu progresso recente e diga se estou no caminho da hipertrofia')">Meu progresso</button>
-        </div>
-        <div class="coach-history-tools"><button type="button" onclick="clearCoachHistory()">Limpar histórico local</button></div>
-        <div class="ai-messages" id="aiMessages">
-          <div class="ai-bubble system">IA grátis pronta (Puter). Especialista só em academia e hipertrofia — técnica, cargas, progressão e o treino do dia, com base no seu plano MARSB-GYM.</div>
-        </div>
-        <div class="ai-input-row">
-          <textarea id="aiInput" rows="1" placeholder="Ex: Posso trocar stiff por elevação pélvica?" maxlength="2000"></textarea>
-          <button type="button" class="ai-send" id="aiSendBtn" onclick="sendAiMessage()" aria-label="Enviar">➤</button>
-        </div>
       </div>
     </div>
 
@@ -2234,7 +2209,7 @@
       <div class="about-section"><h3>Sobre o MARSB-GYM</h3><p>O MARSB-GYM é um PWA de treino e nutrição voltado ao acompanhamento prático de hipertrofia. Pode ser instalado no celular, funciona offline após o primeiro carregamento e organiza os dados no próprio navegador.</p></div>
       <div class="about-section"><h3>Treinos e progresso</h3><p>Mantenha a divisão inicial ABCD ou crie, duplique, ordene e arquive quantos treinos precisar. Registre cargas, repetições, RIR/RPE, notas e tipos de série. O app acompanha volume, recordes, histórico e tendências usando datas reais das sessões, sem ciclo fixo de semanas.</p></div>
       <div class="about-section"><h3>Nutrição prática</h3><p>O Diário Alimentar usa referências da Tabela TACO para estimar calorias e macronutrientes. Favoritos, refeições recentes, metas por refeição e trocas de alimentos servem como apoio de organização. Os valores são estimativas e não substituem avaliação individual de nutricionista.</p></div>
-      <div class="about-section"><h3>Coach e limites</h3><p>O Coach ajuda com dúvidas gerais de treino, organização e leitura dos registros. Não diagnostica dor, lesão ou condições de saúde. Em caso de sintomas, dor persistente ou necessidade clínica, procure um profissional de saúde qualificado.</p></div>
+      <div class="about-section"><h3>Uso responsável</h3><p>O MARSB-GYM organiza seus registros e estimativas, mas não diagnostica dor, lesão ou condições de saúde. Em caso de sintomas, dor persistente ou necessidade clínica, interrompa o treino e procure um profissional de saúde qualificado.</p></div>
       <div class="about-section"><h3>Dados, backup e atualização</h3><p>Os dados ficam locais neste aparelho. Faça backup em JSON pela área Progresso antes de trocar de celular ou limpar dados do navegador. Uma atualização do app preserva os registros locais; ainda assim, o backup é a camada de segurança recomendada.</p></div>
       <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:30px;">
         MARBS • Todos os direitos reservados
@@ -2248,7 +2223,6 @@
       <button class="nav-item" data-page="treinos"><span class="nav-icon" aria-hidden="true">◉</span><span>Treinos</span></button>
       <button class="nav-item" data-page="calc"><span class="nav-icon" aria-hidden="true">＋÷</span><span>Calc</span></button>
       <button class="nav-item" data-page="dieta"><span class="nav-icon" aria-hidden="true">◒</span><span>Dieta</span></button>
-      <button class="nav-item" data-page="ai"><span class="nav-icon" aria-hidden="true">✦</span><span>Coach</span></button>
     <button class="nav-item" data-page="config"><span class="nav-icon" aria-hidden="true">⚙</span><span>Config.</span></button>
     </div>
   </nav>
@@ -2271,8 +2245,7 @@
   <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="config-status-card"><strong>Design iOS</strong><span>Cartões arredondados, barra inferior translúcida e suporte a área segura do iPhone.</span></div></div></div>
   <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)" /></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer e a vibração continuam funcionando sem essa permissão.</p></div></div>
   <div class="page" id="page-unidades"><div class="config-panel"><div class="section-title">Unidades</div><div class="form-field"><label for="unitSystemConfig">Sistema de medidas</label><select id="unitSystemConfig" onchange="setUnitSystem(this.value)"><option value="metric">Métrico — kg e cm</option><option value="imperial">Imperial — lb e pol.</option></select></div><div class="config-status-card"><strong>Conversão segura</strong><span>Os registros originais permanecem preservados; a preferência controla a forma de exibição e as calculadoras.</span></div></div></div>
-  <div class="page" id="page-privacidade"><div class="config-panel"><div class="section-title">Privacidade</div><div class="config-status-card"><strong>Dados do treino</strong><span>Perfil, histórico, plano e diário ficam no armazenamento local do navegador até você exportar ou enviar algo.</span></div><div class="config-status-card"><strong>Coach IA</strong><span>Ao usar o Coach, a mensagem e o contexto selecionado podem ser enviados ao provedor configurado. Evite nome completo, documentos, diagnósticos e informações sensíveis.</span></div><div class="config-status-card warning"><strong>Limite de segurança</strong><span>O Coach não diagnostica dor ou lesão, não prescreve medicamentos e não substitui personal trainer ou profissional de saúde.</span></div></div></div>
-  <div class="page" id="page-coach"><div class="config-panel"><div class="section-title">Coach IA</div><div class="config-status-card"><strong>Escopo atual</strong><span>Respostas estruturadas apenas sobre treino, hipertrofia, progresso e nutrição esportiva ligada à performance.</span></div><div class="form-field"><label for="coachConfigContext">Contexto padrão</label><select id="coachConfigContext" onchange="setCoachContext(this.value)"><option value="treino">Treino atual e técnica</option><option value="progresso">Progresso e cargas</option><option value="dieta">Nutrição esportiva</option></select></div><button class="btn-action primary" onclick="openAiSettings()">⚙ Configurar provedor e modelo</button><p class="calc-desc">A opção mais estável depende do provedor e da chave configurados. Para uso local, mantenha as credenciais somente na sessão atual e nunca as compartilhe.</p></div></div>
+  <div class="page" id="page-privacidade"><div class="config-panel"><div class="section-title">Privacidade</div><div class="config-status-card"><strong>Dados do treino</strong><span>Perfil, histórico, plano e diário ficam no armazenamento local do navegador até você exportar ou enviar algo.</span></div><div class="config-status-card"><strong>Compartilhamento consciente</strong><span>Backups, planilhas e planos só saem deste dispositivo quando você escolhe exportar ou compartilhar um arquivo.</span></div><div class="config-status-card warning"><strong>Limite de segurança</strong><span>O aplicativo não diagnostica dor ou lesão, não prescreve medicamentos e não substitui personal trainer ou profissional de saúde.</span></div></div></div>
 
   <div class="toast" id="toast"></div>
   <div class="undo-toast" id="dietUndoToast" role="status" aria-live="polite"><span></span><button type="button">Desfazer</button></div>
@@ -2361,70 +2334,6 @@
     </div>
   </div>
 
-  <!-- MODAL: AI settings -->
-  <div class="modal-overlay" id="aiSettingsModal" role="dialog" aria-modal="true" aria-labelledby="aiSettingsTitle">
-    <div class="modal-sheet">
-      <button type="button" class="modal-close-x" aria-label="Fechar configurações do Coach IA" onclick="closeAiSettings()">✕</button>
-      <div class="modal-title" id="aiSettingsTitle">Configurar Coach IA</div>
-      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;line-height:1.45;">
-        Por padrão o Coach usa <strong>IA grátis (Puter)</strong> — sem API key.
-        Na primeira vez o Puter pode pedir login gratuito no navegador (você não paga a conta do app).
-      </p>
-
-      <div class="form-field">
-        <label>Modo</label>
-        <div class="seg-control" id="aiModeSeg" role="group" aria-label="Modo do Coach IA">
-          <button type="button" class="active" data-mode="free">IA grátis</button>
-          <button type="button" data-mode="custom">API própria</button>
-        </div>
-      </div>
-
-      <div id="aiFreeOptions">
-        <div class="form-field">
-          <label>Modelo grátis (Puter)</label>
-          <div class="seg-control" id="aiFreeModelSeg" role="group" aria-label="Modelo gratuito">
-            <button type="button" class="active" data-fmodel="openrouter:auto">Auto</button>
-            <button type="button" data-fmodel="openai/gpt-4o-mini">GPT mini</button>
-            <button type="button" data-fmodel="google/gemini-2.0-flash">Gemini</button>
-            <button type="button" data-fmodel="meta-llama/llama-3.1-8b-instruct">Llama</button>
-          </div>
-        </div>
-        <p class="calc-hint">Recomendado para uso diário no celular. Se falhar, tente outro modelo ou API própria.</p>
-        <p class="calc-hint">As conversas e o contexto do atleta podem ser enviados ao provedor escolhido. O app mantém a API Key apenas nesta sessão do navegador.</p>
-      </div>
-
-      <div id="aiCustomOptions" style="display:none;">
-        <div class="form-field">
-          <label for="aiBaseUrl">Base URL</label>
-          <input type="url" id="aiBaseUrl" placeholder="https://api.x.ai/v1" autocomplete="url" />
-        </div>
-        <div class="form-field">
-          <label for="aiApiKey">API Key</label>
-          <input type="password" id="aiApiKey" placeholder="xai-... ou sk-..." autocomplete="off" />
-        </div>
-        <div class="form-field">
-          <label for="aiModel">Modelo</label>
-          <input type="text" id="aiModel" placeholder="grok-3" autocomplete="off" maxlength="120" />
-        </div>
-        <div class="form-field">
-          <label>Atalhos de provedor</label>
-          <div class="seg-control" id="aiProviderPresets">
-            <button type="button" data-preset="xai">xAI</button>
-            <button type="button" data-preset="openai">OpenAI</button>
-            <button type="button" data-preset="groq">Groq</button>
-            <button type="button" data-preset="openrouter">OpenRouter</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-action" onclick="closeAiSettings()">Cancelar</button>
-        <button class="btn-action primary" onclick="saveAiSettings()">Salvar</button>
-      </div>
-      <button class="btn-action danger" onclick="clearAiSettings()" style="margin-top:8px;">Restaurar padrão (IA grátis)</button>
-    </div>
-  </div>
-
   <!-- CONFIGURATION WINDOW OVERLAY -->
   <div class="modal-overlay config-overlay" id="configOverlay" role="dialog" aria-modal="true" aria-labelledby="configWindowTitle" aria-describedby="configWindowSubtitle" tabindex="-1" onclick="if(event.target === this) closeConfigWindow()">
     <div class="config-window-header">
@@ -2457,7 +2366,6 @@
     </div>
   </div>
 
-  <script src="https://js.puter.com/v2/"></script>
   <script src="xlsx.full.min.js"></script>
   <script>
     // ===================== DATA =====================
@@ -2568,6 +2476,7 @@
         sessionNotes: {},
         rpe: {},
         activeWorkout: null,
+        pausedWorkouts: [],
         calcPresets: [],
         dietDiary: {},
         dietPrefs: { restrictions: '', allergies: '', targets: { kcal: 0, protein: 0, carbs: 0, fats: 0, waterMl: 3500 } },
@@ -2796,6 +2705,9 @@
           startedAt: normalizeTimestamp(source.activeWorkout.startedAt),
           updatedAt: Math.max(0, Number(source.activeWorkout.updatedAt) || 0)
         };
+      }
+      if (Array.isArray(source.pausedWorkouts)) {
+        clean.pausedWorkouts = [...new Set(source.pausedWorkouts.map((id) => boundedText(id, 40)).filter((id) => /^[a-zA-Z0-9_-]{1,40}$/.test(id)))].slice(-40);
       }
       if (Array.isArray(source.calcPresets)) {
         clean.calcPresets = source.calcPresets.slice(-20).map((preset, index) => ({
@@ -3167,7 +3079,9 @@
     function getInProgressWorkoutId() {
       const active = state.activeWorkout && state.activeWorkout.treino;
       if (active && treinosMap()[active] && !isTreinoComplete(active)) return active;
+      const paused = new Set(Array.isArray(state.pausedWorkouts) ? state.pausedWorkouts : []);
       const candidate = Object.keys(treinosMap()).find((tid) => {
+        if (paused.has(tid)) return false;
         const exercises = getTreinoExercises(tid);
         return exercises.some((ex) => {
           const done = Array.isArray(state.sets[ex.id]) && state.sets[ex.id].some(Boolean);
@@ -3188,20 +3102,25 @@
       if (!treinosMap()[treinoId]) return;
       const current = getInProgressWorkoutId();
       if (current && current !== treinoId && !confirm(`Você tem o Treino ${current} em andamento. Deseja abrir o Treino ${treinoId} mesmo assim?`)) return;
+      state.pausedWorkouts = (Array.isArray(state.pausedWorkouts) ? state.pausedWorkouts : []).filter((id) => id !== treinoId);
       state.activeWorkout = { treino: treinoId, startedAt: state.activeWorkout?.treino === treinoId ? state.activeWorkout.startedAt : new Date().toISOString(), updatedAt: Date.now() };
       saveState();
       renderDailyHome();
       openTreino(treinoId);
     }
 
-    function clearActiveWorkout() {
+    function pauseActiveWorkout() {
       if (!state.activeWorkout) return;
-      if (!confirm('Encerrar o lembrete desta sessão? Os pesos e marcações atuais serão preservados.')) return;
+      if (!confirm('Encerrar esta sessão por agora? Todas as séries, cargas e anotações registradas serão preservadas.')) return;
+      const treinoId = state.activeWorkout.treino;
+      state.pausedWorkouts = [...new Set([...(Array.isArray(state.pausedWorkouts) ? state.pausedWorkouts : []), treinoId])].slice(-40);
       state.activeWorkout = null;
       saveState();
       renderDailyHome();
-      showToast('Sessão removida da ação do dia.');
+      showToast('Sessão encerrada por agora. Seus registros foram preservados.');
     }
+
+    function clearActiveWorkout() { pauseActiveWorkout(); }
 
     function getWeeklyTrainingDays() {
       const today = new Date();
@@ -3236,6 +3155,7 @@
       const action = document.getElementById('dailyActionCard');
       const weekly = document.getElementById('weeklyProgressCard');
       if (!action || !weekly) return;
+      action.classList.remove('active-session-card');
       const inProgress = getInProgressWorkoutId();
       const next = inProgress || getNextWorkoutId();
       const treino = next ? treinosMap()[next] : null;
@@ -3247,11 +3167,19 @@
         const done = exercises.reduce((sum, ex) => sum + getDoneArr(ex).filter(Boolean).length, 0);
         const total = exercises.reduce((sum, ex) => sum + ex.series, 0);
         const resume = Boolean(inProgress);
-        const startedAt = state.activeWorkout?.startedAt ? Date.parse(state.activeWorkout.startedAt) : 0;
+        const sessionIsActive = Boolean(state.activeWorkout?.treino === treino.id);
+        const startedAt = sessionIsActive && state.activeWorkout?.startedAt ? Date.parse(state.activeWorkout.startedAt) : 0;
         const elapsed = startedAt ? Math.max(0, Math.floor((Date.now() - startedAt) / 60000)) : 0;
         const progress = total ? Math.round((done / total) * 100) : 0;
-        const elapsedLabel = elapsed ? ` · ${elapsed < 60 ? `${elapsed} min` : `${Math.floor(elapsed / 60)}h ${elapsed % 60}min`} em andamento` : '';
-        action.innerHTML = `<div class="daily-action-kicker">${resume ? 'Sessão em andamento' : 'Ação do dia'}</div><h3>${resume ? `Retome o Treino ${escapeHtml(treino.id)}` : `Próximo: Treino ${escapeHtml(treino.id)}`}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%${resume ? elapsedLabel : ''}</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">${resume ? 'Retomar sessão' : 'Iniciar treino'}</button>${resume ? '<button type="button" class="btn-action" onclick="clearActiveWorkout()">Encerrar lembrete</button>' : ''}</div>`;
+        const nextExercise = exercises.find((ex) => getDoneArr(ex).some((isDone) => !isDone)) || exercises[exercises.length - 1];
+        const nextSetIndex = nextExercise ? Math.max(0, getDoneArr(nextExercise).findIndex((isDone) => !isDone)) : 0;
+        const elapsedText = elapsed ? (elapsed < 60 ? `${elapsed} min` : `${Math.floor(elapsed / 60)}h ${elapsed % 60}min`) : 'Agora';
+        if (resume) {
+          action.classList.add('active-session-card');
+          action.innerHTML = `<div class="active-session-summary"><div><div class="daily-action-kicker">${sessionIsActive ? 'Sessão em andamento' : 'Sessão pendente'}</div><h3>Treino ${escapeHtml(treino.id)}${sessionIsActive ? ' em andamento' : ' pronto para continuar'}</h3><p>${escapeHtml(treino.nome)}</p></div><span class="active-session-elapsed">${elapsedText}</span></div><div class="session-progress-head"><span>Progresso da sessão</span><strong>${done}/${total} séries · ${progress}%</strong></div><div class="session-progress-track" aria-label="${progress}% do treino concluído"><span style="width:${progress}%"></span></div>${nextExercise ? `<div class="session-next"><span>Próximo exercício</span><strong>${escapeHtml(nextExercise.nome)}</strong><small>Série ${Math.min(nextSetIndex + 1, nextExercise.series)} de ${nextExercise.series}</small></div>` : ''}<div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Continuar treino</button><button type="button" class="btn-action session-pause-btn" onclick="pauseActiveWorkout()">Encerrar por agora</button></div>`;
+        } else {
+          action.innerHTML = `<div class="daily-action-kicker">Ação do dia</div><h3>Próximo: Treino ${escapeHtml(treino.id)}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Iniciar treino</button></div>`;
+        }
       } else {
         action.innerHTML = '<div class="daily-action-kicker">Ação do dia</div><h3>Treinos concluídos</h3><p>Você completou todos os treinos disponíveis. Escolha um treino para revisar ou começar uma nova semana.</p>';
       }
@@ -4056,6 +3984,7 @@
     }
 
     function toggleSet(exId, setIndex, restSec, treinoId) {
+      state.pausedWorkouts = (Array.isArray(state.pausedWorkouts) ? state.pausedWorkouts : []).filter((id) => id !== treinoId);
       if (!state.activeWorkout || state.activeWorkout.treino !== treinoId) {
         state.activeWorkout = { treino: treinoId, startedAt: new Date().toISOString(), updatedAt: Date.now() };
       } else {
@@ -4889,8 +4818,7 @@
       aparencia: { title: 'Aparência', subtitle: 'Tema e preferência visual' },
       notificacoes: { title: 'Notificações', subtitle: 'Lembretes, timer e vibração' },
       unidades: { title: 'Unidades', subtitle: 'Sistema métrico ou imperial' },
-      privacidade: { title: 'Privacidade', subtitle: 'Dados locais e uso do Coach IA' },
-      coach: { title: 'Coach IA', subtitle: 'Contexto, provedor e limites' }
+      privacidade: { title: 'Privacidade', subtitle: 'Dados locais e compartilhamento manual' }
     };
 
     function openConfigWindow(kind, trigger) {
@@ -4927,7 +4855,6 @@
       if (kind === 'aparencia') syncAppearanceControl();
       if (kind === 'notificacoes') syncNotificationControls();
       if (kind === 'unidades') syncUnitControl();
-      if (kind === 'coach') { const select = document.getElementById('coachConfigContext'); if (select) select.value = state.coachPrefs?.context || 'treino'; updateCoachConnection(); }
       document.body.classList.add('config-window-open');
       overlay.classList.add('show');
       requestAnimationFrame(() => overlay.focus({ preventScroll: true }));
@@ -5100,7 +5027,7 @@
       const specs = [
         ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
         ['workoutCompleteModal', '#workoutCompleteModal .modal-sheet', closeWorkoutComplete], ['swapExerciseModal', '#swapExerciseModal .modal-sheet', closeSwapExercise],
-        ['aiSettingsModal', '#aiSettingsModal .modal-sheet', closeAiSettings], ['onboardingModal', '#onboardingModal .modal-sheet', skipOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
+        ['onboardingModal', '#onboardingModal .modal-sheet', skipOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
         ['guidedOverlay', '#guidedOverlay .guided-header', exitGuided], ['timerOverlay', '#timerOverlay', skipTimer]
       ];
       specs.forEach(([overlayId, selector, close]) => {
@@ -5371,9 +5298,6 @@
       }
       if (page === 'plano') {
         initPlanoPage();
-      }
-      if (page === 'ai') {
-        initAiPage();
       }
       if (window.__showHeader) window.__showHeader();
       else document.querySelector('.header')?.classList.remove('header-hidden');
@@ -8636,7 +8560,6 @@
           document.getElementById('exerciseModal')?.classList.contains('show') ||
           document.getElementById('chartModal')?.classList.contains('show') ||
           document.getElementById('workoutCompleteModal')?.classList.contains('show') ||
-          document.getElementById('aiSettingsModal')?.classList.contains('show') ||
           document.getElementById('configOverlay')?.classList.contains('show')
         );
       }

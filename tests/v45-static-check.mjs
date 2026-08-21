@@ -23,7 +23,6 @@ const requiredTokens = [
   'renderDietWeekAdherence',
   'backupReminder',
   'switchPage(\'progresso\')',
-  'Coach indisponível offline',
   'planoAddWorkout',
   'planoDuplicateWorkout',
   'planoArchiveWorkout',
@@ -39,6 +38,9 @@ const requiredTokens = [
   'endGuidedWorkout',
   'recordWorkoutSession',
   'Encerrar treino agora',
+  'pauseActiveWorkout',
+  'active-session-card',
+  'Próximo exercício',
   "status: entry && entry.status === 'interrupted' ? 'interrupted' : 'completed'"
 ];
 
@@ -59,6 +61,18 @@ if (html.includes("var keys = ['A', 'B', 'C', 'D'];")) {
 
 if (html.includes('Limite de segurança de 40 treinos por plano')) {
   throw new Error('Ainda existe um limite artificial para a quantidade de treinos.');
+}
+
+if (html.includes('data-page="ai"') || html.includes('id="page-ai"') || html.includes('id="page-coach"')) {
+  throw new Error('A interface do Coach IA ainda está acessível no PWA.');
+}
+
+if (!html.includes('coachHistory: []') || !html.includes('clean.coachHistory')) {
+  throw new Error('Os dados legados do Coach IA deixaram de ser preservados no armazenamento local.');
+}
+
+if (!html.includes('pausedWorkouts: []') || !html.includes('function pauseActiveWorkout()')) {
+  throw new Error('A sessão não possui um encerramento temporário que preserve suas séries.');
 }
 
 if (!html.includes("status: interrupted ? 'interrupted' : 'completed'")) {
