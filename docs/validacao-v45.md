@@ -21,3 +21,5 @@ Após recarregar a versão local, a ordem visual foi confirmada no celular: Perf
 Na Dieta, o diário ficou acima do gerador opcional de cardápio, com busca na base TACO e o indicador “Aderência de 7 dias” visíveis. No Coach, foram exibidos o estado de disponibilidade “IA grátis pronta”, o provedor/modelo em uso, os avisos de privacidade e segurança, e os exemplos Aquecimento, Prioridade do dia, Progressão, Adaptar dor e Meu progresso.
 
 Na Calculadora, os campos de corpo e nutrição receberam os valores locais autorizados apenas quando estavam vazios. A tela de Nutrição exibiu os dados preenchidos, as escolhas de sexo, atividade e objetivo, e mantém orientações sobre ajuste pela evolução semanal antes do cálculo de macros.
+
+Publicação confirmada em https://maubarbalho.github.io/MARBS-GYM/?v=45. A tela inicial exibiu os novos atalhos de evolução e o aviso de atualização do service worker para a instalação controlada da revisão v45, sem orientação de limpar dados locais.

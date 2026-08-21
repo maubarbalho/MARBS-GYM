@@ -26,4 +26,4 @@
 - [x] Exibir a data do último backup e tornar o lembrete contextual à defasagem da cópia local.
 - [x] Destacar que macros, gasto e 1RM são estimativas e tornar os resultados de cálculo progressivos.
 - [x] Tornar os indicadores da tela inicial mais acionáveis para o próximo treino e a evolução semanal.
-- [ ] Validar em fluxos controlados, revisar cache offline e publicar a nova versão no GitHub Pages.
+- [x] Validar em fluxos controlados, revisar cache offline e publicar a nova versão no GitHub Pages.
