@@ -7854,9 +7854,13 @@
 
     // ===================== OFFLINE (SERVICE WORKER) =====================
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
+      const registerServiceWorker = () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch((error) => {
+          console.warn('Não foi possível ativar o modo offline.', error);
+        });
+      };
+      if (document.readyState === 'complete') registerServiceWorker();
+      else window.addEventListener('load', registerServiceWorker, { once: true });
     }
 
     // ===================== DYNAMIC VIEWPORT (iPhone / standalone PWA) =====================
