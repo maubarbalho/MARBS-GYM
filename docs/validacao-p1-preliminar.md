@@ -41,3 +41,7 @@ O armazenamento de teste foi restaurado após a verificação e a tela voltou ao
 Após recarregar com o novo cache offline, a tela inicial exibiu `Evolução recente`, `Histórico contínuo` e `nos últimos 28 dias`. A inspeção do DOM confirmou `0` botões de semana e ausência do seletor semanal no cabeçalho. O aviso de atualização ficou visível no topo, pronto para aplicar a versão nova sem limpar os dados locais.
 
 O console do navegador não apresentou erros de execução atribuídos ao aplicativo após a recarga final.
+
+## Integração dos indicadores da tela inicial
+
+O cartão de calendário de consistência foi removido da tela inicial para evitar repetição. A validação local confirmou dois blocos com papéis distintos: `Ritmo de treino`, que resume os últimos 7 e 28 dias, e `Próximo passo`, que mostra exclusivamente os próximos 7 dias para planejamento. A inspeção do DOM encontrou zero cartões legados de consistência e nenhum texto de `Histórico contínuo` nessa tela.

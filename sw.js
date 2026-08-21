@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v48-p1-free-program';
+const CACHE_NAME = 'marsb-gym-v49-home-indicators';
 const APP_SHELL = [
   './',
   './index.html',

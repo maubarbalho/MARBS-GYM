@@ -42,3 +42,4 @@
 - [x] Validar a migração com dados locais legados, a preservação do treino registrado hoje, o fluxo offline, a sintaxe e a publicação no GitHub Pages.
 - [x] Remover o ciclo fixo de quatro semanas e o seletor de semana do cabeçalho, mantendo a data e os metadados históricos das sessões já salvas.
 - [x] Atualizar a página Sobre com informações essenciais de uso, armazenamento local, backup, dieta, Coach e funcionamento offline do aplicativo.
+- [x] Consolidar Evolução recente, Consistência e Aderência do plano em um fluxo único e não redundante na tela inicial, preservando dados e ações já existentes.
