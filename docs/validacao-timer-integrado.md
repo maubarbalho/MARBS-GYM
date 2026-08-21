@@ -7,3 +7,8 @@
 - A presença do controle foi confirmada em tela; a validação final deve confirmar que a contagem substitui o botão no próprio cartão, sem abrir sobreposição.
 - O acionador foi testado de forma controlada. A contagem em andamento apareceu no mesmo cartão como **Descanso em andamento**, com tempo restante e ações de -15, pausar, +15 e pular.
 - Não foi encontrada sobreposição flutuante ativa durante a contagem; a lista completa de séries permaneceu visível acima do painel integrado.
+
+## Publicação
+
+- A revisão foi publicada no GitHub Pages com cache `marsb-gym-v46-guided-inline-rest`.
+- A página publicada apresentou o aviso de nova versão, confirmando a detecção do service worker revisado sem qualquer indicação de limpeza dos dados locais.
