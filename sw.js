@@ -1,8 +1,11 @@
-const CACHE_NAME = 'marsb-gym-v41';
+const CACHE_NAME = 'marsb-gym-v41-icons';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
+  './favicon-16.png',
+  './favicon-32.png',
+  './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
   './xlsx.full.min.js'
