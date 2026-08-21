@@ -570,6 +570,10 @@
     .guided-prev-btn { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border) !important; }
     .guided-next-btn { background: var(--primary); color: white; }
     .guided-next-btn.ready { background: var(--accent); color: #052e16; }
+    .guided-interrupt-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+    .guided-interrupt-btn { min-height:44px; padding:9px 10px; border:1px solid var(--border); border-radius:12px; background:var(--bg-elevated); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; }
+    .guided-interrupt-btn.danger { border-color:rgba(239,68,68,.48); background:rgba(239,68,68,.1); color:#fca5a5; }
+    .guided-interrupt-btn:active { transform:scale(.98); }
     .guided-complete-banner {
       text-align: center; padding: 40px 20px;
     }
@@ -611,12 +615,11 @@
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-metric strong { display:block; color:var(--text); font-size:0.94rem; margin-top:4px; letter-spacing:0; text-transform:none; }
     .guided-tech-note { margin:2px 0 12px; padding:9px 11px; border-left:3px solid var(--primary); border-radius:8px; background:rgba(59,130,246,0.08); color:var(--text-muted); font-size:0.76rem; line-height:1.4; }
-    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px 78px minmax(0,1fr) minmax(0,1fr) 34px; align-items:center; gap:8px; }
+    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 44px; align-items:center; gap:8px; }
     .guided-set-head { padding:0 12px 6px; color:var(--text-muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-set-row { width:100%; min-height:54px; margin-top:6px; padding:8px 12px; background:var(--bg); color:var(--text); border:1px solid transparent; border-radius:18px; text-align:left; }
     .guided-set-row:focus-within { border-color:var(--primary); }
     .guided-set-row.done { background:#050807; border-color:rgba(34,197,94,0.34); }
-    .guided-set-type { min-width:0; min-height:36px; padding:0 5px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); font-size:.69rem; font-weight:700; }
     .guided-set-number { font-size:0.9rem; font-weight:800; }
     .guided-set-input { width:100%; min-width:0; box-sizing:border-box; min-height:38px; padding:7px 5px; background:rgba(2,6,23,0.52); color:var(--text); border:1px solid #64748b; border-radius:10px; text-align:center; font:inherit; font-size:0.86rem; }
     .guided-set-input::placeholder { color:#94a3b8; opacity:0.78; }
@@ -629,6 +632,10 @@
     .guided-history-title { display:block; font-size:0.86rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; }
     .guided-history-detail { display:block; margin-top:3px; color:var(--text-muted); font-size:0.72rem; }
     .guided-focus-current { display:none; align-items:center; justify-content:space-between; gap:10px; margin:2px 0 12px; padding:10px 12px; border-radius:14px; background:color-mix(in srgb, var(--primary) 11%, var(--bg)); color:var(--text); font-size:.8rem; font-weight:800; }
+    .guided-focus-current > div { min-width:0; }
+    .guided-focus-current span { display:block; color:var(--text-muted); font-size:.64rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+    .guided-focus-current strong { display:block; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.92rem; }
+    .guided-focus-set { flex:0 0 auto; text-align:right; }
     .guided-focus-controls { display:none; grid-template-columns:minmax(0, 1fr) auto; gap:8px; margin:12px 0 4px; }
     .guided-focus-rpe { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 10px; border:1px solid var(--border); border-radius:12px; color:var(--text-muted); font-size:.74rem; }
     .guided-focus-rpe select { min-height:36px; padding:4px 7px; border:0; border-radius:8px; background:var(--bg); color:var(--text); font:inherit; font-weight:800; }
@@ -658,7 +665,7 @@
       .guided-activity-card { border-radius:20px; padding:11px; }
       .guided-media-card { grid-template-columns:112px 1fr; gap:10px; }
       .guided-media-visual { min-height:122px; }
-      .guided-set-head, .guided-set-row { grid-template-columns:28px 62px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
+      .guided-set-head, .guided-set-row { grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
       .guided-set-input { min-height:36px; padding-left:3px; padding-right:3px; font-size:0.8rem; }
       .guided-set-status { width:44px; height:44px; }
     }
@@ -1582,7 +1589,6 @@
       <div class="quick-start" id="quickStart"></div>
       <div id="dailyActionCard" class="daily-action-card" aria-live="polite"></div>
       <div id="weeklyProgressCard" class="weekly-progress-card" aria-live="polite"></div>
-      <div id="adherenceCard" aria-live="polite"></div>
 
       <div id="installBanner" class="install-banner">
         <p>Instale o <strong>MARSB-GYM</strong> na tela inicial para usar offline e em tela cheia.</p>
@@ -2531,11 +2537,11 @@
     // setDetails: { exId: [ { reps: "8", weight: "80" }, ... ] }
     // weights: { exId: "80" }  // current/default weights, kept for compatibility
     // weightHistory: { exId: [ {date, week, weight}, ... ] }
-    // completedWorkouts: [ {id, treino, date, week, weights: {exId: weight}, setDetails} ]
+    // completedWorkouts: [ {id, treino, date, week, status, weights: {exId: weight}, setDetails} ]
     // week: number
 
     const STORAGE_KEY = 'marsbGym_v2';
-    const STATE_SCHEMA_VERSION = 6;
+    const STATE_SCHEMA_VERSION = 7;
     const MAX_STORAGE_BYTES = 4 * 1024 * 1024;
 
     let initialLoadNotice = '';
@@ -2719,7 +2725,9 @@
           setTypes: entry && entry.setTypes && typeof entry.setTypes === 'object' ? Object.fromEntries(
             Object.entries(entry.setTypes).slice(0, 100).map(([id, values]) => [boundedText(id, 80), Array.isArray(values) ? values.slice(0, 10).map((value) => ['warmup', 'work', 'top', 'drop', 'failure'].includes(value) ? value : 'work') : []])
           ) : {},
-          notes: entry && entry.notes && typeof entry.notes === 'object' ? Object.fromEntries(Object.entries(entry.notes).slice(0, 100).map(([id, note]) => [boundedText(id, 80), boundedText(note, 500)])) : {}
+          notes: entry && entry.notes && typeof entry.notes === 'object' ? Object.fromEntries(Object.entries(entry.notes).slice(0, 100).map(([id, note]) => [boundedText(id, 80), boundedText(note, 500)])) : {},
+          status: entry && entry.status === 'interrupted' ? 'interrupted' : 'completed',
+          interruptedExercises: Array.isArray(entry && entry.interruptedExercises) ? entry.interruptedExercises.slice(0, 100).map((id) => boundedText(id, 80)).filter(Boolean) : []
         }));
       }
       if (source.customExercises && typeof source.customExercises === 'object') {
@@ -2782,7 +2790,7 @@
           });
         });
       }
-      if (source.activeWorkout && typeof source.activeWorkout === 'object' && ['A','B','C','D'].includes(source.activeWorkout.treino)) {
+      if (source.activeWorkout && typeof source.activeWorkout === 'object' && /^[a-zA-Z0-9_-]{1,40}$/.test(String(source.activeWorkout.treino))) {
         clean.activeWorkout = {
           treino: source.activeWorkout.treino,
           startedAt: normalizeTimestamp(source.activeWorkout.startedAt),
@@ -3784,10 +3792,11 @@
       const mark = summary.bestMark;
       const newRecordText = summary.newRecordNames?.length ? `<div class="complete-record"><strong>🏆 Novo recorde</strong><span>${summary.newRecordNames.map((name) => escapeHtml(name)).join(' · ')}</span></div>` : '';
       const notes = summary.notes?.length ? `<div class="complete-notes"><strong>Notas da sessão</strong>${summary.notes.map((note) => `<p>${escapeHtml(note)}</p>`).join('')}</div>` : '';
-      content.innerHTML = `<p class="complete-lead">Treino ${escapeHtml(summary.treinoId)} registrado no histórico.</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
       const checkin = state.workoutCheckins?.[summary.recordId] || {};
       const scoreOptions = (value) => `<option value="">—</option>${Array.from({ length: 10 }, (_, index) => index + 1).map((score) => `<option value="${score}" ${Number(value) === score ? 'selected' : ''}>${score}</option>`).join('')}`;
-      content.innerHTML = `<p class="complete-lead">Treino ${escapeHtml(summary.treinoId)} registrado no histórico.</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      const interrupted = summary.status === 'interrupted';
+      const lead = interrupted ? `Treino ${escapeHtml(summary.treinoId)} encerrado antes do fim. As séries registradas foram salvas no histórico.` : `Treino ${escapeHtml(summary.treinoId)} registrado no histórico.`;
+      content.innerHTML = `<p class="complete-lead">${lead}</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${interrupted ? '<div class="complete-notes"><strong>Sessão interrompida</strong><p>O restante do treino foi deixado para outro dia.</p></div>' : ''}${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
       content.querySelector('.js-save-checkin')?.addEventListener('click', () => {
         const value = (field) => Number(content.querySelector(`[data-checkin="${field}"]`)?.value) || 0;
         if (!state.workoutCheckins) state.workoutCheckins = {};
@@ -3802,16 +3811,9 @@
       document.getElementById('workoutCompleteModal')?.classList.remove('show');
     }
 
-    function checkAndRecordWorkout(treinoId) {
-      if (!isTreinoComplete(treinoId)) return;
-
+    function recordWorkoutSession(treinoId, status = 'completed', interruptedExercises = []) {
+      const interrupted = status === 'interrupted';
       const today = todayKey();
-      const exists = (state.completedWorkouts || []).some((entry) => entry.date === today && entry.treino === treinoId);
-      if (exists) {
-        showToast(`Treino ${treinoId} já foi registrado hoje. O app evitou uma duplicação.`);
-        return;
-      }
-
       const weights = {};
       const setDetails = {};
       const notes = {};
@@ -3822,6 +3824,22 @@
         if (details.some((detail) => detail.reps || detail.weight)) setDetails[ex.id] = details;
         if (state.sessionNotes?.[ex.id]) notes[ex.id] = boundedText(state.sessionNotes[ex.id], 500);
       });
+
+      const hasActivity = exercises.some((ex) => getDoneArr(ex).some(Boolean) || Boolean(weights[ex.id]) || Boolean(setDetails[ex.id]?.some((detail) => detail.reps || detail.weight)));
+      if (interrupted && !hasActivity) {
+        state.activeWorkout = null;
+        saveState();
+        showToast('Nenhuma série foi registrada. O treino foi fechado sem criar histórico.');
+        return false;
+      }
+
+      state.completedWorkouts = state.completedWorkouts || [];
+      const existingIndex = state.completedWorkouts.findIndex((entry) => entry.date === today && entry.treino === treinoId);
+      if (existingIndex >= 0 && !(status === 'completed' && state.completedWorkouts[existingIndex].status === 'interrupted')) {
+        showToast(interrupted ? `A sessão parcial do Treino ${treinoId} já foi registrada hoje.` : `Treino ${treinoId} já foi registrado hoje. O app evitou uma duplicação.`);
+        return false;
+      }
+      const replacedRecord = existingIndex >= 0 ? state.completedWorkouts.splice(existingIndex, 1)[0] : null;
 
       const previousRecords = Object.fromEntries(exercises.map((ex) => [ex.id, getPersonalRecords(ex.id)]));
       const active = state.activeWorkout && state.activeWorkout.treino === treinoId ? state.activeWorkout : null;
@@ -3834,31 +3852,38 @@
         treino: treinoId, date: today, week: currentWeek,
         startedAt, endedAt, duration: elapsed, weights, setDetails,
         setTypes: Object.fromEntries(exercises.map((ex) => [ex.id, Array.isArray(state.setTypes?.[ex.id]) ? state.setTypes[ex.id].slice(0, ex.series) : []])),
-        notes
+        notes, status: interrupted ? 'interrupted' : 'completed',
+        interruptedExercises: interrupted ? Array.from(new Set(interruptedExercises)).slice(0, 100) : []
       };
 
-      state.completedWorkouts = state.completedWorkouts || [];
       state.completedWorkouts.push(record);
       if (!state.workoutSchedule) state.workoutSchedule = {};
-      state.workoutSchedule[today] = { treino: treinoId, status: 'completed', updatedAt: endedAt };
+      state.workoutSchedule[today] = { treino: treinoId, status: interrupted ? 'interrupted' : 'completed', updatedAt: endedAt };
       if (active) state.activeWorkout = null;
       const saved = saveState();
       if (!saved) {
         state.completedWorkouts.pop();
+        if (replacedRecord) state.completedWorkouts.splice(existingIndex, 0, replacedRecord);
         if (active) state.activeWorkout = active;
-        return;
+        return false;
       }
       const newRecordNames = exercises.filter((ex) => {
         const current = getPersonalRecords(ex.id);
         const before = previousRecords[ex.id];
         return current && (!before || (current.bestLoad?.weight || 0) > (before.bestLoad?.weight || 0) || (current.bestReps?.reps || 0) > (before.bestReps?.reps || 0) || (current.bestSessionVolume?.volume || 0) > (before.bestSessionVolume?.volume || 0));
       }).map((ex) => ex.nome);
-      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, recordId: record.id, notes: Object.values(notes), newRecordNames }));
-      showToast(`Treino ${treinoId} completo!`);
+      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, recordId: record.id, notes: Object.values(notes), newRecordNames, status: record.status }));
+      showToast(interrupted ? `Sessão parcial do Treino ${treinoId} salva.` : `Treino ${treinoId} completo!`);
       updateStats();
       renderQuickStart();
       renderDailyHome();
       renderHistory();
+      return true;
+    }
+
+    function checkAndRecordWorkout(treinoId) {
+      if (!isTreinoComplete(treinoId)) return false;
+      return recordWorkoutSession(treinoId, 'completed');
     }
 
     function updateStats() {
@@ -4496,7 +4521,7 @@
     }
 
     // ===================== GUIDED WORKOUT MODE =====================
-    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false };
+    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false, interruptedExercises: [] };
 
     function formatGuidedElapsed(seconds) {
       const safe = Math.max(0, Number(seconds) || 0);
@@ -4537,6 +4562,7 @@
       guidedState.exercises = exercises;
       guidedState.index = 0;
       guidedState.focusMode = false;
+      guidedState.interruptedExercises = [];
       guidedState.startedAt = Date.now();
       guidedState.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       if (guidedState.clockId) clearInterval(guidedState.clockId);
@@ -4574,6 +4600,28 @@
       }
       guidedState.index = i;
       renderGuidedStep();
+    }
+
+    function endGuidedExercise() {
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      const done = getDoneArr(ex).filter(Boolean).length;
+      const message = done ? `Encerrar ${ex.nome} com ${done}/${ex.series} séries registradas e seguir para o próximo exercício?` : `Pular ${ex.nome} e seguir para o próximo exercício?`;
+      if (!confirm(message)) return;
+      if (!guidedState.interruptedExercises.includes(ex.id)) guidedState.interruptedExercises.push(ex.id);
+      skipTimer();
+      showToast(done ? 'Exercício encerrado. As séries registradas foram preservadas.' : 'Exercício pulado.');
+      guidedGoTo(guidedState.index + 1);
+    }
+
+    function endGuidedWorkout() {
+      const workoutId = guidedState.treinoId;
+      if (!workoutId) return;
+      if (!confirm('Encerrar o treino agora? As séries já marcadas e os pesos preenchidos serão salvos como sessão interrompida.')) return;
+      skipTimer();
+      const saved = recordWorkoutSession(workoutId, 'interrupted', guidedState.interruptedExercises);
+      exitGuided();
+      if (!saved) renderDailyHome();
     }
 
     function toggleGuidedFocus() {
@@ -4629,7 +4677,7 @@
               </div>
             </div>
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
-            <div class="guided-focus-current"><span>Série atual</span><strong>${Math.min(ex.series, focusSetIndex + 1)} de ${ex.series}</strong></div>
+            <div class="guided-focus-current"><div><span>Exercício em foco</span><strong>${escapeHtml(ex.nome)}</strong></div><div class="guided-focus-set"><span>Progresso</span><strong>${guidedState.index + 1}/${total} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}</strong></div></div>
             <div class="guided-section-label">Progressão de carga</div>
             <div class="guided-metric-grid">
               <div class="guided-metric">Repetições alvo<strong>${escapeHtml(ex.reps)}</strong></div>
@@ -4637,7 +4685,7 @@
               <div class="guided-metric">Técnica<strong>${escapeHtml(ex.tech.split('•')[0].trim())}</strong></div>
             </div>
             <div class="guided-tech-note">${escapeHtml(ex.tech)}</div>
-            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Tipo</span><span>Reps</span><span>Peso (kg)</span><span></span></div>
+            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Reps</span><span>Peso (kg)</span><span></span></div>
             <div class="guided-set-list">
               ${Array.from({length: ex.series}, (_, i) => {
                 const detail = setDetails[i] || { reps: '', weight: '' };
@@ -4646,8 +4694,6 @@
                 return `
                 <div class="guided-set-row ${doneArr[i] ? 'done' : ''} ${i === focusSetIndex ? 'focus-active' : ''}" data-set-index="${i}">
                   <span class="guided-set-number">${i + 1}</span>
-                  <label class="sr-only" for="guidedType-${encodeData(ex.id)}-${i}">Tipo da série ${i + 1}</label>
-                  <select id="guidedType-${encodeData(ex.id)}-${i}" class="guided-set-type js-guided-set-type" data-set-index="${i}" aria-label="Tipo da série ${i + 1}"><option value="warmup" ${setTypes[i] === 'warmup' ? 'selected' : ''}>Aq.</option><option value="work" ${setTypes[i] === 'work' ? 'selected' : ''}>Trabalho</option><option value="top" ${setTypes[i] === 'top' ? 'selected' : ''}>Top</option><option value="drop" ${setTypes[i] === 'drop' ? 'selected' : ''}>Drop</option><option value="failure" ${setTypes[i] === 'failure' ? 'selected' : ''}>Falha</option></select>
                   <label class="sr-only" for="${repsId}">Repetições da série ${i + 1} de ${escapeHtml(ex.nome)}</label>
                   <input id="${repsId}" class="guided-set-input js-guided-set-field" type="number" inputmode="numeric" min="0" max="2000" step="1" placeholder="${escapeHtml(ex.reps)}" value="${escapeHtml(detail.reps)}" data-set-index="${i}" data-field="reps" aria-label="Repetições da série ${i + 1}" />
                   <label class="sr-only" for="${weightId}">Peso da série ${i + 1} de ${escapeHtml(ex.nome)} em quilogramas</label>
@@ -4679,6 +4725,10 @@
               <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
               <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? 'Finalizar ✓' : (allDone ? 'Próximo →' : 'Pular →')}</button>
             </div>
+            <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
+              <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
+              <button class="guided-interrupt-btn danger js-end-workout" type="button">Encerrar treino agora</button>
+            </div>
           </article>
         </div>
       `;
@@ -4690,11 +4740,12 @@
       guidedBody.querySelectorAll('.js-guided-set-toggle').forEach((button) => {
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
       });
-      guidedBody.querySelectorAll('.js-guided-set-type').forEach((field) => field.addEventListener('change', () => saveSetType(ex.id, Number(field.dataset.setIndex), field.value)));
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => guidedGoTo(guidedState.index + 1));
+      guidedBody.querySelector('.js-end-exercise').addEventListener('click', endGuidedExercise);
+      guidedBody.querySelector('.js-end-workout').addEventListener('click', endGuidedWorkout);
       const focusToggle = document.getElementById('guidedFocusToggle');
       if (focusToggle) {
         focusToggle.setAttribute('aria-pressed', String(guidedState.focusMode));

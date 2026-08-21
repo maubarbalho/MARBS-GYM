@@ -34,7 +34,12 @@ const requiredTokens = [
   'saveSetType',
   'workoutCheckins',
   'dietRecent',
-  'dietFavoriteSelect'
+  'dietFavoriteSelect',
+  'endGuidedExercise',
+  'endGuidedWorkout',
+  'recordWorkoutSession',
+  'Encerrar treino agora',
+  "status: entry && entry.status === 'interrupted' ? 'interrupted' : 'completed'"
 ];
 
 const missing = requiredTokens.filter((token) => !html.includes(token));
@@ -54,6 +59,10 @@ if (html.includes("var keys = ['A', 'B', 'C', 'D'];")) {
 
 if (html.includes('Limite de segurança de 40 treinos por plano')) {
   throw new Error('Ainda existe um limite artificial para a quantidade de treinos.');
+}
+
+if (!html.includes("status: interrupted ? 'interrupted' : 'completed'")) {
+  throw new Error('O registro de treino interrompido não está sendo preservado no histórico.');
 }
 
 console.log(`OK: ${scripts.length} script(s) compilado(s) e ${requiredTokens.length} fluxos essenciais encontrados.`);

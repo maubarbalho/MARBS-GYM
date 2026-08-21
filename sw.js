@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v49-home-indicators';
+const CACHE_NAME = 'marsb-gym-v52-guided-interrupt';
 const APP_SHELL = [
   './',
   './index.html',

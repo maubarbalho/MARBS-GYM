@@ -43,3 +43,7 @@
 - [x] Remover o ciclo fixo de quatro semanas e o seletor de semana do cabeçalho, mantendo a data e os metadados históricos das sessões já salvas.
 - [x] Atualizar a página Sobre com informações essenciais de uso, armazenamento local, backup, dieta, Coach e funcionamento offline do aplicativo.
 - [x] Consolidar Evolução recente, Consistência e Aderência do plano em um fluxo único e não redundante na tela inicial, preservando dados e ações já existentes.
+- [x] Remover o bloco Próximo passo da tela inicial, mantendo o planejamento local preservado e acessível apenas fora do início.
+- [x] Exibir no Modo foco o exercício atual, sua posição no treino e o progresso de séries sem ocultar os demais exercícios.
+- [x] Remover a coluna Tipo da tabela de séries do treino guiado, sem apagar as classificações já salvas no histórico.
+- [x] Permitir encerrar o exercício atual ou finalizar o treino guiado parcialmente, preservando as séries preenchidas e identificando a interrupção no histórico.

@@ -45,3 +45,17 @@ O console do navegador não apresentou erros de execução atribuídos ao aplica
 ## Integração dos indicadores da tela inicial
 
 O cartão de calendário de consistência foi removido da tela inicial para evitar repetição. A validação local confirmou dois blocos com papéis distintos: `Ritmo de treino`, que resume os últimos 7 e 28 dias, e `Próximo passo`, que mostra exclusivamente os próximos 7 dias para planejamento. A inspeção do DOM encontrou zero cartões legados de consistência e nenhum texto de `Histórico contínuo` nessa tela.
+
+## Remoção do bloco Próximo passo
+
+A validação visual local confirmou que a tela inicial agora contém apenas a seleção do treino, a ação do dia, o cartão `Ritmo de treino`, os atalhos de revisão/evolução e os indicadores gerais. O bloco `Próximo passo` não aparece mais no início. O contêiner de planejamento permanece uma única vez dentro de Configurações, portanto os dados já salvos não foram removidos.
+
+## Preparação da validação do Modo foco
+
+O treino guiado local foi aberto apenas para inspeção do Modo foco. O estado original do armazenamento local foi salvo em memória antes do teste, para que seja restaurado ao fim da validação.
+
+## Encerramento parcial do treino guiado
+
+A abertura temporária do Treino A confirmou a presença de **Encerrar exercício**, **Encerrar treino agora** e do identificador do exercício no Modo foco. A sessão foi fechada sem preencher séries ou pesos; portanto, nenhum registro de teste foi salvo no armazenamento local.
+
+Um segundo teste controlado marcou uma série temporária e confirmou que o histórico recebeu `status: "interrupted"`, o treino A, uma série registrada e o fechamento do overlay. O valor original de `marsbGym_v2` foi restaurado em seguida. Após recarregar, a tela retornou ao estado local original, sem sessão interrompida de teste no histórico; qualquer metadado de sessão em andamento anterior foi preservado como já existia.
