@@ -28,3 +28,4 @@
 - [x] Tornar os indicadores da tela inicial mais acionáveis para o próximo treino e a evolução semanal.
 - [x] Validar em fluxos controlados, revisar cache offline e publicar a nova versão no GitHub Pages.
 - [x] Manter todas as séries visíveis no treino guiado e integrar o timer de descanso à própria tela, sem sobreposição flutuante.
+- [x] Destacar o aviso e o botão de atualização do PWA no topo da tela inicial.

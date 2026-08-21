@@ -979,13 +979,13 @@
     }
 
     .update-banner {
-      display: none; background: linear-gradient(135deg, rgba(0,122,255,0.16), rgba(52,199,89,0.12));
-      border: 1px solid rgba(0,122,255,0.36); border-radius: 12px; padding: 12px 14px;
-      align-items: center; gap: 10px; margin-bottom: 14px;
+      display: none; background: linear-gradient(135deg, rgba(0,122,255,0.22), rgba(52,199,89,0.16));
+      border: 1px solid rgba(0,122,255,0.5); border-radius: 16px; padding: 14px 15px;
+      align-items: center; gap: 12px; margin: 0 0 16px; box-shadow: 0 10px 24px rgba(0,122,255,0.13);
     }
     .update-banner.show { display: flex; }
     .update-banner p { flex: 1; font-size: 0.82rem; color: var(--text); line-height: 1.35; margin: 0; }
-    .update-banner button { min-height: 40px; background: var(--primary); color: #fff; border: none; border-radius: 9px; padding: 8px 12px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .update-banner button { min-height: 44px; background: var(--primary); color: #fff; border: none; border-radius: 11px; padding: 9px 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,122,255,0.24); }
     .update-banner .dismiss { min-height: 36px; background: transparent; color: var(--text-muted); font-size: 1.1rem; padding: 4px 6px; }
 
     .undo-toast {
@@ -1541,7 +1541,12 @@
   <div class="main">
     <!-- HOME -->
     <div class="page active" id="page-home">
-          <div class="home-hero">
+      <div id="updateBanner" class="update-banner" role="status" aria-live="polite">
+        <p><strong>Nova versão pronta.</strong><br>Atualize agora para receber as melhorias sem limpar seus dados.</p>
+        <button type="button" id="updateNowBtn">Atualizar app</button>
+        <button type="button" class="dismiss" id="updateDismiss" aria-label="Lembrar depois">✕</button>
+      </div>
+      <div class="home-hero">
         <h2>Pronto para treinar?</h2>
         <p>Selecione o treino do dia</p>
       </div>
@@ -1554,12 +1559,6 @@
         <p>Instale o <strong>MARSB-GYM</strong> na tela inicial para usar offline e em tela cheia.</p>
         <button type="button" id="installBtn">Instalar</button>
         <button type="button" class="dismiss" id="installDismiss" aria-label="Fechar">✕</button>
-      </div>
-
-      <div id="updateBanner" class="update-banner" role="status" aria-live="polite">
-        <p><strong>Nova versão disponível.</strong><br>Toque em atualizar para instalar sem limpar dados.</p>
-        <button type="button" id="updateNowBtn">Atualizar</button>
-        <button type="button" class="dismiss" id="updateDismiss" aria-label="Lembrar depois">✕</button>
       </div>
 
       <div class="progress-grid">
