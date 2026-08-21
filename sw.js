@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v46-guided-inline-rest';
+const CACHE_NAME = 'marsb-gym-v48-p1-free-program';
 const APP_SHELL = [
   './',
   './index.html',

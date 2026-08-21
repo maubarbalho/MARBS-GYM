@@ -611,11 +611,12 @@
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-metric strong { display:block; color:var(--text); font-size:0.94rem; margin-top:4px; letter-spacing:0; text-transform:none; }
     .guided-tech-note { margin:2px 0 12px; padding:9px 11px; border-left:3px solid var(--primary); border-radius:8px; background:rgba(59,130,246,0.08); color:var(--text-muted); font-size:0.76rem; line-height:1.4; }
-    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 34px; align-items:center; gap:8px; }
+    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px 78px minmax(0,1fr) minmax(0,1fr) 34px; align-items:center; gap:8px; }
     .guided-set-head { padding:0 12px 6px; color:var(--text-muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-set-row { width:100%; min-height:54px; margin-top:6px; padding:8px 12px; background:var(--bg); color:var(--text); border:1px solid transparent; border-radius:18px; text-align:left; }
     .guided-set-row:focus-within { border-color:var(--primary); }
     .guided-set-row.done { background:#050807; border-color:rgba(34,197,94,0.34); }
+    .guided-set-type { min-width:0; min-height:36px; padding:0 5px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); font-size:.69rem; font-weight:700; }
     .guided-set-number { font-size:0.9rem; font-weight:800; }
     .guided-set-input { width:100%; min-width:0; box-sizing:border-box; min-height:38px; padding:7px 5px; background:rgba(2,6,23,0.52); color:var(--text); border:1px solid #64748b; border-radius:10px; text-align:center; font:inherit; font-size:0.86rem; }
     .guided-set-input::placeholder { color:#94a3b8; opacity:0.78; }
@@ -657,7 +658,7 @@
       .guided-activity-card { border-radius:20px; padding:11px; }
       .guided-media-card { grid-template-columns:112px 1fr; gap:10px; }
       .guided-media-visual { min-height:122px; }
-      .guided-set-head, .guided-set-row { grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
+      .guided-set-head, .guided-set-row { grid-template-columns:28px 62px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
       .guided-set-input { min-height:36px; padding-left:3px; padding-right:3px; font-size:0.8rem; }
       .guided-set-status { width:44px; height:44px; }
     }
@@ -1205,6 +1206,23 @@
     .complete-metrics > div { padding:10px; border-radius:13px; background:var(--bg); border:1px solid var(--border); text-align:center; }
     .complete-metrics strong { display:block; font-size:1.05rem; color:var(--primary); }
     .complete-metrics span, .complete-best span, .complete-record span { display:block; color:var(--text-muted); font-size:.68rem; margin-top:3px; }
+    .complete-checkin { margin-top:14px; padding:12px; border:1px solid var(--border); border-radius:14px; background:var(--bg); }
+    .complete-checkin-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:9px 0; }
+    .complete-checkin-grid label { display:flex; flex-direction:column; gap:4px; color:var(--text-muted); font-size:.68rem; font-weight:700; }
+    .complete-checkin-grid select, .complete-checkin-note { width:100%; min-height:38px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); padding:7px; }
+    .complete-checkin-note { margin:0 0 8px; }
+    .adherence-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; margin:10px 0; }
+    .adherence-day { min-height:58px; padding:6px 3px; border-radius:10px; background:var(--bg); border:1px solid var(--border); text-align:center; }
+    .adherence-day span, .adherence-day small { display:block; color:var(--text-muted); font-size:.59rem; line-height:1.15; }
+    .adherence-day strong { display:block; margin:3px 0; font-size:.61rem; line-height:1.1; }
+    .adherence-day.completed { border-color:color-mix(in srgb, var(--accent) 70%, var(--border)); background:color-mix(in srgb, var(--accent) 14%, var(--bg)); }
+    .adherence-day.planned, .adherence-day.rescheduled { border-color:color-mix(in srgb, var(--primary) 60%, var(--border)); }
+    .adherence-day.rest { background:color-mix(in srgb, var(--text-muted) 10%, var(--bg)); }
+    .adherence-controls { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:8px; }
+    .adherence-controls label { display:flex; min-width:0; flex-direction:column; gap:4px; font-size:.68rem; font-weight:700; color:var(--text-muted); }
+    .adherence-controls input, .adherence-controls select { min-height:40px; width:100%; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); padding:6px; }
+    .adherence-actions { grid-column:1 / -1; display:flex; gap:6px; }
+    .adherence-actions .btn-action { flex:1; min-height:40px; padding:7px 5px; font-size:.7rem; }
     .complete-best, .complete-record, .complete-notes { margin-top:10px; padding:10px 12px; border-radius:12px; background:color-mix(in srgb, var(--accent) 9%, var(--bg)); border:1px solid color-mix(in srgb, var(--accent) 22%, var(--border)); }
     .complete-best strong, .complete-record strong { display:block; margin-top:4px; font-size:.82rem; }
     .complete-notes { background:var(--bg); border-color:var(--border); }
@@ -1502,6 +1520,7 @@
     .diet-goal-track { height:7px; overflow:hidden; border-radius:999px; background:var(--control-bg); }
     .diet-goal-track i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),var(--accent)); }
     .diet-favorite-meta { color:var(--text-muted); font-size:.67rem; }
+    .diet-meal-target { display:block; margin-top:2px; color:var(--primary); font-size:.64rem; font-weight:700; }
     .shopping-category { margin:10px 0 4px; padding:8px 10px; border-radius:10px; background:color-mix(in srgb,var(--accent) 8%,var(--card)); color:var(--accent); font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
     .shopping-category + .shopping-row { margin-top:0; }
     .coach-notice { padding:10px 12px; margin:10px 0; border:1px solid color-mix(in srgb, var(--warning) 42%, var(--border)); border-radius:14px; background:color-mix(in srgb, var(--warning) 8%, var(--card)); color:var(--text-muted); font-size:.74rem; line-height:1.45; }
@@ -1512,6 +1531,25 @@
     .config-section-card h3 { margin:0 0 5px; font-size:.92rem; }
     .config-section-card p { margin:0 0 10px; color:var(--text-muted); font-size:.74rem; line-height:1.4; }
     @media (max-width:430px) { .workout-summary-grid { gap:5px; } .decision-grid { grid-template-columns:1fr 1fr; } }
+    .p1-insight-card { margin:12px 0; padding:14px; border:1px solid color-mix(in srgb, var(--accent) 32%, var(--border)); border-radius:16px; background:linear-gradient(135deg, color-mix(in srgb, var(--bg-card) 94%, var(--accent)), var(--bg-card)); box-shadow:0 8px 22px rgba(0,0,0,.08); }
+    .p1-insight-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .p1-insight-head strong { display:block; font-size:.92rem; }
+    .p1-insight-head span { color:var(--text-muted); font-size:.74rem; text-align:right; }
+    .p1-metric-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:12px; }
+    .p1-metric { padding:9px 6px; border-radius:11px; background:color-mix(in srgb, var(--bg) 72%, transparent); text-align:center; }
+    .p1-metric strong { display:block; font-size:1rem; color:var(--text); }
+    .p1-metric small { display:block; margin-top:2px; color:var(--text-muted); font-size:.65rem; line-height:1.1; }
+    .muscle-volume-list { display:grid; gap:7px; margin-top:11px; }
+    .muscle-volume-row { display:grid; grid-template-columns:minmax(80px,1fr) 2fr auto; gap:8px; align-items:center; font-size:.75rem; }
+    .muscle-volume-track { height:8px; overflow:hidden; border-radius:999px; background:color-mix(in srgb, var(--border) 65%, transparent); }
+    .muscle-volume-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--primary), var(--accent)); }
+    .set-control { display:flex; flex-direction:column; gap:4px; min-width:46px; }
+    .set-type-select { width:100%; min-height:26px; padding:2px 3px; border:1px solid var(--border); border-radius:7px; background:var(--bg); color:var(--text-muted); font-size:.6rem; }
+    .plano-workout-tabs { display:flex; flex-wrap:wrap; gap:7px; max-height:132px; overflow-y:auto; padding:2px; }
+    .plano-workout-tabs button { min-width:44px; }
+    .plano-workout-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .workout-manage-row { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+    .workout-manage-row button { min-height:36px; padding:7px 10px; font-size:.74rem; }
   </style>
 </head>
 <body>
@@ -1520,18 +1558,8 @@
       <div class="header-top">
         <div>
           <h1>MARSB-GYM</h1>
-          <div class="subtitle">Hipertrofia Avançada • 4 Semanas</div>
+          <div class="subtitle">Hipertrofia • Treino livre e progresso contínuo</div>
         </div>
-        <div class="week-selector" id="weekSelector" role="group" aria-label="Selecionar semana do programa">
-          <button class="week-btn active" data-week="1">1</button>
-          <button class="week-btn" data-week="2">2</button>
-          <button class="week-btn" data-week="3">3</button>
-          <button class="week-btn" data-week="4">4</button>
-        </div>
-      </div>
-      <div class="week-info" id="weekInfo">
-        <strong>Semana 1 — Mapeamento (RIR 1-2)</strong><br>
-        Ajuste de cargas para atingir a falha na faixa especificada deixando 1 a 2 repetições de reserva. Execução impecável.
       </div>
     </div>
   </div>
@@ -1554,6 +1582,7 @@
       <div class="quick-start" id="quickStart"></div>
       <div id="dailyActionCard" class="daily-action-card" aria-live="polite"></div>
       <div id="weeklyProgressCard" class="weekly-progress-card" aria-live="polite"></div>
+      <div id="adherenceCard" aria-live="polite"></div>
 
       <div id="installBanner" class="install-banner">
         <p>Instale o <strong>MARSB-GYM</strong> na tela inicial para usar offline e em tela cheia.</p>
@@ -1597,7 +1626,7 @@
     <div class="page" id="page-treinos">
       <div class="workout-filter-bar" aria-label="Filtros de treinos">
         <select id="workoutFilter" aria-label="Filtrar por treino">
-          <option value="all">Todos os treinos</option><option value="A">Treino A</option><option value="B">Treino B</option><option value="C">Treino C</option><option value="D">Treino D</option>
+          <option value="all">Todos os treinos</option>
         </select>
         <input id="exerciseFilter" type="search" placeholder="Buscar exercício" aria-label="Buscar exercício" />
         <button type="button" class="filter-chip active" id="filterPendingBtn">Pendentes</button>
@@ -1737,6 +1766,8 @@
         </div>
       </div>
 
+      <div class="config-section-card" id="adherenceCard" aria-live="polite"></div>
+
       <div class="section-title">Preferências</div>
       <div class="setting-row">
         <span>Iniciar timer ao marcar série</span>
@@ -1758,7 +1789,8 @@
       <button class="btn-action" onclick="resetDay()">🔄 Zerar marcações de hoje</button>
       <button class="btn-action danger" onclick="resetAll()">🗑 Reset completo</button>
 
-      <div class="section-title">Periodização (4 Semanas)</div>
+      <div class="config-section-card" id="muscleVolumeCard" aria-live="polite"></div>
+      <div class="section-title">Progresso contínuo</div>
       <div id="periodList"></div>
 
       <div class="section-title">Histórico de Treinos</div>
@@ -2078,14 +2110,14 @@
       <div class="section-title">Plano do Personal</div>
       <div class="config-excel-card">
         <h3>Planilha Excel para importar treino</h3>
-        <p>Baixe o modelo, preencha as linhas dos treinos A–D e importe a planilha preenchida. Cada linha representa um exercício.</p>
+        <p>Baixe o modelo, preencha as linhas de quantos treinos precisar e importe a planilha preenchida. Cada linha representa um exercício.</p>
         <button class="btn-action" type="button" onclick="downloadPlanoExcelTemplate()">Baixar modelo Excel (.xlsx)</button>
       </div>
 
       <div class="calc-card">
         <h3>📋 Editor de treinos</h3>
         <p class="calc-desc">
-          Monte o plano aqui, sem JSON. Escolha o treino A–D, adicione exercícios e salve.
+          Monte o plano aqui, sem JSON. Comece pela divisão original ou crie quantos treinos precisar, adicione exercícios e salve.
           Depois exporte uma <strong>planilha Excel</strong> no mesmo formato do modelo para enviar ao aluno.
         </p>
         <div id="planoStatus" class="ai-status warn" style="margin-bottom:12px;">Usando treino padrão MARSB</div>
@@ -2101,12 +2133,8 @@
 
         <div class="form-field">
           <label>Editar treino</label>
-          <div class="seg-control" id="planoEditKey" role="group" aria-label="Treino que será editado">
-            <button type="button" class="active" data-key="A">A</button>
-            <button type="button" data-key="B">B</button>
-            <button type="button" data-key="C">C</button>
-            <button type="button" data-key="D">D</button>
-          </div>
+          <div class="seg-control plano-workout-tabs" id="planoEditKey" role="group" aria-label="Treino que será editado"></div>
+          <div class="plano-workout-actions"><button type="button" class="btn-action primary" onclick="planoAddWorkout()">+ Novo treino</button><button type="button" class="btn-action" onclick="planoDuplicateWorkout()">Duplicar treino</button></div>
         </div>
         <div class="form-field">
           <label>Nome do treino</label>
@@ -2116,6 +2144,7 @@
           <label>Foco (opcional)</label>
           <input type="text" id="planoTreinoFoco" placeholder="Ex: Hipertrofia de peitoral" />
         </div>
+        <div class="workout-manage-row"><button type="button" class="btn-action" onclick="planoMoveWorkout(-1)">← Mover</button><button type="button" class="btn-action" onclick="planoMoveWorkout(1)">Mover →</button><button type="button" class="btn-action danger" onclick="planoArchiveWorkout()">Arquivar treino</button></div>
 
         <div id="planoExList" style="margin:10px 0;"></div>
 
@@ -2161,7 +2190,7 @@
       <div class="calc-card" style="margin-top:12px;">
         <h3>Como o personal usa</h3>
         <p class="calc-desc" style="margin:0;line-height:1.5;">
-          1. Preencha nome do plano e monte os treinos A–D no editor<br>
+          1. Preencha o nome do plano e monte os treinos necessários no editor<br>
           2. Toque em <strong>Salvar plano no app</strong><br>
           3. Toque em <strong>Exportar planilha Excel</strong> e envie o arquivo (WhatsApp, e-mail…)<br>
           4. O aluno abre <strong>Configuração → Plano</strong> → Importar planilha Excel → pronto
@@ -2184,7 +2213,7 @@
       </div>
       <div class="personal-card">
         <h3>Compartilhar plano por código</h3>
-        <p>Gere um código com os treinos A–D ativos. O aluno cola o código abaixo para aplicar o plano no próprio app.</p>
+        <p>Gere um código com todos os treinos ativos. O aluno cola o código abaixo para aplicar o plano no próprio app.</p>
         <button type="button" class="btn-action primary" style="margin-top:10px;" onclick="personalGeneratePlanCode()">Gerar código do plano</button>
         <button type="button" class="btn-action" style="margin-top:8px;" onclick="personalCopyPlanCode()">Copiar código</button>
         <textarea id="personalPlanCode" class="personal-code" aria-label="Código de compartilhamento do plano" placeholder="O código do plano aparecerá aqui. Cole um código recebido para aplicá-lo."></textarea>
@@ -2196,29 +2225,11 @@
   </div>
 
 <div class="page" id="page-sobre">
-      <div class="about-section">
-        <h3>Estrutura do Programa</h3>
-        <p>Divisão ABCD que isola membros superiores focados em força/massa nos treinos A e B, dedica o treino C às pernas completas e o treino D ao estresse metabólico direto para ombros e braços. O core é trabalhado em todas as sessões com funções complementares.</p>
-      </div>
-      <div class="about-section">
-        <h3>Justificativa Técnica</h3>
-        <ul>
-          <li><strong>Especialização de Braços e Ombros:</strong> Separar estes grupos no Treino D permite treiná-los com o SNC descansado, sem a pré-fadiga dos exercícios compostos de peito e costas.</li>
-          <li><strong>Trabalho de Core Multidirecional:</strong> Treinar o core todos os dias dividindo as funções garante hipertrofia do abdômen e proteção lombar.</li>
-          <li><strong>Otimização do Tempo:</strong> A divisão cabe perfeitamente em sessões &gt; 75 min, com descanso ideal (2-3 min) para recuperação de ATP.</li>
-        </ul>
-      </div>
-      <div class="about-section">
-        <h3>Como usar o app</h3>
-        <ul>
-          <li>Selecione a semana atual no topo.</li>
-          <li>Abra o treino do dia e marque as séries conforme for fazendo.</li>
-          <li>Registre o peso usado em cada exercício (o histórico fica salvo).</li>
-          <li>Use o botão de timer após cada série.</li>
-          <li>Quando completar todas as séries de um treino, ele entra no histórico.</li>
-          <li>Exporte seu progresso quando quiser (texto ou CSV).</li>
-        </ul>
-      </div>
+      <div class="about-section"><h3>Sobre o MARSB-GYM</h3><p>O MARSB-GYM é um PWA de treino e nutrição voltado ao acompanhamento prático de hipertrofia. Pode ser instalado no celular, funciona offline após o primeiro carregamento e organiza os dados no próprio navegador.</p></div>
+      <div class="about-section"><h3>Treinos e progresso</h3><p>Mantenha a divisão inicial ABCD ou crie, duplique, ordene e arquive quantos treinos precisar. Registre cargas, repetições, RIR/RPE, notas e tipos de série. O app acompanha volume, recordes, histórico e tendências usando datas reais das sessões, sem ciclo fixo de semanas.</p></div>
+      <div class="about-section"><h3>Nutrição prática</h3><p>O Diário Alimentar usa referências da Tabela TACO para estimar calorias e macronutrientes. Favoritos, refeições recentes, metas por refeição e trocas de alimentos servem como apoio de organização. Os valores são estimativas e não substituem avaliação individual de nutricionista.</p></div>
+      <div class="about-section"><h3>Coach e limites</h3><p>O Coach ajuda com dúvidas gerais de treino, organização e leitura dos registros. Não diagnostica dor, lesão ou condições de saúde. Em caso de sintomas, dor persistente ou necessidade clínica, procure um profissional de saúde qualificado.</p></div>
+      <div class="about-section"><h3>Dados, backup e atualização</h3><p>Os dados ficam locais neste aparelho. Faça backup em JSON pela área Progresso antes de trocar de celular ou limpar dados do navegador. Uma atualização do app preserva os registros locais; ainda assim, o backup é a camada de segurança recomendada.</p></div>
       <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:30px;">
         MARBS • Todos os direitos reservados
       </p>
@@ -2524,7 +2535,7 @@
     // week: number
 
     const STORAGE_KEY = 'marsbGym_v2';
-    const STATE_SCHEMA_VERSION = 5;
+    const STATE_SCHEMA_VERSION = 6;
     const MAX_STORAGE_BYTES = 4 * 1024 * 1024;
 
     let initialLoadNotice = '';
@@ -2543,8 +2554,9 @@
       return {
         _schemaVersion: STATE_SCHEMA_VERSION,
         storageMeta: { lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' },
-        sets: {}, setDetails: {}, weights: {}, weightHistory: {}, completedWorkouts: [], week: 1,
+        sets: {}, setDetails: {}, weights: {}, weightHistory: {}, completedWorkouts: [], week: 0,
         customExercises: { A: [], B: [], C: [], D: [] },
+        setTypes: {}, workoutCheckins: {}, workoutSchedule: {},
         exerciseOverrides: {},
         exerciseNotes: {},
         sessionNotes: {},
@@ -2622,22 +2634,24 @@
 
     function sanitizeProgram(program) {
       if (!program || typeof program !== 'object') return null;
-      const colors = { A: 'blue', B: 'green', C: 'orange', D: 'purple' };
+      const colors = ['blue', 'green', 'orange', 'purple'];
       const out = {};
-      for (const key of ['A', 'B', 'C', 'D']) {
+      const keys = Object.keys(program).filter((key) => /^[a-zA-Z0-9_-]{1,40}$/.test(key));
+      if (!keys.length) return null;
+      for (const [position, key] of keys.entries()) {
         const source = program[key];
-        if (!source || !Array.isArray(source.exercises)) return null;
+        if (!source || !Array.isArray(source.exercises)) continue;
         const exercises = source.exercises.slice(0, 100).map((ex, index) => sanitizeExercise(ex, key, index));
-        if (!exercises.length) return null;
+        if (!exercises.length) continue;
         out[key] = {
           id: key,
           nome: boundedText(source.nome, 140) || `Treino ${key}`,
           foco: boundedText(source.foco, 240),
-          color: colors[key],
+          color: colors[position % colors.length],
           exercises
         };
       }
-      return out;
+      return Object.keys(out).length ? out : null;
     }
 
     function normalizeState(input) {
@@ -2650,7 +2664,7 @@
         bytes: Math.round(safeNumber(source.storageMeta?.bytes, 0, MAX_STORAGE_BYTES, 0)),
         migratedAt: normalizeTimestamp(source.storageMeta?.migratedAt)
       };
-      clean.week = Math.round(safeNumber(source.week, 1, 4, 1));
+      clean.week = Math.round(safeNumber(source.week, 0, 9999, 0));
 
       if (source.sets && typeof source.sets === 'object') {
         Object.entries(source.sets).slice(0, 500).forEach(([id, values]) => {
@@ -2682,7 +2696,7 @@
           if (!safeId || !Array.isArray(entries)) return;
           clean.weightHistory[safeId] = entries.slice(-20).map((entry) => ({
             date: /^\d{4}-\d{2}-\d{2}$/.test(String(entry && entry.date)) ? String(entry.date) : todayKey(),
-            week: Math.round(safeNumber(entry && entry.week, 1, 4, 1)),
+            week: Math.round(safeNumber(entry && entry.week, 0, 9999, 0)),
             weight: String(safeNumber(entry && entry.weight, 0, 1000, 0))
           }));
         });
@@ -2690,9 +2704,9 @@
       if (Array.isArray(source.completedWorkouts)) {
         clean.completedWorkouts = source.completedWorkouts.slice(-500).map((entry, index) => ({
           id: boundedText(entry && entry.id, 100) || `history_${index}`,
-          treino: ['A', 'B', 'C', 'D'].includes(entry && entry.treino) ? entry.treino : 'A',
+          treino: /^[a-zA-Z0-9_-]{1,40}$/.test(String(entry && entry.treino)) ? String(entry.treino) : 'A',
           date: /^\d{4}-\d{2}-\d{2}$/.test(String(entry && entry.date)) ? String(entry.date) : todayKey(),
-          week: Math.round(safeNumber(entry && entry.week, 1, 4, 1)),
+          week: Math.round(safeNumber(entry && entry.week, 0, 9999, 0)),
           startedAt: normalizeTimestamp(entry && entry.startedAt),
           endedAt: normalizeTimestamp(entry && entry.endedAt),
           duration: Math.round(safeNumber(entry && entry.duration, 0, 86400, 0)),
@@ -2702,14 +2716,38 @@
           setDetails: entry && entry.setDetails && typeof entry.setDetails === 'object' ? Object.fromEntries(
             Object.entries(entry.setDetails).slice(0, 100).map(([id, details]) => [boundedText(id, 80), Array.isArray(details) ? details.slice(0, 10).map((detail) => ({ reps: normalizeRepsValue(detail && detail.reps), weight: normalizeWeightValue(detail && detail.weight) })) : []])
           ) : {},
+          setTypes: entry && entry.setTypes && typeof entry.setTypes === 'object' ? Object.fromEntries(
+            Object.entries(entry.setTypes).slice(0, 100).map(([id, values]) => [boundedText(id, 80), Array.isArray(values) ? values.slice(0, 10).map((value) => ['warmup', 'work', 'top', 'drop', 'failure'].includes(value) ? value : 'work') : []])
+          ) : {},
           notes: entry && entry.notes && typeof entry.notes === 'object' ? Object.fromEntries(Object.entries(entry.notes).slice(0, 100).map(([id, note]) => [boundedText(id, 80), boundedText(note, 500)])) : {}
         }));
       }
       if (source.customExercises && typeof source.customExercises === 'object') {
-        ['A', 'B', 'C', 'D'].forEach((key) => {
+        Object.keys(source.customExercises).filter((key) => /^[a-zA-Z0-9_-]{1,40}$/.test(key)).forEach((key) => {
           clean.customExercises[key] = Array.isArray(source.customExercises[key])
             ? source.customExercises[key].slice(0, 100).map((ex, index) => sanitizeExercise(ex, key, index))
             : [];
+        });
+      }
+      if (source.setTypes && typeof source.setTypes === 'object') {
+        Object.entries(source.setTypes).slice(0, 500).forEach(([id, values]) => {
+          const safeId = boundedText(id, 80).replace(/[^a-zA-Z0-9_-]/g, '_');
+          if (!safeId || !Array.isArray(values)) return;
+          clean.setTypes[safeId] = values.slice(0, 10).map((value) => ['warmup', 'work', 'top', 'drop', 'failure'].includes(value) ? value : 'work');
+        });
+      }
+      if (source.workoutCheckins && typeof source.workoutCheckins === 'object') {
+        Object.entries(source.workoutCheckins).slice(-500).forEach(([id, value]) => {
+          if (!value || typeof value !== 'object') return;
+          clean.workoutCheckins[boundedText(id, 100)] = { effort: Math.round(safeNumber(value.effort, 0, 10, 0)), energy: Math.round(safeNumber(value.energy, 0, 10, 0)), discomfort: Math.round(safeNumber(value.discomfort, 0, 10, 0)), note: boundedText(value.note, 240), savedAt: normalizeTimestamp(value.savedAt) };
+        });
+      }
+      if (source.workoutSchedule && typeof source.workoutSchedule === 'object') {
+        Object.entries(source.workoutSchedule).slice(-365).forEach(([date, value]) => {
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !value || typeof value !== 'object') return;
+          const treino = /^[a-zA-Z0-9_-]{1,40}$/.test(String(value.treino)) ? String(value.treino) : '';
+          const status = ['planned', 'completed', 'rest', 'rescheduled'].includes(value.status) ? value.status : 'planned';
+          if (treino || status === 'rest') clean.workoutSchedule[date] = { treino, status, updatedAt: normalizeTimestamp(value.updatedAt) };
         });
       }
       if (source.exerciseOverrides && typeof source.exerciseOverrides === 'object') {
@@ -2920,10 +2958,21 @@
 
 
     function treinosMap() {
-      if (typeof state !== 'undefined' && state && state.customProgram && state.customProgram.A) {
+      if (typeof state !== 'undefined' && state && state.customProgram && Object.keys(state.customProgram).length) {
         return state.customProgram;
       }
       return TREINOS_BASE;
+    }
+    function getWorkoutIds() {
+      return Object.keys(treinosMap());
+    }
+    function refreshWorkoutFilterOptions() {
+      const select = document.getElementById('workoutFilter');
+      if (!select) return;
+      const selected = workoutFilterState?.treino || select.value || 'all';
+      select.innerHTML = `<option value="all">Todos os treinos</option>${Object.values(treinosMap()).map((treino) => `<option value="${escapeHtml(treino.id)}">Treino ${escapeHtml(treino.id)} · ${escapeHtml(treino.nome)}</option>`).join('')}`;
+      select.value = getWorkoutIds().includes(selected) || selected === 'all' ? selected : 'all';
+      if (workoutFilterState) workoutFilterState.treino = select.value;
     }
 
     // ===================== EXERCISE MERGE (edits + custom) =====================
@@ -2933,7 +2982,9 @@
     }
 
     function getTreinoExercises(treinoId) {
-      const base = treinosMap()[treinoId].exercises.map(ex => Object.assign({ isCustom: false }, applyOverride(ex)));
+      const workout = treinosMap()[treinoId];
+      if (!workout || !Array.isArray(workout.exercises)) return [];
+      const base = workout.exercises.map(ex => Object.assign({ isCustom: false }, applyOverride(ex)));
       const custom = (state.customExercises[treinoId] || []).map(ex => Object.assign({ isCustom: true }, applyOverride(ex)));
       return [...base, ...custom];
     }
@@ -2971,6 +3022,22 @@
       });
       state.setDetails[ex.id] = details;
       return details;
+    }
+    function getSetTypes(ex) {
+      const allowed = ['warmup', 'work', 'top', 'drop', 'failure'];
+      const existing = Array.isArray(state.setTypes?.[ex.id]) ? state.setTypes[ex.id] : [];
+      const values = Array.from({ length: ex.series }, (_, index) => allowed.includes(existing[index]) ? existing[index] : 'work');
+      if (!state.setTypes) state.setTypes = {};
+      state.setTypes[ex.id] = values;
+      return values;
+    }
+    function saveSetType(exId, index, value) {
+      const allowed = ['warmup', 'work', 'top', 'drop', 'failure'];
+      if (!state.setTypes) state.setTypes = {};
+      const values = Array.isArray(state.setTypes[exId]) ? state.setTypes[exId].slice(0, 10) : [];
+      values[index] = allowed.includes(value) ? value : 'work';
+      state.setTypes[exId] = values;
+      saveState();
     }
 
     function escapeHtml(value) {
@@ -3187,8 +3254,8 @@
       const totalSets = days.reduce((sum, day) => sum + day.currentSets, 0);
       const calendar = getConsistencyCalendar(28);
       const activeDays = calendar.filter((day) => day.count > 0).length;
-      const calendarHtml = `<div class="consistency-wrap"><div class="weekly-head"><div><div class="daily-action-kicker">Consistência</div><h3>${activeDays} dia${activeDays === 1 ? '' : 's'} treinado${activeDays === 1 ? '' : 's'} em 28</h3></div><span class="weekly-summary">4 semanas</span></div><div class="consistency-grid">${calendar.map((day) => `<div class="consistency-day ${day.count ? 'has-activity' : ''} ${day.key === todayKey() ? 'today' : ''}" title="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}" aria-label="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}">${day.day}</div>`).join('')}</div><p class="weekly-note">Dias treinados ficam marcados.</p></div>`;
-      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Evolução semanal</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${totalSets ? `${totalSets} séries hoje` : 'Consistência primeiro'}</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">Registre treinos completos para acompanhar sua consistência. Um dia sem treino também faz parte da recuperação.</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução</button></div>${calendarHtml}`;
+      const calendarHtml = `<div class="consistency-wrap"><div class="weekly-head"><div><div class="daily-action-kicker">Consistência</div><h3>${activeDays} dia${activeDays === 1 ? '' : 's'} treinado${activeDays === 1 ? '' : 's'} nos últimos 28 dias</h3></div><span class="weekly-summary">Histórico contínuo</span></div><div class="consistency-grid">${calendar.map((day) => `<div class="consistency-day ${day.count ? 'has-activity' : ''} ${day.key === todayKey() ? 'today' : ''}" title="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}" aria-label="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}">${day.day}</div>`).join('')}</div><p class="weekly-note">Dias treinados ficam marcados.</p></div>`;
+      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Evolução recente</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${totalSets ? `${totalSets} séries hoje` : 'Consistência primeiro'}</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">Registre treinos completos para acompanhar sua consistência. Um dia sem treino também faz parte da recuperação.</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução</button></div>${calendarHtml}`;
     }
 
     let workoutFilterState = { treino: 'all', query: '', pendingOnly: true };
@@ -3608,17 +3675,16 @@
 
     function renderPeriod() {
       const list = document.getElementById('periodList');
+      if (!list) return;
       list.innerHTML = '';
-      Object.entries(WEEKS).forEach(([w, info]) => {
-        const el = document.createElement('div');
-        el.className = `period-card ${Number(w) === currentWeek ? 'active' : ''}`;
-        el.innerHTML = `
-          <div class="period-week">Semana ${w}</div>
-          <div class="period-goal">${info.title}</div>
-          <div class="period-desc">${info.desc}</div>
-        `;
-        list.appendChild(el);
+      const sessions = (state.completedWorkouts || []);
+      const last30 = sessions.filter((entry) => {
+        const timestamp = Date.parse(entry.date || '');
+        return Number.isFinite(timestamp) && timestamp >= Date.now() - (30 * 86400000);
       });
+      const trainingDays = new Set(last30.map((entry) => entry.date)).size;
+      const volume = last30.reduce((total, entry) => total + calculateWorkoutMetrics(entry.treino, entry.setDetails || {}).volume, 0);
+      list.innerHTML = `<div class="period-card active"><div class="period-week">Visão contínua</div><div class="period-goal">${trainingDays} dia${trainingDays === 1 ? '' : 's'} de treino nos últimos 30 dias</div><div class="period-desc">${formatMetricVolume(volume)} de volume registrado. O histórico usa as datas reais das sessões, sem ciclo fixo de semanas.</div></div>`;
     }
 
     function renderHistory() {
@@ -3718,7 +3784,17 @@
       const mark = summary.bestMark;
       const newRecordText = summary.newRecordNames?.length ? `<div class="complete-record"><strong>🏆 Novo recorde</strong><span>${summary.newRecordNames.map((name) => escapeHtml(name)).join(' · ')}</span></div>` : '';
       const notes = summary.notes?.length ? `<div class="complete-notes"><strong>Notas da sessão</strong>${summary.notes.map((note) => `<p>${escapeHtml(note)}</p>`).join('')}</div>` : '';
-      content.innerHTML = `<p class="complete-lead">Treino ${escapeHtml(summary.treinoId)} registrado no histórico.</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}`;
+      content.innerHTML = `<p class="complete-lead">Treino ${escapeHtml(summary.treinoId)} registrado no histórico.</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      const checkin = state.workoutCheckins?.[summary.recordId] || {};
+      const scoreOptions = (value) => `<option value="">—</option>${Array.from({ length: 10 }, (_, index) => index + 1).map((score) => `<option value="${score}" ${Number(value) === score ? 'selected' : ''}>${score}</option>`).join('')}`;
+      content.innerHTML = `<p class="complete-lead">Treino ${escapeHtml(summary.treinoId)} registrado no histórico.</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      content.querySelector('.js-save-checkin')?.addEventListener('click', () => {
+        const value = (field) => Number(content.querySelector(`[data-checkin="${field}"]`)?.value) || 0;
+        if (!state.workoutCheckins) state.workoutCheckins = {};
+        state.workoutCheckins[summary.recordId] = { effort: value('effort'), energy: value('energy'), discomfort: value('discomfort'), note: boundedText(content.querySelector('.complete-checkin-note')?.value, 240), savedAt: new Date().toISOString() };
+        saveState();
+        showToast('Check-in salvo');
+      });
       document.getElementById('workoutCompleteModal').classList.add('show');
     }
 
@@ -3756,11 +3832,15 @@
       const record = {
         id: `${today}_${treinoId}_${Date.now()}`,
         treino: treinoId, date: today, week: currentWeek,
-        startedAt, endedAt, duration: elapsed, weights, setDetails, notes
+        startedAt, endedAt, duration: elapsed, weights, setDetails,
+        setTypes: Object.fromEntries(exercises.map((ex) => [ex.id, Array.isArray(state.setTypes?.[ex.id]) ? state.setTypes[ex.id].slice(0, ex.series) : []])),
+        notes
       };
 
       state.completedWorkouts = state.completedWorkouts || [];
       state.completedWorkouts.push(record);
+      if (!state.workoutSchedule) state.workoutSchedule = {};
+      state.workoutSchedule[today] = { treino: treinoId, status: 'completed', updatedAt: endedAt };
       if (active) state.activeWorkout = null;
       const saved = saveState();
       if (!saved) {
@@ -3773,7 +3853,7 @@
         const before = previousRecords[ex.id];
         return current && (!before || (current.bestLoad?.weight || 0) > (before.bestLoad?.weight || 0) || (current.bestReps?.reps || 0) > (before.bestReps?.reps || 0) || (current.bestSessionVolume?.volume || 0) > (before.bestSessionVolume?.volume || 0));
       }).map((ex) => ex.nome);
-      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, notes: Object.values(notes), newRecordNames }));
+      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, recordId: record.id, notes: Object.values(notes), newRecordNames }));
       showToast(`Treino ${treinoId} completo!`);
       updateStats();
       renderQuickStart();
@@ -3829,6 +3909,7 @@
       document.getElementById('progWeights').textContent = weightsCount;
       document.getElementById('progHistory').textContent = historyCount;
       renderProgressionPanel();
+      renderAdherenceCard();
     }
 
     function parseRepsMid(reps) {
@@ -3839,6 +3920,46 @@
       return vals.length >= 2 ? (vals[0] + vals[1]) / 2 : vals[0];
     }
 
+    function addDaysToKey(key, days) {
+      const date = new Date(`${key}T12:00:00`);
+      date.setDate(date.getDate() + days);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+    function setWorkoutScheduleStatus(status) {
+      const date = document.getElementById('adherenceDate')?.value || todayKey();
+      const treino = document.getElementById('adherenceWorkout')?.value || '';
+      if (!state.workoutSchedule) state.workoutSchedule = {};
+      if (status !== 'rest' && !treino) { showToast('Escolha um treino para planejar.'); return; }
+      state.workoutSchedule[date] = { treino: status === 'rest' ? '' : treino, status, updatedAt: new Date().toISOString() };
+      saveState();
+      renderAdherenceCard();
+      showToast(status === 'rest' ? 'Dia de descanso registrado.' : 'Treino planejado.');
+    }
+    function rescheduleWorkout() {
+      const date = document.getElementById('adherenceDate')?.value || todayKey();
+      const current = state.workoutSchedule?.[date];
+      if (!current || !current.treino || current.status === 'completed') { showToast('Planeje um treino nesta data antes de reagendar.'); return; }
+      const next = addDaysToKey(date, 1);
+      state.workoutSchedule[next] = { treino: current.treino, status: 'rescheduled', updatedAt: new Date().toISOString() };
+      delete state.workoutSchedule[date];
+      saveState();
+      renderAdherenceCard();
+      showToast('Treino reagendado para o próximo dia.');
+    }
+    function renderAdherenceCard() {
+      const card = document.getElementById('adherenceCard');
+      if (!card) return;
+      const schedule = state.workoutSchedule || {};
+      const workouts = Object.values(treinosMap()).filter((workout) => !workout.archived);
+      const dates = Array.from({ length: 7 }, (_, index) => addDaysToKey(todayKey(), index - 6));
+      const completedDates = new Set((state.completedWorkouts || []).map((entry) => entry.date));
+      const plannedDays = dates.filter((date) => schedule[date]?.status && schedule[date].status !== 'rest').length;
+      const completedPlanned = dates.filter((date) => completedDates.has(date) && schedule[date]?.status && schedule[date].status !== 'rest').length;
+      const labelFor = (date) => new Date(`${date}T12:00:00`).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' }).replace('.', '');
+      const statusFor = (date) => completedDates.has(date) ? 'completed' : (schedule[date]?.status || 'open');
+      const statusLabel = { completed: 'Feito', planned: 'Planejado', rescheduled: 'Reagendado', rest: 'Descanso', open: 'Livre' };
+      card.innerHTML = `<div class="daily-action-kicker">Aderência do plano</div><strong>${completedPlanned}/${plannedDays} treinos planejados concluídos nos últimos 7 dias</strong><p class="weekly-note">Planeje, reagende ou registre descanso. Sessões concluídas sempre prevalecem e não são alteradas.</p><div class="adherence-grid">${dates.map((date) => { const item = schedule[date]; const status = statusFor(date); const workout = item?.treino ? treinosMap()[item.treino] : null; return `<div class="adherence-day ${status}"><span>${escapeHtml(labelFor(date))}</span><strong>${escapeHtml(statusLabel[status])}</strong><small>${escapeHtml(workout?.id || '')}</small></div>`; }).join('')}</div><div class="adherence-controls"><label>Data<input id="adherenceDate" type="date" value="${todayKey()}" /></label><label>Treino<select id="adherenceWorkout"><option value="">Escolha</option>${workouts.map((workout) => `<option value="${encodeData(workout.id)}">${escapeHtml(workout.id)} · ${escapeHtml(workout.nome)}</option>`).join('')}</select></label><div class="adherence-actions"><button type="button" class="btn-action primary" onclick="setWorkoutScheduleStatus('planned')">Planejar</button><button type="button" class="btn-action" onclick="setWorkoutScheduleStatus('rest')">Descanso</button><button type="button" class="btn-action" onclick="rescheduleWorkout()">Reagendar +1</button></div></div>`;
+    }
     function calcStreak() {
       const dates = [...new Set((state.completedWorkouts || []).map(h => h.date))].sort().reverse();
       if (!dates.length) return 0;
@@ -4479,6 +4600,7 @@
       const workout = treinosMap()[guidedState.treinoId];
       const doneArr = getDoneArr(ex);
       const setDetails = getSetDetails(ex);
+      const setTypes = getSetTypes(ex);
       const allDone = doneArr.every(Boolean);
       const fullHist = (state.weightHistory[ex.id] || []);
       const lastEntry = fullHist[fullHist.length - 1];
@@ -4511,7 +4633,7 @@
               <div class="guided-metric">Técnica<strong>${escapeHtml(ex.tech.split('•')[0].trim())}</strong></div>
             </div>
             <div class="guided-tech-note">${escapeHtml(ex.tech)}</div>
-            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Reps</span><span>Peso (kg)</span><span></span></div>
+            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Tipo</span><span>Reps</span><span>Peso (kg)</span><span></span></div>
             <div class="guided-set-list">
               ${Array.from({length: ex.series}, (_, i) => {
                 const detail = setDetails[i] || { reps: '', weight: '' };
@@ -4520,6 +4642,8 @@
                 return `
                 <div class="guided-set-row ${doneArr[i] ? 'done' : ''} ${i === focusSetIndex ? 'focus-active' : ''}" data-set-index="${i}">
                   <span class="guided-set-number">${i + 1}</span>
+                  <label class="sr-only" for="guidedType-${encodeData(ex.id)}-${i}">Tipo da série ${i + 1}</label>
+                  <select id="guidedType-${encodeData(ex.id)}-${i}" class="guided-set-type js-guided-set-type" data-set-index="${i}" aria-label="Tipo da série ${i + 1}"><option value="warmup" ${setTypes[i] === 'warmup' ? 'selected' : ''}>Aq.</option><option value="work" ${setTypes[i] === 'work' ? 'selected' : ''}>Trabalho</option><option value="top" ${setTypes[i] === 'top' ? 'selected' : ''}>Top</option><option value="drop" ${setTypes[i] === 'drop' ? 'selected' : ''}>Drop</option><option value="failure" ${setTypes[i] === 'failure' ? 'selected' : ''}>Falha</option></select>
                   <label class="sr-only" for="${repsId}">Repetições da série ${i + 1} de ${escapeHtml(ex.nome)}</label>
                   <input id="${repsId}" class="guided-set-input js-guided-set-field" type="number" inputmode="numeric" min="0" max="2000" step="1" placeholder="${escapeHtml(ex.reps)}" value="${escapeHtml(detail.reps)}" data-set-index="${i}" data-field="reps" aria-label="Repetições da série ${i + 1}" />
                   <label class="sr-only" for="${weightId}">Peso da série ${i + 1} de ${escapeHtml(ex.nome)} em quilogramas</label>
@@ -4562,6 +4686,7 @@
       guidedBody.querySelectorAll('.js-guided-set-toggle').forEach((button) => {
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
       });
+      guidedBody.querySelectorAll('.js-guided-set-type').forEach((field) => field.addEventListener('change', () => saveSetType(ex.id, Number(field.dataset.setIndex), field.value)));
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
@@ -4675,7 +4800,7 @@
             state = previousState;
             throw new Error('Não foi possível salvar o backup restaurado neste dispositivo.');
           }
-          currentWeek = state.week || 1;
+          currentWeek = getContinuousPeriodNumber();
           setWeek(currentWeek);
           renderTreinos();
           renderQuickStart();
@@ -5165,6 +5290,8 @@
         renderPeriod();
         renderHistory();
         updateStats();
+        renderAdherenceCard();
+        requestAnimationFrame(renderAdherenceCard);
         syncPrefToggles();
       }
       if (page === 'home') {
@@ -5198,16 +5325,18 @@
       window.scrollTo(0, 0);
     }
 
+    function getContinuousPeriodNumber(date = new Date()) {
+      return Math.max(1, Math.floor(date.getTime() / 604800000));
+    }
     function setWeek(w) {
-      currentWeek = w;
-      state.week = w;
+      currentWeek = Math.max(1, Math.round(Number(w) || getContinuousPeriodNumber()));
+      state.week = currentWeek;
       saveState();
       document.querySelectorAll('.week-btn').forEach(b => {
-        b.classList.toggle('active', Number(b.dataset.week) === w);
+        b.classList.toggle('active', Number(b.dataset.week) === currentWeek);
       });
-      const info = WEEKS[w];
-      document.getElementById('weekInfo').innerHTML =
-        `<strong>Semana ${w} — ${info.title}</strong><br>${info.desc}`;
+      const infoEl = document.getElementById('weekInfo');
+      if (infoEl) infoEl.textContent = 'Progresso contínuo baseado em suas datas de treino.';
       if (currentPage === 'progresso') renderPeriod();
       // week-info height can change — keep spacer aligned
       if (window.__measureHeader) setTimeout(window.__measureHeader, 30);
@@ -5494,7 +5623,7 @@
       lines.push('- Progressão de carga, substituição de exercícios, aquecimento, mobilidade para treinar');
       lines.push('- Recuperação, sono e dor muscular no contexto do treino (com cautela)');
       lines.push('- Nutrição apenas quando ligada a hipertrofia/performance (proteína, calorias, timing)');
-      lines.push('- Uso do plano MARSB-GYM (treinos A/B/C/D, semanas 1–4) e dos dados do atleta');
+      lines.push('- Uso do plano MARSB-GYM (treinos livres e progresso baseado em datas) e dos dados do atleta');
       lines.push('');
       lines.push('=== FORA DE ESCOPO (o que você NÃO responde) ===');
       lines.push('- Assuntos gerais: política, notícias, programação, lição de casa, relacionamentos, entretenimento, etc.');
@@ -5506,8 +5635,7 @@
       lines.push('Use o contexto do atleta abaixo. Se faltar dado importante, peça só o essencial.');
       lines.push('');
       lines.push('=== CONTEXTO DO ATLETA ===');
-      lines.push('Semana atual: ' + currentWeek + ' — ' + (WEEKS[currentWeek]?.title || ''));
-      lines.push('Foco da semana: ' + (WEEKS[currentWeek]?.desc || ''));
+      lines.push('Período atual: progresso contínuo baseado nas datas dos treinos.');
       const active = state.activeWorkout;
       if (active?.treino) {
         const activeTreino = treinosMap()[active.treino];
@@ -5523,7 +5651,7 @@
           const w = state.weights[ex.id];
           const note = (state.exerciseNotes && state.exerciseNotes[ex.id]) || '';
           const hist = (state.weightHistory[ex.id] || []).slice(-3)
-            .map(h => h.weight + 'kg S' + h.week).join(', ');
+            .map(h => h.weight + 'kg em ' + h.date).join(', ');
           lines.push('- ' + ex.nome + ' | ' + ex.series + 'x ' + ex.reps + ' | descanso ' + ex.descanso + 's | tech: ' + ex.tech +
             (w ? ' | peso atual: ' + w + 'kg' : '') +
             (hist ? ' | histórico: ' + hist : '') +
@@ -5535,7 +5663,7 @@
         lines.push('');
         lines.push('Treinos completos recentes:');
         recent.forEach(h => {
-          lines.push('- ' + h.date + ' Treino ' + h.treino + ' (semana ' + h.week + ')');
+          lines.push('- ' + h.date + ' Treino ' + h.treino);
         });
       }
       lines.push('Streak atual: ' + (typeof calcStreak === 'function' ? calcStreak() : 0) + ' dias');
@@ -6341,13 +6469,88 @@
 
     function planoCurrentKey() {
       var btn = document.querySelector('#planoEditKey button.active');
-      return btn ? btn.getAttribute('data-key') : 'A';
+      var draft = ensurePlanoDraft();
+      return btn ? btn.getAttribute('data-key') : (Object.keys(draft)[0] || null);
+    }
+
+    function planoRenderWorkoutTabs(preferredKey) {
+      var draft = ensurePlanoDraft();
+      var keys = Object.keys(draft);
+      var selected = preferredKey || planoCurrentKey() || keys[0];
+      if (!keys.includes(selected)) selected = keys[0];
+      var seg = document.getElementById('planoEditKey');
+      if (!seg) return;
+      seg.innerHTML = keys.map(function (key) {
+        var treino = draft[key];
+        return '<button type="button" class="' + (key === selected ? 'active' : '') + '" data-key="' + escapeHtml(key) + '" title="' + escapeHtml(treino.nome || ('Treino ' + key)) + '">' + escapeHtml(key) + '</button>';
+      }).join('');
+      seg.querySelectorAll('button').forEach(function (button) {
+        button.addEventListener('click', function () {
+          planoSyncTreinoHeader();
+          planoRenderWorkoutTabs(button.dataset.key);
+          planoLoadFieldsFromDraft();
+        });
+      });
+    }
+
+    function planoNewWorkoutKey(draft) {
+      var number = 1, key = '';
+      do { key = 'T' + number++; } while (draft[key]);
+      return key;
+    }
+
+    function planoAddWorkout() {
+      planoSyncTreinoHeader();
+      var draft = ensurePlanoDraft();
+      var key = planoNewWorkoutKey(draft);
+      draft[key] = { id: key, nome: 'Novo treino', foco: '', color: ['blue', 'green', 'orange', 'purple'][Object.keys(draft).length % 4], exercises: [] };
+      planoRenderWorkoutTabs(key);
+      planoLoadFieldsFromDraft();
+      document.getElementById('planoTreinoNome')?.focus();
+      showToast('Novo treino criado. Adicione ao menos um exercício antes de salvar.');
+    }
+
+    function planoDuplicateWorkout() {
+      planoSyncTreinoHeader();
+      var draft = ensurePlanoDraft(), current = planoCurrentKey();
+      if (!current || !draft[current]) return;
+      var key = planoNewWorkoutKey(draft);
+      var copy = cloneProgram({ x: draft[current] }).x;
+      copy.id = key; copy.nome = (copy.nome || ('Treino ' + current)) + ' · cópia';
+      copy.exercises = (copy.exercises || []).map(function (ex, index) { ex.id = key.toLowerCase() + '_' + Date.now().toString(36) + '_' + index; return ex; });
+      draft[key] = copy;
+      planoRenderWorkoutTabs(key);
+      planoLoadFieldsFromDraft();
+      showToast('Treino duplicado');
+    }
+
+    function planoMoveWorkout(direction) {
+      planoSyncTreinoHeader();
+      var draft = ensurePlanoDraft(), keys = Object.keys(draft), current = planoCurrentKey(), index = keys.indexOf(current), target = index + Number(direction);
+      if (index < 0 || target < 0 || target >= keys.length) { showToast('Este treino já está nesta posição'); return; }
+      var moved = keys.splice(index, 1)[0]; keys.splice(target, 0, moved);
+      var reordered = {}; keys.forEach(function (key) { reordered[key] = draft[key]; });
+      planoDraft = reordered;
+      planoRenderWorkoutTabs(current);
+      planoLoadFieldsFromDraft();
+    }
+
+    function planoArchiveWorkout() {
+      planoSyncTreinoHeader();
+      var draft = ensurePlanoDraft(), current = planoCurrentKey(), keys = Object.keys(draft);
+      if (!current || keys.length <= 1) { showToast('Mantenha pelo menos um treino no plano'); return; }
+      var label = draft[current].nome || ('Treino ' + current);
+      if (!confirm('Arquivar "' + label + '"? Os históricos já registrados serão preservados.')) return;
+      delete draft[current];
+      planoRenderWorkoutTabs(Object.keys(draft)[0]);
+      planoLoadFieldsFromDraft();
+      showToast('Treino arquivado no rascunho. Toque em salvar plano para confirmar.');
     }
 
     function updatePlanoStatus() {
       var el = document.getElementById('planoStatus');
       if (!el) return;
-      if (state.customProgram && state.customProgram.A) {
+      if (state.customProgram && Object.keys(state.customProgram).length) {
         var meta = state.customProgramMeta || {};
         el.className = 'ai-status ok';
         el.textContent = 'Plano personalizado ativo' +
@@ -6363,6 +6566,7 @@
       var key = planoCurrentKey();
       var draft = ensurePlanoDraft();
       var t = draft[key];
+      if (!t) return;
       var nomeEl = document.getElementById('planoTreinoNome');
       var focoEl = document.getElementById('planoTreinoFoco');
       if (nomeEl) nomeEl.value = t.nome || '';
@@ -6437,8 +6641,8 @@
     function planoSaveProgram() {
       planoSyncTreinoHeader();
       var draft = ensurePlanoDraft();
-      // validate all have at least 1 exercise
-      var missing = ['A','B','C','D'].filter(function (k) { return !draft[k].exercises || !draft[k].exercises.length; });
+      // Cada treino salvo precisa ter ao menos um exercício; não há quantidade fixa de treinos.
+      var missing = Object.keys(draft).filter(function (k) { return !draft[k].exercises || !draft[k].exercises.length; });
       if (missing.length) {
         showToast('Treino ' + missing.join(', ') + ' sem exercícios');
         return;
@@ -6449,10 +6653,12 @@
         author: (document.getElementById('planoAuthor').value || '').trim(),
         importedAt: new Date().toISOString()
       };
-      state.customExercises = { A: [], B: [], C: [], D: [] };
+      state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
       saveState();
       updatePlanoStatus();
+      refreshWorkoutFilterOptions();
       if (typeof renderQuickStart === 'function') renderQuickStart();
+      if (typeof renderTreinos === 'function') renderTreinos();
       showToast('Plano salvo no app');
     }
 
@@ -6466,7 +6672,7 @@
       lines.push('PLANO: ' + (meta.name || 'Plano personalizado'));
       if (meta.author) lines.push('PERSONAL: ' + meta.author);
       lines.push('');
-      ['A','B','C','D'].forEach(function (k) {
+      Object.keys(map || {}).forEach(function (k) {
         var t = map[k];
         lines.push('TREINO ' + k + ': ' + (t.nome || ('Treino ' + k)));
         if (t.foco) lines.push('Foco: ' + t.foco);
@@ -6490,14 +6696,9 @@
     function parseTextProgram(text) {
       var lines = String(text).replace(/\r\n/g, '\n').split('\n');
       var meta = { name: '', author: '' };
-      var map = {
-        A: { id: 'A', nome: 'Treino A', foco: '', color: 'blue', exercises: [] },
-        B: { id: 'B', nome: 'Treino B', foco: '', color: 'green', exercises: [] },
-        C: { id: 'C', nome: 'Treino C', foco: '', color: 'orange', exercises: [] },
-        D: { id: 'D', nome: 'Treino D', foco: '', color: 'purple', exercises: [] }
-      };
+      var map = {};
       var cur = null;
-      var colors = { A: 'blue', B: 'green', C: 'orange', D: 'purple' };
+      var colors = ['blue', 'green', 'orange', 'purple'];
 
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();
@@ -6508,12 +6709,10 @@
         var mPt = line.match(/^PERSONAL:\s*(.+)$/i);
         if (mPt) { meta.author = mPt[1].trim(); continue; }
 
-        var mTreino = line.match(/^TREINO\s+([ABCD])\s*:\s*(.+)$/i);
+        var mTreino = line.match(/^TREINO\s+([a-zA-Z0-9_-]{1,40})\s*:\s*(.+)$/i);
         if (mTreino) {
           cur = mTreino[1].toUpperCase();
-          map[cur].nome = mTreino[2].trim();
-          map[cur].color = colors[cur];
-          map[cur].exercises = [];
+          map[cur] = { id: cur, nome: mTreino[2].trim(), foco: '', color: colors[Object.keys(map).length % colors.length], exercises: [] };
           continue;
         }
         var mFoco = line.match(/^Foco:\s*(.+)$/i);
@@ -6538,7 +6737,8 @@
     }
 
     function validateProgramMap(map) {
-      var keys = ['A','B','C','D'];
+      var keys = Object.keys(map || {});
+      if (!keys.length) return 'Inclua pelo menos um treino';
       for (var i = 0; i < keys.length; i++) {
         var k = keys[i];
         if (!map[k] || !map[k].exercises || !map[k].exercises.length) {
@@ -6612,7 +6812,7 @@
       map = map || {};
       meta = meta || {};
       var rows = [['Treino', 'Nome do treino', 'Foco', 'Exercício', 'Séries', 'Repetições', 'Descanso (seg)', 'Técnica / nota']];
-      ['A', 'B', 'C', 'D'].forEach(function (key) {
+      Object.keys(map).forEach(function (key) {
         var treino = map[key] || {};
         (treino.exercises || []).forEach(function (ex) {
           rows.push([key, treino.nome || ('Treino ' + key), treino.foco || '', ex.nome || '', ex.series || 3, ex.reps || '8 a 12', ex.descanso != null ? ex.descanso : 90, ex.tech || '']);
@@ -6627,7 +6827,7 @@
         [''],
         ['Como preencher a planilha'],
         ['Uma linha representa um exercício. Não apague a primeira linha de títulos da aba Treinos.'],
-        ['Treino: use somente A, B, C ou D.'],
+        ['Treino: use uma chave curta e única, por exemplo A, T1, Upper ou Perna.'],
         ['Séries: número inteiro entre 1 e 10. Descanso: segundos entre 0 e 600.'],
         ['Depois de editar, volte ao app e toque em Importar planilha Excel.']
       ]);
@@ -6689,15 +6889,12 @@
         rest: col(['descansoseg', 'descanso', 'segundos'], 6),
         tech: col(['tecnicanota', 'tecnica', 'nota'], 7)
       };
-      var colors = { A: 'blue', B: 'green', C: 'orange', D: 'purple' };
       var map = {};
-      ['A', 'B', 'C', 'D'].forEach(function (key) {
-        map[key] = { id: key, nome: 'Treino ' + key, foco: '', color: colors[key], exercises: [] };
-      });
       rows.slice(1).forEach(function (row) {
-        var key = String(row[c.key] || '').trim().toUpperCase();
+        var key = String(row[c.key] || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 40);
         var exerciseName = boundedText(row[c.exercise], 120).trim();
-        if (!/^[ABCD]$/.test(key) || !exerciseName) return;
+        if (!key || !exerciseName) return;
+        if (!map[key]) map[key] = { id: key, nome: 'Treino ' + key, foco: '', color: ['blue', 'green', 'orange', 'purple'][Object.keys(map).length % 4], exercises: [] };
         var treinoNome = boundedText(row[c.name], 120).trim();
         var foco = boundedText(row[c.focus], 180).trim();
         if (treinoNome) map[key].nome = treinoNome;
@@ -6742,11 +6939,11 @@
           var currentName = (document.getElementById('planoNome')?.value || '').trim();
           var currentAuthor = (document.getElementById('planoAuthor')?.value || '').trim();
           state.customProgramMeta = {
-            name: currentName || file.name.replace(/\\.(xlsx|xls)$/i, '') || 'Plano personalizado',
+            name: currentName || file.name.replace(/\.(xlsx|xls)$/i, '') || 'Plano personalizado',
             author: currentAuthor,
             importedAt: new Date().toISOString()
           };
-          state.customExercises = { A: [], B: [], C: [], D: [] };
+          state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
           planoDraft = cloneProgram(state.customProgram);
           saveState();
           updatePlanoStatus();
@@ -6798,7 +6995,7 @@
             author: meta.author || '',
             importedAt: new Date().toISOString()
           };
-          state.customExercises = { A: [], B: [], C: [], D: [] };
+          state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
           planoDraft = cloneProgram(map);
           saveState();
           updatePlanoStatus();
@@ -6821,7 +7018,8 @@
     function validateProgram(prog) {
       if (!prog || typeof prog !== 'object') return 'JSON inválido';
       var map = prog.treinos || prog;
-      var keys = ['A', 'B', 'C', 'D'];
+      var keys = Object.keys(map || {});
+      if (!keys.length) return 'Inclua pelo menos um treino';
       for (var i = 0; i < keys.length; i++) {
         var k = keys[i];
         if (!map[k]) return 'Falta o treino ' + k;
@@ -6832,15 +7030,14 @@
 
     function normalizeProgram(prog) {
       var map = prog.treinos || prog;
-      var colors = { A: 'blue', B: 'green', C: 'orange', D: 'purple' };
       var out = {};
-      ['A', 'B', 'C', 'D'].forEach(function (k) {
+      Object.keys(map || {}).filter(function (k) { return /^[a-zA-Z0-9_-]{1,40}$/.test(k); }).forEach(function (k, position) {
         var t = map[k];
         out[k] = {
           id: k,
           nome: t.nome,
           foco: t.foco || '',
-          color: t.color || colors[k],
+          color: t.color || ['blue', 'green', 'orange', 'purple'][position % 4],
           exercises: t.exercises.map(function (ex, idx) {
             return {
               id: String(ex.id || (k.toLowerCase() + (idx + 1))),
@@ -6882,20 +7079,7 @@
       if (!planoDraft) {
         planoDraft = cloneProgram(treinosMap());
       }
-      if (typeof bindSeg === 'function') {
-        bindSeg('planoEditKey', 'data-key');
-        // re-bind click to reload fields when switching A/B/C/D
-        var seg = document.getElementById('planoEditKey');
-        if (seg && !seg._planoBound) {
-          seg._planoBound = true;
-          seg.querySelectorAll('button').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-              planoSyncTreinoHeader();
-              setTimeout(planoLoadFieldsFromDraft, 0);
-            });
-          });
-        }
-      }
+      planoRenderWorkoutTabs();
       var meta = state.customProgramMeta || {};
       var pn = document.getElementById('planoNome');
       var pa = document.getElementById('planoAuthor');
@@ -6977,6 +7161,14 @@
       return `<div class="diet-goal-row"><span>${label}</span><div class="diet-goal-track"><i style="width:${pct}%"></i></div><strong>${Math.round(value)}/${target || '—'}${unit}</strong></div>`;
     }
 
+    function getDietMealTargetHint(mealType, targets) {
+      const type = String(mealType || '').toLocaleLowerCase('pt-BR');
+      const share = /café|cafe|manhã|manha/.test(type) ? 0.28 : (/almoço|almoco/.test(type) ? 0.40 : (/jantar|ceia/.test(type) ? 0.32 : 0.20));
+      const parts = [];
+      if (targets.protein) parts.push(`${Math.round(targets.protein * share)} g P`);
+      if (targets.kcal) parts.push(`${Math.round(targets.kcal * share)} kcal`);
+      return parts.length ? `Meta sugerida: ${parts.join(' · ')}` : 'Defina metas diárias para ver a sugestão por refeição.';
+    }
     function renderDietDiary() {
       const day = getDietDay();
       const list = document.getElementById('dietDiaryList');
@@ -6987,7 +7179,7 @@
       const targets = getDietTargets();
       ['Kcal','Protein','Carbs','Fats','Water'].forEach((key) => { const input = document.getElementById(`dietTarget${key}`); const field = ({ Kcal:'kcal', Protein:'protein', Carbs:'carbs', Fats:'fats', Water:'waterMl' })[key]; if (input && document.activeElement !== input) input.value = targets[field] || ''; });
       if (!day.meals.length) list.innerHTML = '<div class="diet-empty">Nenhuma refeição registrada neste dia. Comece adicionando alimentos da base TACO.</div>';
-      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div><div class="diet-goals">${dietGoalRow('Calorias', totals.k, targets.kcal, ' kcal')}${dietGoalRow('Proteína', totals.p, targets.protein, ' g')}${dietGoalRow('Carbo', totals.c, targets.carbs, ' g')}${dietGoalRow('Gordura', totals.f, targets.fats, ' g')}</div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><div class="diet-portion-actions" aria-label="Ajustar porção"><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', -50)">−50 g</button><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', 50)">+50 g</button></div><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
+      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div><div class="diet-goals">${dietGoalRow('Calorias', totals.k, targets.kcal, ' kcal')}${dietGoalRow('Proteína', totals.p, targets.protein, ' g')}${dietGoalRow('Carbo', totals.c, targets.carbs, ' g')}${dietGoalRow('Gordura', totals.f, targets.fats, ' g')}</div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); const targetHint = getDietMealTargetHint(meal.mealType, targets); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small><small class="diet-meal-target">${escapeHtml(targetHint)}</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><div class="diet-portion-actions" aria-label="Ajustar porção"><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', -50)">−50 g</button><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', 50)">+50 g</button></div><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
       const water = Math.max(0, Number(day.waterMl) || 0);
       const fill = document.getElementById('dietWaterFill');
       const label = document.getElementById('dietWaterLabel');
@@ -8076,7 +8268,7 @@
       lines.push('  MARSB-GYM — PROGRESSO');
       lines.push('═══════════════════════════════════════');
       lines.push(`Exportado em: ${new Date().toLocaleString('pt-BR')}`);
-      lines.push(`Semana atual: ${currentWeek} — ${WEEKS[currentWeek].title}`);
+      lines.push('Período atual: progresso contínuo baseado nas datas dos treinos.');
       lines.push('');
 
       lines.push('── TREINOS COMPLETOS ──');
@@ -8085,7 +8277,7 @@
         lines.push('(nenhum ainda)');
       } else {
         hist.forEach(h => {
-          lines.push(`• ${formatDate(h.date)} | Treino ${h.treino} | Semana ${h.week}`);
+          lines.push(`• ${formatDate(h.date)} | Treino ${h.treino}`);
           Object.entries(h.weights || {}).forEach(([exId, w]) => {
             const ex = findExercise(exId);
             if (ex && w) lines.push(`    ${ex.nome}: ${w} kg`);
@@ -8101,7 +8293,7 @@
           const w = state.weights[ex.id] || '—';
           const histArr = (state.weightHistory[ex.id] || []).slice(-5);
           const histStr = histArr.length
-            ? ' [' + histArr.map(h => `${h.weight}kg S${h.week}`).join(' → ') + ']'
+            ? ' [' + histArr.map(h => `${h.weight}kg em ${h.date}`).join(' → ') + ']'
             : '';
           lines.push(`  ${ex.nome}: ${w} kg${histStr}`);
         });
@@ -8127,12 +8319,12 @@
     }
 
     function exportProgressCSV() {
-      const rows = [['Data', 'Semana', 'Treino', 'Exercicio', 'Peso_kg']];
+      const rows = [['Data', 'Treino', 'Exercicio', 'Peso_kg']];
 
       (state.completedWorkouts || []).forEach(h => {
         Object.entries(h.weights || {}).forEach(([exId, w]) => {
           const ex = findExercise(exId);
-          rows.push([h.date, h.week, h.treino, ex ? ex.nome : exId, w]);
+          rows.push([h.date, h.treino, ex ? ex.nome : exId, w]);
         });
       });
 
@@ -8141,9 +8333,9 @@
         getTreinoExercises(t.id).forEach(ex => {
           const w = state.weights[ex.id];
           if (w) {
-            const already = rows.some(r => r[3] === ex.nome && r[4] === w);
+            const already = rows.some(r => r[2] === ex.nome && r[3] === w);
             if (!already) {
-              rows.push([todayKey(), currentWeek, t.id, ex.nome, w]);
+              rows.push([todayKey(), t.id, ex.nome, w]);
             }
           }
         });
@@ -8205,7 +8397,7 @@
     filterPendingBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = true; filterPendingBtn.classList.add('active'); filterAllBtn?.classList.remove('active'); renderTreinos(); });
     filterAllBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = false; filterAllBtn.classList.add('active'); filterPendingBtn?.classList.remove('active'); renderTreinos(); });
 
-    if (state.week) setWeek(state.week);
+    setWeek(getContinuousPeriodNumber());
 
     renderQuickStart();
     renderTreinos();

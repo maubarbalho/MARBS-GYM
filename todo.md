@@ -29,3 +29,16 @@
 - [x] Validar em fluxos controlados, revisar cache offline e publicar a nova versão no GitHub Pages.
 - [x] Manter todas as séries visíveis no treino guiado e integrar o timer de descanso à própria tela, sem sobreposição flutuante.
 - [x] Destacar o aviso e o botão de atualização do PWA no topo da tela inicial.
+- [x] Migrar a biblioteca fixa A/B/C/D para treinos livres, mantendo identificadores, histórico e o treino registrado hoje sem qualquer alteração.
+- [x] Adicionar criação, edição, duplicação, reordenação e arquivamento de treinos sem limite, preservando os quatro treinos originais como ponto de partida.
+- [x] Tornar o último desempenho e a sugestão de progressão acionáveis por toque em cada exercício do treino guiado.
+- [x] Permitir classificar séries como aquecimento, trabalho, top set, drop ou falha sem ocultar as demais séries.
+- [x] Registrar esforço, energia e desconforto no encerramento rápido do treino e exibir síntese de volume, recordes e próximo treino.
+- [x] Comparar treinos planejados, concluídos, reagendados e descansos no calendário e nos indicadores de aderência.
+- [x] Exibir evolução semanal de séries efetivas, volume e frequência por grupo muscular.
+- [x] Priorizar no diário alimentar os favoritos, refeições recorrentes e porções habituais do usuário.
+- [x] Mostrar metas de calorias e proteína por refeição e médias dos últimos sete dias.
+- [x] Oferecer trocas alimentares estruturadas pela base TACO, com porções e macros aproximados copiáveis para o diário.
+- [x] Validar a migração com dados locais legados, a preservação do treino registrado hoje, o fluxo offline, a sintaxe e a publicação no GitHub Pages.
+- [x] Remover o ciclo fixo de quatro semanas e o seletor de semana do cabeçalho, mantendo a data e os metadados históricos das sessões já salvas.
+- [x] Atualizar a página Sobre com informações essenciais de uso, armazenamento local, backup, dieta, Coach e funcionamento offline do aplicativo.
