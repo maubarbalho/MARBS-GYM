@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v41-icons';
+const CACHE_NAME = 'marsb-gym-v41-classic-icons';
 const APP_SHELL = [
   './',
   './index.html',
