@@ -501,6 +501,12 @@
       border-top: 1px solid var(--border);
     }
     .modal-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 14px; }
+    .onboarding-sheet { max-width: 560px; }
+    .onboarding-lead { color: var(--text-muted); font-size: .86rem; line-height: 1.5; margin: -4px 0 16px; }
+    .onboarding-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .onboarding-choice { padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); }
+    .onboarding-choice label { display: block; color: var(--text-muted); font-size: .73rem; font-weight: 700; margin-bottom: 6px; }
+    .onboarding-choice select { width: 100%; min-height: 44px; }
     .form-field { margin-bottom: 12px; }
     .form-field label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600; }
     .form-field input, .form-field textarea {
@@ -1023,6 +1029,12 @@
       }
     }
 
+    @media (prefers-contrast: more) {
+      :focus-visible { outline-color: currentColor; outline-width: 4px; }
+      button, input, select, textarea, .config-status-card, .daily-action-card, .diet-meal-item { border-width: 2px; }
+      .text-muted, .calc-desc, .config-status-card span, .config-status-card small { color: var(--text); }
+    }
+
     @media (max-height: 420px) and (orientation: landscape) {
       .timer-display { font-size: 3rem; }
       .timer-actions { gap: 10px; }
@@ -1425,6 +1437,11 @@
     .diet-meal-add[open] summary::after { content:'−'; }
     .diet-meal-add .diet-meal-fields { display:grid; gap:9px; padding-top:4px; }
     .diet-meal-add .btn-action { width:100%; }
+    .diet-recent-wrap { margin-top:12px; padding:11px 12px; border:1px solid var(--border); border-radius:16px; background:var(--bg); }
+    .diet-recent-wrap > strong { display:block; margin-bottom:8px; font-size:.78rem; }
+    .diet-recent-list { display:flex; gap:7px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+    .diet-recent-list button, .diet-portion-actions button { min-height:36px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); font:inherit; font-size:.72rem; font-weight:700; white-space:nowrap; padding:7px 9px; }
+    .diet-portion-actions { display:flex; gap:6px; }
     .diet-menu-copy { margin-top:10px; display:grid; gap:8px; }
     .diet-menu-copy .btn-action { width:100%; }
     .diet-diary-list { min-width:0; }
@@ -1436,6 +1453,8 @@
       .diet-meal-row { align-items:flex-start; flex-wrap:wrap; }
       .diet-meal-row > label { flex:1 1 100%; min-width:0; }
       .diet-meal-row > select, .diet-meal-row > button { min-height:40px; width:100%; }
+      .diet-portion-actions { width:100%; }
+      .diet-portion-actions button { flex:1; min-height:40px; }
       .diet-diary-card { padding:12px; }
       .diet-day-tools > .form-field, .diet-water-input, .diet-meal-fields > .form-field { width:100%; min-width:0; }
       .diet-water-input { display:grid; grid-template-columns:1fr; gap:8px; }
@@ -1990,6 +2009,7 @@
         <div class="diet-water-bar"><div class="diet-water-fill" id="dietWaterFill"></div></div><div class="diet-water-label" id="dietWaterLabel">0 ml registrados</div>
         <details class="diet-meal-add"><summary>Metas diárias e consumo</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietTargetKcal">Calorias (kcal)</label><input type="number" id="dietTargetKcal" min="0" max="10000" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetProtein">Proteína (g)</label><input type="number" id="dietTargetProtein" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetCarbs">Carboidratos (g)</label><input type="number" id="dietTargetCarbs" min="0" max="1200" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetFats">Gorduras (g)</label><input type="number" id="dietTargetFats" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetWater">Água (ml)</label><input type="number" id="dietTargetWater" min="500" max="15000" step="100" inputmode="numeric" /></div><button type="button" class="btn-action" onclick="saveDietTargets()">Salvar metas</button></div></details>
         <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
+        <div class="diet-recent-wrap" id="dietRecentWrap" hidden><strong>Recentes</strong><div class="diet-recent-list" id="dietRecentList"></div></div>
         <div id="dietDiaryList" class="diet-diary-list"></div>
         <details class="diet-meal-add"><summary>Restrições e alergias</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietRestrictions">Restrições alimentares</label><input id="dietRestrictions" maxlength="300" placeholder="Ex: vegetariano, sem lactose" /></div><div class="form-field"><label for="dietAllergies">Alergias</label><input id="dietAllergies" maxlength="300" placeholder="Ex: amendoim" /></div><button type="button" class="btn-action" onclick="saveDietPrefs()">Salvar preferências alimentares</button></div></details>
         <div class="diet-shopping-head"><strong>Lista de compras do dia</strong><button type="button" class="chart-link-btn" onclick="copyDietShoppingList()">Copiar lista</button></div><div id="dietShoppingList" class="diet-shopping-list"></div>
@@ -2177,14 +2197,15 @@
     <div class="timer-preset-caption">Presets rápidos</div>
     <div class="timer-presets" id="timerPresets" role="group" aria-label="Presets de descanso"></div>
     <div class="timer-actions">
+      <button class="timer-btn secondary" type="button" onclick="adjustTimer(-15)">−15s</button>
       <button class="timer-btn secondary" onclick="skipTimer()">Pular</button>
       <button class="timer-btn pause" id="timerPauseBtn" onclick="togglePauseTimer()">Pausar</button>
-      <button class="timer-btn primary" onclick="addTimerTime()">+30s</button>
+      <button class="timer-btn primary" type="button" onclick="adjustTimer(15)">+15s</button>
     </div>
   </div>
 
   <!-- CONFIGURAÇÃO: painéis independentes -->
-  <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span></div><button class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></div>
+  <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span><small id="backupReminder"></small></div><button class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><div class="config-status-card"><strong>Uso offline e atualizações</strong><span>Com internet, o app procura atualizações. Se houver uma versão nova, use o aviso “Atualizar”; seus dados locais permanecem no dispositivo.</span></div><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></div>
   <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="config-status-card"><strong>Design iOS</strong><span>Cartões arredondados, barra inferior translúcida e suporte a área segura do iPhone.</span></div></div></div>
   <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)" /></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer e a vibração continuam funcionando sem essa permissão.</p></div></div>
   <div class="page" id="page-unidades"><div class="config-panel"><div class="section-title">Unidades</div><div class="form-field"><label for="unitSystemConfig">Sistema de medidas</label><select id="unitSystemConfig" onchange="setUnitSystem(this.value)"><option value="metric">Métrico — kg e cm</option><option value="imperial">Imperial — lb e pol.</option></select></div><div class="config-status-card"><strong>Conversão segura</strong><span>Os registros originais permanecem preservados; a preferência controla a forma de exibição e as calculadoras.</span></div></div></div>
@@ -2249,7 +2270,21 @@
       <button type="button" class="modal-close-x" onclick="closeWorkoutComplete()">✕</button>
       <div class="modal-title" id="workoutCompleteTitle">Treino concluído</div>
       <div id="workoutCompleteContent"></div>
-      <div class="modal-actions"><button type="button" class="btn-action primary" onclick="closeWorkoutComplete()">Continuar</button></div>
+      <div class="modal-actions"><button type="button" class="btn-action" onclick="closeWorkoutComplete();switchPage('progresso')">Ver evolução</button><button type="button" class="btn-action primary" onclick="closeWorkoutComplete()">Continuar</button></div>
+    </div>
+  </div>
+
+  <!-- MODAL: primeiro uso -->
+  <div class="modal-overlay" id="onboardingModal" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingLead">
+    <div class="modal-sheet onboarding-sheet">
+      <div class="modal-title" id="onboardingTitle">Vamos preparar seu ponto de partida</div>
+      <p class="onboarding-lead" id="onboardingLead">Essas escolhas ficam somente neste dispositivo e ajudam a organizar sua experiência no MARSB-GYM.</p>
+      <div class="onboarding-grid">
+        <div class="onboarding-choice"><label for="onboardingGoal">Objetivo principal</label><select id="onboardingGoal"><option value="hipertrofia">Hipertrofia</option><option value="forca">Força</option><option value="condicionamento">Condicionamento</option></select></div>
+        <div class="onboarding-choice"><label for="onboardingFrequency">Dias de treino por semana</label><select id="onboardingFrequency"><option value="2">2 dias</option><option value="3">3 dias</option><option value="4">4 dias</option><option value="5">5 dias</option><option value="6">6 dias</option><option value="7">7 dias</option></select></div>
+        <div class="onboarding-choice"><label for="onboardingExperience">Experiência</label><select id="onboardingExperience"><option value="iniciante">Iniciante</option><option value="intermediario">Intermediário</option><option value="avancado">Avançado</option></select></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="btn-action" onclick="skipOnboarding()">Agora não</button><button type="button" class="btn-action primary" onclick="saveOnboarding()">Salvar e continuar</button></div>
     </div>
   </div>
 
@@ -2441,7 +2476,7 @@
     // week: number
 
     const STORAGE_KEY = 'marsbGym_v2';
-    const STATE_SCHEMA_VERSION = 4;
+    const STATE_SCHEMA_VERSION = 5;
     const MAX_STORAGE_BYTES = 4 * 1024 * 1024;
 
     let initialLoadNotice = '';
@@ -2459,7 +2494,7 @@
     function defaultState() {
       return {
         _schemaVersion: STATE_SCHEMA_VERSION,
-        storageMeta: { lastSavedAt: '', bytes: 0, migratedAt: '' },
+        storageMeta: { lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' },
         sets: {}, setDetails: {}, weights: {}, weightHistory: {}, completedWorkouts: [], week: 1,
         customExercises: { A: [], B: [], C: [], D: [] },
         exerciseOverrides: {},
@@ -2470,7 +2505,8 @@
         calcPresets: [],
         dietDiary: {},
         dietPrefs: { restrictions: '', allergies: '', targets: { kcal: 0, protein: 0, carbs: 0, fats: 0, waterMl: 3500 } },
-        dietFavorites: [],
+        dietFavorites: [], dietRecent: [],
+        onboarding: { completed: false, goal: 'hipertrofia', frequency: 4, experience: 'intermediario' },
         unitSystem: 'metric',
         notifications: { enabled: false, reminderTime: '18:00' },
         coachPrefs: { context: 'treino', provider: 'puter', model: 'openrouter:auto' },
@@ -2562,6 +2598,7 @@
       clean._schemaVersion = Math.round(safeNumber(source._schemaVersion, 1, 99, 1));
       clean.storageMeta = {
         lastSavedAt: normalizeTimestamp(source.storageMeta?.lastSavedAt),
+        lastBackupAt: normalizeTimestamp(source.storageMeta?.lastBackupAt),
         bytes: Math.round(safeNumber(source.storageMeta?.bytes, 0, MAX_STORAGE_BYTES, 0)),
         migratedAt: normalizeTimestamp(source.storageMeta?.migratedAt)
       };
@@ -2726,6 +2763,18 @@
         name: boundedText(source.profile?.name, 80),
         photo: sanitizeProfilePhoto(source.profile?.photo)
       };
+      const legacyActivity = Boolean(clean.profile.name || (source.completedWorkouts || []).length || Object.keys(source.sets || {}).length || Object.keys(source.weights || {}).length);
+      clean.onboarding = {
+        completed: source.onboarding?.completed === true || legacyActivity,
+        goal: ['hipertrofia', 'forca', 'condicionamento'].includes(source.onboarding?.goal) ? source.onboarding.goal : 'hipertrofia',
+        frequency: Math.round(safeNumber(source.onboarding?.frequency, 2, 7, 4)),
+        experience: ['iniciante', 'intermediario', 'avancado'].includes(source.onboarding?.experience) ? source.onboarding.experience : 'intermediario'
+      };
+      clean.dietRecent = Array.isArray(source.dietRecent) ? source.dietRecent.slice(0, 12).map((item) => ({
+        foodKey: boundedText(item?.foodKey, 50).replace(/[^a-zA-Z0-9_-]/g, ''),
+        grams: Math.round(safeNumber(item?.grams, 1, 3000, 100)),
+        mealType: boundedText(item?.mealType, 50) || 'Refeição'
+      })).filter((item) => item.foodKey) : [];
       clean.bodyWeights = Array.isArray(source.bodyWeights) ? source.bodyWeights.slice(-500).map((entry) => ({
         date: /^\d{4}-\d{2}-\d{2}$/.test(String(entry && entry.date)) ? String(entry.date) : todayKey(),
         kg: Number(safeNumber(entry && entry.kg, 30, 300, 0).toFixed(2))
@@ -2885,7 +2934,7 @@
 
     function saveState() {
       state._schemaVersion = STATE_SCHEMA_VERSION;
-      state.storageMeta = Object.assign({ lastSavedAt: '', bytes: 0, migratedAt: '' }, state.storageMeta || {});
+      state.storageMeta = Object.assign({ lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' }, state.storageMeta || {});
       state.storageMeta.lastSavedAt = new Date().toISOString();
       let payload = '';
       try {
@@ -2952,6 +3001,37 @@
         container.appendChild(el);
       });
       renderDailyHome();
+    }
+
+    function openOnboarding() {
+      const modal = document.getElementById('onboardingModal');
+      if (!modal) return;
+      const values = state.onboarding || {};
+      document.getElementById('onboardingGoal').value = values.goal || 'hipertrofia';
+      document.getElementById('onboardingFrequency').value = String(values.frequency || 4);
+      document.getElementById('onboardingExperience').value = values.experience || 'intermediario';
+      modal.classList.add('show');
+    }
+
+    function closeOnboarding() { document.getElementById('onboardingModal')?.classList.remove('show'); }
+
+    function saveOnboarding() {
+      state.onboarding = {
+        completed: true,
+        goal: document.getElementById('onboardingGoal')?.value || 'hipertrofia',
+        frequency: Math.round(safeNumber(document.getElementById('onboardingFrequency')?.value, 2, 7, 4)),
+        experience: document.getElementById('onboardingExperience')?.value || 'intermediario'
+      };
+      saveState();
+      closeOnboarding();
+      renderQuickStart();
+      showToast('Preferências iniciais salvas');
+    }
+
+    function skipOnboarding() {
+      state.onboarding = Object.assign({}, state.onboarding || {}, { completed: true });
+      saveState();
+      closeOnboarding();
     }
 
     function getInProgressWorkoutId() {
@@ -3037,8 +3117,11 @@
         const done = exercises.reduce((sum, ex) => sum + getDoneArr(ex).filter(Boolean).length, 0);
         const total = exercises.reduce((sum, ex) => sum + ex.series, 0);
         const resume = Boolean(inProgress);
-        const started = state.activeWorkout?.startedAt ? new Date(state.activeWorkout.startedAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '';
-        action.innerHTML = `<div class="daily-action-kicker">${resume ? 'Sessão em andamento' : 'Ação do dia'}</div><h3>${resume ? `Retome o Treino ${escapeHtml(treino.id)}` : `Próximo: Treino ${escapeHtml(treino.id)}`}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas${started ? ` · iniciado em ${started}` : ''}</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">${resume ? 'Retomar sessão' : 'Iniciar treino'}</button>${resume ? '<button type="button" class="btn-action" onclick="clearActiveWorkout()">Encerrar lembrete</button>' : ''}</div>`;
+        const startedAt = state.activeWorkout?.startedAt ? Date.parse(state.activeWorkout.startedAt) : 0;
+        const elapsed = startedAt ? Math.max(0, Math.floor((Date.now() - startedAt) / 60000)) : 0;
+        const progress = total ? Math.round((done / total) * 100) : 0;
+        const elapsedLabel = elapsed ? ` · ${elapsed < 60 ? `${elapsed} min` : `${Math.floor(elapsed / 60)}h ${elapsed % 60}min`} em andamento` : '';
+        action.innerHTML = `<div class="daily-action-kicker">${resume ? 'Sessão em andamento' : 'Ação do dia'}</div><h3>${resume ? `Retome o Treino ${escapeHtml(treino.id)}` : `Próximo: Treino ${escapeHtml(treino.id)}`}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%${resume ? elapsedLabel : ''}</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">${resume ? 'Retomar sessão' : 'Iniciar treino'}</button>${resume ? '<button type="button" class="btn-action" onclick="clearActiveWorkout()">Encerrar lembrete</button>' : ''}</div>`;
       } else {
         action.innerHTML = '<div class="daily-action-kicker">Ação do dia</div><h3>Treinos concluídos</h3><p>Você completou todos os treinos disponíveis. Escolha um treino para revisar ou começar uma nova semana.</p>';
       }
@@ -3378,7 +3461,7 @@
             ${lastTimeHtml}
             ${getLastPerformance(ex.id) ? `<div class="last-performance">Último desempenho: ${formatLastPerformance(ex.id)}</div>` : ''}
             ${(() => { const pr = getPersonalRecords(ex.id); return pr ? `<div class="personal-records"><strong>🏆 Recordes</strong><span> Carga ${formatMetricNumber(pr.bestLoad?.weight)} kg</span><span> · Reps ${formatMetricNumber(pr.bestReps?.reps)}</span><span> · Série ${formatMetricVolume(pr.bestSetVolume?.volume)}</span></div>` : ''; })()}
-            ${progressionHint ? `<div class="progression-hint">↗ ${progressionHint}</div>` : ''}
+            ${progressionHint ? `<div class="progression-hint">↗ ${progressionHint}</div>${/experimente\s[\d.,]+\skg/i.test(progressionHint) ? '<button type="button" class="chart-link-btn js-apply-progression">Aplicar sugestão</button>' : ''}` : ''}
             <div class="weight-row">
               <label for="weight-${encodeData(ex.id)}">Peso:</label>
               <input type="number" id="weight-${encodeData(ex.id)}" class="weight-input js-save-weight" inputmode="decimal" placeholder="${escapeHtml(lastEntry ? lastEntry.weight : '0')}" value="${escapeHtml(weight)}" min="0" max="1000" step="0.1" />
@@ -3402,6 +3485,7 @@
           exEl.querySelector('.js-save-weight').addEventListener('change', (event) => saveWeight(ex.id, event.currentTarget.value));
           exEl.querySelector('.js-save-weight').addEventListener('blur', (event) => saveWeight(ex.id, event.currentTarget.value));
           exEl.querySelector('.js-open-chart')?.addEventListener('click', () => openChart(ex.id));
+          exEl.querySelector('.js-apply-progression')?.addEventListener('click', () => applyProgressionSuggestion(ex.id));
           exEl.querySelectorAll('.js-toggle-set').forEach((button) => {
             button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, treino.id));
           });
@@ -3994,10 +4078,14 @@
       document.getElementById('timerOverlay').classList.remove('show');
     }
 
-    function addTimerTime() {
-      timerSeconds += 30;
+    function adjustTimer(deltaSeconds) {
+      const delta = Number(deltaSeconds) || 0;
+      timerSeconds = Math.max(0, Math.min(600, timerSeconds + delta));
       updateTimerDisplay();
+      doVibrate(20);
     }
+
+    function addTimerTime() { adjustTimer(30); }
 
     // ===================== EDIT / ADD / DELETE EXERCISE =====================
     let editingExId = null;
@@ -4125,6 +4213,21 @@
       }
       if (reps.length) return `Sugestão: mantenha ${latestWeight} kg e tente aproximar-se do topo de ${escapeHtml(ex.reps)} repetições.`;
       return `Última carga registrada: ${latestWeight} kg. Registre as repetições para receber uma sugestão mais precisa.`;
+    }
+
+    function applyProgressionSuggestion(exId) {
+      const ex = findExercise(exId);
+      const advice = getExerciseProgressionAdvice(exId);
+      const match = String(advice).match(/experimente\s([\d.,]+)\skg/i);
+      if (!ex || !match) { showToast('Ainda não há uma sugestão de aumento para este exercício'); return; }
+      const suggested = normalizeWeightValue(match[1].replace(',', '.'));
+      if (!suggested) return;
+      state.weights[exId] = suggested;
+      getSetDetails(ex).forEach((detail) => { if (!detail.weight) detail.weight = suggested; });
+      recordWeightHistory(exId, suggested);
+      saveState();
+      renderTreinos();
+      showToast(`Sugestão aplicada: ${suggested} kg. Ajuste se a técnica pedir.`);
     }
 
     function openChart(exId) {
@@ -4397,6 +4500,9 @@
     }
 
     function exportBackupJSON() {
+      state.storageMeta = Object.assign({ lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' }, state.storageMeta || {});
+      state.storageMeta.lastBackupAt = new Date().toISOString();
+      saveState();
       const normalized = migrateState(state);
       const stateText = JSON.stringify(normalized);
       const payload = {
@@ -4415,6 +4521,7 @@
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 0);
+      refreshConfigDataStatus();
       showToast('Backup exportado com versão e validação.');
     }
 
@@ -4701,7 +4808,7 @@
       const specs = [
         ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
         ['workoutCompleteModal', '#workoutCompleteModal .modal-sheet', closeWorkoutComplete], ['swapExerciseModal', '#swapExerciseModal .modal-sheet', closeSwapExercise],
-        ['aiSettingsModal', '#aiSettingsModal .modal-sheet', closeAiSettings], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
+        ['aiSettingsModal', '#aiSettingsModal .modal-sheet', closeAiSettings], ['onboardingModal', '#onboardingModal .modal-sheet', skipOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
         ['guidedOverlay', '#guidedOverlay .guided-header', exitGuided], ['timerOverlay', '#timerOverlay', skipTimer]
       ];
       specs.forEach(([overlayId, selector, close]) => {
@@ -6676,7 +6783,7 @@
       const targets = getDietTargets();
       ['Kcal','Protein','Carbs','Fats','Water'].forEach((key) => { const input = document.getElementById(`dietTarget${key}`); const field = ({ Kcal:'kcal', Protein:'protein', Carbs:'carbs', Fats:'fats', Water:'waterMl' })[key]; if (input && document.activeElement !== input) input.value = targets[field] || ''; });
       if (!day.meals.length) list.innerHTML = '<div class="diet-empty">Nenhuma refeição registrada neste dia. Comece adicionando alimentos da base TACO.</div>';
-      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div><div class="diet-goals">${dietGoalRow('Calorias', totals.k, targets.kcal, ' kcal')}${dietGoalRow('Proteína', totals.p, targets.protein, ' g')}${dietGoalRow('Carbo', totals.c, targets.carbs, ' g')}${dietGoalRow('Gordura', totals.f, targets.fats, ' g')}</div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
+      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div><div class="diet-goals">${dietGoalRow('Calorias', totals.k, targets.kcal, ' kcal')}${dietGoalRow('Proteína', totals.p, targets.protein, ' g')}${dietGoalRow('Carbo', totals.c, targets.carbs, ' g')}${dietGoalRow('Gordura', totals.f, targets.fats, ' g')}</div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><div class="diet-portion-actions" aria-label="Ajustar porção"><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', -50)">−50 g</button><button type="button" onclick="adjustDietMealGrams('${encodeData(meal.id)}', 50)">+50 g</button></div><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
       const water = Math.max(0, Number(day.waterMl) || 0);
       const fill = document.getElementById('dietWaterFill');
       const label = document.getElementById('dietWaterLabel');
@@ -6684,6 +6791,13 @@
       if (label) label.textContent = `${water} ml registrados · ${Math.min(100, Math.round((water / targets.waterMl) * 100))}% da meta de ${targets.waterMl} ml`;
       const favorites = document.getElementById('dietFavoriteSelect');
       if (favorites) { let saved = state.dietFavorites || []; favorites.innerHTML = '<option value="">Cardápios favoritos</option>' + saved.map((favorite, index) => `<option value="${index}">${escapeHtml(favorite.name)} · ${(favorite.values?.meals || []).length} itens</option>`).join(''); }
+      const recentWrap = document.getElementById('dietRecentWrap');
+      const recentList = document.getElementById('dietRecentList');
+      const recent = (state.dietRecent || []).filter((item) => TACO_DIARY_FOODS[item.foodKey]);
+      if (recentWrap && recentList) {
+        recentWrap.hidden = !recent.length;
+        recentList.innerHTML = recent.map((item, index) => `<button type="button" onclick="addRecentDietMeal(${index})">${escapeHtml(TACO_DIARY_FOODS[item.foodKey].name)} · ${item.grams} g</button>`).join('');
+      }
       renderDietShoppingList();
     }
 
@@ -6693,6 +6807,7 @@
       const grams = Math.round(safeNumber(document.getElementById('dietFoodGrams')?.value, 1, 3000, 100));
       const mealType = boundedText(document.getElementById('dietMealType')?.value || 'Refeição', 50);
       day.meals.push({ id: `meal_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, name: TACO_DIARY_FOODS[foodKey].name, mealType, completed: false, foodKey, grams });
+      rememberDietMeal(foodKey, grams, mealType);
       saveState();
       document.getElementById('dietFoodGrams').value = '';
       renderDietDiary();
@@ -6714,6 +6829,9 @@
       dietUndoTimer = setTimeout(hideDietUndo, 6500);
     }
     function toggleDietMeal(id) { const meal = getDietDay().meals.find((item) => item.id === id); if (!meal) return; meal.completed = !meal.completed; saveState(); renderDietDiary(); }
+    function rememberDietMeal(foodKey, grams, mealType) { const entry = { foodKey, grams: Math.round(safeNumber(grams, 1, 3000, 100)), mealType: boundedText(mealType, 50) || 'Refeição' }; state.dietRecent = (state.dietRecent || []).filter((item) => !(item.foodKey === entry.foodKey && item.grams === entry.grams && item.mealType === entry.mealType)); state.dietRecent.unshift(entry); state.dietRecent = state.dietRecent.slice(0, 8); }
+    function addRecentDietMeal(index) { const item = (state.dietRecent || [])[Number(index)]; if (!item || !TACO_DIARY_FOODS[item.foodKey]) return; const day = getDietDay(); day.meals.push({ id: `meal_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, name: TACO_DIARY_FOODS[item.foodKey].name, mealType: item.mealType, completed: false, foodKey: item.foodKey, grams: item.grams }); rememberDietMeal(item.foodKey, item.grams, item.mealType); saveState(); renderDietDiary(); showToast('Alimento recente adicionado'); }
+    function adjustDietMealGrams(id, delta) { const meal = getDietDay().meals.find((item) => item.id === id); if (!meal) return; meal.grams = Math.round(safeNumber(Number(meal.grams || 0) + Number(delta || 0), 1, 3000, meal.grams || 1)); rememberDietMeal(meal.foodKey, meal.grams, meal.mealType); saveState(); renderDietDiary(); }
     function removeDietMeal(id) {
       const day = getDietDay();
       const index = day.meals.findIndex((item) => item.id === id);
@@ -6731,7 +6849,7 @@
         showToast('Refeição restaurada');
       });
     }
-    function replaceDietMeal(id, foodKey) { const meal = getDietDay().meals.find((item) => item.id === id); if (!meal || !TACO_DIARY_FOODS[foodKey]) return; meal.foodKey = foodKey; meal.name = TACO_DIARY_FOODS[foodKey].name; saveState(); renderDietDiary(); }
+    function replaceDietMeal(id, foodKey) { const meal = getDietDay().meals.find((item) => item.id === id); if (!meal || !TACO_DIARY_FOODS[foodKey]) return; meal.foodKey = foodKey; meal.name = TACO_DIARY_FOODS[foodKey].name; rememberDietMeal(meal.foodKey, meal.grams, meal.mealType); saveState(); renderDietDiary(); }
     function addDietWater() { const ml = Math.round(safeNumber(document.getElementById('dietWaterInput')?.value, 100, 5000, 0)); if (!ml) { showToast('Informe a quantidade de água'); return; } const day = getDietDay(); day.waterMl = Math.min(15000, (day.waterMl || 0) + ml); saveState(); document.getElementById('dietWaterInput').value = ''; renderDietDiary(); }
     function copyGeneratedMenuToDiary() {
       const menu = Array.isArray(window.__lastGeneratedMenu) ? window.__lastGeneratedMenu : [];
@@ -7635,6 +7753,12 @@
       el.textContent = `Dados locais ativos · ${count} treino(s) · ${size} KB · schema v${state._schemaVersion || STATE_SCHEMA_VERSION}`;
       el.title = `${initialLoadNotice || 'Estado íntegro e compatível.'} Última gravação: ${lastSaved}.`;
       el.parentElement?.classList.toggle('warning', Boolean(initialLoadNotice));
+      const reminder = document.getElementById('backupReminder');
+      if (reminder) {
+        const lastBackup = state.storageMeta?.lastBackupAt ? Date.parse(state.storageMeta.lastBackupAt) : 0;
+        const days = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : Infinity;
+        reminder.textContent = days > 21 ? 'Recomendado: exporte um backup agora para proteger seu histórico local.' : `Último backup: ${new Date(lastBackup).toLocaleDateString('pt-BR')}.`;
+      }
     }
 
     function setAppearanceMode(mode) {
@@ -7858,6 +7982,7 @@
     initDietPage();
     refreshConfigDataStatus();
     installSwipeDismiss();
+    if (!state.onboarding?.completed) setTimeout(openOnboarding, 350);
     window.addEventListener('load', () => requestAnimationFrame(installSwipeDismiss), { once: true });
     if (initialLoadNotice) setTimeout(() => showToast(initialLoadNotice), 650);
 
