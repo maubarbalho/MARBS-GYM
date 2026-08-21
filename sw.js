@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v41-standard-192';
+const CACHE_NAME = 'marsb-gym-v42-ux-update';
 const APP_SHELL = [
   './',
   './index.html',
@@ -17,7 +17,6 @@ self.addEventListener('install', (event) => {
       .then((cache) => cache.addAll(APP_SHELL))
       .catch(() => undefined)
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
