@@ -5,3 +5,4 @@
 - [x] Ampliar os alvos de toque críticos do treino guiado, modais e seleção de semana no celular.
 - [x] Destacar o backup JSON e o status de salvamento local nos fluxos principais do PWA.
 - [x] Validar atualização, offline, exclusão com recuperação e ergonomia móvel na publicação do GitHub Pages.
+- [x] Remover o cartão Proteção de dados / Backup rápido da página inicial, preservando o acesso ao backup em Configurações.

@@ -1359,8 +1359,6 @@
     }
     .daily-action-card, .weekly-progress-card { margin: 14px 0; padding: 16px; border: 1px solid color-mix(in srgb, var(--border) 78%, transparent); border-radius: 22px; background: color-mix(in srgb, var(--card) 93%, var(--accent) 7%); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
     .daily-action-card { border-left: 4px solid var(--accent); }
-    .backup-quick-card { border-left-color: var(--primary); background: color-mix(in srgb, var(--bg-card) 88%, var(--primary) 12%); }
-    .backup-quick-card .daily-action-kicker { color: var(--primary); }
     .daily-action-kicker { color: var(--accent); font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 5px; }
     .daily-action-card h3, .weekly-progress-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
     .daily-action-card p, .weekly-note { color: var(--text-muted); font-size: .82rem; line-height: 1.45; margin: 0 0 12px; }
@@ -1504,15 +1502,6 @@
       <div class="quick-start" id="quickStart"></div>
       <div id="dailyActionCard" class="daily-action-card" aria-live="polite"></div>
       <div id="weeklyProgressCard" class="weekly-progress-card" aria-live="polite"></div>
-      <section class="daily-action-card backup-quick-card" aria-label="Backup dos dados">
-        <div class="daily-action-kicker">Proteção de dados</div>
-        <h3>Backup rápido</h3>
-        <p>Salve seu plano, histórico e diário em um arquivo JSON antes de trocar de celular ou navegador.</p>
-        <div class="daily-action-buttons">
-          <button type="button" class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Criar backup</button>
-          <button type="button" class="btn-action" onclick="openConfigWindow('dados', this)">Gerenciar dados</button>
-        </div>
-      </section>
 
       <div id="installBanner" class="install-banner">
         <p>Instale o <strong>MARSB-GYM</strong> na tela inicial para usar offline e em tela cheia.</p>
