@@ -7854,7 +7854,9 @@
     // ===================== OFFLINE (SERVICE WORKER) =====================
     if ('serviceWorker' in navigator) {
       const registerServiceWorker = () => {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch((error) => {
+        const scriptUrl = new URL('sw.js', window.location.href);
+        const scope = new URL('./', window.location.href).pathname;
+        navigator.serviceWorker.register(scriptUrl, { scope }).catch((error) => {
           console.warn('Não foi possível ativar o modo offline.', error);
         });
       };
