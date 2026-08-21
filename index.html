@@ -435,6 +435,22 @@
     }
     .weight-history-empty { opacity:.72; }
     .progression-hint { font-size:.72rem; line-height:1.4; color:var(--primary); background:color-mix(in srgb, var(--primary) 8%, transparent); border-radius:8px; padding:7px 9px; margin:0 0 9px; }
+    .progression-panel { margin: 12px 0 16px; }
+    .progression-panel .section-title { margin-top: 0; }
+    .progression-summary-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:10px 0 12px; }
+    .progression-summary-grid > div { padding:9px 7px; border-radius:12px; background:var(--bg); border:1px solid var(--border); text-align:center; }
+    .progression-summary-grid strong { display:block; font-size:.88rem; color:var(--accent); }
+    .progression-summary-grid span { display:block; margin-top:2px; color:var(--text-muted); font-size:.64rem; line-height:1.2; }
+    .muscle-volume-list { display:flex; flex-direction:column; gap:7px; margin:10px 0 14px; }
+    .muscle-volume-row { display:grid; grid-template-columns:70px minmax(0,1fr) 48px; gap:8px; align-items:center; font-size:.7rem; }
+    .muscle-volume-row span { color:var(--text-muted); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+    .muscle-volume-row strong { color:var(--text); text-align:right; font-size:.68rem; }
+    .muscle-volume-track { height:7px; overflow:hidden; border-radius:999px; background:var(--control-bg); }
+    .muscle-volume-track i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),var(--accent)); }
+    .progression-rule-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .progression-rule-grid label { display:flex; flex-direction:column; gap:5px; color:var(--text-muted); font-size:.7rem; font-weight:700; }
+    .progression-rule-grid select, .progression-rule-grid input { width:100%; min-height:38px; border:1px solid var(--border); border-radius:10px; background:var(--bg); color:var(--text); padding:0 9px; font:inherit; }
+    .progression-rule-note { margin:9px 0 0; color:var(--text-muted); font-size:.7rem; line-height:1.4; }
     .chart-advice { margin-top:12px; padding:10px 12px; background:color-mix(in srgb, var(--primary) 10%, transparent); border:1px solid color-mix(in srgb, var(--primary) 22%, transparent); border-radius:10px; font-size:.8rem; line-height:1.4; color:var(--text); }
     .chart-note { margin-top:10px; font-size:.75rem; }
     .chart-record-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
@@ -501,6 +517,18 @@
       font-size: 0.9rem; cursor: pointer;
     }
     .modal-sheet { position: relative; }
+    .swipe-dismiss-handle { width:38px; height:5px; border-radius:999px; background:color-mix(in srgb, var(--text-muted) 42%, transparent); margin:-8px auto 14px; touch-action:pan-y; cursor:grab; }
+    .swipe-dismiss-handle:active { cursor:grabbing; }
+    .personal-card { padding:14px; border:1px solid var(--border); border-radius:16px; background:var(--bg-card); margin:10px 0; }
+    .personal-card h3 { font-size:.93rem; margin:0 0 4px; }
+    .personal-card p { font-size:.78rem; color:var(--text-muted); line-height:1.45; margin:0; }
+    .personal-code { width:100%; min-height:94px; resize:vertical; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.68rem; line-height:1.35; }
+    .personal-qr-wrap { display:flex; justify-content:center; align-items:center; min-height:0; margin-top:10px; }
+    .personal-qr-wrap img { width:180px; height:180px; border-radius:12px; background:#fff; padding:8px; }
+    .personal-profile-list { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+    .personal-profile-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px; border:1px solid var(--border); border-radius:13px; background:var(--bg); }
+    .personal-profile-item strong { display:block; font-size:.82rem; }
+    .personal-profile-item span { display:block; font-size:.7rem; color:var(--text-muted); margin-top:2px; }
 
     /* ===== Chart modal ===== */
     .chart-wrap { background: var(--bg); border-radius: 12px; padding: 12px; margin-bottom: 8px; }
@@ -784,6 +812,9 @@
       align-self: stretch; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35);
       color: #fca5a5; font-size: 0.82rem;
     }
+    .coach-history-tools { display:flex; justify-content:flex-end; margin:2px 0 -2px; }
+    .coach-history-tools button { border:0; background:transparent; color:var(--text-muted); font-size:.7rem; font-weight:700; padding:6px 2px; }
+    .coach-history-tools button:active { transform:scale(.97); }
     .ai-quick {
       display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0 8px;
     }
@@ -1394,6 +1425,15 @@
     .meal-copy small { color:var(--text-muted); }
     .water-progress { height:10px; overflow:hidden; margin:9px 0; border-radius:999px; background:var(--bg); }
     .water-progress > div { height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--cyan), var(--accent)); }
+    .diet-goals { display:grid; gap:8px; padding:10px 0 2px; }
+    .diet-goal-row { display:grid; grid-template-columns:58px minmax(0,1fr) 64px; gap:8px; align-items:center; font-size:.68rem; }
+    .diet-goal-row span { color:var(--text-muted); font-weight:700; }
+    .diet-goal-row strong { color:var(--text); text-align:right; font-size:.67rem; }
+    .diet-goal-track { height:7px; overflow:hidden; border-radius:999px; background:var(--control-bg); }
+    .diet-goal-track i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),var(--accent)); }
+    .diet-favorite-meta { color:var(--text-muted); font-size:.67rem; }
+    .shopping-category { margin:10px 0 4px; padding:8px 10px; border-radius:10px; background:color-mix(in srgb,var(--accent) 8%,var(--card)); color:var(--accent); font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+    .shopping-category + .shopping-row { margin-top:0; }
     .coach-notice { padding:10px 12px; margin:10px 0; border:1px solid color-mix(in srgb, var(--warning) 42%, var(--border)); border-radius:14px; background:color-mix(in srgb, var(--warning) 8%, var(--card)); color:var(--text-muted); font-size:.74rem; line-height:1.45; }
     .ai-context-row { display:flex; gap:7px; overflow:auto; margin:8px 0 10px; }
     .ai-context-row button { flex:0 0 auto; padding:7px 10px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--text-muted); font-size:.7rem; font-weight:800; }
@@ -1513,6 +1553,11 @@
             <span class="config-option-copy"><span class="config-option-title">Plano</span><span class="config-option-desc">Editar, importar e exportar treinos do personal.</span></span>
             <span class="config-option-chevron" aria-hidden="true">›</span>
           </button>
+          <button type="button" class="config-option" data-config-window="personal" onclick="openConfigWindow('personal', this)">
+            <span class="config-option-icon" aria-hidden="true">♧</span>
+            <span class="config-option-copy"><span class="config-option-title">Modo Personal</span><span class="config-option-desc">Perfis locais de alunos e envio de plano por código.</span></span>
+            <span class="config-option-chevron" aria-hidden="true">›</span>
+          </button>
           <button type="button" class="config-option" data-config-window="sobre" onclick="openConfigWindow('sobre', this)">
             <span class="config-option-icon" aria-hidden="true">ⓘ</span>
             <span class="config-option-copy"><span class="config-option-title">Sobre</span><span class="config-option-desc">Estrutura do programa e instruções de uso.</span></span>
@@ -1614,6 +1659,8 @@
         <button type="button" class="toggle on" id="toggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração"></button>
       </div>
 
+      <div class="config-section-card progression-panel" id="progressionPanel" aria-live="polite"></div>
+
       <div class="section-title">Ações</div>
       <button class="btn-action primary" onclick="exportProgress()">📤 Exportar progresso</button>
       <button class="btn-action" onclick="exportProgressCSV()">📊 Exportar CSV (planilha)</button>
@@ -1642,9 +1689,9 @@
         <button type="button" class="ai-settings-btn" onclick="openAiSettings()">⚙ Config</button>
       </div>
 
-      <div class="coach-context-bar"><label for="coachContext">Contexto</label><select id="coachContext"><option value="treino">Treino atual e técnica</option><option value="progresso">Progresso e cargas</option><option value="dieta">Nutrição esportiva</option></select><span id="coachConnection" class="coach-connection">Verificando conexão…</span></div>
-      <div class="coach-privacy-note"><strong>Coach focado em academia.</strong> O contexto selecionado pode ser enviado ao provedor configurado. Não envie dados pessoais sensíveis. Em caso de dor intensa, lesão, sintomas ou dúvida médica, interrompa o treino e procure um profissional de saúde.</div>
-      <div class="ai-layout">
+        <div class="coach-context-bar"><label for="coachContext">Contexto</label><select id="coachContext"><option value="treino">Treino atual e técnica</option><option value="progresso">Progresso e cargas</option><option value="dieta">Nutrição esportiva</option></select><span id="coachConnection" class="coach-connection">Verificando conexão…</span></div>
+        <div class="coach-privacy-note"><strong>Coach focado em academia.</strong> O contexto selecionado pode ser enviado ao provedor configurado. Não envie dados pessoais sensíveis. Em caso de dor intensa, lesão, sintomas ou dúvida médica, interrompa o treino e procure um profissional de saúde.</div>
+        <div class="ai-layout">
         <div class="ai-quick" id="aiQuick">
           <button type="button" onclick="aiQuickAsk('Monte um aquecimento de 8 minutos para o treino de hoje')">Aquecimento</button>
           <button type="button" onclick="aiQuickAsk('Com base nos meus pesos e na semana atual, o que devo priorizar hoje?')">Prioridade do dia</button>
@@ -1652,6 +1699,7 @@
           <button type="button" onclick="aiQuickAsk('Estou com dor leve no ombro no desenvolvimento. Como adaptar o treino D com segurança?')">Adaptar dor</button>
           <button type="button" onclick="aiQuickAsk('Resuma meu progresso recente e diga se estou no caminho da hipertrofia')">Meu progresso</button>
         </div>
+        <div class="coach-history-tools"><button type="button" onclick="clearCoachHistory()">Limpar histórico local</button></div>
         <div class="ai-messages" id="aiMessages">
           <div class="ai-bubble system">IA grátis pronta (Puter). Especialista só em academia e hipertrofia — técnica, cargas, progressão e o treino do dia, com base no seu plano MARSB-GYM.</div>
         </div>
@@ -1909,11 +1957,12 @@
       <div class="section-title">Diário alimentar</div>
       <div class="calc-card diet-diary-card">
         <div class="diet-day-tools"><div class="form-field"><label for="dietDate">Dia</label><input type="date" id="dietDate" /></div><div class="form-field"><label for="dietWaterInput">Água registrada</label><div class="diet-water-input"><input type="number" id="dietWaterInput" min="100" max="5000" step="100" inputmode="numeric" placeholder="250" /><button type="button" onclick="addDietWater()">Adicionar ml</button></div></div></div>
+        <div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button></div>
         <div class="diet-water-bar"><div class="diet-water-fill" id="dietWaterFill"></div></div><div class="diet-water-label" id="dietWaterLabel">0 ml registrados</div>
+        <details class="diet-meal-add"><summary>Metas diárias e consumo</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietTargetKcal">Calorias (kcal)</label><input type="number" id="dietTargetKcal" min="0" max="10000" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetProtein">Proteína (g)</label><input type="number" id="dietTargetProtein" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetCarbs">Carboidratos (g)</label><input type="number" id="dietTargetCarbs" min="0" max="1200" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetFats">Gorduras (g)</label><input type="number" id="dietTargetFats" min="0" max="500" inputmode="numeric" /></div><div class="form-field"><label for="dietTargetWater">Água (ml)</label><input type="number" id="dietTargetWater" min="500" max="15000" step="100" inputmode="numeric" /></div><button type="button" class="btn-action" onclick="saveDietTargets()">Salvar metas</button></div></details>
         <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
         <div id="dietDiaryList" class="diet-diary-list"></div>
         <details class="diet-meal-add"><summary>Restrições e alergias</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietRestrictions">Restrições alimentares</label><input id="dietRestrictions" maxlength="300" placeholder="Ex: vegetariano, sem lactose" /></div><div class="form-field"><label for="dietAllergies">Alergias</label><input id="dietAllergies" maxlength="300" placeholder="Ex: amendoim" /></div><button type="button" class="btn-action" onclick="saveDietPrefs()">Salvar preferências alimentares</button></div></details>
-        <div class="diet-actions-row"><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar cardápio favorito</button><select id="dietFavoriteSelect"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button></div>
         <div class="diet-shopping-head"><strong>Lista de compras do dia</strong><button type="button" class="chart-link-btn" onclick="copyDietShoppingList()">Copiar lista</button></div><div id="dietShoppingList" class="diet-shopping-list"></div>
         <p class="calc-hint">Equivalentes e macros de referência usam alimentos da Tabela TACO; confirme rótulos e porções com seu nutricionista, especialmente em caso de alergia.</p>
       </div>
@@ -1930,7 +1979,7 @@
     </div>
   </div>
 
-    <div class="page" id="page-plano">
+  <div class="page" id="page-plano">
     <div class="content">
       <div class="section-title">Plano do Personal</div>
       <div class="config-excel-card">
@@ -2023,6 +2072,31 @@
           3. Toque em <strong>Exportar planilha Excel</strong> e envie o arquivo (WhatsApp, e-mail…)<br>
           4. O aluno abre <strong>Configuração → Plano</strong> → Importar planilha Excel → pronto
         </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-personal">
+    <div class="config-panel">
+      <div class="section-title">Modo Personal</div>
+      <div class="config-status-card"><strong>Operação local</strong><span>Perfis e planos ficam neste aparelho. Para enviar a outro aluno, exporte o perfil ou compartilhe o código do plano.</span></div>
+      <div class="personal-card">
+        <h3>Perfil do aluno atual</h3>
+        <p>Exporte o estado do aluno atual em JSON. O histórico do Coach e credenciais de IA não entram no arquivo.</p>
+        <button type="button" class="btn-action primary" style="margin-top:10px;" onclick="personalExportCurrentProfile()">Exportar perfil atual (JSON)</button>
+        <button type="button" class="btn-action" style="margin-top:8px;" onclick="document.getElementById('personalProfileFile').click()">Importar perfil de aluno</button>
+        <input type="file" id="personalProfileFile" class="backup-hidden-input" accept="application/json,.json" onchange="personalImportProfile(this.files[0])" />
+        <div id="personalProfileList" class="personal-profile-list"></div>
+      </div>
+      <div class="personal-card">
+        <h3>Compartilhar plano por código</h3>
+        <p>Gere um código com os treinos A–D ativos. O aluno cola o código abaixo para aplicar o plano no próprio app.</p>
+        <button type="button" class="btn-action primary" style="margin-top:10px;" onclick="personalGeneratePlanCode()">Gerar código do plano</button>
+        <button type="button" class="btn-action" style="margin-top:8px;" onclick="personalCopyPlanCode()">Copiar código</button>
+        <textarea id="personalPlanCode" class="personal-code" aria-label="Código de compartilhamento do plano" placeholder="O código do plano aparecerá aqui. Cole um código recebido para aplicá-lo."></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;"><button type="button" class="btn-action primary" style="flex:1;" onclick="personalApplyPlanCode()">Aplicar código recebido</button><button type="button" class="btn-action" style="flex:1;" onclick="personalShowPlanQr()">Gerar QR</button></div>
+        <div id="personalQr" class="personal-qr-wrap" aria-live="polite"></div>
+        <p class="calc-hint">O QR é opcional e usa um gerador online somente quando você tocar em “Gerar QR”. Se estiver offline ou o código for muito grande, compartilhe o texto ou o JSON.</p>
       </div>
     </div>
   </div>
@@ -2337,7 +2411,7 @@
     // week: number
 
     const STORAGE_KEY = 'marsbGym_v2';
-    const STATE_SCHEMA_VERSION = 3;
+    const STATE_SCHEMA_VERSION = 4;
     const MAX_STORAGE_BYTES = 4 * 1024 * 1024;
 
     let initialLoadNotice = '';
@@ -2365,17 +2439,19 @@
         activeWorkout: null,
         calcPresets: [],
         dietDiary: {},
-        dietPrefs: { restrictions: '', allergies: '' },
+        dietPrefs: { restrictions: '', allergies: '', targets: { kcal: 0, protein: 0, carbs: 0, fats: 0, waterMl: 3500 } },
         dietFavorites: [],
         unitSystem: 'metric',
         notifications: { enabled: false, reminderTime: '18:00' },
         coachPrefs: { context: 'treino', provider: 'puter', model: 'openrouter:auto' },
-        prefs: { autoTimer: true, vibrate: true, restPresets: [60, 90, 120, 180], restDefault: 90 },
+        coachHistory: [],
+        prefs: { autoTimer: true, vibrate: true, restPresets: [60, 90, 120, 180], restDefault: 90, progression: { mode: 'percent', value: 5, minIncrement: 0.5, requireTopReps: true } },
         bodyWeights: [],
         bodyMeta: { heightCm: null, goalKg: null },
         customProgram: null,
         customProgramMeta: null,
-        profile: { name: '', photo: '' }
+        profile: { name: '', photo: '' },
+        personalProfiles: []
       };
     }
 
@@ -2571,7 +2647,14 @@
       }
       clean.dietPrefs = {
         restrictions: boundedText(source.dietPrefs?.restrictions, 500),
-        allergies: boundedText(source.dietPrefs?.allergies, 500)
+        allergies: boundedText(source.dietPrefs?.allergies, 500),
+        targets: {
+          kcal: Math.round(safeNumber(source.dietPrefs?.targets?.kcal, 0, 10000, 0)),
+          protein: Math.round(safeNumber(source.dietPrefs?.targets?.protein, 0, 500, 0)),
+          carbs: Math.round(safeNumber(source.dietPrefs?.targets?.carbs, 0, 1200, 0)),
+          fats: Math.round(safeNumber(source.dietPrefs?.targets?.fats, 0, 500, 0)),
+          waterMl: Math.round(safeNumber(source.dietPrefs?.targets?.waterMl, 500, 15000, 3500))
+        }
       };
       if (source.dietDiary && typeof source.dietDiary === 'object') {
         Object.entries(source.dietDiary).slice(-60).forEach(([date, day]) => {
@@ -2593,13 +2676,21 @@
       clean.appearanceMode = ['system', 'light', 'dark'].includes(source.appearanceMode) ? source.appearanceMode : 'system';
       clean.notifications = { enabled: Boolean(source.notifications?.enabled), reminderTime: /^\d{2}:\d{2}$/.test(String(source.notifications?.reminderTime || '')) ? String(source.notifications.reminderTime) : '18:00' };
       clean.coachPrefs = { context: ['treino','dieta','progresso'].includes(source.coachPrefs?.context) ? source.coachPrefs.context : 'treino', provider: boundedText(source.coachPrefs?.provider, 40) || 'puter', model: boundedText(source.coachPrefs?.model, 120) || 'openrouter:auto' };
+      clean.coachHistory = Array.isArray(source.coachHistory) ? source.coachHistory.slice(-40).map((item) => ({ role: ['user','assistant'].includes(item?.role) ? item.role : 'assistant', content: boundedText(item?.content, 2500), at: boundedText(item?.at, 40) || new Date().toISOString() })).filter((item) => item.content) : [];
       const rawPresets = Array.isArray(source.prefs?.restPresets) ? source.prefs.restPresets : [60, 90, 120, 180];
       const restPresets = [...new Set(rawPresets.map((value) => Math.round(safeNumber(value, 15, 600, null))).filter(Boolean))].slice(0, 6);
+      const rawProgression = source.prefs?.progression && typeof source.prefs.progression === 'object' ? source.prefs.progression : {};
       clean.prefs = Object.assign(clean.prefs, {
         autoTimer: source.prefs?.autoTimer !== false,
         vibrate: source.prefs?.vibrate !== false,
         restPresets: restPresets.length ? restPresets : [60, 90, 120, 180],
-        restDefault: Math.round(safeNumber(source.prefs?.restDefault, 15, 600, 90))
+        restDefault: Math.round(safeNumber(source.prefs?.restDefault, 15, 600, 90)),
+        progression: {
+          mode: ['percent', 'fixed'].includes(rawProgression.mode) ? rawProgression.mode : 'percent',
+          value: Number(safeNumber(rawProgression.value, 0.5, 20, 5).toFixed(1)),
+          minIncrement: Number(safeNumber(rawProgression.minIncrement, 0.25, 20, 0.5).toFixed(2)),
+          requireTopReps: rawProgression.requireTopReps !== false
+        }
       });
       clean.profile = {
         name: boundedText(source.profile?.name, 80),
@@ -2619,6 +2710,12 @@
         author: boundedText(source.customProgramMeta.author, 120),
         importedAt: boundedText(source.customProgramMeta.importedAt, 40)
       } : null;
+      clean.personalProfiles = Array.isArray(source.personalProfiles) ? source.personalProfiles.slice(-30).map((item) => ({
+        id: boundedText(item?.id, 80) || ('aluno-' + Date.now()),
+        name: boundedText(item?.name, 120) || 'Aluno sem nome',
+        importedAt: boundedText(item?.importedAt, 40) || new Date().toISOString(),
+        snapshot: item?.snapshot && typeof item.snapshot === 'object' ? migrateState({ ...item.snapshot, personalProfiles: [] }) : null
+      })).filter((item) => item.snapshot) : [];
       return clean;
     }
 
@@ -3009,6 +3106,95 @@
     function formatMetricVolume(value) {
       const n = Number(value) || 0;
       return n >= 1000 ? `${(n / 1000).toFixed(1).replace('.0', '')} t` : `${formatMetricNumber(n)} kg`;
+    }
+
+    function estimateOneRepMax(weight, reps) {
+      const load = Number(weight) || 0;
+      const repetitions = Number(reps) || 0;
+      if (load <= 0 || repetitions <= 0) return 0;
+      if (repetitions === 1) return Math.round(load * 10) / 10;
+      return Math.round(load * (1 + repetitions / 30) * 10) / 10;
+    }
+
+    function getExerciseEstimated1RM(exId) {
+      const best = getExerciseHistory(exId).flatMap((session) => session.sets || [])
+        .map((set) => ({ ...set, oneRM: estimateOneRepMax(set.weight, set.reps) }))
+        .filter((set) => set.oneRM > 0)
+        .sort((a, b) => b.oneRM - a.oneRM)[0];
+      return best || null;
+    }
+
+    function getExerciseMuscleGroup(ex, fallbackTreino = '') {
+      const name = String(ex?.nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      if (/supino|crucifixo|peitoral|crossover|flexao/.test(name)) return 'Peito';
+      if (/remada|puxada|pulldown|barra fixa|costas/.test(name)) return 'Costas';
+      if (/agach|leg press|terra|stiff|mesa flexora|cadeira extensora|panturrilha|passada|afundo|gluteo|elevacao pelvica/.test(name)) return 'Pernas';
+      if (/desenvolvimento|elevacao lateral|crucifixo inverso|deltoide|ombro/.test(name)) return 'Ombros';
+      if (/rosca|biceps/.test(name)) return 'Bíceps';
+      if (/triceps|testa|pulley/.test(name)) return 'Tríceps';
+      if (/prancha|abdominal|core|fazendeiro/.test(name)) return 'Core';
+      return ({ A: 'Peito', B: 'Costas', C: 'Pernas', D: 'Ombros' })[fallbackTreino] || 'Outros';
+    }
+
+    function getMuscleVolumeData() {
+      const totals = {};
+      (state.completedWorkouts || []).forEach((workout) => {
+        Object.entries(workout.setDetails || {}).forEach(([exId, details]) => {
+          const ex = findExercise(exId);
+          const group = getExerciseMuscleGroup(ex, workout.treino);
+          const fallbackWeight = Number(normalizeWeightValue(workout.weights?.[exId])) || 0;
+          (Array.isArray(details) ? details : []).forEach((detail) => {
+            const weight = Number(normalizeWeightValue(detail?.weight)) || fallbackWeight;
+            const reps = Number(normalizeRepsValue(detail?.reps)) || 0;
+            if (weight > 0 && reps > 0) totals[group] = (totals[group] || 0) + weight * reps;
+          });
+        });
+      });
+      return Object.entries(totals).map(([group, volume]) => ({ group, volume: Math.round(volume) })).sort((a, b) => b.volume - a.volume);
+    }
+
+    function renderProgressionPanel() {
+      const panel = document.getElementById('progressionPanel');
+      if (!panel) return;
+      const config = state.prefs?.progression || { mode: 'percent', value: 5, minIncrement: 0.5, requireTopReps: true };
+      const volumes = getMuscleVolumeData();
+      const maxVolume = Math.max(1, ...volumes.map((item) => item.volume));
+      const allOneRMs = getAllExercisesFlat().map((ex) => getExerciseEstimated1RM(ex.id)).filter(Boolean);
+      const bestOneRM = allOneRMs.sort((a, b) => b.oneRM - a.oneRM)[0];
+      const volumeHtml = volumes.length
+        ? `<div class="muscle-volume-list">${volumes.map((item) => `<div class="muscle-volume-row"><span>${escapeHtml(item.group)}</span><div class="muscle-volume-track"><i style="width:${Math.max(5, Math.round((item.volume / maxVolume) * 100))}%"></i></div><strong>${formatMetricVolume(item.volume)}</strong></div>`).join('')}</div>`
+        : '<p class="progression-rule-note">Conclua treinos com carga e repetições para visualizar o volume por grupo muscular.</p>';
+      panel.innerHTML = `
+        <div class="section-title">Progressão e volume</div>
+        <div class="progression-summary-grid">
+          <div><strong>${formatMetricVolume(volumes.reduce((sum, item) => sum + item.volume, 0))}</strong><span>volume histórico</span></div>
+          <div><strong>${volumes.length || '—'}</strong><span>grupos com dados</span></div>
+          <div><strong>${bestOneRM ? `${formatMetricNumber(bestOneRM.oneRM)} kg` : '—'}</strong><span>maior 1RM estimado</span></div>
+        </div>
+        <strong style="font-size:.78rem;">Volume por grupo muscular</strong>
+        ${volumeHtml}
+        <strong style="font-size:.78rem;">Regra de aumento de carga</strong>
+        <div class="progression-rule-grid">
+          <label>Modelo<select onchange="saveProgressionRule('mode', this.value)"><option value="percent" ${config.mode === 'percent' ? 'selected' : ''}>Percentual</option><option value="fixed" ${config.mode === 'fixed' ? 'selected' : ''}>Incremento fixo</option></select></label>
+          <label>${config.mode === 'percent' ? 'Aumento (%)' : 'Aumento (kg)'}<input type="number" inputmode="decimal" min="0.5" max="20" step="0.5" value="${escapeHtml(config.value)}" onchange="saveProgressionRule('value', this.value)" /></label>
+          <label>Incremento mínimo (kg)<input type="number" inputmode="decimal" min="0.25" max="20" step="0.25" value="${escapeHtml(config.minIncrement)}" onchange="saveProgressionRule('minIncrement', this.value)" /></label>
+          <label>Aplicar aumento<select onchange="saveProgressionRule('requireTopReps', this.value)"><option value="true" ${config.requireTopReps ? 'selected' : ''}>Ao atingir topo de reps</option><option value="false" ${!config.requireTopReps ? 'selected' : ''}>Sempre que concluir séries</option></select></label>
+        </div>
+        <p class="progression-rule-note">O 1RM é uma estimativa baseada na melhor série registrada. A sugestão só deve ser seguida se a técnica estiver estável.</p>`;
+    }
+
+    function saveProgressionRule(key, value) {
+      state.prefs = state.prefs || {};
+      const current = state.prefs.progression || { mode: 'percent', value: 5, minIncrement: 0.5, requireTopReps: true };
+      if (key === 'mode') current.mode = value === 'fixed' ? 'fixed' : 'percent';
+      if (key === 'value') current.value = Number(safeNumber(value, 0.5, 20, current.value).toFixed(1));
+      if (key === 'minIncrement') current.minIncrement = Number(safeNumber(value, 0.25, 20, current.minIncrement).toFixed(2));
+      if (key === 'requireTopReps') current.requireTopReps = String(value) !== 'false';
+      state.prefs.progression = current;
+      saveState();
+      renderProgressionPanel();
+      renderTreinos();
+      showToast('Regra de progressão atualizada');
     }
 
     function getWorkoutSummary(treinoId) {
@@ -3473,6 +3659,7 @@
       document.getElementById('progWorkouts').textContent = workoutsCount;
       document.getElementById('progWeights').textContent = weightsCount;
       document.getElementById('progHistory').textContent = historyCount;
+      renderProgressionPanel();
     }
 
     function parseRepsMid(reps) {
@@ -3898,8 +4085,11 @@
       const reps = latestWorkout ? latestWorkout.setDetails[exId].map((detail) => Number(detail && detail.reps) || 0).filter(Boolean) : [];
       const completedTop = reps.length >= ex.series && reps.every((value) => value >= targetReps);
 
-      if (completedTop) {
-        const increment = Math.max(0.5, Math.round((latestWeight * 0.05) * 2) / 2);
+      const rule = state.prefs?.progression || { mode: 'percent', value: 5, minIncrement: 0.5, requireTopReps: true };
+      const isEligible = rule.requireTopReps ? completedTop : reps.length >= ex.series;
+      if (isEligible) {
+        const configured = rule.mode === 'fixed' ? Number(rule.value) : latestWeight * (Number(rule.value) / 100);
+        const increment = Math.max(Number(rule.minIncrement) || 0.5, Math.round(configured * 2) / 2);
         const nextWeight = (latestWeight + increment).toFixed(1).replace('.0', '');
         return `Sugestão: se a técnica estiver boa, experimente ${nextWeight} kg na próxima sessão.`;
       }
@@ -3912,10 +4102,11 @@
       const history = getExerciseHistory(exId);
       const hist = history.filter((session) => session.maxWeight > 0).map((session) => ({ date: session.date, week: session.week, weight: session.maxWeight }));
       const records = getPersonalRecords(exId);
+      const estimatedOneRM = getExerciseEstimated1RM(exId);
       document.getElementById('chartModalTitle').textContent = ex ? `Evolução — ${ex.nome}` : 'Evolução de carga';
       const wrap = document.getElementById('chartWrap');
       const advice = getExerciseProgressionAdvice(exId);
-      const recordHtml = records ? `<div class="chart-record-grid"><div><strong>${formatMetricNumber(records.bestLoad?.weight)} kg</strong><span>melhor carga</span></div><div><strong>${formatMetricNumber(records.bestReps?.reps)}</strong><span>mais repetições</span></div><div><strong>${formatMetricVolume(records.bestSetVolume?.volume)}</strong><span>maior volume/série</span></div><div><strong>${formatMetricVolume(records.bestSessionVolume?.volume)}</strong><span>maior volume/sessão</span></div></div>` : '';
+      const recordHtml = records ? `<div class="chart-record-grid"><div><strong>${formatMetricNumber(records.bestLoad?.weight)} kg</strong><span>melhor carga</span></div><div><strong>${formatMetricNumber(records.bestReps?.reps)}</strong><span>mais repetições</span></div><div><strong>${formatMetricVolume(records.bestSetVolume?.volume)}</strong><span>maior volume/série</span></div><div><strong>${estimatedOneRM ? `${formatMetricNumber(estimatedOneRM.oneRM)} kg` : '—'}</strong><span>1RM estimado</span></div></div>` : '';
       const sessionsHtml = history.length ? `<div class="chart-history"><div class="chart-section-title">Histórico detalhado</div>${history.slice().reverse().map((session) => `<div class="chart-history-row"><div><strong>${escapeHtml(formatDate(session.date))}</strong><small>${session.legacy ? 'Registro de carga' : `${session.sets.length} séries · ${session.totalReps || 0} reps`}${session.week ? ` · S${session.week}` : ''}</small></div><div><strong>${formatMetricNumber(session.maxWeight)} kg</strong><small>${formatMetricVolume(session.volume)}${session.bestSet?.reps ? ` · melhor série ${formatMetricNumber(session.bestSet.weight)} kg × ${formatMetricNumber(session.bestSet.reps)}` : ''}</small></div></div>`).join('')}</div>` : '<div class="chart-empty">Registre uma carga e repetições para iniciar o histórico deste exercício.</div>';
       const chartHtml = hist.length ? buildWeightChartSVG(hist) : '<div class="chart-empty">Ainda não há dados numéricos suficientes para o gráfico.</div>';
       wrap.innerHTML = recordHtml + chartHtml + (advice ? `<div class="chart-advice">${advice}</div>` : '') + sessionsHtml;
@@ -4179,7 +4370,7 @@
       const normalized = migrateState(state);
       const stateText = JSON.stringify(normalized);
       const payload = {
-        app: 'MARSB-GYM', version: 3, schemaVersion: STATE_SCHEMA_VERSION,
+        app: 'MARSB-GYM', version: 4, schemaVersion: STATE_SCHEMA_VERSION,
         exportedAt: new Date().toISOString(),
         checksum: checksumText(stateText),
         state: normalized
@@ -4200,7 +4391,7 @@
     function validateBackupPayload(parsed) {
       if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('O arquivo não contém um objeto JSON.');
       if (parsed.app && parsed.app !== 'MARSB-GYM') throw new Error('Este arquivo não é um backup do MARSB-GYM.');
-      if (parsed.version !== undefined && (!Number.isFinite(Number(parsed.version)) || Number(parsed.version) > 3)) throw new Error('A versão deste backup é mais nova que a versão do app.');
+      if (parsed.version !== undefined && (!Number.isFinite(Number(parsed.version)) || Number(parsed.version) > 4)) throw new Error('A versão deste backup é mais nova que a versão do app.');
       if (parsed.schemaVersion !== undefined && Number(parsed.schemaVersion) > STATE_SCHEMA_VERSION) throw new Error('O schema deste backup é incompatível com esta versão do app.');
       const incoming = parsed.state && typeof parsed.state === 'object' ? parsed.state : parsed;
       if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) throw new Error('O estado do backup está ausente ou inválido.');
@@ -4263,6 +4454,7 @@
       perfil: { title: 'Perfil do usuário', subtitle: 'Nome e foto salvos neste dispositivo' },
       progresso: { title: 'Progresso', subtitle: 'Estatísticas, histórico, preferências e backups' },
       plano: { title: 'Plano do personal', subtitle: 'Editar, importar e exportar treinos' },
+      personal: { title: 'Modo Personal', subtitle: 'Perfis locais de alunos e compartilhamento de plano' },
       sobre: { title: 'Sobre o MARSB-GYM', subtitle: 'Estrutura do programa e instruções de uso' },
       dados: { title: 'Dados e backup', subtitle: 'Armazenamento local, exportação e restauração' },
       aparencia: { title: 'Aparência', subtitle: 'Tema e preferência visual' },
@@ -4301,6 +4493,7 @@
         renderPeriod(); renderHistory(); updateStats(); syncPrefToggles();
       }
       if (kind === 'plano') initPlanoPage();
+      if (kind === 'personal') renderPersonalProfiles();
       if (kind === 'dados') refreshConfigDataStatus();
       if (kind === 'aparencia') syncAppearanceControl();
       if (kind === 'notificacoes') syncNotificationControls();
@@ -4327,6 +4520,176 @@
       configWindowState = { kind: null, source: null, parent: null, next: null, returnFocus: null };
       if (current.returnFocus && document.contains(current.returnFocus)) current.returnFocus.focus({ preventScroll: true });
     }
+
+    function personalSlug(value) {
+      return String(value || 'aluno').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/(^-|-$)/g, '').toLowerCase().slice(0, 36) || 'aluno';
+    }
+
+    function personalDownloadJson(payload, filename) {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    function personalSnapshot() {
+      const snapshot = JSON.parse(JSON.stringify(migrateState(state)));
+      snapshot.personalProfiles = [];
+      snapshot.coachHistory = [];
+      snapshot.activeWorkout = null;
+      return snapshot;
+    }
+
+    function personalExportCurrentProfile() {
+      const snapshot = personalSnapshot();
+      const name = boundedText(snapshot.profile?.name, 120) || 'Aluno MARSB';
+      personalDownloadJson({ type: 'marsb-gym-athlete-profile', version: 1, exportedAt: new Date().toISOString(), athleteName: name, state: snapshot }, `marsb-gym-aluno-${personalSlug(name)}-${todayKey()}.json`);
+      showToast('Perfil do aluno exportado');
+    }
+
+    function personalImportProfile(file) {
+      if (!file) return;
+      if (file.size > 4 * 1024 * 1024) { showToast('O arquivo de perfil deve ter até 4 MB'); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || ''));
+          if (parsed?.type !== 'marsb-gym-athlete-profile' || !parsed?.state || typeof parsed.state !== 'object') throw new Error('Formato de perfil não reconhecido');
+          const snapshot = migrateState({ ...parsed.state, personalProfiles: [] });
+          const name = boundedText(parsed.athleteName || snapshot.profile?.name, 120) || 'Aluno sem nome';
+          state.personalProfiles = Array.isArray(state.personalProfiles) ? state.personalProfiles : [];
+          state.personalProfiles.push({ id: `aluno-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, name, importedAt: new Date().toISOString(), snapshot });
+          state.personalProfiles = state.personalProfiles.slice(-30);
+          saveState(); renderPersonalProfiles(); showToast('Perfil de aluno importado');
+        } catch (error) { showToast('Não foi possível importar o perfil: ' + (error.message || 'arquivo inválido')); }
+      };
+      reader.onerror = () => showToast('Não foi possível ler o arquivo de perfil');
+      reader.readAsText(file);
+      const input = document.getElementById('personalProfileFile'); if (input) input.value = '';
+    }
+
+    function renderPersonalProfiles() {
+      const list = document.getElementById('personalProfileList');
+      if (!list) return;
+      const profiles = Array.isArray(state.personalProfiles) ? state.personalProfiles : [];
+      if (!profiles.length) { list.innerHTML = '<p class="calc-hint">Nenhum perfil de aluno importado neste aparelho.</p>'; return; }
+      list.innerHTML = profiles.slice().reverse().map((item) => `<div class="personal-profile-item"><div><strong>${escapeHtml(item.name)}</strong><span>Importado em ${new Date(item.importedAt).toLocaleDateString('pt-BR')}</span></div><div style="display:flex;gap:6px;"><button type="button" class="chart-link-btn" onclick="personalApplyProfile('${escapeHtml(item.id)}')">Usar</button><button type="button" class="chart-link-btn" onclick="personalDeleteProfile('${escapeHtml(item.id)}')">Remover</button></div></div>`).join('');
+    }
+
+    function personalApplyProfile(id) {
+      const entry = (state.personalProfiles || []).find((item) => item.id === id);
+      if (!entry?.snapshot) { showToast('Perfil não encontrado'); return; }
+      if (!confirm(`Aplicar o perfil de ${entry.name}? Os dados atuais serão substituídos. Exporte um backup antes se quiser preservá-los.`)) return;
+      const roster = state.personalProfiles;
+      state = migrateState({ ...entry.snapshot, personalProfiles: roster });
+      saveState();
+      renderQuickStart(); renderTreinos(); updateStats(); renderPeriod(); renderHistory(); initDietPage(); refreshConfigDataStatus();
+      closeConfigWindow(); showToast(`Perfil de ${entry.name} aplicado`);
+    }
+
+    function personalDeleteProfile(id) {
+      const entry = (state.personalProfiles || []).find((item) => item.id === id);
+      if (!entry || !confirm(`Remover o perfil local de ${entry.name}?`)) return;
+      state.personalProfiles = state.personalProfiles.filter((item) => item.id !== id);
+      saveState(); renderPersonalProfiles(); showToast('Perfil removido');
+    }
+
+    function personalBytesToBase64(bytes) { let out = ''; bytes.forEach((byte) => { out += String.fromCharCode(byte); }); return btoa(out); }
+    function personalBase64ToBytes(value) { const binary = atob(value); return Uint8Array.from(binary, (char) => char.charCodeAt(0)); }
+    async function personalEncodePlanPayload(payload) {
+      const bytes = new TextEncoder().encode(JSON.stringify(payload));
+      if ('CompressionStream' in window) {
+        const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'));
+        return 'Z' + personalBytesToBase64(new Uint8Array(await new Response(stream).arrayBuffer()));
+      }
+      return 'J' + personalBytesToBase64(bytes);
+    }
+    async function personalDecodePlanPayload(code) {
+      const marker = code.charAt(0); const bytes = personalBase64ToBytes(code.slice(1));
+      if (marker === 'Z') {
+        if (!('DecompressionStream' in window)) throw new Error('Este navegador não consegue abrir este código compactado');
+        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        return JSON.parse(new TextDecoder().decode(await new Response(stream).arrayBuffer()));
+      }
+      if (marker === 'J') return JSON.parse(new TextDecoder().decode(bytes));
+      throw new Error('Código de plano inválido');
+    }
+
+    async function personalGeneratePlanCode() {
+      try {
+        const map = cloneProgram(treinosMap());
+        const payload = { type: 'marsb-gym-plan-code', version: 1, generatedAt: new Date().toISOString(), name: state.customProgramMeta?.name || 'Plano MARSB-GYM', author: state.customProgramMeta?.author || state.profile?.name || '', treinos: map };
+        const code = 'MARSB1-' + await personalEncodePlanPayload(payload);
+        const field = document.getElementById('personalPlanCode'); if (field) field.value = code;
+        document.getElementById('personalQr').replaceChildren();
+        showToast('Código do plano gerado');
+      } catch (error) { showToast('Não foi possível gerar o código: ' + (error.message || error)); }
+    }
+
+    async function personalCopyPlanCode() {
+      const code = document.getElementById('personalPlanCode')?.value.trim();
+      if (!code) { showToast('Gere ou cole um código primeiro'); return; }
+      try { await navigator.clipboard.writeText(code); showToast('Código copiado'); } catch (_) { const field = document.getElementById('personalPlanCode'); field?.select(); document.execCommand('copy'); showToast('Código selecionado para copiar'); }
+    }
+
+    async function personalApplyPlanCode() {
+      const raw = document.getElementById('personalPlanCode')?.value.trim() || '';
+      if (!raw.startsWith('MARSB1-')) { showToast('Cole um código de plano MARSB válido'); return; }
+      try {
+        const payload = await personalDecodePlanPayload(raw.slice(7));
+        if (payload?.type !== 'marsb-gym-plan-code') throw new Error('Código não reconhecido');
+        const error = validateProgramMap(payload.treinos);
+        if (error) throw new Error(error);
+        if (!confirm(`Aplicar o plano “${payload.name || 'MARSB-GYM'}”? O plano atual será substituído.`)) return;
+        state.customProgram = normalizeProgram(payload.treinos);
+        state.customProgramMeta = { name: boundedText(payload.name, 120) || 'Plano recebido', author: boundedText(payload.author, 120), importedAt: new Date().toISOString() };
+        state.customExercises = { A: [], B: [], C: [], D: [] };
+        planoDraft = cloneProgram(state.customProgram);
+        saveState(); updatePlanoStatus(); renderQuickStart(); renderTreinos(); showToast('Plano recebido e aplicado');
+      } catch (error) { showToast('Não foi possível aplicar o código: ' + (error.message || error)); }
+    }
+
+    function personalShowPlanQr() {
+      const code = document.getElementById('personalPlanCode')?.value.trim();
+      const wrap = document.getElementById('personalQr');
+      if (!code) { showToast('Gere ou cole um código primeiro'); return; }
+      if (code.length > 2600) { wrap.textContent = 'Este plano é grande para QR. Compartilhe o código em texto ou exporte o perfil JSON.'; return; }
+      const image = document.createElement('img');
+      image.alt = 'QR do código do plano';
+      image.src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(code);
+      image.onerror = () => { wrap.textContent = 'Não foi possível gerar o QR agora. Compartilhe o código em texto.'; };
+      wrap.replaceChildren(image);
+    }
+
+    function addSwipeDismissHandle(panel) {
+      if (!panel || panel.querySelector(':scope > .swipe-dismiss-handle')) return panel?.querySelector(':scope > .swipe-dismiss-handle');
+      const handle = document.createElement('div'); handle.className = 'swipe-dismiss-handle'; handle.setAttribute('aria-hidden', 'true'); panel.prepend(handle); return handle;
+    }
+
+    function installSwipeDismiss() {
+      const specs = [
+        ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
+        ['workoutCompleteModal', '#workoutCompleteModal .modal-sheet', closeWorkoutComplete], ['swapExerciseModal', '#swapExerciseModal .modal-sheet', closeSwapExercise],
+        ['aiSettingsModal', '#aiSettingsModal .modal-sheet', closeAiSettings], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
+        ['guidedOverlay', '#guidedOverlay .guided-header', exitGuided], ['timerOverlay', '#timerOverlay', skipTimer]
+      ];
+      specs.forEach(([overlayId, selector, close]) => {
+        const overlay = document.getElementById(overlayId); const panel = document.querySelector(selector); const handle = addSwipeDismissHandle(panel);
+        if (!overlay || !panel || !handle || handle.dataset.swipeReady) return;
+        handle.dataset.swipeReady = '1'; let startY = 0; let deltaY = 0;
+        handle.addEventListener('pointerdown', (event) => { if (event.button && event.pointerType === 'mouse') return; startY = event.clientY; deltaY = 0; panel.style.transition = 'none'; handle.setPointerCapture?.(event.pointerId); });
+        handle.addEventListener('pointermove', (event) => { if (!startY) return; deltaY = Math.max(0, event.clientY - startY); if (deltaY) panel.style.transform = `translateY(${Math.min(deltaY, 180)}px)`; });
+        const finish = () => { if (!startY) return; const shouldClose = deltaY > 84; panel.style.transition = 'transform 180ms cubic-bezier(.23,1,.32,1)'; panel.style.transform = ''; startY = 0; deltaY = 0; if (shouldClose) close(); };
+        handle.addEventListener('pointerup', finish); handle.addEventListener('pointercancel', finish);
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', installSwipeDismiss, { once: true });
+    } else {
+      setTimeout(installSwipeDismiss, 0);
+    }
+    document.addEventListener('pointerdown', () => installSwipeDismiss(), { capture: true, once: true });
 
     function renderUserProfile() {
       const profile = state.profile || { name: '', photo: '' };
@@ -4810,6 +5173,14 @@
       lines.push('=== CONTEXTO DO ATLETA ===');
       lines.push('Semana atual: ' + currentWeek + ' — ' + (WEEKS[currentWeek]?.title || ''));
       lines.push('Foco da semana: ' + (WEEKS[currentWeek]?.desc || ''));
+      const active = state.activeWorkout;
+      if (active?.treino) {
+        const activeTreino = treinosMap()[active.treino];
+        lines.push('TREINO EM ANDAMENTO: ' + active.treino + ' — ' + (activeTreino?.nome || 'Treino atual') + (active.startedAt ? ' | iniciado em ' + new Date(active.startedAt).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' }) : ''));
+        lines.push('A sessão em andamento deve ser priorizada em sugestões de execução, descansos e adaptação.');
+      } else {
+        lines.push('Nenhuma sessão está em andamento neste momento.');
+      }
       lines.push('');
       Object.values(treinosMap()).forEach(t => {
         lines.push('Treino ' + t.id + ' — ' + t.nome);
@@ -4846,6 +5217,62 @@
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
       return div;
+    }
+
+    function saveCoachMessage(role, content) {
+      if (!['user', 'assistant'].includes(role) || !content) return;
+      state.coachHistory = Array.isArray(state.coachHistory) ? state.coachHistory : [];
+      state.coachHistory.push({ role, content: boundedText(content, 2500), at: new Date().toISOString() });
+      state.coachHistory = state.coachHistory.slice(-40);
+      saveState();
+    }
+
+    function renderCoachHistory() {
+      const box = document.getElementById('aiMessages');
+      if (!box) return;
+      box.innerHTML = '';
+      const history = Array.isArray(state.coachHistory) ? state.coachHistory : [];
+      if (!history.length) {
+        appendAiBubble('system', 'Coach pronto para treinos, técnica, progressão e nutrição esportiva. As conversas ficam salvas apenas neste aparelho.');
+      } else {
+        history.forEach((item) => appendAiBubble(item.role, item.content));
+      }
+      aiHistory = history.slice(-12).map((item) => ({ role: item.role, content: item.content }));
+    }
+
+    function clearCoachHistory() {
+      if (!Array.isArray(state.coachHistory) || !state.coachHistory.length) { showToast('Não há conversas para limpar'); return; }
+      if (!confirm('Limpar o histórico local de conversas do Coach neste aparelho?')) return;
+      state.coachHistory = [];
+      aiHistory = [];
+      saveState();
+      renderCoachHistory();
+      showToast('Histórico local limpo');
+    }
+
+    function formatCoachAnswer(answer) {
+      const text = String(answer || '').trim();
+      if (!text) return 'Resumo\nNão recebi uma resposta utilizável.\n\nAção prática\nTente reformular a pergunta com o exercício, carga e repetições.\n\nAtenção/limites\nPare se houver dor aguda ou piora dos sintomas.';
+      const normalized = text.toLowerCase();
+      if (normalized.includes('resumo') && (normalized.includes('ação') || normalized.includes('acao')) && normalized.includes('atenção')) return text;
+      return `Resumo\n${text}\n\nAção prática\n• Aplique a orientação de forma gradual e registre carga, repetições e RIR no próximo treino.\n\nAtenção/limites\n• Pare se houver dor aguda, formigamento, perda de força ou piora dos sintomas; procure avaliação profissional se persistir.`;
+    }
+
+    function getOfflineCoachFallback(question) {
+      const q = String(question || '').toLowerCase();
+      let summary = 'Sem conexão com a IA agora, mas você pode usar uma orientação conservadora baseada no seu registro local.';
+      let action = 'Mantenha a técnica estável, deixe 1–3 RIR e registre o resultado para comparar na próxima sessão.';
+      if (/dor|ombro|joelho|lombar|les[aã]o/.test(q)) {
+        summary = 'Para dor ou desconforto, a prioridade é reduzir o estresse do movimento e não forçar a progressão.';
+        action = 'Reduza a carga, limite a amplitude sem dor, evite falha e troque o exercício se a dor aumentar.';
+      } else if (/carga|progress|peso|repet/.test(q)) {
+        summary = 'A progressão mais segura é confirmar a faixa alta de repetições com técnica antes de aumentar a carga.';
+        action = 'Quando completar todas as séries no topo da faixa, aumente o menor incremento disponível e volte ao início da faixa de repetições.';
+      } else if (/aquec|mobil/.test(q)) {
+        summary = 'Um aquecimento útil prepara o padrão de movimento sem gerar fadiga.';
+        action = 'Faça 5–8 minutos leves, mobilidade específica e 2–4 séries de aproximação progressivas antes do primeiro exercício principal.';
+      }
+      return `Resumo\n${summary}\n\nAção prática\n• ${action}\n\nAtenção/limites\n• Este é um fallback offline e não substitui avaliação profissional. Interrompa em caso de dor aguda, formigamento ou piora.`;
     }
 
     function setAiTyping(on) {
@@ -4899,12 +5326,16 @@
       // Aviso local leve (a regra forte está no system prompt da IA)
       if (isClearlyOffTopicGym(text)) {
         appendAiBubble('user', text);
+        saveCoachMessage('user', text);
         if (input) input.value = '';
-        appendAiBubble('assistant', 'Só posso ajudar com academia, treino e hipertrofia no MARSB-GYM.\n\nExemplos: progressão de carga, técnica de um exercício, adaptação por dor leve, aquecimento ou macros para ganho de massa.\n\nO que você quer treinar ou ajustar?');
+        const scoped = 'Resumo\nSó posso ajudar com academia, treino e hipertrofia no MARSB-GYM.\n\nAção prática\n• Pergunte sobre carga, técnica, descanso, aquecimento ou o treino de hoje.\n\nAtenção/limites\n• Para dor intensa, lesão ou sintomas, interrompa o treino e procure um profissional.';
+        appendAiBubble('assistant', scoped);
+        saveCoachMessage('assistant', scoped);
         return;
       }
 
       appendAiBubble('user', text);
+      saveCoachMessage('user', text);
       if (input) input.value = '';
       aiHistory.push({ role: 'user', content: text });
       if (aiHistory.length > 12) aiHistory = aiHistory.slice(-12);
@@ -4922,12 +5353,16 @@
         } else {
           answer = await callFreePuterAI(systemPrompt, aiHistory);
         }
-        if (!answer) answer = '(sem resposta)';
+        answer = formatCoachAnswer(answer);
         appendAiBubble('assistant', answer);
+        saveCoachMessage('assistant', answer);
         aiHistory.push({ role: 'assistant', content: answer });
       } catch (err) {
-        appendAiBubble('error', 'Falha ao falar com a IA: ' + (err.message || err) +
-          '\n\nDica: no modo grátis pode aparecer login do Puter na primeira vez. Se persistir, em ⚙ Config use outra API (Groq/OpenAI) ou troque o modelo grátis.');
+        const fallback = getOfflineCoachFallback(text);
+        appendAiBubble('assistant', fallback);
+        saveCoachMessage('assistant', fallback);
+        aiHistory.push({ role: 'assistant', content: fallback });
+        showToast('Coach em modo offline: orientação local exibida');
       } finally {
         setAiTyping(false);
         aiBusy = false;
@@ -4941,6 +5376,7 @@
 
     function initAiPage() {
       updateAiStatus();
+      renderCoachHistory();
       const contextSelect = document.getElementById('coachContext');
       if (contextSelect) { contextSelect.value = state.coachPrefs?.context || 'treino'; contextSelect.addEventListener('change', () => setCoachContext(contextSelect.value)); }
       updateCoachConnection();
@@ -6186,22 +6622,38 @@
       return { k: Math.round(food.k * grams / 100), p: Math.round(food.p * grams / 100), c: Math.round(food.c * grams / 100), f: Math.round(food.f * grams / 100) };
     }
 
+    function getDietTargets() {
+      const targets = state.dietPrefs?.targets || {};
+      return { kcal: Number(targets.kcal) || 0, protein: Number(targets.protein) || 0, carbs: Number(targets.carbs) || 0, fats: Number(targets.fats) || 0, waterMl: Number(targets.waterMl) || 3500 };
+    }
+
+    function getDietTotals(day) {
+      return (day.meals || []).reduce((sum, meal) => { const m = dietMealMacros(meal); return { k: sum.k + m.k, p: sum.p + m.p, c: sum.c + m.c, f: sum.f + m.f }; }, { k: 0, p: 0, c: 0, f: 0 });
+    }
+
+    function dietGoalRow(label, value, target, unit) {
+      const pct = target > 0 ? Math.min(100, Math.round((value / target) * 100)) : 0;
+      return `<div class="diet-goal-row"><span>${label}</span><div class="diet-goal-track"><i style="width:${pct}%"></i></div><strong>${Math.round(value)}/${target || '—'}${unit}</strong></div>`;
+    }
+
     function renderDietDiary() {
       const day = getDietDay();
       const list = document.getElementById('dietDiaryList');
       const foodSelect = document.getElementById('dietFoodSelect');
       if (foodSelect && !foodSelect.options.length) foodSelect.innerHTML = Object.entries(TACO_DIARY_FOODS).map(([key, food]) => `<option value="${key}">${escapeHtml(food.name)} · TACO</option>`).join('');
       if (!list) return;
-      const totals = day.meals.reduce((sum, meal) => { const m = dietMealMacros(meal); return { k: sum.k + m.k, p: sum.p + m.p, c: sum.c + m.c, f: sum.f + m.f }; }, { k: 0, p: 0, c: 0, f: 0 });
+      const totals = getDietTotals(day);
+      const targets = getDietTargets();
+      ['Kcal','Protein','Carbs','Fats','Water'].forEach((key) => { const input = document.getElementById(`dietTarget${key}`); const field = ({ Kcal:'kcal', Protein:'protein', Carbs:'carbs', Fats:'fats', Water:'waterMl' })[key]; if (input && document.activeElement !== input) input.value = targets[field] || ''; });
       if (!day.meals.length) list.innerHTML = '<div class="diet-empty">Nenhuma refeição registrada neste dia. Comece adicionando alimentos da base TACO.</div>';
-      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
+      else list.innerHTML = `<div class="diet-totals"><strong>${totals.k} kcal</strong><span>${totals.p}g P</span><span>${totals.c}g C</span><span>${totals.f}g G</span></div><div class="diet-goals">${dietGoalRow('Calorias', totals.k, targets.kcal, ' kcal')}${dietGoalRow('Proteína', totals.p, targets.protein, ' g')}${dietGoalRow('Carbo', totals.c, targets.carbs, ' g')}${dietGoalRow('Gordura', totals.f, targets.fats, ' g')}</div>` + day.meals.map((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey] || { name: meal.name || 'Alimento', group: 'Outro' }; const m = dietMealMacros(meal); return `<div class="diet-meal-row"><label><input type="checkbox" ${meal.completed ? 'checked' : ''} onchange="toggleDietMeal('${encodeData(meal.id)}')"><span><strong>${escapeHtml(meal.mealType || 'Refeição')}</strong><br>${escapeHtml(food.name)} · ${meal.grams} g <small>${m.k} kcal · ${m.p}g proteína</small></span></label><select onchange="replaceDietMeal('${encodeData(meal.id)}', this.value)" aria-label="Substituir ${escapeHtml(food.name)}">${Object.entries(TACO_DIARY_FOODS).filter(([, candidate]) => candidate.group === food.group).map(([key, candidate]) => `<option value="${key}" ${key === meal.foodKey ? 'selected' : ''}>Trocar por ${escapeHtml(candidate.name)}</option>`).join('')}</select><button type="button" class="hi-del" onclick="removeDietMeal('${encodeData(meal.id)}')">Apagar</button></div>`; }).join('');
       const water = Math.max(0, Number(day.waterMl) || 0);
       const fill = document.getElementById('dietWaterFill');
       const label = document.getElementById('dietWaterLabel');
-      if (fill) fill.style.width = Math.min(100, water / 35) + '%';
-      if (label) label.textContent = `${water} ml registrados · meta visual de 3.500 ml`;
+      if (fill) fill.style.width = Math.min(100, (water / targets.waterMl) * 100) + '%';
+      if (label) label.textContent = `${water} ml registrados · ${Math.min(100, Math.round((water / targets.waterMl) * 100))}% da meta de ${targets.waterMl} ml`;
       const favorites = document.getElementById('dietFavoriteSelect');
-      if (favorites) { let saved = state.dietFavorites || []; favorites.innerHTML = '<option value="">Cardápios favoritos</option>' + saved.map((favorite, index) => `<option value="${index}">${escapeHtml(favorite.name)}</option>`).join(''); }
+      if (favorites) { let saved = state.dietFavorites || []; favorites.innerHTML = '<option value="">Cardápios favoritos</option>' + saved.map((favorite, index) => `<option value="${index}">${escapeHtml(favorite.name)} · ${(favorite.values?.meals || []).length} itens</option>`).join(''); }
       renderDietShoppingList();
     }
 
@@ -6239,11 +6691,14 @@
       renderDietDiary();
       showToast(`${added} alimento(s) copiado(s) para o Diário Alimentar`);
     }
-    function saveDietPrefs() { state.dietPrefs = { restrictions: boundedText(document.getElementById('dietRestrictions')?.value, 300), allergies: boundedText(document.getElementById('dietAllergies')?.value, 300) }; saveState(); showToast('Preferências alimentares salvas'); }
-    function saveDietFavorite() { const name = boundedText(prompt('Nome do cardápio favorito:') || '', 60); if (!name) return; state.dietFavorites = (state.dietFavorites || []).filter((favorite) => favorite.name !== name); state.dietFavorites.unshift({ id: `favorite_${Date.now()}`, name, values: { meals: getDietDay().meals, waterMl: getDietDay().waterMl } }); state.dietFavorites = state.dietFavorites.slice(0, 20); saveState(); renderDietDiary(); showToast('Cardápio favorito salvo'); }
+    function saveDietPrefs() { state.dietPrefs = { ...(state.dietPrefs || {}), restrictions: boundedText(document.getElementById('dietRestrictions')?.value, 300), allergies: boundedText(document.getElementById('dietAllergies')?.value, 300) }; saveState(); showToast('Preferências alimentares salvas'); }
+    function saveDietTargets() { state.dietPrefs = { ...(state.dietPrefs || {}), targets: { kcal: Math.round(safeNumber(document.getElementById('dietTargetKcal')?.value, 0, 10000, 0)), protein: Math.round(safeNumber(document.getElementById('dietTargetProtein')?.value, 0, 500, 0)), carbs: Math.round(safeNumber(document.getElementById('dietTargetCarbs')?.value, 0, 1200, 0)), fats: Math.round(safeNumber(document.getElementById('dietTargetFats')?.value, 0, 500, 0)), waterMl: Math.round(safeNumber(document.getElementById('dietTargetWater')?.value, 500, 15000, 3500)) } }; saveState(); renderDietDiary(); showToast('Metas diárias salvas'); }
+    function duplicateDietDay() { const fromDate = getDietDate(); const source = getDietDay(fromDate); const target = new Date(`${fromDate}T12:00:00`); target.setDate(target.getDate() + 1); const targetDate = `${target.getFullYear()}-${String(target.getMonth()+1).padStart(2, '0')}-${String(target.getDate()).padStart(2, '0')}`; state.dietDiary[targetDate] = { waterMl: Number(source.waterMl) || 0, meals: (source.meals || []).map((meal, index) => ({ ...meal, id: `meal_${Date.now()}_${index}`, completed: false })) }; saveState(); const dateInput = document.getElementById('dietDate'); if (dateInput) dateInput.value = targetDate; renderDietDiary(); showToast('Dia alimentar duplicado para amanhã'); }
+    function saveDietFavorite() { const name = boundedText(prompt('Nome do cardápio favorito:') || '', 60); if (!name) return; state.dietFavorites = (state.dietFavorites || []).filter((favorite) => favorite.name !== name); const day = getDietDay(); state.dietFavorites.unshift({ id: `favorite_${Date.now()}`, name, createdAt: new Date().toISOString(), values: { meals: day.meals.map((meal) => ({ ...meal })), waterMl: day.waterMl, targets: getDietTargets() } }); state.dietFavorites = state.dietFavorites.slice(0, 20); saveState(); renderDietDiary(); showToast('Cardápio favorito salvo'); }
     function applyDietFavorite() { const index = document.getElementById('dietFavoriteSelect')?.value; const favorite = state.dietFavorites?.[Number(index)]; if (!favorite) return; const day = getDietDay(); day.meals = (favorite.values?.meals || []).map((meal, i) => ({ ...meal, id: `meal_${Date.now()}_${i}`, completed: false })); day.waterMl = Number(favorite.values?.waterMl) || 0; saveState(); renderDietDiary(); showToast('Cardápio favorito aplicado'); }
-    function renderDietShoppingList() { const box = document.getElementById('dietShoppingList'); if (!box) return; const totals = {}; getDietDay().meals.forEach((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey]; if (food) totals[food.name] = (totals[food.name] || 0) + Number(meal.grams || 0); }); box.innerHTML = Object.keys(totals).length ? Object.entries(totals).map(([name, grams]) => `<label><input type="checkbox"> ${escapeHtml(name)} — ${Math.round(grams)} g</label>`).join('') : '<span class="diet-empty">A lista será formada a partir das refeições adicionadas.</span>'; }
-    function copyDietShoppingList() { const text = Object.entries(getDietDay().meals.reduce((acc, meal) => { const food = TACO_DIARY_FOODS[meal.foodKey]; if (food) acc[food.name] = (acc[food.name] || 0) + Number(meal.grams || 0); return acc; }, {})).map(([name, grams]) => `- ${name}: ${Math.round(grams)} g`).join('\n'); if (!text) { showToast('Adicione alimentos antes de copiar'); return; } navigator.clipboard?.writeText(text).then(() => showToast('Lista copiada')).catch(() => showToast('Não foi possível copiar automaticamente')); }
+    function getDietShoppingGroups() { const groups = {}; getDietDay().meals.forEach((meal) => { const food = TACO_DIARY_FOODS[meal.foodKey]; if (!food) return; const group = food.group || 'Outros'; groups[group] = groups[group] || {}; groups[group][food.name] = (groups[group][food.name] || 0) + Number(meal.grams || 0); }); return groups; }
+    function renderDietShoppingList() { const box = document.getElementById('dietShoppingList'); if (!box) return; const groups = getDietShoppingGroups(); const categories = Object.keys(groups).sort(); box.innerHTML = categories.length ? categories.map((group) => `<div class="shopping-category">${escapeHtml(group)}</div>${Object.entries(groups[group]).sort(([a], [b]) => a.localeCompare(b, 'pt-BR')).map(([name, grams]) => `<label class="shopping-row"><input type="checkbox"> <span class="meal-copy"><strong>${escapeHtml(name)}</strong><small>${Math.round(grams)} g</small></span></label>`).join('')}`).join('') : '<span class="diet-empty">A lista será formada a partir das refeições adicionadas.</span>'; }
+    function copyDietShoppingList() { const groups = getDietShoppingGroups(); const text = Object.keys(groups).sort().map((group) => `${group}:\n${Object.entries(groups[group]).sort(([a], [b]) => a.localeCompare(b, 'pt-BR')).map(([name, grams]) => `- ${name}: ${Math.round(grams)} g`).join('\n')}`).join('\n\n'); if (!text) { showToast('Adicione alimentos antes de copiar'); return; } navigator.clipboard?.writeText(text).then(() => showToast('Lista copiada')).catch(() => showToast('Não foi possível copiar automaticamente')); }
 
     // ===================== DAILY MENU (3 MEALS, TACO) =====================
     function menuSeg(id, attr) {
@@ -6615,6 +7070,9 @@
           return { foodKey: match ? match[0] : '', name: it.food.n, grams: Math.max(1, Math.round(it.g || 0)) };
         }).filter(function (it) { return it.foodKey && it.grams > 0; }) };
       });
+      state.dietPrefs = { ...(state.dietPrefs || {}), targets: { kcal: Math.round(kcalT), protein: Math.round(protT), carbs: Math.round(carbT), fats: Math.round(fatT), waterMl: Math.round(waterMl) } };
+      saveState();
+      renderDietDiary();
       const box = document.getElementById('menuResult');
       box.style.display = 'block';
       box.innerHTML =
@@ -7339,6 +7797,8 @@
     initDietPage();
     initPageFeatures();
     refreshConfigDataStatus();
+    installSwipeDismiss();
+    window.addEventListener('load', () => requestAnimationFrame(installSwipeDismiss), { once: true });
     if (initialLoadNotice) setTimeout(() => showToast(initialLoadNotice), 650);
 
     // PWA install prompt
