@@ -1318,11 +1318,14 @@
     .weekly-bar-track { width:100%; max-width:26px; height:70px; display:flex; align-items:flex-end; padding:2px; border-radius:12px; background:color-mix(in srgb, var(--bg) 80%, var(--accent) 20%); }
     .weekly-bar-fill { width:100%; min-height:4px; border-radius:9px; background:linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--cyan))); }
     .weekly-note { margin:0; font-size:.74rem; }
-    .consistency-wrap { margin-top:14px; padding-top:12px; border-top:1px solid color-mix(in srgb, var(--border) 70%, transparent); }
-    .consistency-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin:10px 0; }
-    .consistency-day { display:grid; place-items:center; aspect-ratio:1; min-width:0; border-radius:8px; background:color-mix(in srgb, var(--bg) 82%, var(--border)); color:var(--text-muted); font-size:.65rem; }
+    .consistency-wrap { margin-top:11px; padding-top:9px; border-top:1px solid color-mix(in srgb, var(--border) 70%, transparent); }
+    .consistency-wrap .weekly-head { margin-bottom:5px; }
+    .consistency-wrap .weekly-head h3 { margin:2px 0 0; font-size:.86rem; }
+    .consistency-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin:7px 0 5px; }
+    .consistency-day { display:grid; place-items:center; height:29px; min-width:0; border-radius:8px; background:color-mix(in srgb, var(--bg) 82%, var(--border)); color:var(--text-muted); font-size:.62rem; }
     .consistency-day.has-activity { background:color-mix(in srgb, var(--accent) 68%, var(--bg)); color:#fff; font-weight:800; }
     .consistency-day.today { outline:2px solid var(--primary); outline-offset:1px; }
+    .consistency-wrap .weekly-note { font-size:.68rem; line-height:1.25; }
     .workout-filter-bar { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:12px 0; padding:10px; border:1px solid var(--border); border-radius:16px; background:var(--card); }
     .workout-filter-bar select, .workout-filter-bar input { flex:1 1 140px; min-width:0; }
     .filter-chip { border:1px solid var(--border); border-radius:999px; background:var(--bg); color:var(--text-muted); padding:7px 10px; font-size:.72rem; font-weight:700; }
@@ -2256,8 +2259,8 @@
     // ===================== DATA =====================
     const TREINOS_BASE = {
       A: {
-        id: 'A', nome: 'Peito + Core (Supra & Infra)',
-        foco: 'Tensão mecânica no peitoral e fortalecimento reto abdominal',
+        id: 'A', nome: 'Peito, Tríceps e Core',
+        foco: 'Hipertrofia de peitoral e tríceps com fortalecimento do core',
         color: 'blue',
         exercises: [
           { id: 'a1', nome: 'Supino Inclinado com Halteres', series: 4, reps: '6 a 8', descanso: 150, tech: 'Carga Pesada • RIR 1-2' },
@@ -2265,12 +2268,14 @@
           { id: 'a3', nome: 'Crossover na Polia (Foco Médio/Inferior)', series: 4, reps: '10 a 12', descanso: 90, tech: 'Drop-set na última série' },
           { id: 'a4', nome: 'Crucifixo Inclinado com Halteres', series: 3, reps: '10 a 12', descanso: 90, tech: 'Alongamento máximo no fundo' },
           { id: 'a5', nome: 'Abdominal Infra no Banco Inclinado / Paralelas', series: 3, reps: '12 a 15', descanso: 60, tech: 'Core - Infra • Sem embalo' },
-          { id: 'a6', nome: 'Abdominal Supra na Polia Alta (Cable Crunch)', series: 3, reps: '12 a 15', descanso: 60, tech: 'Core - Supra • Carga progressiva' }
+          { id: 'a6', nome: 'Abdominal Supra na Polia Alta (Cable Crunch)', series: 3, reps: '12 a 15', descanso: 60, tech: 'Core - Supra • Carga progressiva' },
+          { id: 'a7', nome: 'Tríceps Testa com Barra W', series: 4, reps: '8 a 10', descanso: 90, tech: 'Tríceps • Cotovelos fechados e fixos' },
+          { id: 'a8', nome: 'Tríceps Pulley (Corda)', series: 3, reps: '10 a 12', descanso: 60, tech: 'Tríceps • Drop-set na última série' }
         ]
       },
       B: {
-        id: 'B', nome: 'Costas + Core (Oblíquos & Rotação)',
-        foco: 'Largura/espessura dorsal e estabilização rotacional',
+        id: 'B', nome: 'Costas, Bíceps e Core',
+        foco: 'Hipertrofia de costas e bíceps com estabilização rotacional',
         color: 'green',
         exercises: [
           { id: 'b1', nome: 'Puxada Alta (Pegada Neutra ou Pronada)', series: 4, reps: '8 a 10', descanso: 120, tech: 'Pico de contração de 1s' },
@@ -2278,12 +2283,15 @@
           { id: 'b3', nome: 'Remada Unilateral com Halter (Serrote)', series: 3, reps: '10 a 12', descanso: 90, tech: 'Amplitude completa' },
           { id: 'b4', nome: 'Pulldown na Polia (Braços Estendidos)', series: 3, reps: '12 a 15', descanso: 75, tech: 'Foco em isolar o latíssimo' },
           { id: 'b5', nome: 'Rotacional na Polia (Woodchopper/Lenhador)', series: 3, reps: '12 a 15', descanso: 60, tech: 'Core - Rotação • Por lado' },
-          { id: 'b6', nome: 'Abdominal Remador ou V-Up', series: 3, reps: '15', descanso: 60, tech: 'Core - Dinâmico • Controle total' }
+          { id: 'b6', nome: 'Abdominal Remador ou V-Up', series: 3, reps: '15', descanso: 60, tech: 'Core - Dinâmico • Controle total' },
+          { id: 'b7', nome: 'Rosca Direta com Barra W', series: 4, reps: '8 a 10', descanso: 90, tech: 'Bíceps • Sem balanço de tronco' },
+          { id: 'b8', nome: 'Rosca Alternada Inclinada', series: 3, reps: '10 a 12', descanso: 60, tech: 'Bíceps • Alongamento no fundo' },
+          { id: 'b9', nome: 'Rosca Martelo com Halteres', series: 3, reps: '10 a 12', descanso: 60, tech: 'Bíceps • Foco em braquial e braquiorradial' }
         ]
       },
       C: {
-        id: 'C', nome: 'Pernas Completas + Core (Estabilização & Lombar)',
-        foco: 'Cadeia anterior/posterior de coxas, panturrilhas e proteção lombar',
+        id: 'C', nome: 'Pernas Completas',
+        foco: 'Cadeia anterior e posterior de coxas, glúteos e panturrilhas',
         color: 'orange',
         exercises: [
           { id: 'c1', nome: 'Agachamento Livre com Barra', series: 4, reps: '6 a 8', descanso: 180, tech: 'Carga Pesada • Profundidade total' },
@@ -2291,13 +2299,11 @@
           { id: 'c3', nome: 'Stiff / Levantamento Terra Romeno', series: 4, reps: '8 a 10', descanso: 120, tech: 'Foco em posteriores e glúteos' },
           { id: 'c4', nome: 'Cadeira Extensora', series: 3, reps: '12 a 15', descanso: 90, tech: 'Drop-set Duplo na última série' },
           { id: 'c5', nome: 'Mesa Flexora', series: 3, reps: '10 a 12', descanso: 90, tech: 'Cadência controlada' },
-          { id: 'c6', nome: 'Gêmeos no Leg Press ou Em Pé', series: 5, reps: '12 a 15', descanso: 60, tech: 'Pausa de 2s no pico de contração' },
-          { id: 'c7', nome: 'Prancha Frontal (com anilha nas costas)', series: 3, reps: '45-60s', descanso: 60, tech: 'Core - Anti-Extensão • Bodyline firme' },
-          { id: 'c8', nome: 'Extensão de Lombar no Banco Romano', series: 3, reps: '12 a 15', descanso: 60, tech: 'Core - Lombar • Pausa de 2s no topo' }
+          { id: 'c6', nome: 'Gêmeos no Leg Press ou Em Pé', series: 5, reps: '12 a 15', descanso: 60, tech: 'Pausa de 2s no pico de contração' }
         ]
       },
       D: {
-        id: 'D', nome: 'Ombros, Bíceps, Tríceps + Core (Anti-Flexão Lateral)',
+        id: 'D', nome: 'Ombros, Bíceps, Tríceps e Core',
         foco: 'Hipertrofia direcionada de braços, deltoides e estabilidade lateral',
         color: 'purple',
         exercises: [
@@ -2916,7 +2922,7 @@
       const totalSets = days.reduce((sum, day) => sum + day.currentSets, 0);
       const calendar = getConsistencyCalendar(28);
       const activeDays = calendar.filter((day) => day.count > 0).length;
-      const calendarHtml = `<div class="consistency-wrap"><div class="weekly-head"><div><div class="daily-action-kicker">Calendário de consistência</div><h3>${activeDays} dia${activeDays === 1 ? '' : 's'} com treino em 28 dias</h3></div><span class="weekly-summary">últimas 4 semanas</span></div><div class="consistency-grid">${calendar.map((day) => `<div class="consistency-day ${day.count ? 'has-activity' : ''} ${day.key === todayKey() ? 'today' : ''}" title="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}" aria-label="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}">${day.day}</div>`).join('')}</div><p class="weekly-note">Treinos completos ficam marcados. Dias de descanso também fazem parte da evolução.</p></div>`;
+      const calendarHtml = `<div class="consistency-wrap"><div class="weekly-head"><div><div class="daily-action-kicker">Consistência</div><h3>${activeDays} dia${activeDays === 1 ? '' : 's'} treinado${activeDays === 1 ? '' : 's'} em 28</h3></div><span class="weekly-summary">4 semanas</span></div><div class="consistency-grid">${calendar.map((day) => `<div class="consistency-day ${day.count ? 'has-activity' : ''} ${day.key === todayKey() ? 'today' : ''}" title="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}" aria-label="${escapeHtml(day.label)} ${day.day}: ${day.count} treino${day.count === 1 ? '' : 's'}">${day.day}</div>`).join('')}</div><p class="weekly-note">Dias treinados ficam marcados.</p></div>`;
       weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Evolução semanal</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${totalSets ? `${totalSets} séries hoje` : 'Consistência primeiro'}</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">Registre treinos completos para acompanhar sua consistência. Um dia sem treino também faz parte da recuperação.</p>${calendarHtml}`;
     }
 
@@ -4452,6 +4458,14 @@
       document.body.classList.toggle('page-home-active', page === 'home');
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(`page-${page}`).classList.add('active');
+      const resetPageScroll = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        document.querySelector('.main')?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      };
+      resetPageScroll();
+      requestAnimationFrame(resetPageScroll);
       document.querySelectorAll('.nav-item').forEach(n => {
         n.classList.toggle('active', n.dataset.page === page);
       });
