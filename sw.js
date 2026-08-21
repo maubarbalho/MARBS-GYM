@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v42-ux-update';
+const CACHE_NAME = 'marsb-gym-v43-home-cleanup';
 const APP_SHELL = [
   './',
   './index.html',
