@@ -30,5 +30,11 @@ if (dialogs.some((tag) => !/\baria-modal\s*=\s*["']true["']/i.test(tag))) throw 
 if (!html.includes('MOBILE ACCESSIBILITY') || !html.includes('scrollIntoView') || !html.includes('keyboard-open')) {
   throw new Error('Controlador de acessibilidade móvel incompleto.');
 }
+if (/<script[^>]+src=["']xlsx\.full\.min\.js["']/i.test(html)) {
+  throw new Error('A biblioteca Excel ainda está sendo carregada no boot.');
+}
+if (!html.includes('ensureXlsxLibrary') || !html.includes('pagehide') || !html.includes('visibilitychange')) {
+  throw new Error('Carregamento tardio ou salvamento defensivo ausente.');
+}
 
 console.log(`OK: ${scripts.length} script(s), ${buttons.length} botões, ${controls.length} controles e ${dialogs.length} diálogos validados.`);

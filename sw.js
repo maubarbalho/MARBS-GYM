@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v54-acessibilidade-movel';
+const CACHE_NAME = 'marsb-gym-v55-performance-offline';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,7 +8,6 @@ const APP_SHELL = [
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
-  './xlsx.full.min.js'
 ];
 
 self.addEventListener('install', (event) => {
