@@ -553,6 +553,18 @@
     /* ===== Chart modal ===== */
     .chart-wrap { background: var(--bg); border-radius: 12px; padding: 12px; margin-bottom: 8px; }
     .chart-empty { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 30px 10px; }
+    .progress-snapshot { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:12px 0; }
+    .progress-snapshot-card { padding:12px; border:1px solid var(--border); border-radius:14px; background:var(--bg-card); }
+    .progress-snapshot-card strong { display:block; font-size:1.05rem; color:var(--text); }
+    .progress-snapshot-card span { display:block; margin-top:3px; color:var(--text-muted); font-size:.7rem; line-height:1.3; }
+    .scroll-top-btn { position:fixed; right:14px; bottom:calc(76px + var(--safe-bottom)); z-index:80; min-width:48px; min-height:48px; border:1px solid var(--border); border-radius:50%; background:var(--bg-elevated); color:var(--text); font:inherit; font-weight:900; box-shadow:0 8px 22px rgba(0,0,0,.22); opacity:0; pointer-events:none; transform:translateY(8px); transition:opacity .18s ease, transform .18s ease; }
+    .scroll-top-btn.show { opacity:1; pointer-events:auto; transform:translateY(0); }
+    html[data-density="compact"] .calc-card, html[data-density="compact"] .stat-card, html[data-density="compact"] .config-option { padding:10px; }
+    html[data-density="compact"] .section-title { margin-bottom:8px; }
+    html[data-density="compact"] .page { gap:8px; }
+    html[data-density="focus"] .calc-desc, html[data-density="focus"] .config-page-intro, html[data-density="focus"] .calc-hint { font-size:.72rem; }
+    html[data-density="focus"] .weekly-note { display:none; }
+    html[data-density="focus"] .guided-overlay:not(.focus-mode) .guided-media-card, html[data-density="focus"] .guided-overlay:not(.focus-mode) .guided-history-card { display:none; }
 
     /* ===== Guided mode overlay ===== */
     .guided-overlay {
@@ -1795,6 +1807,7 @@
 
     <!-- PROGRESSO -->
     <div class="page" id="page-progresso">
+      <div id="progressSnapshot" class="progress-snapshot" aria-live="polite"></div>
       <div class="progress-grid">
         <div class="stat-card">
           <div class="stat-value" id="progSets">0</div>
@@ -2254,6 +2267,7 @@
     </div>
   </div>
 
+  <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Voltar ao topo">↑</button>
   <nav class="bottom-nav" aria-label="Navegação principal">
     <div class="bottom-nav-inner">
       <button type="button" class="nav-item active" data-page="home"><span class="nav-icon" aria-hidden="true">⌂</span><span>Início</span></button>
@@ -2279,7 +2293,7 @@
 
   <!-- CONFIGURAÇÃO: painéis independentes -->
   <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span><small id="backupReminder"></small></div><button type="button" class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button type="button" class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button type="button" class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><div class="config-status-card"><strong>Uso offline e atualizações</strong><span>Com internet, o app procura atualizações. Se houver uma versão nova, use o aviso “Atualizar”; seus dados locais permanecem no dispositivo.</span></div><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></div>
-  <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)" aria-label="Modo de aparência"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="config-status-card"><strong>Design iOS</strong><span>Cartões arredondados, barra inferior translúcida e suporte a área segura do iPhone.</span></div></div></div>
+  <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)" aria-label="Modo de aparência"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="form-field"><label for="densityMode">Densidade da interface</label><select id="densityMode" onchange="setDensityMode(this.value)" aria-label="Densidade da interface"><option value="comfortable">Confortável</option><option value="compact">Compacta</option><option value="focus">Foco no essencial</option></select></div><div class="config-status-card"><strong>Design mobile</strong><span>Escolha mais espaço para tocar, mais conteúdo por tela ou um modo com menos distrações.</span></div></div></div>
   <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)"  aria-label="Horário dos lembretes" /></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer e a vibração continuam funcionando sem essa permissão.</p></div></div>
   <div class="page" id="page-unidades"><div class="config-panel"><div class="section-title">Unidades</div><div class="form-field"><label for="unitSystemConfig">Sistema de medidas</label><select id="unitSystemConfig" onchange="setUnitSystem(this.value)" aria-label="Sistema de unidades"><option value="metric">Métrico — kg e cm</option><option value="imperial">Imperial — lb e pol.</option></select></div><div class="config-status-card"><strong>Conversão segura</strong><span>Os registros originais permanecem preservados; a preferência controla a forma de exibição e as calculadoras.</span></div></div></div>
   <div class="page" id="page-privacidade"><div class="config-panel"><div class="section-title">Privacidade</div><div class="config-status-card"><strong>Dados do treino</strong><span>Perfil, histórico, plano e diário ficam no armazenamento local do navegador até você exportar ou enviar algo.</span></div><div class="config-status-card"><strong>Compartilhamento consciente</strong><span>Backups, planilhas e planos só saem deste dispositivo quando você escolhe exportar ou compartilhar um arquivo.</span></div><div class="config-status-card warning"><strong>Limite de segurança</strong><span>O aplicativo não diagnostica dor ou lesão, não prescreve medicamentos e não substitui personal trainer ou profissional de saúde.</span></div></div></div>
@@ -2520,6 +2534,7 @@
     let browserHistoryReady = false;
     let state = loadState();
     document.documentElement.dataset.theme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
+    document.documentElement.dataset.density = state.densityMode || 'comfortable';
     document.documentElement.style.colorScheme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
     let timerInterval = null;
     let timerSeconds = 0;
@@ -2546,6 +2561,7 @@
         dietFavorites: [], dietRecent: [], dietRecipes: [],
         onboarding: { completed: false, goal: 'hipertrofia', frequency: 4, experience: 'intermediario' },
         unitSystem: 'metric',
+        densityMode: 'comfortable',
         notifications: { enabled: false, reminderTime: '18:00' },
         coachPrefs: { context: 'treino', provider: 'puter', model: 'openrouter:auto' },
         coachHistory: [],
@@ -2823,6 +2839,7 @@
         })).filter((recipe) => recipe.meals.length);
       }
       clean.unitSystem = source.unitSystem === 'imperial' ? 'imperial' : 'metric';
+      clean.densityMode = ['comfortable', 'compact', 'focus'].includes(source.densityMode) ? source.densityMode : 'comfortable';
       clean.appearanceMode = ['system', 'light', 'dark'].includes(source.appearanceMode) ? source.appearanceMode : 'system';
       clean.notifications = { enabled: Boolean(source.notifications?.enabled), reminderTime: /^\d{2}:\d{2}$/.test(String(source.notifications?.reminderTime || '')) ? String(source.notifications.reminderTime) : '18:00' };
       clean.coachPrefs = { context: ['treino','dieta','progresso'].includes(source.coachPrefs?.context) ? source.coachPrefs.context : 'treino', provider: boundedText(source.coachPrefs?.provider, 40) || 'puter', model: boundedText(source.coachPrefs?.model, 120) || 'openrouter:auto' };
@@ -3923,6 +3940,18 @@
       return recordWorkoutSession(treinoId, 'completed');
     }
 
+    function renderProgressSnapshot() {
+      const target = document.getElementById('progressSnapshot');
+      if (!target) return;
+      const calendar = getConsistencyCalendar(28);
+      const activeDays = calendar.filter((day) => day.count > 0).length;
+      const sessions = state.completedWorkouts || [];
+      const last = sessions[sessions.length - 1];
+      const recentSets = calendar.reduce((sum, day) => sum + (day.currentSets || 0), 0);
+      const activeLabel = activeDays === 1 ? 'dia ativo' : 'dias ativos';
+      target.innerHTML = `<div class="progress-snapshot-card"><strong>${activeDays}/28</strong><span>${activeLabel} no último ciclo</span></div><div class="progress-snapshot-card"><strong>${calcStreak()}</strong><span>dias de sequência atual</span></div><div class="progress-snapshot-card"><strong>${recentSets}</strong><span>séries registradas hoje</span></div><div class="progress-snapshot-card"><strong>${last?.date ? formatDate(last.date) : '—'}</strong><span>último treino concluído</span></div>`;
+    }
+
     function updateStats() {
       let todaySets = 0;
       let completedEx = 0;
@@ -3971,6 +4000,7 @@
       document.getElementById('progWeights').textContent = weightsCount;
       document.getElementById('progHistory').textContent = historyCount;
       renderProgressionPanel();
+      renderProgressSnapshot();
       renderAdherenceCard();
     }
 
@@ -7926,9 +7956,19 @@
       showToast('Aparência atualizada');
     }
 
+    function setDensityMode(mode) {
+      const value = ['comfortable', 'compact', 'focus'].includes(mode) ? mode : 'comfortable';
+      state.densityMode = value;
+      document.documentElement.dataset.density = value;
+      saveState();
+      showToast(value === 'compact' ? 'Interface compacta ativada' : value === 'focus' ? 'Modo foco ativado' : 'Interface confortável ativada');
+    }
+
     function syncAppearanceControl() {
       const select = document.getElementById('appearanceMode');
       if (select) select.value = state.appearanceMode || 'system';
+      const density = document.getElementById('densityMode');
+      if (density) density.value = state.densityMode || 'comfortable';
     }
 
     function toggleNotificationsPref() {
@@ -8147,6 +8187,7 @@
       syncPrefToggles();
       syncNotificationControls();
       syncAppearanceControl();
+      document.documentElement.dataset.density = state.densityMode || 'comfortable';
       syncUnitControl();
       initCalcPage();
     initDietPage();
@@ -8155,6 +8196,15 @@
     if (!state.onboarding?.completed) setTimeout(openOnboarding, 350);
     window.addEventListener('load', () => requestAnimationFrame(installSwipeDismiss), { once: true });
     if (initialLoadNotice) setTimeout(() => showToast(initialLoadNotice), 650);
+
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    const syncScrollTopButton = () => {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      scrollTopBtn?.classList.toggle('show', currentY > 360);
+    };
+    scrollTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', syncScrollTopButton, { passive: true });
+    syncScrollTopButton();
 
     // PWA install prompt
     window.addEventListener('beforeinstallprompt', (e) => {
