@@ -8160,11 +8160,10 @@
       };
       const handleUpdateAvailable = (registration) => {
         activeServiceWorkerRegistration = registration;
-        if (hasActiveWorkout()) {
-          if (navigator.onLine) updateBanner?.classList.add('show');
-          return;
-        }
-        if (activateWaitingWorker(registration)) showToast('Atualizando o app…');
+        // Sempre deixa o usuário decidir; a sessão ativa apenas bloqueia a ativação.
+        updateBanner?.classList.add('show');
+        if (hasActiveWorkout()) updateBanner?.setAttribute('data-active-workout', 'true');
+        else updateBanner?.removeAttribute('data-active-workout');
       };
       const registerServiceWorker = () => {
         const scriptUrl = new URL('sw.js', window.location.href);
@@ -8185,14 +8184,27 @@
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (refreshAfterUpdate) window.location.reload();
       });
-      document.getElementById('updateNowBtn')?.addEventListener('click', () => {
+      document.getElementById('updateNowBtn')?.addEventListener('click', async () => {
         if (!navigator.onLine) { showToast('Conecte-se à internet para atualizar'); return; }
-        if (!activateWaitingWorker(activeServiceWorkerRegistration)) {
-          activeServiceWorkerRegistration?.update().catch(() => undefined);
-          showToast('Procurando atualização…');
-        } else showToast('Atualizando o app…');
+        if (hasActiveWorkout()) { showToast('Finalize ou pause o treino antes de atualizar'); return; }
+        const registration = activeServiceWorkerRegistration;
+        if (registration?.waiting) {
+          updateBanner?.classList.remove('show');
+          if (activateWaitingWorker(registration)) showToast('Atualizando o app…');
+          return;
+        }
+        try {
+          await registration?.update();
+          if (registration?.waiting) handleUpdateAvailable(registration);
+          else showToast('O app já está atualizado');
+        } catch (error) {
+          showToast('Não foi possível verificar atualizações agora');
+        }
       });
-      document.getElementById('updateDismiss')?.addEventListener('click', () => updateBanner?.classList.remove('show'));
+      document.getElementById('updateDismiss')?.addEventListener('click', () => {
+        updateBanner?.classList.remove('show');
+        updateBanner?.setAttribute('data-dismissed-at', new Date().toISOString());
+      });
       if (document.readyState === 'complete') registerServiceWorker();
       else window.addEventListener('load', registerServiceWorker, { once: true });
     }
