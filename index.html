@@ -1794,7 +1794,7 @@
           <summary>Dados para Calculadora e Dieta</summary>
           <p class="config-profile-hint">Opcional. Se você autorizar, estes dados locais só preenchem campos vazios da Calculadora e do cardápio; nada é enviado para a internet.</p>
           <div class="form-row">
-            <div class="form-field"><label for="profileCalcWeight">Peso (kg)</label><input type="number" id="profileCalcWeight" inputmode="decimal" min="30" max="300" step="0.1" placeholder="Ex: 80"  aria-label="Peso do perfil em quilogramas" /></div>
+            <div class="form-field"><label for="profileCalcWeight">Peso (kg)</label><input type="text" id="profileCalcWeight" inputmode="decimal" min="30" max="300" step="0.1" placeholder="Ex: 80,0"  aria-label="Peso do perfil em quilogramas" /></div>
             <div class="form-field"><label for="profileCalcHeight">Altura (cm)</label><input type="number" id="profileCalcHeight" inputmode="numeric" min="120" max="230" placeholder="Ex: 175"  aria-label="Altura do perfil em centímetros" /></div>
           </div>
           <div class="form-row">
@@ -1896,7 +1896,7 @@
         <div class="bw-log-row">
           <div class="form-field">
             <label>Peso (kg)</label>
-            <input type="number" id="bwInput" inputmode="decimal" placeholder="80.0" step="0.1" min="30" max="300"  aria-label="Peso corporal em quilogramas" />
+            <input type="text" id="bwInput" inputmode="decimal" placeholder="80,0" step="0.1" min="30" max="300"  aria-label="Peso corporal em quilogramas" />
           </div>
           <div class="form-field">
             <label>Data</label>
@@ -1912,7 +1912,7 @@
           </div>
           <div class="form-field">
             <label>Meta de peso (kg)</label>
-            <input type="number" id="bwGoal" inputmode="decimal" placeholder="opcional" step="0.1"  aria-label="Objetivo do peso corporal" />
+            <input type="text" id="bwGoal" inputmode="decimal" placeholder="opcional (ex: 75,5)" step="0.1"  aria-label="Objetivo do peso corporal" />
           </div>
         </div>
 
@@ -1942,7 +1942,7 @@
         <div class="form-row">
           <div class="form-field">
             <label>Peso corporal (kg)</label>
-            <input type="number" id="calcWeight" inputmode="decimal" placeholder="80" step="0.1" min="30" max="250"  aria-label="Carga da calculadora em quilogramas" />
+            <input type="text" id="calcWeight" inputmode="decimal" placeholder="80,0" step="0.1" min="30" max="250"  aria-label="Peso corporal da calculadora em quilogramas" />
           </div>
           <div class="form-field">
             <label>Altura (cm)</label>
@@ -1992,7 +1992,7 @@
         <p class="calc-desc">Referência prática de alimentos para bater proteína e calorias do cálculo acima (ou só com o peso).</p>
         <div class="form-field">
           <label>Peso corporal (kg) — se vazio, usa o da calculadora acima</label>
-          <input type="number" id="foodWeight" inputmode="decimal" placeholder="80" step="0.1"  aria-label="Quantidade do alimento em gramas" />
+          <input type="text" id="foodWeight" inputmode="decimal" placeholder="80,0" step="0.1"  aria-label="Peso corporal para a calculadora de porções em quilogramas" />
         </div>
         <button type="button" class="btn-action primary" onclick="runFoodCalc()">Gerar porções</button>
         <div id="foodResult" class="calc-result" style="display:none;"></div>
@@ -2005,7 +2005,7 @@
         <div class="form-row">
           <div class="form-field">
             <label>Carga total desejada (kg)</label>
-            <input type="number" id="plateTarget" inputmode="decimal" placeholder="100" step="0.5" min="0"  aria-label="Meta de anilhas" />
+            <input type="text" id="plateTarget" inputmode="decimal" placeholder="100,0" step="0.5" min="0"  aria-label="Meta de anilhas em quilogramas" />
           </div>
           <div class="form-field">
             <label>Barra (kg)</label>
@@ -2026,7 +2026,7 @@
         <div class="form-row">
           <div class="form-field">
             <label>Carga atual (kg)</label>
-            <input type="number" id="progWeight" inputmode="decimal" placeholder="80" step="0.5"  aria-label="Carga da progressão em quilogramas" />
+            <input type="text" id="progWeight" inputmode="decimal" placeholder="80,0" step="0.5"  aria-label="Carga da progressão em quilogramas" />
           </div>
           <div class="form-field">
             <label>Aumento</label>
@@ -2045,7 +2045,7 @@
       <div class="calc-card" data-calc-group="training">
         <h3>🏋️ 1RM estimado e conversão</h3>
         <p class="calc-desc">Use uma série submáxima para estimar sua repetição máxima. O resultado é uma referência, não um teste obrigatório.</p>
-        <div class="form-row"><div class="form-field"><label>Carga usada (kg)</label><input type="number" id="oneRmWeight" min="1" step="0.5" placeholder="80"  aria-label="Carga usada em quilogramas" /></div><div class="form-field"><label>Repetições</label><input type="number" id="oneRmReps" min="1" max="30" step="1" placeholder="8"  aria-label="Número de repetições" /></div></div>
+        <div class="form-row"><div class="form-field"><label>Carga usada (kg)</label><input type="text" id="oneRmWeight" inputmode="decimal" min="1" step="0.5" placeholder="80,0"  aria-label="Carga usada em quilogramas" /></div><div class="form-field"><label>Repetições</label><input type="number" id="oneRmReps" min="1" max="30" step="1" placeholder="8"  aria-label="Número de repetições" /></div></div>
         <button class="btn-action primary" type="button" onclick="runOneRmCalc()">Calcular 1RM</button>
         <div id="oneRmResult" class="calc-result" style="display:none;"></div>
         <div class="form-row" style="margin-top:12px;"><div class="form-field"><label>Conversão</label><input type="number" id="unitValue" min="0" step="0.1" placeholder="100"  aria-label="Valor para conversão" /></div><div class="form-field"><label>De / para</label><select id="unitFrom" aria-label="Unidade de origem e destino"><option value="kg-lb">kg → lb</option><option value="lb-kg">lb → kg</option><option value="cm-in">cm → in</option><option value="in-cm">in → cm</option></select></div></div>
@@ -2077,7 +2077,7 @@
 
         <div class="form-field">
           <label>Peso corporal (kg) *</label>
-          <input type="number" id="menuWeight" inputmode="decimal" placeholder="Ex: 80" step="0.1"  aria-label="Peso corporal em quilogramas" />
+          <input type="text" id="menuWeight" inputmode="decimal" placeholder="Ex: 80,0" step="0.1"  aria-label="Peso corporal em quilogramas" />
         </div>
         <div class="form-field">
           <label>Altura (cm)</label>
@@ -2589,8 +2589,13 @@
       return String(value ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, maxLength);
     }
 
+    function parseLocalizedNumber(value) {
+      const text = String(value ?? '').trim().replace(',', '.');
+      return text ? Number(text) : NaN;
+    }
+
     function safeNumber(value, min, max, fallback) {
-      const number = Number(value);
+      const number = parseLocalizedNumber(value);
       return Number.isFinite(number) && number >= min && number <= max ? number : fallback;
     }
 
@@ -3485,8 +3490,8 @@
         <strong style="font-size:.78rem;">Regra de aumento de carga</strong>
         <div class="progression-rule-grid">
           <label>Modelo<select aria-label="Modo da regra de progressão" onchange="saveProgressionRule('mode', this.value)"><option value="percent" ${config.mode === 'percent' ? 'selected' : ''}>Percentual</option><option value="fixed" ${config.mode === 'fixed' ? 'selected' : ''}>Incremento fixo</option></select></label>
-          <label>${config.mode === 'percent' ? 'Aumento (%)' : 'Aumento (kg)'}<input type="number" inputmode="decimal" min="0.5" max="20" step="0.5" value="${escapeHtml(config.value)}" aria-label="Incremento da progressão em quilogramas" onchange="saveProgressionRule('value', this.value)" /></label>
-          <label>Incremento mínimo (kg)<input type="number" inputmode="decimal" min="0.25" max="20" step="0.25" value="${escapeHtml(config.minIncrement)}" aria-label="Incremento mínimo da progressão em quilogramas" onchange="saveProgressionRule('minIncrement', this.value)" /></label>
+          <label>${config.mode === 'percent' ? 'Aumento (%)' : 'Aumento (kg)'}<input type="text" inputmode="decimal" min="0.5" max="20" step="0.5" value="${escapeHtml(config.value)}" aria-label="Incremento da progressão em quilogramas" onchange="saveProgressionRule('value', this.value)" /></label>
+          <label>Incremento mínimo (kg)<input type="text" inputmode="decimal" min="0.25" max="20" step="0.25" value="${escapeHtml(config.minIncrement)}" aria-label="Incremento mínimo da progressão em quilogramas" onchange="saveProgressionRule('minIncrement', this.value)" /></label>
           <label>Aplicar aumento<select aria-label="Quando aplicar a regra de progressão" onchange="saveProgressionRule('requireTopReps', this.value)"><option value="true" ${config.requireTopReps ? 'selected' : ''}>Ao atingir topo de reps</option><option value="false" ${!config.requireTopReps ? 'selected' : ''}>Sempre que concluir séries</option></select></label>
         </div>
         <p class="progression-rule-note">O 1RM é uma estimativa baseada na melhor série registrada. A sugestão só deve ser seguida se a técnica estiver estável.</p>`;
@@ -3660,7 +3665,7 @@
             ${progressionHint ? `<div class="progression-hint">↗ ${progressionHint}</div>${/experimente\s[\d.,]+\skg/i.test(progressionHint) ? '<button type="button" class="chart-link-btn js-apply-progression">Aplicar sugestão</button>' : ''}` : ''}
             <div class="weight-row">
               <label for="weight-${encodeData(ex.id)}">Peso:</label>
-              <input type="number" id="weight-${encodeData(ex.id)}" class="weight-input js-save-weight" inputmode="decimal" placeholder="${escapeHtml(lastEntry ? lastEntry.weight : '0')}" value="${escapeHtml(weight)}" min="0" max="1000" step="0.1" aria-label="Peso de ${escapeHtml(ex.nome)} em quilogramas" />
+              <input type="text" id="weight-${encodeData(ex.id)}" class="weight-input js-save-weight" inputmode="decimal" placeholder="${escapeHtml(lastEntry ? lastEntry.weight : 'Ex: 2,5')}" value="${escapeHtml(weight)}" min="0" max="1000" step="0.1" aria-label="Peso de ${escapeHtml(ex.nome)} em quilogramas" />
               <span class="weight-unit">kg</span>
             </div>
             <div class="weight-history-row">
@@ -4961,7 +4966,7 @@
                   <label class="sr-only" for="${repsId}">Repetições da série ${i + 1} de ${escapeHtml(ex.nome)}</label>
                   <input id="${repsId}" class="guided-set-input js-guided-set-field" type="number" inputmode="numeric" min="0" max="2000" step="1" placeholder="${escapeHtml(ex.reps)}" value="${escapeHtml(detail.reps)}" data-set-index="${i}" data-field="reps" aria-label="Repetições da série ${i + 1}" />
                   <label class="sr-only" for="${weightId}">Peso da série ${i + 1} de ${escapeHtml(ex.nome)} em quilogramas</label>
-                  <input id="${weightId}" class="guided-set-input js-guided-set-field" type="number" inputmode="decimal" min="0" max="1000" step="0.1" placeholder="0" value="${escapeHtml(detail.weight)}" data-set-index="${i}" data-field="weight" aria-label="Peso da série ${i + 1} em quilogramas" />
+                  <input id="${weightId}" class="guided-set-input js-guided-set-field" type="text" inputmode="decimal" min="0" max="1000" step="0.1" placeholder="Ex: 2,5" value="${escapeHtml(detail.weight)}" data-set-index="${i}" data-field="weight" aria-label="Peso da série ${i + 1} em quilogramas" />
                   <button class="guided-set-status js-guided-set-toggle" type="button" data-set-index="${i}" aria-pressed="${doneArr[i] ? 'true' : 'false'}" aria-label="${doneArr[i] ? 'Desmarcar' : 'Marcar'} série ${i + 1} de ${escapeHtml(ex.nome)}">✓</button>
                 </div>
               `;
@@ -5759,7 +5764,7 @@
     function logBodyWeight() {
       const input = document.getElementById('bwInput');
       const dateEl = document.getElementById('bwDate');
-      const kg = parseFloat(input && input.value);
+      const kg = parseLocalizedNumber(input && input.value);
       let date = (dateEl && dateEl.value) || todayKey();
       if (!kg || !Number.isFinite(kg) || kg < 30 || kg > 300) {
         showToast('Informe um peso válido (30–300 kg)');
@@ -5777,8 +5782,8 @@
       else state.bodyWeights.push(entry);
 
       // persist height/goal from fields
-      const h = parseFloat(document.getElementById('bwHeight')?.value);
-      const g = parseFloat(document.getElementById('bwGoal')?.value);
+      const h = parseLocalizedNumber(document.getElementById('bwHeight')?.value);
+      const g = parseLocalizedNumber(document.getElementById('bwGoal')?.value);
       state.bodyMeta = state.bodyMeta || {};
       if (h >= 120 && h <= 230) state.bodyMeta.heightCm = h;
       if (g >= 30 && g <= 300) state.bodyMeta.goalKg = g;
@@ -6073,7 +6078,7 @@
     }
 
     function runMacroCalc() {
-      const weight = parseFloat(document.getElementById('calcWeight').value);
+      const weight = parseLocalizedNumber(document.getElementById('calcWeight').value);
       const height = parseFloat(document.getElementById('calcHeight').value) || 0;
       const age = parseFloat(document.getElementById('calcAge').value) || 0;
       const sex = segValue('calcSex', 'data-sex') || 'm';
@@ -6139,8 +6144,8 @@
     }
 
     function runFoodCalc() {
-      let weight = parseFloat(document.getElementById('foodWeight').value);
-      if (!weight) weight = parseFloat(document.getElementById('calcWeight').value);
+      let weight = parseLocalizedNumber(document.getElementById('foodWeight').value);
+      if (!weight) weight = parseLocalizedNumber(document.getElementById('calcWeight').value);
       if (!weight) {
         const sorted = (typeof getBodyWeightsSorted === 'function') ? getBodyWeightsSorted() : [];
         if (sorted.length) weight = sorted[sorted.length - 1].kg;
@@ -7223,7 +7228,7 @@
     }
 
     function runMenuCalc() {
-      let weight = parseFloat(document.getElementById('menuWeight').value);
+      let weight = parseLocalizedNumber(document.getElementById('menuWeight').value);
       if (!weight && typeof getBodyWeightsSorted === 'function') {
         const sorted = getBodyWeightsSorted();
         if (sorted.length) weight = sorted[sorted.length - 1].kg;
@@ -7845,7 +7850,7 @@
     }
 
     function runPlateCalc() {
-      var target = parseFloat(document.getElementById('plateTarget').value);
+      var target = parseLocalizedNumber(document.getElementById('plateTarget').value);
       var bar = parseFloat(segValue('plateBar', 'data-bar') || '20');
       if (!target || target < 0) {
         showToast('Informe a carga desejada');
@@ -7936,7 +7941,7 @@
     }
 
     function runProgCalc() {
-      const w = parseFloat(document.getElementById('progWeight').value);
+      const w = parseLocalizedNumber(document.getElementById('progWeight').value);
       const pct = parseFloat(segValue('progPct', 'data-pct') || '2.5');
       if (!w || w <= 0) {
         showToast('Informe a carga atual');
