@@ -1290,6 +1290,12 @@
     .guided-next-btn { background: var(--primary); color: #fff; }
     .guided-next-btn.ready { background: var(--accent); color: #fff; }
     .guided-history-card { border-top-color: var(--separator); }
+    .guided-segment.pending { background: var(--warning); opacity: .95; }
+    .guided-pending-list { display:flex; gap:7px; overflow-x:auto; padding:8px 0 2px; scrollbar-width:none; }
+    .guided-pending-list strong { flex:0 0 auto; align-self:center; color:var(--text-muted); font-size:.68rem; }
+    .guided-pending-list button { min-height:40px; flex:0 0 auto; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border:1px solid color-mix(in srgb, var(--warning) 55%, var(--border)); border-radius:999px; background:color-mix(in srgb, var(--warning) 12%, var(--bg-card)); color:var(--text); padding:8px 11px; font:inherit; font-size:.72rem; font-weight:800; }
+    .guided-skip-note { margin:8px 0 0; padding:9px 11px; border-radius:12px; background:color-mix(in srgb, var(--warning) 10%, var(--bg-card)); color:var(--text-muted); font-size:.72rem; line-height:1.35; }
+    @media (max-width: 560px) { .guided-mobile-actions { grid-template-columns:repeat(2,minmax(0,1fr)); } .guided-mobile-action { min-height:48px; } }
 
     @media (max-width: 430px) {
       .header { padding-left: 14px; padding-right: 14px; }
@@ -2415,6 +2421,7 @@
       <button type="button" class="guided-mobile-action primary" id="guidedQuickComplete">Concluir série</button>
       <button type="button" class="guided-mobile-action" id="guidedQuickRepeat">Repetir última</button>
       <button type="button" class="guided-mobile-action" id="guidedQuickTimer">Timer</button>
+      <button type="button" class="guided-mobile-action" id="guidedQuickSkip">Próximo exercício</button>
     </div>
     <div class="guided-session-footer" aria-label="Progresso da sessão">
       <div class="guided-session-meta"><span id="guidedWorkoutLabel">Treino</span><strong id="guidedTimeLabel">00:00</strong></div>
@@ -2784,7 +2791,11 @@
         clean.activeWorkout = {
           treino: source.activeWorkout.treino,
           startedAt: normalizeTimestamp(source.activeWorkout.startedAt),
-          updatedAt: Math.max(0, Number(source.activeWorkout.updatedAt) || 0)
+          updatedAt: Math.max(0, Number(source.activeWorkout.updatedAt) || 0),
+          guidedIndex: Math.max(0, Math.min(99, Math.round(Number(source.activeWorkout.guidedIndex) || 0))),
+          skippedExercises: Array.isArray(source.activeWorkout.skippedExercises)
+            ? [...new Set(source.activeWorkout.skippedExercises.map((id) => boundedText(id, 80)).filter(Boolean))].slice(0, 100)
+            : []
         };
       }
       if (Array.isArray(source.pausedWorkouts)) {
@@ -4141,6 +4152,13 @@
       renderDailyHome();
 
       const justCompleted = state.sets[exId][setIndex];
+      if (guidedState.active && guidedState.treinoId === treinoId) {
+        if (getDoneArr(findExercise(exId)).every(Boolean)) {
+          guidedState.skippedExercises = (guidedState.skippedExercises || []).filter((id) => id !== exId);
+          guidedState.interruptedExercises = (guidedState.interruptedExercises || []).filter((id) => id !== exId);
+        }
+        persistGuidedNavigation();
+      }
       if (justCompleted) {
         if (state.prefs && state.prefs.autoTimer !== false) {
           startTimer(restSec);
@@ -4589,7 +4607,7 @@
     }
 
     // ===================== GUIDED WORKOUT MODE =====================
-    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false, interruptedExercises: [] };
+    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false, interruptedExercises: [], skippedExercises: [] };
 
     function formatGuidedElapsed(seconds) {
       const safe = Math.max(0, Number(seconds) || 0);
@@ -4604,6 +4622,22 @@
       if (label) label.textContent = formatGuidedElapsed(Math.floor((Date.now() - guidedState.startedAt) / 1000));
     }
 
+    function persistGuidedNavigation() {
+      if (!guidedState.treinoId) return;
+      if (!state.activeWorkout || state.activeWorkout.treino !== guidedState.treinoId) {
+        state.activeWorkout = { treino: guidedState.treinoId, startedAt: new Date(guidedState.startedAt || Date.now()).toISOString(), updatedAt: Date.now(), guidedIndex: guidedState.index, skippedExercises: [] };
+      }
+      state.activeWorkout.guidedIndex = Math.max(0, guidedState.index);
+      state.activeWorkout.skippedExercises = [...new Set(guidedState.skippedExercises || [])].slice(0, 100);
+      state.activeWorkout.updatedAt = Date.now();
+      saveState();
+    }
+
+    function getGuidedPendingExercises() {
+      const pendingIds = new Set(guidedState.skippedExercises || []);
+      return guidedState.exercises.filter((exercise) => pendingIds.has(exercise.id));
+    }
+
     function updateGuidedSessionChrome() {
       const workout = treinosMap()[guidedState.treinoId];
       const total = guidedState.exercises.length;
@@ -4615,8 +4649,9 @@
       if (track) {
         track.innerHTML = guidedState.exercises.map((ex, i) => {
           const complete = getDoneArr(ex).every(Boolean);
+          const pending = (guidedState.skippedExercises || []).includes(ex.id);
           const current = i === guidedState.index;
-          return `<span class="guided-segment ${complete ? 'done' : ''} ${current ? 'active' : ''}" title="Exercício ${i + 1}"></span>`;
+          return `<span class="guided-segment ${complete ? 'done' : ''} ${pending ? 'pending' : ''} ${current ? 'active' : ''}" title="Exercício ${i + 1}${pending ? ' pendente' : ''}"></span>`;
         }).join('');
       }
       updateGuidedClock();
@@ -4625,13 +4660,19 @@
     function startGuided(treinoId) {
       const exercises = getTreinoExercises(treinoId);
       if (!exercises.length) { showToast('Nenhum exercício neste treino'); return; }
+      const savedSession = state.activeWorkout?.treino === treinoId ? state.activeWorkout : null;
       guidedState.active = true;
       guidedState.treinoId = treinoId;
       guidedState.exercises = exercises;
-      guidedState.index = 0;
+      guidedState.index = Math.max(0, Math.min(exercises.length - 1, Math.round(Number(savedSession?.guidedIndex) || 0)));
       guidedState.focusMode = false;
-      guidedState.interruptedExercises = [];
-      guidedState.startedAt = Date.now();
+      guidedState.skippedExercises = Array.isArray(savedSession?.skippedExercises) ? savedSession.skippedExercises.filter((id) => exercises.some((exercise) => exercise.id === id)) : [];
+      guidedState.interruptedExercises = [...guidedState.skippedExercises];
+      guidedState.startedAt = savedSession?.startedAt ? Date.parse(savedSession.startedAt) || Date.now() : Date.now();
+      if (!savedSession) {
+        state.activeWorkout = { treino: treinoId, startedAt: new Date(guidedState.startedAt).toISOString(), updatedAt: Date.now(), guidedIndex: 0, skippedExercises: [] };
+        saveState();
+      }
       guidedState.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       if (guidedState.clockId) clearInterval(guidedState.clockId);
       guidedState.clockId = setInterval(updateGuidedClock, 1000);
@@ -4667,7 +4708,30 @@
         return;
       }
       guidedState.index = i;
+      persistGuidedNavigation();
       renderGuidedStep();
+    }
+
+    function skipGuidedExercise() {
+      if (!guidedState.active) return;
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      if (!guidedState.skippedExercises.includes(ex.id)) guidedState.skippedExercises.push(ex.id);
+      if (!guidedState.interruptedExercises.includes(ex.id)) guidedState.interruptedExercises.push(ex.id);
+      persistGuidedNavigation();
+      skipTimer();
+      showToast(`${ex.nome} ficou pendente. Você pode voltar depois.`);
+      guidedGoTo(guidedState.index + 1);
+    }
+
+    function returnToGuidedExercise(exId) {
+      if (!guidedState.active) return;
+      const index = guidedState.exercises.findIndex((exercise) => exercise.id === exId);
+      if (index < 0) return;
+      guidedState.skippedExercises = (guidedState.skippedExercises || []).filter((id) => id !== exId);
+      persistGuidedNavigation();
+      guidedGoTo(index);
+      showToast('Exercício pendente reaberto');
     }
 
     function endGuidedExercise() {
@@ -4677,6 +4741,8 @@
       const message = done ? `Encerrar ${ex.nome} com ${done}/${ex.series} séries registradas e seguir para o próximo exercício?` : `Pular ${ex.nome} e seguir para o próximo exercício?`;
       if (!confirm(message)) return;
       if (!guidedState.interruptedExercises.includes(ex.id)) guidedState.interruptedExercises.push(ex.id);
+      if (!guidedState.skippedExercises.includes(ex.id)) guidedState.skippedExercises.push(ex.id);
+      persistGuidedNavigation();
       skipTimer();
       showToast(done ? 'Exercício encerrado. As séries registradas foram preservadas.' : 'Exercício pulado.');
       guidedGoTo(guidedState.index + 1);
@@ -4747,6 +4813,7 @@
       const complete = document.getElementById('guidedQuickComplete');
       const repeat = document.getElementById('guidedQuickRepeat');
       const timer = document.getElementById('guidedQuickTimer');
+      const skip = document.getElementById('guidedQuickSkip');
       if (!ex || !guidedState.active) return;
       const done = getDoneArr(ex);
       const focusIndex = done.findIndex((value) => !value);
@@ -4754,6 +4821,7 @@
       if (complete) { complete.textContent = focusIndex < 0 ? 'Próximo exercício' : `Concluir série ${next}/${ex.series}`; complete.onclick = () => focusIndex < 0 ? guidedGoTo(guidedState.index + 1) : completeCurrentGuidedSet(); }
       if (repeat) { repeat.disabled = !getLastPerformance(ex.id) && focusIndex < 1; repeat.onclick = repeatLastGuidedSet; }
       if (timer) { timer.textContent = 'Iniciar timer'; timer.onclick = () => startTimer(ex.descanso); }
+      if (skip) { skip.textContent = 'Próximo exercício'; skip.onclick = skipGuidedExercise; }
     }
 
     function renderGuidedStep() {
@@ -4771,11 +4839,14 @@
       const focusSetIndex = Math.max(0, doneArr.findIndex((done) => !done));
       const focusRpe = String((state.rpe?.[ex.id] || [])[0] || '');
       const guidedBody = document.getElementById('guidedBody');
+      const pendingExercises = getGuidedPendingExercises().filter((exercise) => exercise.id !== ex.id);
+      const pendingHtml = pendingExercises.length ? `<div class="guided-pending-list" aria-label="Exercícios pendentes"><strong>Voltar depois:</strong>${pendingExercises.map((exercise) => `<button type="button" class="js-guided-return" data-exercise-id="${encodeData(exercise.id)}" title="Voltar para ${escapeHtml(exercise.nome)}">${escapeHtml(exercise.nome)}</button>`).join('')}</div>` : '';
 
       document.getElementById('guidedTitle').textContent = `Exercício ${guidedState.index + 1}/${total}`;
       guidedBody.innerHTML = `
         <div class="guided-workout-shell">
           <div class="guided-activity-chip">Atividade ${guidedState.index + 1}</div>
+          ${pendingHtml}
           <article class="guided-activity-card" aria-labelledby="guidedExerciseTitle">
             <div class="guided-media-card">
               <div class="guided-media-visual" role="img" aria-label="Elemento visual da atividade">
@@ -4787,6 +4858,7 @@
                 <div class="guided-muscle-label">Registre cada série abaixo</div>
               </div>
             </div>
+            <div class="guided-skip-note">Pode avançar sem começar este exercício. As séries já registradas ficam salvas e você pode voltar por “Voltar depois”.</div>
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
             <div class="guided-focus-current"><div><span>Exercício em foco</span><strong>${escapeHtml(ex.nome)}</strong></div><div class="guided-focus-set"><span>Progresso</span><strong>${guidedState.index + 1}/${total} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}</strong></div></div>
             <div class="guided-section-label">Progressão de carga</div>
@@ -4834,7 +4906,7 @@
             </div>
             <div class="guided-nav-row">
               <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
-              <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? 'Finalizar ✓' : (allDone ? 'Próximo →' : 'Pular →')}</button>
+              <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? (allDone ? 'Finalizar ✓' : 'Pular por agora →') : (allDone ? 'Próximo →' : 'Pular por agora →')}</button>
             </div>
             <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
               <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
@@ -4854,7 +4926,8 @@
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
-      guidedBody.querySelector('.js-guided-next').addEventListener('click', () => guidedGoTo(guidedState.index + 1));
+      guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(guidedState.index + 1) : skipGuidedExercise());
+      guidedBody.querySelectorAll('.js-guided-return').forEach((button) => button.addEventListener('click', () => returnToGuidedExercise(decodeData(button.dataset.exerciseId))));
       guidedBody.querySelector('.js-end-exercise').addEventListener('click', endGuidedExercise);
       guidedBody.querySelector('.js-end-workout').addEventListener('click', endGuidedWorkout);
       syncGuidedMobileActions();
@@ -4869,23 +4942,33 @@
 
     function renderGuidedComplete() {
       if (guidedState.advanceTimeout) clearTimeout(guidedState.advanceTimeout);
-      document.getElementById('guidedProgressFill').style.width = '100%';
-      document.getElementById('guidedTitle').textContent = 'Concluído';
+      const pending = getGuidedPendingExercises();
+      const hasPending = pending.length > 0;
+      document.getElementById('guidedProgressFill').style.width = hasPending ? `${Math.min(100, (guidedState.exercises.length - pending.length) / guidedState.exercises.length * 100)}%` : '100%';
+      document.getElementById('guidedTitle').textContent = hasPending ? 'Exercícios pendentes' : 'Concluído';
       const workout = treinosMap()[guidedState.treinoId];
       const workoutLabel = document.getElementById('guidedWorkoutLabel');
-      if (workoutLabel) workoutLabel.textContent = workout ? `Treino ${workout.id} concluído` : 'Treino concluído';
-      document.getElementById('guidedSegmentTrack').innerHTML = guidedState.exercises.map((ex, i) => `<span class="guided-segment done" title="Exercício ${i + 1}"></span>`).join('');
+      if (workoutLabel) workoutLabel.textContent = hasPending ? `Treino ${workout?.id || ''} · ${pending.length} pendente${pending.length === 1 ? '' : 's'}` : (workout ? `Treino ${workout.id} concluído` : 'Treino concluído');
+      document.getElementById('guidedSegmentTrack').innerHTML = guidedState.exercises.map((ex, i) => {
+        const isPending = (guidedState.skippedExercises || []).includes(ex.id);
+        return `<span class="guided-segment ${isPending ? 'pending' : 'done'}" title="Exercício ${i + 1}${isPending ? ' pendente' : ''}"></span>`;
+      }).join('');
       const guidedBody = document.getElementById('guidedBody');
+      const pendingButtons = hasPending ? `<div class="guided-pending-list guided-pending-complete" aria-label="Exercícios pendentes"><strong>Voltar para:</strong>${pending.map((exercise) => `<button type="button" class="js-guided-return" data-exercise-id="${encodeData(exercise.id)}">${escapeHtml(exercise.nome)}</button>`).join('')}</div>` : '';
       guidedBody.innerHTML = `
         <div class="guided-complete-banner">
-          <div class="big-emoji">🎉</div>
-          <h2>Treino guiado concluído!</h2>
-          <p>Bom trabalho. Confira seu progresso na aba Progresso.</p>
+          <div class="big-emoji">${hasPending ? '↶' : '🎉'}</div>
+          <h2>${hasPending ? 'Sessão quase pronta' : 'Treino guiado concluído!'}</h2>
+          <p>${hasPending ? `Você avançou, mas ${pending.length === 1 ? 'há 1 exercício pendente' : `há ${pending.length} exercícios pendentes`}. As séries registradas foram preservadas.` : 'Bom trabalho. Confira seu progresso na aba Progresso.'}</p>
+          ${pendingButtons}
+          ${hasPending ? '<button class="btn-action js-end-workout" type="button">Encerrar com pendências</button>' : ''}
           <button class="btn-action primary js-exit-guided" type="button">Fechar</button>
         </div>
       `;
+      guidedBody.querySelectorAll('.js-guided-return').forEach((button) => button.addEventListener('click', () => returnToGuidedExercise(decodeData(button.dataset.exerciseId))));
+      guidedBody.querySelector('.js-end-workout')?.addEventListener('click', endGuidedWorkout);
       guidedBody.querySelector('.js-exit-guided').addEventListener('click', exitGuided);
-      requestAnimationFrame(() => guidedBody.querySelector('.js-exit-guided')?.focus());
+      requestAnimationFrame(() => guidedBody.querySelector('.js-guided-return, .js-exit-guided')?.focus());
     }
 
     // ===================== BACKUP / RESTORE (JSON) =====================
