@@ -525,8 +525,20 @@
       font-size: 0.9rem; cursor: pointer;
     }
     .modal-sheet { position: relative; }
-    .swipe-dismiss-handle { width:38px; height:5px; border-radius:999px; background:color-mix(in srgb, var(--text-muted) 42%, transparent); margin:-8px auto 14px; touch-action:pan-y; cursor:grab; }
+    .swipe-dismiss-handle { width:64px; min-height:24px; box-sizing:border-box; padding:9px 0; border-radius:999px; background:linear-gradient(to bottom, transparent 9px, color-mix(in srgb, var(--text-muted) 42%, transparent) 9px, color-mix(in srgb, var(--text-muted) 42%, transparent) 14px, transparent 14px); margin:-8px auto 5px; touch-action:none; cursor:grab; }
     .swipe-dismiss-handle:active { cursor:grabbing; }
+    body { overscroll-behavior-x: none; }
+    .modal-overlay, .timer-overlay, .guided-overlay { overscroll-behavior: contain; }
+    @media (max-width: 600px) {
+      .exercise-icon-btn { width:44px; height:44px; }
+      .chart-link-btn { min-height:44px; padding:10px 8px; }
+      .modal-close-x { top:8px; right:8px; }
+      .config-window-close, .guided-exit-btn { min-height:44px; padding-left:14px; padding-right:14px; }
+      .nav-item { min-width:56px; min-height:48px; padding:8px 6px; }
+      .timer-preset { min-height:44px; }
+      .timer-actions { flex-wrap:wrap; justify-content:center; gap:10px; }
+      .timer-btn { min-height:48px; }
+    }
     .personal-card { padding:14px; border:1px solid var(--border); border-radius:16px; background:var(--bg-card); margin:10px 0; }
     .personal-card h3 { font-size:.93rem; margin:0 0 4px; }
     .personal-card p { font-size:.78rem; color:var(--text-muted); line-height:1.45; margin:0; }
@@ -2493,6 +2505,7 @@
     let initialLoadNotice = '';
     let currentWeek = 1;
     let currentPage = 'home';
+    let browserHistoryReady = false;
     let state = loadState();
     document.documentElement.dataset.theme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
     document.documentElement.style.colorScheme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
@@ -5079,7 +5092,7 @@
       const specs = [
         ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
         ['workoutCompleteModal', '#workoutCompleteModal .modal-sheet', closeWorkoutComplete], ['swapExerciseModal', '#swapExerciseModal .modal-sheet', closeSwapExercise],
-        ['onboardingModal', '#onboardingModal .modal-sheet', skipOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
+        ['onboardingModal', '#onboardingModal .modal-sheet', closeOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
         ['guidedOverlay', '#guidedOverlay .guided-header', exitGuided], ['timerOverlay', '#timerOverlay', skipTimer]
       ];
       specs.forEach(([overlayId, selector, close]) => {
@@ -5092,12 +5105,55 @@
         handle.addEventListener('pointerup', finish); handle.addEventListener('pointercancel', finish);
       });
     }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', installSwipeDismiss, { once: true });
-    } else {
-      setTimeout(installSwipeDismiss, 0);
+    function closeTopMobileOverlay() {
+      const overlays = [
+        ['timerOverlay', skipTimer], ['guidedOverlay', exitGuided], ['exerciseModal', closeExerciseModal],
+        ['chartModal', closeChartModal], ['workoutCompleteModal', closeWorkoutComplete], ['swapExerciseModal', closeSwapExercise],
+        ['onboardingModal', closeOnboarding], ['configOverlay', closeConfigWindow]
+      ];
+      for (const [id, close] of overlays) {
+        const overlay = document.getElementById(id);
+        if (overlay?.classList.contains('show')) { close(); return true; }
+      }
+      return false;
     }
-    document.addEventListener('pointerdown', () => installSwipeDismiss(), { capture: true, once: true });
+
+    function installMobileDismissInteractions() {
+      const dismissibleIds = ['exerciseModal', 'chartModal', 'workoutCompleteModal', 'swapExerciseModal', 'configOverlay'];
+      dismissibleIds.forEach((id) => {
+        const overlay = document.getElementById(id);
+        if (!overlay || overlay.dataset.mobileDismissReady) return;
+        overlay.dataset.mobileDismissReady = '1';
+        overlay.addEventListener('pointerup', (event) => {
+          if (event.target === overlay) closeTopMobileOverlay();
+        });
+      });
+    }
+
+    let edgeSwipeStart = null;
+    document.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (event.clientX <= 28) edgeSwipeStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+    }, { passive: true });
+    document.addEventListener('pointerup', (event) => {
+      if (!edgeSwipeStart || edgeSwipeStart.id !== event.pointerId) return;
+      const dx = event.clientX - edgeSwipeStart.x;
+      const dy = event.clientY - edgeSwipeStart.y;
+      edgeSwipeStart = null;
+      if (dx < 84 || Math.abs(dy) > 70 || Math.abs(dx) < Math.abs(dy)) return;
+      if (closeTopMobileOverlay()) {
+        window.history.pushState({ marsbPage: currentPage }, '', window.location.href);
+      } else if (currentPage !== 'home') {
+        window.history.back();
+      }
+    }, { passive: true });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => { installSwipeDismiss(); installMobileDismissInteractions(); }, { once: true });
+    } else {
+      setTimeout(() => { installSwipeDismiss(); installMobileDismissInteractions(); }, 0);
+    }
+    document.addEventListener('pointerdown', () => { installSwipeDismiss(); installMobileDismissInteractions(); }, { capture: true, once: true });
 
     function renderUserProfile() {
       const profile = state.profile || { name: '', photo: '', metrics: {} };
@@ -5299,8 +5355,12 @@
       host.appendChild(label);
     }
 
-    function switchPage(page) {
+    function switchPage(page, options = {}) {
+      if (!document.getElementById(`page-${page}`)) return;
       if (configWindowState.kind) closeConfigWindow();
+      if (!options.fromHistory && browserHistoryReady && currentPage !== page) {
+        window.history.pushState({ marsbPage: page }, '', `#${encodeURIComponent(page)}`);
+      }
       currentPage = page;
       document.body.classList.toggle('page-home-active', page === 'home');
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -7899,6 +7959,20 @@
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => switchPage(btn.dataset.page));
     });
+    const mobilePageNames = new Set(['home', 'treinos', 'progresso', 'calc', 'dieta', 'config', 'perfil', 'plano']);
+    const hashPage = decodeURIComponent(window.location.hash.replace(/^#/, ''));
+    const initialPage = mobilePageNames.has(hashPage) ? hashPage : 'home';
+    window.history.replaceState({ marsbPage: initialPage }, '', window.location.href);
+    window.addEventListener('popstate', (event) => {
+      if (typeof closeTopMobileOverlay === 'function' && closeTopMobileOverlay()) {
+        window.history.pushState({ marsbPage: currentPage }, '', window.location.href);
+        return;
+      }
+      const page = mobilePageNames.has(event.state?.marsbPage) ? event.state.marsbPage : 'home';
+      switchPage(page, { fromHistory: true });
+    });
+    browserHistoryReady = true;
+    if (initialPage !== currentPage) switchPage(initialPage, { fromHistory: true });
 
     document.querySelectorAll('.week-btn').forEach(btn => {
       btn.addEventListener('click', () => setWeek(Number(btn.dataset.week)));

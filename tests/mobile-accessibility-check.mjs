@@ -36,5 +36,11 @@ if (/<script[^>]+src=["']xlsx\.full\.min\.js["']/i.test(html)) {
 if (!html.includes('ensureXlsxLibrary') || !html.includes('pagehide') || !html.includes('visibilitychange')) {
   throw new Error('Carregamento tardio ou salvamento defensivo ausente.');
 }
+if (!html.includes('closeTopMobileOverlay') || !html.includes('installMobileDismissInteractions') || !html.includes('history.pushState') || !html.includes('window.history.back()')) {
+  throw new Error('Navegação e fechamento por gesto mobile incompletos.');
+}
+if (!html.includes('event.target === overlay') || !html.includes('edgeSwipeStart')) {
+  throw new Error('Fechamento por toque fora ou gesto lateral ausente.');
+}
 
 console.log(`OK: ${scripts.length} script(s), ${buttons.length} botões, ${controls.length} controles e ${dialogs.length} diálogos validados.`);
