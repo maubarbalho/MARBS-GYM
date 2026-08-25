@@ -2092,7 +2092,7 @@
       <div class="section-title" style="margin-top:16px;">Registro de hoje</div>
       <div class="calc-card diet-diary-card">
         <div class="diet-day-tools"><div class="form-field"><label for="dietDate">Dia</label><input type="date" id="dietDate"  aria-label="Data do diário alimentar" /></div><div class="form-field"><label for="dietWaterInput">Água registrada</label><div class="diet-water-input"><input type="number" id="dietWaterInput" min="100" max="5000" step="100" inputmode="numeric" placeholder="250"  aria-label="Água registrada em mililitros" /><button type="button" onclick="addDietWater()">Adicionar ml</button></div></div></div>
-        <div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect" aria-label="Alimento favorito"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button></div>
+        <div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect" aria-label="Cardápio favorito"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button><select id="dietRecipeSelect" aria-label="Receita salva"><option value="">Receitas salvas</option></select><button type="button" class="btn-action" onclick="applyDietRecipe()">Usar receita</button><button type="button" class="btn-action" onclick="saveCurrentDietRecipe()">＋ Salvar receita</button></div>
         <div class="diet-water-bar"><div class="diet-water-fill" id="dietWaterFill"></div></div><div class="diet-water-label" id="dietWaterLabel">0 ml registrados</div>
         <details class="diet-meal-add"><summary>Metas diárias e consumo</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietTargetKcal">Calorias (kcal)</label><input type="number" id="dietTargetKcal" min="0" max="10000" inputmode="numeric"  aria-label="Meta diária de calorias" /></div><div class="form-field"><label for="dietTargetProtein">Proteína (g)</label><input type="number" id="dietTargetProtein" min="0" max="500" inputmode="numeric"  aria-label="Meta diária de proteína em gramas" /></div><div class="form-field"><label for="dietTargetCarbs">Carboidratos (g)</label><input type="number" id="dietTargetCarbs" min="0" max="1200" inputmode="numeric"  aria-label="Meta diária de carboidratos em gramas" /></div><div class="form-field"><label for="dietTargetFats">Gorduras (g)</label><input type="number" id="dietTargetFats" min="0" max="500" inputmode="numeric"  aria-label="Meta diária de gorduras em gramas" /></div><div class="form-field"><label for="dietTargetWater">Água (ml)</label><input type="number" id="dietTargetWater" min="500" max="15000" step="100" inputmode="numeric"  aria-label="Meta diária de água em mililitros" /></div><button type="button" class="btn-action" onclick="saveDietTargets()">Salvar metas</button></div></details>
         <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType" aria-label="Tipo de refeição"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSearch">Buscar na base TACO</label><input type="search" id="dietFoodSearch" placeholder="Ex: frango, arroz, banana" autocomplete="off"  aria-label="Buscar alimento" /></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect" aria-label="Selecionar alimento"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150"  aria-label="Quantidade do alimento em gramas" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
@@ -2518,7 +2518,7 @@
     function defaultState() {
       return {
         _schemaVersion: STATE_SCHEMA_VERSION,
-        storageMeta: { lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' },
+        storageMeta: { lastSavedAt: '', lastBackupAt: '', lastBackupChecksum: '', lastBackupBytes: 0, bytes: 0, migratedAt: '' },
         sets: {}, setDetails: {}, weights: {}, weightHistory: {}, completedWorkouts: [], week: 0,
         customExercises: { A: [], B: [], C: [], D: [] },
         setTypes: {}, workoutCheckins: {}, workoutSchedule: {},
@@ -2531,7 +2531,7 @@
         calcPresets: [],
         dietDiary: {},
         dietPrefs: { restrictions: '', allergies: '', targets: { kcal: 0, protein: 0, carbs: 0, fats: 0, waterMl: 3500 } },
-        dietFavorites: [], dietRecent: [],
+        dietFavorites: [], dietRecent: [], dietRecipes: [],
         onboarding: { completed: false, goal: 'hipertrofia', frequency: 4, experience: 'intermediario' },
         unitSystem: 'metric',
         notifications: { enabled: false, reminderTime: '18:00' },
@@ -2628,6 +2628,8 @@
         lastSavedAt: normalizeTimestamp(source.storageMeta?.lastSavedAt),
         lastBackupAt: normalizeTimestamp(source.storageMeta?.lastBackupAt),
         bytes: Math.round(safeNumber(source.storageMeta?.bytes, 0, MAX_STORAGE_BYTES, 0)),
+        lastBackupChecksum: /^[a-f0-9]{8}$/i.test(String(source.storageMeta?.lastBackupChecksum || '')) ? String(source.storageMeta.lastBackupChecksum).toLowerCase() : '',
+        lastBackupBytes: Math.round(safeNumber(source.storageMeta?.lastBackupBytes, 0, MAX_STORAGE_BYTES, 0)),
         migratedAt: normalizeTimestamp(source.storageMeta?.migratedAt)
       };
       clean.week = Math.round(safeNumber(source.week, 0, 9999, 0));
@@ -2795,6 +2797,18 @@
           name: boundedText(favorite && favorite.name, 100) || `Cardápio ${index + 1}`,
           values: favorite && favorite.values && typeof favorite.values === 'object' ? favorite.values : {}
         }));
+      }
+      if (Array.isArray(source.dietRecipes)) {
+        clean.dietRecipes = source.dietRecipes.slice(-20).map((recipe, index) => ({
+          id: boundedText(recipe?.id, 80) || `recipe_${index}`,
+          name: boundedText(recipe?.name, 100) || `Receita ${index + 1}`,
+          createdAt: normalizeTimestamp(recipe?.createdAt),
+          meals: Array.isArray(recipe?.meals) ? recipe.meals.slice(0, 20).map((meal, mealIndex) => ({
+            id: boundedText(meal?.id, 60) || `meal_${mealIndex}`,
+            name: boundedText(meal?.name, 100), mealType: boundedText(meal?.mealType, 50) || 'Refeição',
+            completed: false, foodKey: boundedText(meal?.foodKey, 60), grams: safeNumber(meal?.grams, 0, 5000, 0)
+          })).filter((meal) => meal.name || meal.foodKey) : []
+        })).filter((recipe) => recipe.meals.length);
       }
       clean.unitSystem = source.unitSystem === 'imperial' ? 'imperial' : 'metric';
       clean.appearanceMode = ['system', 'light', 'dark'].includes(source.appearanceMode) ? source.appearanceMode : 'system';
@@ -3214,6 +3228,24 @@
       return days;
     }
 
+    function getRecoveryHint() {
+      const today = new Date(`${todayKey()}T12:00:00`);
+      const recent = (state.completedWorkouts || []).filter((entry) => {
+        const date = new Date(`${entry.date}T12:00:00`);
+        return Number.isFinite(date.getTime()) && Math.floor((today - date) / 86400000) <= 3 && Math.floor((today - date) / 86400000) >= 0;
+      }).slice(-4);
+      if (!recent.length) return 'Sem treino concluído nos últimos 3 dias.';
+      const groups = [...new Set(recent.map((entry) => treinosMap()[entry.treino]?.foco || `Treino ${entry.treino}`))];
+      return `Treinado recentemente: ${groups.slice(0, 2).join(' · ')}. Ajuste o próximo treino conforme sua disposição.`;
+    }
+
+    function formatLastSavedHint() {
+      const timestamp = state.storageMeta?.lastSavedAt ? Date.parse(state.storageMeta.lastSavedAt) : 0;
+      if (!timestamp) return 'Salvamento local ainda não registrado';
+      const minutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
+      return minutes < 1 ? 'Salvo agora neste dispositivo' : `Salvo há ${minutes} min neste dispositivo`;
+    }
+
     function renderDailyHome() {
       const action = document.getElementById('dailyActionCard');
       const weekly = document.getElementById('weeklyProgressCard');
@@ -3254,7 +3286,7 @@
       const calendar = getConsistencyCalendar(28);
       const activeDays = calendar.filter((day) => day.count > 0).length;
       const streak = calcStreak();
-      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Ritmo de treino</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${activeDays} dia${activeDays === 1 ? '' : 's'} em 28</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">${streak ? `Sequência atual: ${streak} dia${streak === 1 ? '' : 's'} · ` : ''}${totalSets ? `${totalSets} séries registradas hoje.` : 'Registre um treino para iniciar seu ritmo.'}</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução completa</button></div>`;
+      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Ritmo de treino</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${activeDays} dia${activeDays === 1 ? '' : 's'} em 28</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">${streak ? `Sequência atual: ${streak} dia${streak === 1 ? '' : 's'} · ` : ''}${totalSets ? `${totalSets} séries registradas hoje.` : 'Registre um treino para iniciar seu ritmo.'}</p><p class="weekly-note">${escapeHtml(getRecoveryHint())}</p><p class="weekly-note save-hint">${escapeHtml(formatLastSavedHint())}</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução completa</button></div>`;
     }
 
     let workoutFilterState = { treino: 'all', query: '', pendingOnly: true };
@@ -4785,19 +4817,28 @@
       return `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
     }
 
+    function backupStateText(value) {
+      const copy = JSON.parse(JSON.stringify(value));
+      copy.storageMeta = Object.assign({}, copy.storageMeta || {}, { lastBackupChecksum: '', lastBackupBytes: 0 });
+      return JSON.stringify(copy);
+    }
+
     function exportBackupJSON() {
-      state.storageMeta = Object.assign({ lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' }, state.storageMeta || {});
-      state.storageMeta.lastBackupAt = new Date().toISOString();
-      saveState();
+      state.storageMeta = Object.assign({ lastSavedAt: '', lastBackupAt: '', lastBackupChecksum: '', lastBackupBytes: 0, bytes: 0, migratedAt: '' }, state.storageMeta || {});
       const normalized = migrateState(state);
-      const stateText = JSON.stringify(normalized);
+      const stateText = backupStateText(normalized);
+      const checksum = checksumText(stateText);
       const payload = {
         app: 'MARSB-GYM', version: 4, schemaVersion: STATE_SCHEMA_VERSION,
         exportedAt: new Date().toISOString(),
-        checksum: checksumText(stateText),
+        checksum,
         state: normalized
       };
       const serialized = JSON.stringify(payload, null, 2);
+      state.storageMeta.lastBackupAt = payload.exportedAt;
+      state.storageMeta.lastBackupChecksum = checksum;
+      state.storageMeta.lastBackupBytes = serialized.length;
+      saveState();
       const blob = new Blob([serialized], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -4822,7 +4863,7 @@
       if (!hasKnownField) throw new Error('O backup não possui campos reconhecidos.');
       const normalized = migrateState(incoming);
       if (parsed.checksum) {
-        const actual = checksumText(JSON.stringify(normalized));
+        const actual = checksumText(backupStateText(normalized));
         if (String(parsed.checksum).toLowerCase() !== actual) throw new Error('A validação de integridade falhou. O arquivo pode estar corrompido.');
       }
       return normalized;
@@ -6763,6 +6804,7 @@
       if (label) label.textContent = `${water} ml registrados · ${Math.min(100, Math.round((water / targets.waterMl) * 100))}% da meta de ${targets.waterMl} ml`;
       const favorites = document.getElementById('dietFavoriteSelect');
       if (favorites) { let saved = state.dietFavorites || []; favorites.innerHTML = '<option value="">Cardápios favoritos</option>' + saved.map((favorite, index) => `<option value="${index}">${escapeHtml(favorite.name)} · ${(favorite.values?.meals || []).length} itens</option>`).join(''); }
+      renderDietRecipes();
       const recentWrap = document.getElementById('dietRecentWrap');
       const recentList = document.getElementById('dietRecentList');
       const recent = (state.dietRecent || []).filter((item) => TACO_DIARY_FOODS[item.foodKey]);
@@ -6784,6 +6826,48 @@
       if (previous && options.some(([key]) => key === previous)) select.value = previous;
     }
 
+    function getDietWeekAverages(endDate = getDietDate()) {
+      const end = new Date(`${endDate}T12:00:00`);
+      const totals = { k: 0, p: 0, c: 0, f: 0, water: 0 };
+      let days = 0;
+      for (let offset = 0; offset < 7; offset += 1) {
+        const date = new Date(end); date.setDate(date.getDate() - offset);
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        const day = state.dietDiary?.[key];
+        if (!day || !(day.meals || []).length) continue;
+        const sum = getDietTotals(day); totals.k += sum.k; totals.p += sum.p; totals.c += sum.c; totals.f += sum.f; totals.water += Number(day.waterMl) || 0; days += 1;
+      }
+      return days ? { days, k: Math.round(totals.k / days), p: Math.round(totals.p / days), c: Math.round(totals.c / days), f: Math.round(totals.f / days), water: Math.round(totals.water / days) } : null;
+    }
+
+    function renderDietRecipes() {
+      const select = document.getElementById('dietRecipeSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">Receitas salvas</option>' + (state.dietRecipes || []).map((recipe, index) => `<option value="${index}">${escapeHtml(recipe.name)} · ${recipe.meals.length} itens</option>`).join('');
+    }
+
+    function saveCurrentDietRecipe() {
+      const day = getDietDay();
+      if (!day.meals.length) { showToast('Adicione alimentos antes de salvar uma receita'); return; }
+      const name = boundedText(prompt('Nome da receita ou refeição:') || '', 100);
+      if (!name) return;
+      state.dietRecipes = Array.isArray(state.dietRecipes) ? state.dietRecipes : [];
+      state.dietRecipes = state.dietRecipes.filter((recipe) => recipe.name !== name);
+      state.dietRecipes.push({ id: `recipe_${Date.now()}`, name, createdAt: new Date().toISOString(), meals: day.meals.map((meal) => ({ ...meal, id: undefined, completed: false })) });
+      state.dietRecipes = state.dietRecipes.slice(-20);
+      saveState(); renderDietRecipes(); showToast('Receita salva para reutilizar');
+    }
+
+    function applyDietRecipe() {
+      const index = Number(document.getElementById('dietRecipeSelect')?.value);
+      const recipe = (state.dietRecipes || [])[index];
+      if (!recipe) { showToast('Escolha uma receita salva'); return; }
+      const day = getDietDay();
+      day.meals = recipe.meals.map((meal, mealIndex) => ({ ...meal, id: `meal_${Date.now()}_${mealIndex}`, completed: false }));
+      recipe.meals.forEach((meal) => rememberDietMeal(meal.foodKey, meal.grams, meal.mealType));
+      saveState(); renderDietDiary(); showToast('Receita adicionada ao diário');
+    }
+
     function renderDietWeekAdherence() {
       const target = document.getElementById('dietWeekAdherence');
       if (!target) return;
@@ -6798,7 +6882,9 @@
         if (meals.length) registered++;
         if (meals.some((meal) => meal.completed)) completed++;
       }
-      target.textContent = `Aderência de 7 dias: ${registered}/7 dia${registered === 1 ? '' : 's'} com refeições registradas${completed ? ` · ${completed} dia${completed === 1 ? '' : 's'} com refeições marcadas` : ''}.`;
+      const averages = getDietWeekAverages();
+      const averageText = averages ? ` · média nos ${averages.days} dias: ${averages.k} kcal, ${averages.p} g proteína, ${averages.water} ml água` : '';
+      target.textContent = `Aderência de 7 dias: ${registered}/7 dia${registered === 1 ? '' : 's'} com refeições registradas${completed ? ` · ${completed} dia${completed === 1 ? '' : 's'} com refeições marcadas` : ''}${averageText}.`;
     }
 
     function addDietMeal() {
@@ -7753,8 +7839,10 @@
       const saved = localStorage.getItem(STORAGE_KEY);
       const size = saved ? Math.max(1, Math.round(saved.length / 1024)) : 0;
       const lastSaved = state.storageMeta?.lastSavedAt ? new Date(state.storageMeta.lastSavedAt).toLocaleString('pt-BR') : 'ainda não registrado';
-      el.textContent = `Dados locais ativos · ${count} treino(s) · ${size} KB · schema v${state._schemaVersion || STATE_SCHEMA_VERSION}`;
-      el.title = `${initialLoadNotice || 'Estado íntegro e compatível.'} Última gravação: ${lastSaved}.`;
+      const backupChecksum = state.storageMeta?.lastBackupChecksum || '';
+      const backupLabel = backupChecksum ? ` · backup verificado ${backupChecksum}` : '';
+      el.textContent = `Dados locais ativos · ${count} treino(s) · ${size} KB · schema v${state._schemaVersion || STATE_SCHEMA_VERSION}${backupLabel}`;
+      el.title = `${initialLoadNotice || 'Estado íntegro e compatível.'} Última gravação: ${lastSaved}.${backupChecksum ? ` Último checksum exportado: ${backupChecksum}.` : ''}`;
       el.parentElement?.classList.toggle('warning', Boolean(initialLoadNotice));
       const reminder = document.getElementById('backupReminder');
       if (reminder) {
@@ -7763,7 +7851,7 @@
         if (!lastBackup) reminder.textContent = 'Nenhum backup exportado ainda. Crie uma cópia antes de trocar de aparelho ou navegador.';
         else if (days === 0) reminder.textContent = `Último backup: hoje, às ${new Date(lastBackup).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}. Seus dados locais estão protegidos nesta cópia.`;
         else if (days > 21) reminder.textContent = `Último backup: há ${days} dias. Recomendado: exporte uma nova cópia agora.`;
-        else reminder.textContent = `Último backup: há ${days} dia${days === 1 ? '' : 's'} (${new Date(lastBackup).toLocaleDateString('pt-BR')}).`;
+        else reminder.textContent = `Último backup: há ${days} dia${days === 1 ? '' : 's'} (${new Date(lastBackup).toLocaleDateString('pt-BR')})${state.storageMeta?.lastBackupChecksum ? ` · integridade ${state.storageMeta.lastBackupChecksum}` : ''}.`;
       }
     }
 

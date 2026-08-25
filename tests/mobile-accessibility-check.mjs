@@ -42,5 +42,8 @@ if (!html.includes('closeTopMobileOverlay') || !html.includes('installMobileDism
 if (!html.includes('event.target === overlay') || !html.includes('edgeSwipeStart')) {
   throw new Error('Fechamento por toque fora ou gesto lateral ausente.');
 }
+const featureTokens = ['getRecoveryHint', 'formatLastSavedHint', 'getDietWeekAverages', 'saveCurrentDietRecipe', 'applyDietRecipe', 'backupStateText', 'lastBackupChecksum'];
+const missingFeatures = featureTokens.filter((token) => !html.includes(token));
+if (missingFeatures.length) throw new Error(`Funcionalidade nova ausente: ${missingFeatures.join(', ')}`);
 
 console.log(`OK: ${scripts.length} script(s), ${buttons.length} botões, ${controls.length} controles e ${dialogs.length} diálogos validados.`);
