@@ -2543,8 +2543,11 @@
     document.documentElement.dataset.theme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
     document.documentElement.dataset.density = state.densityMode || 'comfortable';
     document.documentElement.style.colorScheme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
+    const TIMER_STORAGE_KEY = 'marsbGym_timer_v1';
     let timerInterval = null;
     let timerSeconds = 0;
+    let timerDeadlineAt = 0;
+    let timerPausedRemaining = 0;
     let timerPaused = false;
     let wakeLock = null;
     let deferredInstallPrompt = null;
@@ -4318,10 +4321,77 @@
       startTimer(safeSeconds);
     }
 
+    function persistTimerState() {
+      if (!timerInterval || timerSeconds <= 0) {
+        localStorage.removeItem(TIMER_STORAGE_KEY);
+        return;
+      }
+      const remaining = timerPaused ? Math.max(0, timerPausedRemaining || timerSeconds) : Math.max(0, Math.ceil((timerDeadlineAt - Date.now()) / 1000));
+      if (!remaining) {
+        localStorage.removeItem(TIMER_STORAGE_KEY);
+        return;
+      }
+      localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify({ version: 1, paused: timerPaused, remaining, deadlineAt: timerPaused ? 0 : timerDeadlineAt, savedAt: Date.now() }));
+    }
+
+    function finishTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 0;
+      timerDeadlineAt = 0;
+      timerPausedRemaining = 0;
+      timerPaused = false;
+      localStorage.removeItem(TIMER_STORAGE_KEY);
+      releaseWakeLock();
+      updateTimerDisplay();
+      doVibrate([200, 100, 200]);
+      showToast('Descanso finalizado! 💪');
+      setTimeout(() => {
+        document.getElementById('timerOverlay').classList.remove('show');
+        syncGuidedRestPanel();
+      }, 1500);
+    }
+
+    function syncTimerClock() {
+      if (!timerInterval || timerPaused) return;
+      timerSeconds = Math.max(0, Math.ceil((timerDeadlineAt - Date.now()) / 1000));
+      updateTimerDisplay();
+      if (timerSeconds <= 0) finishTimer();
+    }
+
+    function restoreTimerState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY) || 'null');
+        if (!saved || Number(saved.version) !== 1) return;
+        const remaining = Math.max(0, Math.round(Number(saved.paused) ? Number(saved.remaining) : Math.ceil((Number(saved.deadlineAt) - Date.now()) / 1000)));
+        if (!remaining) { localStorage.removeItem(TIMER_STORAGE_KEY); return; }
+        timerSeconds = remaining;
+        timerPaused = Boolean(saved.paused);
+        timerPausedRemaining = timerPaused ? remaining : 0;
+        timerDeadlineAt = timerPaused ? 0 : Number(saved.deadlineAt);
+        updateTimerDisplay();
+        renderTimerPresets(remaining);
+        const useIntegratedGuidedTimer = guidedState.active && document.getElementById('guidedOverlay')?.classList.contains('show');
+        document.getElementById('timerOverlay').classList.toggle('show', !useIntegratedGuidedTimer);
+        timerInterval = setInterval(syncTimerClock, 1000);
+        syncGuidedRestPanel();
+      } catch (error) {
+        localStorage.removeItem(TIMER_STORAGE_KEY);
+      }
+    }
+
+    function handleTimerVisibility() {
+      syncTimerClock();
+      if (timerInterval && !timerPaused && document.visibilityState === 'visible') requestWakeLock();
+      if (timerInterval) { persistTimerState(); syncGuidedRestPanel(); }
+    }
+
     function startTimer(seconds) {
       if (timerInterval) clearInterval(timerInterval);
       const requested = Math.round(safeNumber(seconds, 15, 600, state.prefs?.restDefault || 90));
       timerSeconds = requested;
+      timerDeadlineAt = Date.now() + requested * 1000;
+      timerPausedRemaining = 0;
       timerPaused = false;
       updateTimerDisplay();
       renderTimerPresets(requested);
@@ -4334,21 +4404,10 @@
       requestWakeLock();
 
       timerInterval = setInterval(() => {
-        if (timerPaused) return;
-        timerSeconds--;
-        updateTimerDisplay();
-        if (timerSeconds <= 0) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-          releaseWakeLock();
-          doVibrate([200, 100, 200]);
-          showToast('Descanso finalizado! 💪');
-          setTimeout(() => {
-            document.getElementById('timerOverlay').classList.remove('show');
-            syncGuidedRestPanel();
-          }, 1500);
-        }
+        syncTimerClock();
+        persistTimerState();
       }, 1000);
+      persistTimerState();
     }
 
     function updateTimerDisplay() {
@@ -4374,7 +4433,18 @@
     }
 
     function togglePauseTimer() {
+      syncTimerClock();
+      if (!timerInterval) return;
       timerPaused = !timerPaused;
+      if (timerPaused) {
+        timerPausedRemaining = timerSeconds;
+        timerDeadlineAt = 0;
+      } else {
+        timerDeadlineAt = Date.now() + timerSeconds * 1000;
+        timerPausedRemaining = 0;
+        requestWakeLock();
+      }
+      persistTimerState();
       const pauseBtn = document.getElementById('timerPauseBtn');
       if (pauseBtn) pauseBtn.textContent = timerPaused ? 'Retomar' : 'Pausar';
       syncGuidedRestPanel();
@@ -4383,15 +4453,26 @@
     function skipTimer() {
       if (timerInterval) clearInterval(timerInterval);
       timerInterval = null;
+      timerSeconds = 0;
+      timerDeadlineAt = 0;
+      timerPausedRemaining = 0;
       timerPaused = false;
+      localStorage.removeItem(TIMER_STORAGE_KEY);
       releaseWakeLock();
       document.getElementById('timerOverlay').classList.remove('show');
       syncGuidedRestPanel();
     }
 
     function adjustTimer(deltaSeconds) {
+      syncTimerClock();
+      if (!timerInterval) return;
       const delta = Number(deltaSeconds) || 0;
-      timerSeconds = Math.max(0, Math.min(600, timerSeconds + delta));
+      const next = Math.max(0, Math.min(600, timerSeconds + delta));
+      timerSeconds = next;
+      if (timerPaused) timerPausedRemaining = next;
+      else timerDeadlineAt = Date.now() + next * 1000;
+      if (!next) { finishTimer(); return; }
+      persistTimerState();
       updateTimerDisplay();
       syncGuidedRestPanel();
       doVibrate(20);
@@ -8288,7 +8369,11 @@
     scrollTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }));
     window.addEventListener('scroll', syncScrollTopButton, { passive: true });
     syncScrollTopButton();
-
+    document.addEventListener('visibilitychange', handleTimerVisibility, { passive: true });
+    window.addEventListener('pageshow', handleTimerVisibility, { passive: true });
+    window.addEventListener('pagehide', () => { if (timerInterval) persistTimerState(); }, { passive: true });
+    window.addEventListener('focus', handleTimerVisibility, { passive: true });
+    restoreTimerState();
     // PWA install prompt
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();

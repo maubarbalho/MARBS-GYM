@@ -19,13 +19,19 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v55-performance-offline`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v56-background-timer`.
 
 ## Coach e funcionamento offline
 
 A interface e a execução do Coach/IA foram removidas desta versão. Preferências e histórico legados são preservados apenas para compatibilidade de dados, mas não são executados nem enviados para serviços externos. Treinos, histórico, recordes, calculadoras, dieta, configurações, backup e dados locais ficam no navegador do usuário; recursos remotos opcionais, como a geração de QR code, podem exigir conexão.
 
 A biblioteca Excel é carregada somente quando uma ação de importação ou exportação é usada. Ela não faz parte do carregamento inicial do PWA, mas continua disponível no mesmo diretório público.
+
+## Timer de descanso em segundo plano
+
+O timer de descanso não depende de decrementar um contador a cada execução de `setInterval`. Ao iniciar ou retomar, o app grava um prazo absoluto (`Date.now()`), persiste esse estado no armazenamento local e recalcula o tempo restante ao receber `visibilitychange`, `pageshow`, `focus` ou ao reabrir o PWA. Assim, o tempo transcorrido é refletido corretamente quando o usuário volta ao app, mesmo que o sistema suspenda a execução do JavaScript em segundo plano. A pausa continua sendo exclusivamente manual.
+
+O navegador ou o sistema operacional pode suspender completamente o PWA; por isso, um alerta sonoro ou vibração no instante exato enquanto o app está suspenso não é garantido. A garantia implementada é a correção do relógio e da finalização assim que o app retorna ao primeiro plano.
 
 ## Dados do usuário
 

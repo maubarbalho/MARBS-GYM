@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v55-performance-offline';
+const CACHE_NAME = 'marsb-gym-v56-background-timer';
 const APP_SHELL = [
   './',
   './index.html',
