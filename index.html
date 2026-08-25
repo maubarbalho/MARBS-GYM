@@ -600,6 +600,7 @@
     .guided-focus-toggle[aria-pressed="true"] { background:var(--primary); border-color:var(--primary); color:#fff; }
     .guided-kicker { color:var(--text-muted); font-size:0.66rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; }
     .guided-progress-label { color:var(--text); font-size:0.82rem; }
+    .guided-mobile-actions { display:none; }
     .guided-session-footer {
       flex:0 0 auto; padding:10px 18px calc(12px + var(--safe-bottom));
       background:rgba(10,14,23,0.96); border-top:1px solid var(--border);
@@ -672,6 +673,12 @@
     .guided-overlay.focus-mode .guided-activity-card { padding:18px 14px; }
     .guided-overlay.focus-mode .guided-section-label { margin-top:14px; }
     .guided-nav-row { margin-top:16px; }
+    @media (max-width:600px) {
+      .guided-mobile-actions { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:6px; padding:8px 12px calc(8px + var(--safe-bottom)); background:rgba(10,14,23,0.98); border-top:1px solid var(--border); position:relative; z-index:2; }
+      .guided-mobile-action { min-height:48px; padding:0 8px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; }
+      .guided-mobile-action.primary { background:var(--primary); border-color:var(--primary); color:#fff; }
+      .guided-mobile-action:disabled { opacity:.5; cursor:not-allowed; }
+    }
     @media (max-width:430px) {
       .guided-body { padding:14px 12px 18px; }
       .guided-activity-card { border-radius:20px; padding:11px; }
@@ -2390,6 +2397,11 @@
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>
     <div class="guided-body" id="guidedBody" tabindex="-1"></div>
+    <div class="guided-mobile-actions" id="guidedMobileActions" aria-label="Ações rápidas do treino">
+      <button type="button" class="guided-mobile-action primary" id="guidedQuickComplete">Concluir série</button>
+      <button type="button" class="guided-mobile-action" id="guidedQuickRepeat">Repetir última</button>
+      <button type="button" class="guided-mobile-action" id="guidedQuickTimer">Timer</button>
+    </div>
     <div class="guided-session-footer" aria-label="Progresso da sessão">
       <div class="guided-session-meta"><span id="guidedWorkoutLabel">Treino</span><strong id="guidedTimeLabel">00:00</strong></div>
       <div class="guided-segment-track" id="guidedSegmentTrack" aria-hidden="true"></div>
@@ -4671,6 +4683,49 @@
       }
     }
 
+    function repeatLastGuidedSet() {
+      if (!guidedState.active) return;
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      const doneArr = getDoneArr(ex);
+      const targetIndex = Math.max(0, doneArr.findIndex((done) => !done));
+      if (targetIndex >= ex.series) { showToast('Todas as séries deste exercício já estão preenchidas'); return; }
+      const details = getSetDetails(ex);
+      const previous = targetIndex > 0 ? details[targetIndex - 1] : null;
+      const last = getLastPerformance(ex.id);
+      const reps = previous?.reps || last?.reps?.[0] || '';
+      const weight = previous?.weight || last?.weight || '';
+      if (!reps && !weight) { showToast('Ainda não há registro anterior para repetir'); return; }
+      if (reps) saveSetDetail(ex.id, targetIndex, 'reps', reps);
+      if (weight) saveSetDetail(ex.id, targetIndex, 'weight', weight);
+      renderGuidedStep();
+      document.getElementById(`guidedReps-${encodeData(ex.id)}-${targetIndex}`)?.focus({ preventScroll: true });
+      showToast('Último registro preenchido');
+    }
+
+    function completeCurrentGuidedSet() {
+      if (!guidedState.active) return;
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      const index = getDoneArr(ex).findIndex((done) => !done);
+      if (index < 0) { showToast('Exercício concluído. Avance para o próximo.'); return; }
+      toggleSet(ex.id, index, ex.descanso, guidedState.treinoId);
+    }
+
+    function syncGuidedMobileActions() {
+      const ex = guidedState.exercises[guidedState.index];
+      const complete = document.getElementById('guidedQuickComplete');
+      const repeat = document.getElementById('guidedQuickRepeat');
+      const timer = document.getElementById('guidedQuickTimer');
+      if (!ex || !guidedState.active) return;
+      const done = getDoneArr(ex);
+      const focusIndex = done.findIndex((value) => !value);
+      const next = focusIndex < 0 ? ex.series : focusIndex + 1;
+      if (complete) { complete.textContent = focusIndex < 0 ? 'Próximo exercício' : `Concluir série ${next}/${ex.series}`; complete.onclick = () => focusIndex < 0 ? guidedGoTo(guidedState.index + 1) : completeCurrentGuidedSet(); }
+      if (repeat) { repeat.disabled = !getLastPerformance(ex.id) && focusIndex < 1; repeat.onclick = repeatLastGuidedSet; }
+      if (timer) { timer.textContent = 'Iniciar timer'; timer.onclick = () => startTimer(ex.descanso); }
+    }
+
     function renderGuidedStep() {
       const ex = guidedState.exercises[guidedState.index];
       if (!ex) return;
@@ -4772,6 +4827,7 @@
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => guidedGoTo(guidedState.index + 1));
       guidedBody.querySelector('.js-end-exercise').addEventListener('click', endGuidedExercise);
       guidedBody.querySelector('.js-end-workout').addEventListener('click', endGuidedWorkout);
+      syncGuidedMobileActions();
       const focusToggle = document.getElementById('guidedFocusToggle');
       if (focusToggle) {
         focusToggle.setAttribute('aria-pressed', String(guidedState.focusMode));
@@ -6810,7 +6866,7 @@
       const recent = (state.dietRecent || []).filter((item) => TACO_DIARY_FOODS[item.foodKey]);
       if (recentWrap && recentList) {
         recentWrap.hidden = !recent.length;
-        recentList.innerHTML = recent.map((item, index) => `<button type="button" onclick="addRecentDietMeal(${index})">${escapeHtml(TACO_DIARY_FOODS[item.foodKey].name)} · ${item.grams} g</button>`).join('');
+        recentList.innerHTML = recent.map((item, index) => `<button type="button" onclick="addRecentDietMeal(${index})">${index === 0 ? 'Repetir última · ' : ''}${escapeHtml(TACO_DIARY_FOODS[item.foodKey].name)} · ${item.grams} g</button>`).join('');
       }
       renderDietWeekAdherence();
       renderDietShoppingList();
@@ -7824,11 +7880,17 @@
 
     function deleteHistoryEntry(id) {
       if (!confirm('Apagar este registro do histórico?')) return;
-      state.completedWorkouts = (state.completedWorkouts || []).filter(h => h.id !== id);
+      const history = state.completedWorkouts || [];
+      const index = history.findIndex((entry) => entry.id === id);
+      if (index < 0) return;
+      const removed = history.splice(index, 1)[0];
       saveState();
       renderHistory();
       updateStats();
-      showToast('Registro apagado');
+      showDietUndo('Registro apagado', () => {
+        state.completedWorkouts.splice(Math.min(index, state.completedWorkouts.length), 0, removed);
+        saveState(); renderHistory(); updateStats(); showToast('Registro restaurado');
+      });
     }
 
     // ===================== CONFIGURAÇÕES =====================
