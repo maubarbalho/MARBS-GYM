@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v57-decimal-weights`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v58-recovery-plan-protection`.
 
 ## Coach e funcionamento offline
 
@@ -36,6 +36,16 @@ O navegador ou o sistema operacional pode suspender completamente o PWA; por iss
 ## Pesos decimais
 
 Os campos de carga dos exercícios, do treino guiado, do perfil e das calculadoras aceitam valores com ponto ou vírgula decimal, como `2.5`, `2,5`, `7.5` ou `7,5`. A entrada usa teclado decimal em celulares e os valores são normalizados internamente para manter cálculos, histórico, progressão e exportações consistentes.
+
+## Dica de recuperação ao finalizar o treino
+
+Ao concluir um treino completo, o resumo da sessão mostra uma única dica automática com uma estimativa de recuperação dos grupos musculares trabalhados. A dica usa o treino, as séries concluídas e o volume registrado como referência. Ela aparece somente no resumo final, não cria agenda, não envia lembretes, não acompanha o usuário depois e não bloqueia um novo treino. É uma estimativa informativa, não uma confirmação fisiológica de recuperação.
+
+## Preservação do plano personalizado nas atualizações
+
+O plano personalizado continua armazenado junto aos dados locais em `localStorage`. Além disso, quando o plano é salvo ou importado, o app cria uma cópia independente em `marsbGym_plan_backup_v1` e verifica se a gravação principal pode ser relida. Ao iniciar após uma atualização ou migração, se o estado principal estiver sem plano, o app tenta restaurar essa cópia antes de usar o plano padrão. O retorno ao padrão continua sendo uma ação manual, protegida por confirmação.
+
+A proteção não substitui a exportação de backup: limpar os dados do site, trocar de domínio/origem ou remover os dados do navegador pode apagar o armazenamento local.
 
 ## Dados do usuário
 

@@ -1525,6 +1525,10 @@
     .decision-card { padding:11px; border-radius:14px; background:var(--bg); border:1px solid var(--border); }
     .decision-card strong { display:block; font-size:1rem; margin-bottom:3px; }
     .decision-card span { display:block; color:var(--text-muted); font-size:.68rem; line-height:1.35; }
+    .complete-recovery { margin:12px 0; padding:12px; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border)); border-radius:14px; background:color-mix(in srgb, var(--accent) 9%, var(--card)); }
+    .complete-recovery strong { display:block; color:var(--accent); font-size:.86rem; margin-bottom:4px; }
+    .complete-recovery span, .complete-recovery small { display:block; color:var(--text-muted); font-size:.72rem; line-height:1.4; }
+    .complete-recovery small { margin-top:5px; }
     .estimate-warning { margin-top:10px; padding:10px 12px; border:1px solid color-mix(in srgb, var(--warning) 55%, var(--border)); border-radius:12px; background:color-mix(in srgb, var(--warning) 12%, var(--card)); color:var(--text); font-size:.74rem; line-height:1.4; }
     .diet-meal-row, .shopping-row, .favorite-row { display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:1px solid color-mix(in srgb, var(--border) 65%, transparent); font-size:.78rem; }
     .diet-meal-row:last-child, .shopping-row:last-child, .favorite-row:last-child { border-bottom:0; }
@@ -2532,6 +2536,7 @@
     // week: number
 
     const STORAGE_KEY = 'marsbGym_v2';
+    const PLAN_BACKUP_STORAGE_KEY = 'marsbGym_plan_backup_v1';
     const STATE_SCHEMA_VERSION = 7;
     const MAX_STORAGE_BYTES = 4 * 1024 * 1024;
 
@@ -2946,13 +2951,78 @@
       return migrated;
     }
 
+    function sanitizePlanCustomExercises(source, program) {
+      const clean = {};
+      Object.keys(program || {}).forEach((key) => {
+        const list = Array.isArray(source?.[key]) ? source[key] : [];
+        clean[key] = list.slice(0, 100).map((ex, index) => sanitizeExercise(ex, key, index));
+      });
+      return clean;
+    }
+
+    function saveCustomProgramBackup(targetState = state) {
+      const program = sanitizeProgram(targetState?.customProgram);
+      if (!program) {
+        try { localStorage.removeItem(PLAN_BACKUP_STORAGE_KEY); } catch (error) {}
+        return false;
+      }
+      const meta = targetState.customProgramMeta && typeof targetState.customProgramMeta === 'object' ? {
+        name: boundedText(targetState.customProgramMeta.name, 120),
+        author: boundedText(targetState.customProgramMeta.author, 120),
+        importedAt: boundedText(targetState.customProgramMeta.importedAt, 40)
+      } : null;
+      try {
+        const customExercises = sanitizePlanCustomExercises(targetState?.customExercises, program);
+        const payload = JSON.stringify({ version: 1, savedAt: new Date().toISOString(), program, customExercises, meta });
+        localStorage.setItem(PLAN_BACKUP_STORAGE_KEY, payload);
+        const verified = JSON.parse(localStorage.getItem(PLAN_BACKUP_STORAGE_KEY) || 'null');
+        return Boolean(verified?.program && Object.keys(verified.program).length);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function verifyCustomProgramPersisted(program) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        const expected = sanitizeProgram(program);
+        const actual = sanitizeProgram(saved?.customProgram);
+        return Boolean(expected && actual && JSON.stringify(expected) === JSON.stringify(actual));
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function restoreCustomProgramBackup(targetState) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(PLAN_BACKUP_STORAGE_KEY) || 'null');
+        const program = sanitizeProgram(saved?.program);
+        if (!program || targetState.customProgram) return false;
+        targetState.customProgram = program;
+        targetState.customProgramMeta = saved.meta && typeof saved.meta === 'object' ? {
+          name: boundedText(saved.meta.name, 120),
+          author: boundedText(saved.meta.author, 120),
+          importedAt: boundedText(saved.meta.importedAt, 40)
+        } : null;
+        const existing = targetState.customExercises && typeof targetState.customExercises === 'object' ? targetState.customExercises : {};
+        const restoredCustom = saved.customExercises && typeof saved.customExercises === 'object' ? saved.customExercises : existing;
+        targetState.customExercises = sanitizePlanCustomExercises(restoredCustom, program);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           const migrated = migrateState(parsed);
-          const needsPersist = !parsed._schemaVersion || Number(parsed._schemaVersion) < STATE_SCHEMA_VERSION;
+          const planRecovered = !migrated.customProgram && restoreCustomProgramBackup(migrated);
+          if (planRecovered) initialLoadNotice = 'Plano personalizado recuperado da cópia local após a atualização.';
+          if (migrated.customProgram && !localStorage.getItem(PLAN_BACKUP_STORAGE_KEY)) saveCustomProgramBackup(migrated);
+          const needsPersist = planRecovered || !parsed._schemaVersion || Number(parsed._schemaVersion) < STATE_SCHEMA_VERSION;
           if (needsPersist) {
             migrated.storageMeta.lastSavedAt = new Date().toISOString();
             const result = writeStateSnapshot(migrated);
@@ -2963,6 +3033,13 @@
         }
       } catch (error) {
         initialLoadNotice = 'Não foi possível ler os dados salvos. Foi carregada uma sessão segura; restaure um backup válido se necessário.';
+        const recovered = defaultState();
+        if (restoreCustomProgramBackup(recovered)) {
+          initialLoadNotice = 'Plano personalizado recuperado da cópia local após a atualização.';
+          const result = writeStateSnapshot(recovered);
+          if (result.ok) recovered.storageMeta.bytes = result.bytes;
+          return recovered;
+        }
         console.warn('[MARSB-GYM] Estado local inválido:', error);
       }
       // Migração compatível do formato v1.
@@ -2977,6 +3054,7 @@
             completedWorkouts: [],
             week: o.week || 1
           });
+          if (!migrated.customProgram && restoreCustomProgramBackup(migrated)) initialLoadNotice = 'Plano personalizado recuperado da cópia local após a atualização.';
           migrated.storageMeta.lastSavedAt = new Date().toISOString();
           const result = writeStateSnapshot(migrated);
           if (result.ok) migrated.storageMeta.bytes = result.bytes;
@@ -2986,7 +3064,13 @@
         initialLoadNotice = 'O formato antigo também não pôde ser lido. O app iniciou com dados vazios para evitar corrupção.';
         console.warn('[MARSB-GYM] Falha na migração v1:', error);
       }
-      return defaultState();
+      const recovered = defaultState();
+      if (restoreCustomProgramBackup(recovered)) {
+        initialLoadNotice = 'Plano personalizado recuperado da cópia local após a atualização.';
+        const result = writeStateSnapshot(recovered);
+        if (result.ok) recovered.storageMeta.bytes = result.bytes;
+      }
+      return recovered;
     }
 
 
@@ -3835,6 +3919,38 @@
       return `${minutes}min ${String(secs).padStart(2, '0')}s`;
     }
 
+    function calculateWorkoutRecovery(treinoId) {
+      const totals = {};
+      getTreinoExercises(treinoId).forEach((ex) => {
+        const doneArr = getDoneArr(ex);
+        const doneSets = doneArr.filter(Boolean).length;
+        if (!doneSets) return;
+        const group = getExerciseMuscleGroup(ex, treinoId);
+        const details = getSetDetails(ex);
+        const volume = details.reduce((sum, detail, index) => {
+          if (!doneArr[index]) return sum;
+          const weight = Number(normalizeWeightValue(detail?.weight)) || 0;
+          const reps = Number(normalizeRepsValue(detail?.reps)) || 0;
+          return sum + (weight > 0 && reps > 0 ? weight * reps : 0);
+        }, 0);
+        totals[group] = totals[group] || { sets: 0, volume: 0 };
+        totals[group].sets += doneSets;
+        totals[group].volume += volume;
+      });
+      const groups = Object.entries(totals).map(([group, data]) => {
+        let hours = group === 'Pernas' ? 72 : group === 'Core' ? 24 : 48;
+        if (data.sets >= 15) hours = Math.max(hours, 72);
+        return { group, hours, sets: data.sets, volume: Math.round(data.volume) };
+      }).sort((a, b) => b.hours - a.hours || b.sets - a.sets || a.group.localeCompare(b.group, 'pt-BR'));
+      if (!groups.length) return null;
+      const formatHours = (hours) => hours % 24 === 0 ? `${hours / 24} dias` : `${hours} horas`;
+      return {
+        groups,
+        overallLabel: formatHours(groups[0].hours),
+        detailText: groups.map((item) => `${item.group}: ${formatHours(item.hours)}`).join(' · ')
+      };
+    }
+
     function calculateWorkoutMetrics(treinoId, setDetails) {
       let volume = 0, totalReps = 0, totalSets = 0;
       const marks = [];
@@ -3865,11 +3981,14 @@
       const mark = summary.bestMark;
       const newRecordText = summary.newRecordNames?.length ? `<div class="complete-record"><strong>🏆 Novo recorde</strong><span>${summary.newRecordNames.map((name) => escapeHtml(name)).join(' · ')}</span></div>` : '';
       const notes = summary.notes?.length ? `<div class="complete-notes"><strong>Notas da sessão</strong>${summary.notes.map((note) => `<p>${escapeHtml(note)}</p>`).join('')}</div>` : '';
+      const recoveryText = summary.recovery && summary.status !== 'interrupted'
+        ? `<div class="complete-recovery" role="note"><strong>Dica de recuperação</strong><span>Para este treino, uma referência de descanso é de aproximadamente <b>${escapeHtml(summary.recovery.overallLabel)}</b> antes de repetir os grupos trabalhados.</span><small>${escapeHtml(summary.recovery.detailText)} Esta é uma estimativa para conhecimento, não uma confirmação de recuperação.</small></div>`
+        : '';
       const checkin = state.workoutCheckins?.[summary.recordId] || {};
       const scoreOptions = (value) => `<option value="">—</option>${Array.from({ length: 10 }, (_, index) => index + 1).map((score) => `<option value="${score}" ${Number(value) === score ? 'selected' : ''}>${score}</option>`).join('')}`;
       const interrupted = summary.status === 'interrupted';
       const lead = interrupted ? `Treino ${escapeHtml(summary.treinoId)} encerrado antes do fim. As séries registradas foram salvas no histórico.` : `Treino ${escapeHtml(summary.treinoId)} registrado no histórico.`;
-      content.innerHTML = `<p class="complete-lead">${lead}</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${interrupted ? '<div class="complete-notes"><strong>Sessão interrompida</strong><p>O restante do treino foi deixado para outro dia.</p></div>' : ''}${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort" aria-label="Esforço percebido na sessão">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy" aria-label="Energia na sessão">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort" aria-label="Desconforto na sessão">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" aria-label="Observação do check-in" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      content.innerHTML = `<p class="complete-lead">${lead}</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${recoveryText}${interrupted ? '<div class="complete-notes"><strong>Sessão interrompida</strong><p>O restante do treino foi deixado para outro dia.</p></div>' : ''}${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort" aria-label="Esforço percebido na sessão">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy" aria-label="Energia na sessão">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort" aria-label="Desconforto na sessão">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" aria-label="Observação do check-in" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
       content.querySelector('.js-save-checkin')?.addEventListener('click', () => {
         const value = (field) => Number(content.querySelector(`[data-checkin="${field}"]`)?.value) || 0;
         if (!state.workoutCheckins) state.workoutCheckins = {};
@@ -3920,6 +4039,7 @@
       const startedAt = normalizeTimestamp(active?.startedAt) || endedAt;
       const elapsed = Math.max(0, Math.min(86400, Math.round((Date.parse(endedAt) - Date.parse(startedAt)) / 1000)));
       const metrics = calculateWorkoutMetrics(treinoId, setDetails);
+      const recovery = interrupted ? null : calculateWorkoutRecovery(treinoId);
       const record = {
         id: `${today}_${treinoId}_${Date.now()}`,
         treino: treinoId, date: today, week: currentWeek,
@@ -3945,7 +4065,7 @@
         const before = previousRecords[ex.id];
         return current && (!before || (current.bestLoad?.weight || 0) > (before.bestLoad?.weight || 0) || (current.bestReps?.reps || 0) > (before.bestReps?.reps || 0) || (current.bestSessionVolume?.volume || 0) > (before.bestSessionVolume?.volume || 0));
       }).map((ex) => ex.nome);
-      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, recordId: record.id, notes: Object.values(notes), newRecordNames, status: record.status }));
+      showWorkoutComplete(Object.assign(metrics, { treinoId, duration: elapsed, recordId: record.id, notes: Object.values(notes), newRecordNames, status: record.status, recovery }));
       showToast(interrupted ? `Sessão parcial do Treino ${treinoId} salva.` : `Treino ${treinoId} completo!`);
       updateStats();
       renderQuickStart();
@@ -5744,6 +5864,7 @@
       const keepWeek = currentWeek;
       state = defaultState();
       state.week = keepWeek;
+      localStorage.removeItem(PLAN_BACKUP_STORAGE_KEY);
       saveState();
       renderTreinos();
       renderQuickStart();
@@ -6515,6 +6636,9 @@
         showToast('Treino ' + missing.join(', ') + ' sem exercícios');
         return;
       }
+      const previousCustomProgram = state.customProgram ? cloneProgram(state.customProgram) : null;
+      const previousCustomProgramMeta = state.customProgramMeta ? Object.assign({}, state.customProgramMeta) : null;
+      const previousCustomExercises = state.customExercises ? cloneProgram(state.customExercises) : {};
       state.customProgram = cloneProgram(draft);
       state.customProgramMeta = {
         name: (document.getElementById('planoNome').value || '').trim() || 'Plano personalizado',
@@ -6522,12 +6646,22 @@
         importedAt: new Date().toISOString()
       };
       state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
-      saveState();
+      const stateSaved = saveState();
+      const stateVerified = stateSaved && verifyCustomProgramPersisted(state.customProgram);
+      if (!stateVerified) {
+        state.customProgram = previousCustomProgram;
+        state.customProgramMeta = previousCustomProgramMeta;
+        state.customExercises = previousCustomExercises;
+        updatePlanoStatus();
+        showToast('Não foi possível confirmar a gravação do plano. Exporte um backup e tente novamente.');
+        return;
+      }
+      const planBackupSaved = saveCustomProgramBackup();
       updatePlanoStatus();
       refreshWorkoutFilterOptions();
       if (typeof renderQuickStart === 'function') renderQuickStart();
       if (typeof renderTreinos === 'function') renderTreinos();
-      showToast('Plano salvo no app');
+      showToast(planBackupSaved ? 'Plano salvo e protegido neste dispositivo' : 'Plano salvo, mas não foi possível criar a cópia local. Exporte um backup.');
     }
 
     // ---- Simple text format (human-friendly) ----
@@ -6817,7 +6951,12 @@
           };
           state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
           planoDraft = cloneProgram(state.customProgram);
-          saveState();
+          var importedStateSaved = saveState();
+          var importedPlanBackupSaved = importedStateSaved && saveCustomProgramBackup();
+          if (!importedStateSaved) {
+            showToast('Não foi possível salvar o plano importado. Exporte um backup e tente novamente.');
+            return;
+          }
           updatePlanoStatus();
           var pn = document.getElementById('planoNome');
           var pa = document.getElementById('planoAuthor');
@@ -6825,7 +6964,7 @@
           if (pa) pa.value = state.customProgramMeta.author || '';
           planoLoadFieldsFromDraft();
           if (typeof renderQuickStart === 'function') renderQuickStart();
-          showToast('Planilha Excel importada!');
+          showToast(importedPlanBackupSaved ? 'Planilha Excel importada e protegida neste dispositivo!' : 'Planilha Excel importada, mas exporte um backup local.');
         } catch (err) {
           showToast('Não foi possível importar a planilha: ' + (err.message || err));
         }
@@ -6869,7 +7008,12 @@
           };
           state.customExercises = Object.fromEntries(Object.keys(state.customProgram).map(function (key) { return [key, []]; }));
           planoDraft = cloneProgram(map);
-          saveState();
+          var importedTextStateSaved = saveState();
+          var importedTextPlanBackupSaved = importedTextStateSaved && saveCustomProgramBackup();
+          if (!importedTextStateSaved) {
+            showToast('Não foi possível salvar o plano importado. Exporte um backup e tente novamente.');
+            return;
+          }
           updatePlanoStatus();
           var pn = document.getElementById('planoNome');
           var pa = document.getElementById('planoAuthor');
@@ -6877,7 +7021,7 @@
           if (pa) pa.value = state.customProgramMeta.author || '';
           planoLoadFieldsFromDraft();
           if (typeof renderQuickStart === 'function') renderQuickStart();
-          showToast('Plano importado!');
+          showToast(importedTextPlanBackupSaved ? 'Plano importado e protegido neste dispositivo!' : 'Plano importado, mas exporte um backup local.');
         } catch (err) {
           showToast('Não foi possível importar: ' + (err.message || err));
         }
@@ -6933,6 +7077,7 @@
       if (!confirm('Remover o plano personalizado e voltar ao treino padrão MARSB?')) return;
       state.customProgram = null;
       state.customProgramMeta = null;
+      localStorage.removeItem(PLAN_BACKUP_STORAGE_KEY);
       planoDraft = null;
       saveState();
       updatePlanoStatus();
