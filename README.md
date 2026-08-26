@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v59-sprint-1-guide`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v60-completed-workouts-visible`.
 
 ## Coach e funcionamento offline
 
@@ -36,6 +36,10 @@ O navegador ou o sistema operacional pode suspender completamente o PWA; por iss
 ## Pesos decimais
 
 Os campos de carga dos exercícios, do treino guiado, do perfil e das calculadoras aceitam valores com ponto ou vírgula decimal, como `2.5`, `2,5`, `7.5` ou `7,5`. A entrada usa teclado decimal em celulares e os valores são normalizados internamente para manter cálculos, histórico, progressão e exportações consistentes.
+
+## Lista de treinos concluídos
+
+O filtro inicial continua priorizando exercícios pendentes, mas um treino totalmente concluído permanece visível na lista quando não há busca ativa. O card aparece recolhido e identificado como `Concluído`, permitindo revisar a sessão, abrir o treino novamente ou consultar seus registros. A mudança é apenas de visualização e não altera marcações, pesos, histórico, plano personalizado ou dados locais.
 
 ## Dica de recuperação ao finalizar o treino
 
