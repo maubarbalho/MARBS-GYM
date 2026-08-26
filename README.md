@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v58-recovery-plan-protection`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v59-sprint-1-guide`.
 
 ## Coach e funcionamento offline
 
@@ -40,6 +40,10 @@ Os campos de carga dos exercícios, do treino guiado, do perfil e das calculador
 ## Dica de recuperação ao finalizar o treino
 
 Ao concluir um treino completo, o resumo da sessão mostra uma única dica automática com uma estimativa de recuperação dos grupos musculares trabalhados. A dica usa o treino, as séries concluídas e o volume registrado como referência. Ela aparece somente no resumo final, não cria agenda, não envia lembretes, não acompanha o usuário depois e não bloqueia um novo treino. É uma estimativa informativa, não uma confirmação fisiológica de recuperação.
+
+## Sprint 1: ficha local e orientação de progressão
+
+Os cards de exercícios e o treino guiado oferecem uma ficha local, disponível sem conexão, com grupo muscular principal, equipamento de referência, passos gerais de execução, atenção técnica, séries, repetições e descanso configurado. A ficha é informativa e não altera séries, cargas, histórico ou o plano salvo. O app também mostra o último desempenho e a sugestão de progressão já configurada, sempre permitindo ajuste manual.
 
 ## Preservação do plano personalizado nas atualizações
 

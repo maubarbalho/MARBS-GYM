@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v58-recovery-plan-protection';
+const CACHE_NAME = 'marsb-gym-v59-sprint-1-guide';
 const APP_SHELL = [
   './',
   './index.html',

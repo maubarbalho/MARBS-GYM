@@ -423,6 +423,10 @@
     }
     .exercise-icon-btn:active { background: var(--bg-elevated); }
     .exercise-icons { display: flex; gap: 6px; }
+    .exercise-guide-btn { min-height:30px; padding:5px 7px; border:1px solid color-mix(in srgb, var(--cyan) 45%, var(--border)); border-radius:8px; background:color-mix(in srgb, var(--cyan) 8%, transparent); color:var(--cyan); font-size:.7rem; font-weight:800; white-space:nowrap; }
+    .exercise-guide-btn:active { background:color-mix(in srgb, var(--cyan) 18%, transparent); }
+    .guided-guide-btn { width:100%; min-height:44px; margin:10px 0; padding:10px 12px; border:1px solid color-mix(in srgb, var(--cyan) 45%, var(--border)); border-radius:10px; background:color-mix(in srgb, var(--cyan) 8%, transparent); color:var(--cyan); font-size:.78rem; font-weight:800; text-align:left; }
+    .guided-guide-btn:active { background:color-mix(in srgb, var(--cyan) 18%, transparent); }
 
     .last-time-hint {
       font-size: 0.75rem; color: var(--accent); background: rgba(34,197,94,0.08);
@@ -455,6 +459,15 @@
     .progression-rule-note { margin:9px 0 0; color:var(--text-muted); font-size:.7rem; line-height:1.4; }
     .chart-advice { margin-top:12px; padding:10px 12px; background:color-mix(in srgb, var(--primary) 10%, transparent); border:1px solid color-mix(in srgb, var(--primary) 22%, transparent); border-radius:10px; font-size:.8rem; line-height:1.4; color:var(--text); }
     .chart-note { margin-top:10px; font-size:.75rem; }
+    .guide-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0 0 14px; }
+    .guide-summary > div { padding:10px; border:1px solid var(--border); border-radius:12px; background:var(--bg); }
+    .guide-summary strong, .guide-summary span { display:block; }
+    .guide-summary strong { font-size:.78rem; }
+    .guide-summary span { color:var(--text-muted); font-size:.68rem; margin-top:3px; line-height:1.25; }
+    .guide-section-title { margin:13px 0 6px; font-size:.78rem; font-weight:800; color:var(--accent); }
+    .guide-steps { margin:0; padding-left:20px; color:var(--text); font-size:.8rem; line-height:1.5; }
+    .guide-steps li { margin:5px 0; }
+    .guide-attention { margin-top:12px; padding:10px 12px; border-left:3px solid var(--warning); border-radius:9px; background:color-mix(in srgb, var(--warning) 9%, transparent); color:var(--text-muted); font-size:.74rem; line-height:1.4; }
     .chart-record-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
     .chart-record-grid > div { padding:10px; border-radius:12px; background:var(--card); border:1px solid var(--border); }
     .chart-record-grid strong { display:block; font-size:.95rem; color:var(--accent); }
@@ -2370,6 +2383,16 @@
     </div>
   </div>
 
+  <!-- MODAL: ficha local de exercício -->
+  <div class="modal-overlay" id="exerciseGuideModal" role="dialog" aria-modal="true" aria-labelledby="exerciseGuideTitle">
+    <div class="modal-sheet">
+      <button type="button" class="modal-close-x" onclick="closeExerciseGuide()" aria-label="Fechar ficha do exercício">✕</button>
+      <div class="modal-title" id="exerciseGuideTitle">Ficha do exercício</div>
+      <div id="exerciseGuideBody"></div>
+      <div class="modal-actions"><button type="button" class="btn-action primary" onclick="closeExerciseGuide()">Entendi</button></div>
+    </div>
+  </div>
+
   <!-- MODAL: primeiro uso -->
   <div class="modal-overlay" id="onboardingModal" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingLead">
     <div class="modal-sheet onboarding-sheet">
@@ -3534,6 +3557,44 @@
       return ({ A: 'Peito', B: 'Costas', C: 'Pernas', D: 'Ombros' })[fallbackTreino] || 'Outros';
     }
 
+    const EXERCISE_GUIDE_RULES = [
+      { test: /supino/, group: 'Peito', equipment: 'Banco + barra ou halteres', steps: ['Ajuste o banco e firme os pés no chão.', 'Desça a carga com controle, mantendo os ombros apoiados.', 'Empurre sem perder a trajetória e sem soltar a escápula do banco.'], attention: 'Evite transformar a descida em queda. Use uma carga que preserve a amplitude e a técnica.' },
+      { test: /crossover|crucifixo|peitoral/, group: 'Peito', equipment: 'Polia, máquina ou halteres', steps: ['Mantenha o peito aberto e uma leve flexão nos cotovelos.', 'Conduza as mãos pelo arco do movimento sem acelerar.', 'Pause na contração e retorne até um alongamento confortável.'], attention: 'Não force a amplitude se houver dor no ombro.' },
+      { test: /remada|puxada|pulldown|barra fixa/, group: 'Costas', equipment: 'Polia, barra ou halter', steps: ['Estabilize o tronco antes de iniciar a puxada.', 'Leve o cotovelo na direção do quadril ou das costelas.', 'Retorne devagar, mantendo tensão nas costas.'], attention: 'Evite usar balanço do tronco para completar a repetição.' },
+      { test: /agach|leg press|stiff|terra|mesa flexora|cadeira extensora|panturrilha|passada|afundo/, group: 'Pernas', equipment: 'Barra, máquina ou halteres', steps: ['Ajuste a posição dos pés e comece com amplitude segura.', 'Mantenha o joelho acompanhando a direção dos pés.', 'Controle a fase de retorno antes da próxima repetição.'], attention: 'A amplitude deve respeitar mobilidade, controle e ausência de dor.' },
+      { test: /desenvolvimento|elevacao lateral|crucifixo inverso|deltoide|ombro/, group: 'Ombros', equipment: 'Halteres, polia ou máquina', steps: ['Mantenha o tronco estável e as costelas controladas.', 'Eleve ou empurre sem compensar com impulso.', 'Retorne lentamente até a posição inicial.'], attention: 'Pare se surgir dor aguda ou perda de controle no ombro.' },
+      { test: /rosca|biceps/, group: 'Bíceps', equipment: 'Barra, halteres ou polia', steps: ['Fixe o cotovelo próximo ao tronco.', 'Flexione o braço sem balançar o corpo.', 'Desça a carga com controle até quase estender o cotovelo.'], attention: 'A carga não deve obrigar você a roubar o movimento.' },
+      { test: /triceps|testa|pulley/, group: 'Tríceps', equipment: 'Barra, halteres ou polia', steps: ['Posicione os cotovelos de forma estável.', 'Estenda o braço mantendo o ombro quieto.', 'Retorne devagar sem perder a posição do cotovelo.'], attention: 'Reduza a carga se os cotovelos abrirem ou houver desconforto.' },
+      { test: /prancha|abdominal|core|fazendeiro|rotacional|woodchopper/, group: 'Core', equipment: 'Peso corporal, halter ou polia', steps: ['Mantenha o tronco alinhado e respire sem prender o ar.', 'Faça o movimento a partir do core, não do impulso.', 'Finalize a repetição mantendo controle da posição.'], attention: 'Desconforto muscular é diferente de dor aguda; interrompa se houver dor.' }
+    ];
+
+    function getExerciseGuide(ex, treinoId) {
+      const name = String(ex?.nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const rule = EXERCISE_GUIDE_RULES.find((item) => item.test.test(name));
+      return rule || {
+        group: getExerciseMuscleGroup(ex, treinoId),
+        equipment: 'Conforme o equipamento disponível',
+        steps: ['Ajuste a posição e teste o movimento com pouca carga.', 'Execute cada repetição de forma controlada.', 'Registre a carga somente se a técnica permanecer estável.'],
+        attention: 'A ficha é uma referência geral. Adapte o movimento à sua técnica e orientação profissional.'
+      };
+    }
+
+    function openExerciseGuide(exId, treinoId) {
+      const ex = findExercise(exId);
+      const modal = document.getElementById('exerciseGuideModal');
+      const body = document.getElementById('exerciseGuideBody');
+      if (!ex || !modal || !body) return;
+      const guide = getExerciseGuide(ex, treinoId);
+      document.getElementById('exerciseGuideTitle').textContent = `Ficha — ${ex.nome}`;
+      body.innerHTML = `<div class="guide-summary"><div><strong>${escapeHtml(guide.group)}</strong><span>grupo principal</span></div><div><strong>${escapeHtml(guide.equipment)}</strong><span>equipamento sugerido</span></div><div><strong>${escapeHtml(ex.series)} × ${escapeHtml(ex.reps)}</strong><span>séries e repetições</span></div><div><strong>${escapeHtml(formatRest(ex.descanso))}</strong><span>descanso configurado</span></div></div><div class="guide-section-title">Como executar</div><ol class="guide-steps">${guide.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ol><div class="guide-attention"><strong>Atenção</strong><br>${escapeHtml(guide.attention)}</div>`;
+      modal.classList.add('show');
+      modal.querySelector('.modal-close-x')?.focus();
+    }
+
+    function closeExerciseGuide() {
+      document.getElementById('exerciseGuideModal')?.classList.remove('show');
+    }
+
     function getMuscleVolumeData() {
       const totals = {};
       (state.completedWorkouts || []).forEach((workout) => {
@@ -3732,6 +3793,7 @@
             <div class="exercise-top">
               <div class="exercise-name">${escapeHtml(ex.nome)}</div>
               <div class="exercise-icons">
+                <button class="exercise-guide-btn js-guide-exercise" type="button" title="Abrir ficha local" aria-label="Abrir ficha de ${escapeHtml(ex.nome)}">ⓘ Ficha</button>
                 <button class="exercise-swap-btn js-swap-exercise" type="button" title="Trocar exercício" aria-label="Trocar ${escapeHtml(ex.nome)}">⇄ Trocar</button>
                 <button class="exercise-icon-btn js-edit-exercise" type="button" title="Editar exercício" aria-label="Editar ${escapeHtml(ex.nome)}">✏️</button>
               </div>
@@ -3765,6 +3827,7 @@
             <div class="series-meta-row"><label class="rpe-field">RIR/RPE médio <select class="js-save-rpe" aria-label="RIR/RPE de ${escapeHtml(ex.nome)}"><option value="">—</option>${Array.from({length:11}, (_, i) => `<option value="${i}" ${String((state.rpe[ex.id] || [])[0] || '') === String(i) ? 'selected' : ''}>${i}</option>`).join('')}</select></label><span class="calc-hint" style="margin:0;">RIR: 0 = falha · RPE: 10 = máximo</span></div>
             <textarea class="exercise-session-note js-save-session-note" rows="1" maxlength="500" placeholder="Nota desta sessão: técnica, dor, ajuste ou sensação" aria-label="Nota da sessão de ${escapeHtml(ex.nome)}">${escapeHtml((state.sessionNotes && state.sessionNotes[ex.id]) || '')}</textarea>
           `;
+          exEl.querySelector('.js-guide-exercise')?.addEventListener('click', (event) => { event.stopPropagation(); openExerciseGuide(ex.id, treino.id); });
           exEl.querySelector('.js-edit-exercise').addEventListener('click', () => openEditExercise(ex.id, treino.id));
           exEl.querySelector('.js-swap-exercise')?.addEventListener('click', (event) => { event.stopPropagation(); openSwapExercise(ex.id, treino.id); });
           exEl.querySelector('.js-save-weight').addEventListener('change', (event) => saveWeight(ex.id, event.currentTarget.value));
@@ -5065,6 +5128,7 @@
               </div>
             </div>
             <div class="guided-skip-note">Pode avançar sem começar este exercício. As séries já registradas ficam salvas e você pode voltar por “Voltar depois”.</div>
+            <button type="button" class="guided-guide-btn js-guided-exercise-guide">ⓘ Ver ficha local do exercício</button>
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
             <div class="guided-focus-current"><div><span>Exercício em foco</span><strong>${escapeHtml(ex.nome)}</strong></div><div class="guided-focus-set"><span>Progresso</span><strong>${guidedState.index + 1}/${total} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}</strong></div></div>
             <div class="guided-section-label">Progressão de carga</div>
@@ -5130,6 +5194,7 @@
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
       });
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
+      guidedBody.querySelector('.js-guided-exercise-guide')?.addEventListener('click', () => openExerciseGuide(ex.id, guidedState.treinoId));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(guidedState.index + 1) : skipGuidedExercise());
@@ -5506,7 +5571,7 @@
 
     function installSwipeDismiss() {
       const specs = [
-        ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
+        ['exerciseModal', '#exerciseModal .modal-sheet', closeExerciseModal], ['exerciseGuideModal', '#exerciseGuideModal .modal-sheet', closeExerciseGuide], ['chartModal', '#chartModal .modal-sheet', closeChartModal],
         ['workoutCompleteModal', '#workoutCompleteModal .modal-sheet', closeWorkoutComplete], ['swapExerciseModal', '#swapExerciseModal .modal-sheet', closeSwapExercise],
         ['onboardingModal', '#onboardingModal .modal-sheet', closeOnboarding], ['configOverlay', '#configOverlay .config-window-header', closeConfigWindow],
         ['guidedOverlay', '#guidedOverlay .guided-header', exitGuided], ['timerOverlay', '#timerOverlay', skipTimer]
