@@ -1837,6 +1837,22 @@
       .nav-item { min-width: 56px; min-height: 48px; padding: 7px 5px; }
       .nav-icon { width: 28px; height: 28px; font-size: 1rem; }
     }
+
+    /* Compact mobile shell: reduce visual chrome while preserving 44px touch targets. */
+    .header { padding: 6px 10px; padding-top: calc(6px + var(--safe-top)); }
+    .header.header-compact { padding-bottom: 4px; }
+    .header h1 { font-size: 1rem; }
+    .brand-lockup { gap: 5px; }
+    .brand-logo { width: 24px; height: 24px; flex-basis: 24px; border-radius: 7px; }
+    .bottom-nav { padding: 3px 0 calc(3px + var(--safe-bottom)); }
+    .bottom-nav-inner { max-width: 560px; }
+    .nav-item { min-width: 52px; min-height: 44px; padding: 2px 4px 3px; gap: 1px; font-size: .57rem; }
+    .nav-icon { width: 24px; height: 24px; border-radius: 8px; font-size: .9rem; }
+    .nav-item .nav-icon { font-size: .9rem; }
+    @media (max-width: 600px) {
+      .guided-header { padding: calc(6px + var(--safe-top)) 10px 5px; }
+      .guided-brand-logo { width: 15px; height: 15px; flex-basis: 15px; }
+    }
   </style>
 </head>
 <body>
@@ -9214,8 +9230,9 @@
     if ('serviceWorker' in navigator) {
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
+      let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v75-global-visual-rebrand';
+      const APP_UPDATE_VERSION = 'v76-compact-shell-auto-update';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
@@ -9250,6 +9267,32 @@
         }
         saveBeforeMobileSuspend();
       };
+      const autoRefreshStorageKey = `marsbGymAutoRefresh:${APP_UPDATE_VERSION}`;
+      const hasAutoRefreshedThisVersion = () => {
+        try { return sessionStorage.getItem(autoRefreshStorageKey) === '1'; } catch (error) { return false; }
+      };
+      const markAutoRefreshStarted = () => {
+        try { sessionStorage.setItem(autoRefreshStorageKey, '1'); } catch (error) { /* storage opcional */ }
+      };
+      const isUnsafeToAutoReload = () => {
+        const active = document.activeElement;
+        const editing = active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) && !active.readOnly && !active.disabled;
+        const modalOpen = [...document.querySelectorAll('.modal-overlay.show')].some((element) => element.id !== 'updateBanner');
+        return Boolean(editing || modalOpen);
+      };
+      const applyWaitingWorkerAutomatically = async (registration) => {
+        if (!registration?.waiting || !navigator.onLine || automaticUpdateInProgress || hasAutoRefreshedThisVersion() || isUnsafeToAutoReload()) return false;
+        automaticUpdateInProgress = true;
+        markAutoRefreshStarted();
+        persistGuidedFormBeforeReload();
+        updateBanner?.classList.remove('show');
+        if (activateWaitingWorker(registration)) {
+          showToast('Atualização automática aplicada. Seus dados foram preservados.');
+          return true;
+        }
+        automaticUpdateInProgress = false;
+        return false;
+      };
       const handleUpdateAvailable = (registration) => {
         activeServiceWorkerRegistration = registration;
         // A sessão ativa pode ser atualizada: seus campos e sua navegação são salvos antes do reload.
@@ -9260,7 +9303,10 @@
       const checkForAppUpdate = (registration) => {
         if (!registration || !navigator.onLine) return;
         registration.update().then(() => {
-          if (registration.waiting) handleUpdateAvailable(registration);
+          if (registration.waiting) {
+            handleUpdateAvailable(registration);
+            void applyWaitingWorkerAutomatically(registration);
+          }
         }).catch(() => undefined);
       };
       const registerServiceWorker = () => {
@@ -9269,13 +9315,19 @@
         const scope = new URL('./', window.location.href).pathname;
         navigator.serviceWorker.register(scriptUrl, { scope }).then((registration) => {
           activeServiceWorkerRegistration = registration;
-          if (registration.waiting) handleUpdateAvailable(registration);
+          if (registration.waiting) {
+            handleUpdateAvailable(registration);
+            void applyWaitingWorkerAutomatically(registration);
+          }
           checkForAppUpdate(registration);
           registration.addEventListener('updatefound', () => {
             const installing = registration.installing;
             if (!installing) return;
             installing.addEventListener('statechange', () => {
-              if (installing.state === 'installed' && navigator.serviceWorker.controller) handleUpdateAvailable(registration);
+              if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                handleUpdateAvailable(registration);
+                void applyWaitingWorkerAutomatically(registration);
+              }
             });
           });
           window.addEventListener('pageshow', () => checkForAppUpdate(registration), { passive: true });

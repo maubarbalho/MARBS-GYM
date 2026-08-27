@@ -13,7 +13,12 @@ const requiredHtml = [
   "window.addEventListener('online'",
   "scriptUrl.searchParams.set('v', APP_UPDATE_VERSION)",
   "url.searchParams.set('pwa-refresh', APP_UPDATE_VERSION)",
-  'persistGuidedFormBeforeReload'
+  'persistGuidedFormBeforeReload',
+  'autoRefreshStorageKey',
+  'hasAutoRefreshedThisVersion',
+  'applyWaitingWorkerAutomatically',
+  'sessionStorage.setItem(autoRefreshStorageKey, \'1\')',
+  'void applyWaitingWorkerAutomatically(registration)'
 ];
 const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Atualização standalone incompleta: ${missingHtml.join(', ')}`);

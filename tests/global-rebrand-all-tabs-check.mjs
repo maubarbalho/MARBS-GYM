@@ -13,7 +13,7 @@ const requiredVisualTokens = [
   '--text-muted: #a8b391',
   'Global MARSB-GYM rebrand',
   '.header .subtitle { display: none; }',
-  '.brand-logo { width: 28px; height: 28px;',
+  '.brand-logo { width: 24px; height: 24px;',
   '.nav-icon',
   '.config-option-icon',
   '.exercise-icon-btn',
@@ -39,7 +39,7 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
 for (const token of ['function renderTreinos', 'function renderProgressSnapshot', 'function renderDietDiary', 'function runMacroCalc']) {
   if (!html.includes(token)) throw new Error(`Fluxo existente ausente após rebranding: ${token}`);
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v75-global-visual-rebrand'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v76-compact-shell-auto-update'")) {
   throw new Error('O cache do PWA não acompanha o rebranding global.');
 }
 console.log('OK: abas, paleta, ícones, tipografia, header compacto, ausência do subtítulo, fluxos e preservação local validados.');
