@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v62-sprint-3-progress-comparison`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v63-sprint-4-circuits-library`.
 
 ## Coach e funcionamento offline
 
@@ -46,6 +46,14 @@ A aba Treinos possui filtros por grupo muscular e equipamento, derivados automat
 A aba Progresso agora apresenta gráficos SVG leves e locais de volume por sessão e, quando existe um exercício selecionado, evolução de carga máxima, volume e 1RM estimado por sessão. O modal de evolução do exercício também reúne esses indicadores, o histórico detalhado e o comparativo entre o objetivo do plano ativo — séries e faixa de repetições — e a última sessão registrada. As visualizações são derivadas dos dados existentes, funcionam sem biblioteca externa e não criam um novo estado persistido.
 
 O comparativo é informativo: ele não altera carga, séries, marcações, histórico, plano personalizado, exercícios personalizados, sessão ativa, dieta ou qualquer outro dado local. O 1RM e os gráficos são estimativas; registros legados somente com carga podem aparecer na carga máxima, mas não geram 1RM ou volume sem repetições. Nenhuma progressão é aplicada automaticamente.
+
+## Sprint 4: supersets, circuitos e biblioteca da sessão
+
+No treino guiado, o usuário pode escolher explicitamente o modo **Normal**, **Superset (2)** ou **Circuito** antes de iniciar. No modo Superset, o app alterna entre dois exercícios consecutivos após cada série marcada; no modo Circuito, alterna pelas estações do treino e retorna à próxima rodada. A navegação continua permitindo avançar, voltar e reabrir exercícios pendentes, e cada série permanece vinculada ao exercício original para não misturar pesos, repetições ou histórico.
+
+O modo escolhido para uma sessão ativa é salvo somente como uma preferência de navegação da própria sessão, de forma retrocompatível; o plano, os exercícios, séries, cargas, histórico, dieta e demais dados não são reescritos. Sessões antigas sem esse campo continuam abrindo em modo Normal. A seleção é explícita e não altera o plano personalizado.
+
+A aba Treinos e o treino guiado também oferecem uma biblioteca curta, expansível e local com sugestões gerais de aquecimento, mobilidade e volta à calma. Ela não cria agenda, não inicia timer, não registra conclusão e não substitui avaliação profissional. O usuário deve interromper a atividade diante de dor aguda, tontura ou perda de controle.
 
 ## Lista de treinos concluídos
 

@@ -521,6 +521,9 @@
     }
     .guided-start-btn:active { background: var(--accent-dim); }
     .card-header-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:10px; }
+    .card-header-actions .guided-mode-bar { grid-column:1 / -1; margin:0; }
+    .guided-mode-bar.compact { padding:6px 8px; }
+    .guided-mode-bar.compact label { display:flex; align-items:center; justify-content:space-between; gap:8px; }
     .card-header-actions .guided-start-btn { width:100%; margin-top:0; padding:9px 8px; }
     .card-header-actions .reuse-history-btn { width:100%; margin-top:0; padding:9px 8px; }
     .card-header .guided-start-btn:focus-visible, .card-header .reuse-history-btn:focus-visible { outline:3px solid rgba(59,130,246,0.45); outline-offset:2px; }
@@ -1310,6 +1313,8 @@
     .guided-overlay { background: var(--bg); }
     .guided-header { background: color-mix(in srgb, var(--bg) 90%, transparent); border-bottom-color: var(--separator); }
     .guided-exit-btn { background: var(--control-bg); border: none; color: var(--primary); border-radius: 999px; }
+    .guided-mode-select-wrap { display:flex; align-items:center; gap:5px; color:var(--text-muted); font-size:.66rem; font-weight:800; }
+    .guided-mode-select { min-height:40px; max-width:132px; padding:0 7px; border:1px solid var(--border); border-radius:999px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.68rem; }
     .guided-progress-bar { height: 3px; background: var(--control-bg); }
     .guided-progress-fill { background: var(--primary); }
     .guided-session-footer { background: color-mix(in srgb, var(--bg) 88%, transparent); border-top-color: var(--separator); box-shadow: 0 -4px 16px rgba(0,0,0,0.05); }
@@ -1541,6 +1546,34 @@
     .filter-chip { border:1px solid var(--border); border-radius:999px; background:var(--bg); color:var(--text-muted); padding:7px 10px; font-size:.72rem; font-weight:700; }
     .filter-chip.active { color:var(--accent); border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--card)); }
     .workout-summary-card { padding:13px 15px; margin:10px 0; border-radius:18px; background:color-mix(in srgb, var(--card) 88%, var(--cyan) 12%); border:1px solid color-mix(in srgb, var(--cyan) 30%, var(--border)); }
+    .guided-mode-bar { display:flex; align-items:center; gap:8px; margin:8px 0 10px; padding:8px 10px; border:1px solid var(--border); border-radius:12px; background:var(--bg); }
+    .guided-mode-bar label { flex:1; min-width:0; color:var(--text-muted); font-size:.7rem; font-weight:700; line-height:1.2; }
+    .guided-mode-bar select { width:142px; min-height:40px; border:1px solid var(--border); border-radius:9px; background:var(--card); color:var(--text); padding:0 7px; font:inherit; font-size:.72rem; }
+    .session-library { margin:12px 0 14px; padding:13px 14px; border:1px solid color-mix(in srgb, var(--cyan) 28%, var(--border)); border-radius:16px; background:color-mix(in srgb, var(--card) 94%, var(--cyan) 6%); }
+    .session-library h3 { margin:0; font-size:.9rem; }
+    .session-library-intro { margin:4px 0 10px; color:var(--text-muted); font-size:.72rem; line-height:1.4; }
+    .session-library details { border-top:1px solid var(--border); }
+    .session-library details:first-of-type { border-top:0; }
+    .session-library summary { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; color:var(--text); font-size:.76rem; font-weight:800; cursor:pointer; list-style:none; }
+    .session-library summary::-webkit-details-marker { display:none; }
+    .session-library summary::after { content:'+'; color:var(--primary); font-size:1rem; }
+    .session-library details[open] summary::after { content:'−'; }
+    .session-library-summary-note { color:var(--text-muted); font-size:.66rem; font-weight:600; }
+    .session-library-list { display:grid; gap:7px; padding:0 0 10px; }
+    .session-library-item { padding:8px 9px; border-radius:10px; background:var(--bg); border:1px solid var(--border); }
+    .session-library-item strong { display:block; font-size:.72rem; }
+    .session-library-item span { display:block; margin-top:3px; color:var(--text-muted); font-size:.68rem; line-height:1.35; }
+    .session-library-note { margin:2px 0 0; color:var(--text-muted); font-size:.66rem; line-height:1.4; }
+    .guided-execution-card { margin:9px 0 0; padding:9px 10px; border-radius:11px; background:color-mix(in srgb, var(--primary) 8%, var(--bg-card)); border:1px solid color-mix(in srgb, var(--primary) 24%, var(--border)); }
+    .guided-execution-card strong, .guided-execution-card span { display:block; }
+    .guided-execution-card strong { font-size:.76rem; }
+    .guided-execution-card span { margin-top:3px; color:var(--text-muted); font-size:.68rem; line-height:1.35; }
+    .guided-library-disclosure { margin-top:9px; border:1px solid var(--border); border-radius:11px; background:var(--bg); }
+    .guided-library-disclosure summary { min-height:44px; padding:0 10px; color:var(--text); font-size:.72rem; font-weight:800; cursor:pointer; }
+    .guided-library-disclosure .session-library { margin:0; border:0; border-radius:0; padding:0 10px 8px; background:transparent; }
+    .guided-library-disclosure .session-library > h3, .guided-library-disclosure .session-library > .session-library-intro { display:none; }
+    .guided-library-disclosure .session-library summary { padding:0; min-height:40px; }
+    .guided-library-disclosure .session-library details:first-of-type { border-top:0; }
     .workout-summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:9px; }
     .workout-summary-metric { text-align:center; padding:8px 4px; border-radius:12px; background:color-mix(in srgb, var(--bg) 70%, transparent); }
     .workout-summary-metric strong { display:block; font-size:1rem; color:var(--text); }
@@ -1757,6 +1790,7 @@
         <button type="button" class="filter-chip active" id="filterPendingBtn">Pendentes</button>
         <button type="button" class="filter-chip" id="filterAllBtn">Mostrar todos</button>
       </div>
+      <div id="sessionLibraryPanel"></div>
       <div id="workoutSummary" class="workout-summary-card" aria-live="polite"></div>
       <div id="treinosContainer"></div>
     </div>
@@ -2474,6 +2508,7 @@
         <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Exercício 1/6</div>
       </div>
       <div class="guided-header-actions">
+        <label class="guided-mode-select-wrap" for="guidedExecutionMode">Modo<select id="guidedExecutionMode" class="guided-mode-select" aria-label="Modo de execução guiada" onchange="setGuidedExecutionMode(this.value)"><option value="normal">Normal</option><option value="superset">Superset (2)</option><option value="circuit">Circuito</option></select></label>
         <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="false" onclick="toggleGuidedFocus()">Foco</button>
         <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
       </div>
@@ -2865,6 +2900,7 @@
           startedAt: normalizeTimestamp(source.activeWorkout.startedAt),
           updatedAt: Math.max(0, Number(source.activeWorkout.updatedAt) || 0),
           guidedIndex: Math.max(0, Math.min(99, Math.round(Number(source.activeWorkout.guidedIndex) || 0))),
+          executionMode: ['normal', 'superset', 'circuit'].includes(source.activeWorkout.executionMode) ? source.activeWorkout.executionMode : 'normal',
           skippedExercises: Array.isArray(source.activeWorkout.skippedExercises)
             ? [...new Set(source.activeWorkout.skippedExercises.map((id) => boundedText(id, 80)).filter(Boolean))].slice(0, 100)
             : []
@@ -3881,6 +3917,7 @@
     function renderTreinos() {
       const container = document.getElementById('treinosContainer');
       container.innerHTML = '';
+      renderSessionLibrary();
       renderWorkoutSummary();
       const filterTid = workoutFilterState.treino || 'all';
       const query = String(workoutFilterState.query || '').toLocaleLowerCase('pt-BR');
@@ -3909,6 +3946,7 @@
 
         const totalSets = totalWorkoutSets;
         const doneSets = doneWorkoutSets;
+        const selectedGuidedMode = state.activeWorkout?.treino === treino.id ? normalizeExecutionMode(state.activeWorkout.executionMode) : 'normal';
 
         card.innerHTML = `
           <div class="card-header js-card-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="body-${encodeData(treino.id)}">
@@ -3920,6 +3958,9 @@
               </div>
               <div class="card-meta">${doneSets}/${totalSets} séries • ${escapeHtml(treino.foco)}${complete ? ' • Treino concluído' : ''}</div>
               <div class="card-header-actions">
+                <div class="guided-mode-bar compact">
+                  <label for="guidedMode-${encodeData(treino.id)}">Modo de execução<select id="guidedMode-${encodeData(treino.id)}" class="js-guided-mode" aria-label="Modo de execução do Treino ${escapeHtml(treino.id)}"><option value="normal" ${selectedGuidedMode === 'normal' ? 'selected' : ''}>Normal</option><option value="superset" ${selectedGuidedMode === 'superset' ? 'selected' : ''}>Superset (2)</option><option value="circuit" ${selectedGuidedMode === 'circuit' ? 'selected' : ''}>Circuito</option></select></label>
+                </div>
                 <button class="guided-start-btn js-start-guided" type="button" aria-label="Iniciar treino guiado do Treino ${escapeHtml(treino.id)}">▶ Treino guiado</button>
                 <button class="reuse-history-btn js-reuse-history" type="button" aria-label="Usar pesos e séries anteriores do Treino ${escapeHtml(treino.id)}">↻ Usar anterior</button>
               </div>
@@ -3937,12 +3978,15 @@
         };
         header.addEventListener('click', toggle);
         header.addEventListener('keydown', (event) => {
-          if (event.target.closest('.js-start-guided')) return;
+          if (event.target.closest('.js-start-guided, .js-guided-mode')) return;
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggle(); }
         });
+        const guidedModeSelect = card.querySelector('.js-guided-mode');
+        guidedModeSelect?.addEventListener('click', (event) => event.stopPropagation());
+        guidedModeSelect?.addEventListener('change', (event) => event.stopPropagation());
         card.querySelector('.js-start-guided')?.addEventListener('click', (event) => {
           event.stopPropagation();
-          startGuided(treino.id);
+          startGuided(treino.id, guidedModeSelect?.value || 'normal');
         });
         const reuseButton = card.querySelector('.js-reuse-history');
         if (reuseButton) {
@@ -5083,7 +5127,54 @@
     }
 
     // ===================== GUIDED WORKOUT MODE =====================
-    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false, interruptedExercises: [], skippedExercises: [] };
+    const guidedState = { active: false, treinoId: null, exercises: [], index: 0, advanceTimeout: null, startedAt: 0, clockId: null, returnFocus: null, focusMode: false, interruptedExercises: [], skippedExercises: [], executionMode: 'normal' };
+
+    function normalizeExecutionMode(mode) {
+      return ['normal', 'superset', 'circuit'].includes(mode) ? mode : 'normal';
+    }
+
+    function executionModeLabel(mode) {
+      return { normal: 'Normal', superset: 'Superset (2)', circuit: 'Circuito' }[normalizeExecutionMode(mode)];
+    }
+
+    function getExecutionGroupIndexes(index, mode = guidedState.executionMode) {
+      const total = guidedState.exercises.length;
+      if (!total) return [];
+      const normalized = normalizeExecutionMode(mode);
+      if (normalized === 'normal') return [index];
+      if (normalized === 'superset') {
+        const start = Math.floor(index / 2) * 2;
+        return [start, start + 1].filter((item) => item < total);
+      }
+      return Array.from({ length: total }, (_, item) => item);
+    }
+
+    function getNextGuidedExecutionIndex(index) {
+      const group = getExecutionGroupIndexes(index);
+      if (!group.length) return index + 1;
+      const currentPosition = Math.max(0, group.indexOf(index));
+      for (let offset = 1; offset <= group.length; offset++) {
+        const candidate = group[(currentPosition + offset) % group.length];
+        const exercise = guidedState.exercises[candidate];
+        if (exercise && !getDoneArr(exercise).every(Boolean)) return candidate;
+      }
+      return Math.max(...group) + 1;
+    }
+
+    function buildSessionLibraryHtml(compact = false) {
+      const sections = [
+        { title: 'Aquecimento · 5–8 min', note: 'Eleve a temperatura sem fadigar antes das séries de trabalho.', items: [['Caminhada ou bicicleta leve', 'Ritmo confortável; aumente gradualmente por 3–5 minutos.'], ['Mobilidade dinâmica do treino', 'Faça 1–2 séries leves de agachamento, puxada ou empurrada conforme a sessão.']] },
+        { title: 'Mobilidade · 3–5 min', note: 'Escolha apenas os movimentos que ajudam a sessão do dia.', items: [['Quadril e tornozelo', 'Agachamento sem carga, avanço curto e mobilidade de tornozelo com controle.'], ['Ombros e coluna torácica', 'Círculos suaves, retração escapular e rotações sem forçar amplitude.']] },
+        { title: 'Volta à calma · 3–5 min', note: 'Reduza o ritmo e respire; alongamento deve ser confortável.', items: [['Respiração e caminhada leve', 'Caminhe até a respiração desacelerar, sem transformar em novo esforço.'], ['Alongamento confortável', 'Mantenha 20–30 segundos sem dor, balanço ou insistência em amplitude.']] }
+      ];
+      const content = sections.map((section) => `<details><summary>${escapeHtml(section.title)} <span class="session-library-summary-note">${escapeHtml(section.note)}</span></summary><div class="session-library-list">${section.items.map((item) => `<div class="session-library-item"><strong>${escapeHtml(item[0])}</strong><span>${escapeHtml(item[1])}</span></div>`).join('')}</div></details>`).join('');
+      return compact ? `<div class="session-library">${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></div>` : `<section class="session-library" aria-labelledby="sessionLibraryTitle"><h3 id="sessionLibraryTitle">Biblioteca rápida da sessão</h3><p class="session-library-intro">Sugestões curtas para preparar o corpo, mobilizar sem dor e encerrar o treino com calma. Abra somente o bloco que quiser usar.</p>${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></section>`;
+    }
+
+    function renderSessionLibrary() {
+      const target = document.getElementById('sessionLibraryPanel');
+      if (target) target.innerHTML = buildSessionLibraryHtml();
+    }
 
     function formatGuidedElapsed(seconds) {
       const safe = Math.max(0, Number(seconds) || 0);
@@ -5101,9 +5192,10 @@
     function persistGuidedNavigation() {
       if (!guidedState.treinoId) return;
       if (!state.activeWorkout || state.activeWorkout.treino !== guidedState.treinoId) {
-        state.activeWorkout = { treino: guidedState.treinoId, startedAt: new Date(guidedState.startedAt || Date.now()).toISOString(), updatedAt: Date.now(), guidedIndex: guidedState.index, skippedExercises: [] };
+        state.activeWorkout = { treino: guidedState.treinoId, startedAt: new Date(guidedState.startedAt || Date.now()).toISOString(), updatedAt: Date.now(), guidedIndex: guidedState.index, executionMode: normalizeExecutionMode(guidedState.executionMode), skippedExercises: [] };
       }
       state.activeWorkout.guidedIndex = Math.max(0, guidedState.index);
+      state.activeWorkout.executionMode = normalizeExecutionMode(guidedState.executionMode);
       state.activeWorkout.skippedExercises = [...new Set(guidedState.skippedExercises || [])].slice(0, 100);
       state.activeWorkout.updatedAt = Date.now();
       saveState();
@@ -5133,7 +5225,7 @@
       updateGuidedClock();
     }
 
-    function startGuided(treinoId) {
+    function startGuided(treinoId, requestedMode = 'normal') {
       const exercises = getTreinoExercises(treinoId);
       if (!exercises.length) { showToast('Nenhum exercício neste treino'); return; }
       const savedSession = state.activeWorkout?.treino === treinoId ? state.activeWorkout : null;
@@ -5142,11 +5234,12 @@
       guidedState.exercises = exercises;
       guidedState.index = Math.max(0, Math.min(exercises.length - 1, Math.round(Number(savedSession?.guidedIndex) || 0)));
       guidedState.focusMode = false;
+      guidedState.executionMode = savedSession ? normalizeExecutionMode(savedSession.executionMode) : normalizeExecutionMode(requestedMode);
       guidedState.skippedExercises = Array.isArray(savedSession?.skippedExercises) ? savedSession.skippedExercises.filter((id) => exercises.some((exercise) => exercise.id === id)) : [];
       guidedState.interruptedExercises = [...guidedState.skippedExercises];
       guidedState.startedAt = savedSession?.startedAt ? Date.parse(savedSession.startedAt) || Date.now() : Date.now();
       if (!savedSession) {
-        state.activeWorkout = { treino: treinoId, startedAt: new Date(guidedState.startedAt).toISOString(), updatedAt: Date.now(), guidedIndex: 0, skippedExercises: [] };
+        state.activeWorkout = { treino: treinoId, startedAt: new Date(guidedState.startedAt).toISOString(), updatedAt: Date.now(), guidedIndex: 0, executionMode: guidedState.executionMode, skippedExercises: [] };
         saveState();
       }
       guidedState.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -5241,16 +5334,30 @@
       renderGuidedStep();
     }
 
+    function setGuidedExecutionMode(mode) {
+      if (!guidedState.active) return;
+      guidedState.executionMode = normalizeExecutionMode(mode);
+      persistGuidedNavigation();
+      renderGuidedStep();
+      showToast(`Modo ${executionModeLabel(guidedState.executionMode)} ativado`);
+    }
+
     function refreshGuidedAfterToggle(exId, justCompleted) {
       const ex = guidedState.exercises[guidedState.index];
       if (!ex || ex.id !== exId) return;
       renderGuidedStep();
       const doneArr = getDoneArr(ex);
       const allDone = doneArr.every(Boolean);
-      if (allDone && justCompleted) {
+      if (justCompleted && guidedState.executionMode !== 'normal' && !allDone) {
+        if (guidedState.advanceTimeout) clearTimeout(guidedState.advanceTimeout);
+        const nextIndex = getNextGuidedExecutionIndex(guidedState.index);
+        if (nextIndex !== guidedState.index) {
+          guidedState.advanceTimeout = setTimeout(() => { if (guidedState.active) guidedGoTo(nextIndex); }, 700);
+        }
+      } else if (allDone && justCompleted) {
         if (guidedState.advanceTimeout) clearTimeout(guidedState.advanceTimeout);
         guidedState.advanceTimeout = setTimeout(() => {
-          if (guidedState.active) guidedGoTo(guidedState.index + 1);
+          if (guidedState.active) guidedGoTo(guidedState.executionMode === 'normal' ? guidedState.index + 1 : getNextGuidedExecutionIndex(guidedState.index));
         }, 1400);
       }
     }
@@ -5317,8 +5424,14 @@
       const guidedBody = document.getElementById('guidedBody');
       const pendingExercises = getGuidedPendingExercises().filter((exercise) => exercise.id !== ex.id);
       const pendingHtml = pendingExercises.length ? `<div class="guided-pending-list" aria-label="Exercícios pendentes"><strong>Voltar depois:</strong>${pendingExercises.map((exercise) => `<button type="button" class="js-guided-return" data-exercise-id="${encodeData(exercise.id)}" title="Voltar para ${escapeHtml(exercise.nome)}">${escapeHtml(exercise.nome)}</button>`).join('')}</div>` : '';
+      const executionGroup = getExecutionGroupIndexes(guidedState.index).map((item) => guidedState.exercises[item]).filter(Boolean);
+      const executionNames = executionGroup.map((exercise) => exercise.nome).join(' + ');
+      const executionCard = guidedState.executionMode === 'normal' ? '' : `<div class="guided-execution-card"><strong>${escapeHtml(executionModeLabel(guidedState.executionMode))} · ${escapeHtml(executionNames)}</strong><span>${guidedState.executionMode === 'circuit' ? 'Faça uma série de cada estação e avance para a próxima rodada.' : 'Alterne entre os dois exercícios da estação antes de repetir a série.'} O app alterna após cada série marcada; o registro continua vinculado ao exercício original.</span></div>`;
+      const guidedLibraryHtml = `<details class="guided-library-disclosure"><summary>Biblioteca rápida de preparação e recuperação</summary>${buildSessionLibraryHtml(true)}</details>`;
 
       document.getElementById('guidedTitle').textContent = `Exercício ${guidedState.index + 1}/${total}`;
+      const modeSelect = document.getElementById('guidedExecutionMode');
+      if (modeSelect) modeSelect.value = normalizeExecutionMode(guidedState.executionMode);
       guidedBody.innerHTML = `
         <div class="guided-workout-shell">
           <div class="guided-activity-chip">Atividade ${guidedState.index + 1}</div>
@@ -5335,7 +5448,9 @@
               </div>
             </div>
             <div class="guided-skip-note">Pode avançar sem começar este exercício. As séries já registradas ficam salvas e você pode voltar por “Voltar depois”.</div>
+            ${executionCard}
             <button type="button" class="guided-guide-btn js-guided-exercise-guide">ⓘ Ver ficha local do exercício</button>
+            ${guidedLibraryHtml}
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
             <div class="guided-focus-current"><div><span>Exercício em foco</span><strong>${escapeHtml(ex.nome)}</strong></div><div class="guided-focus-set"><span>Progresso</span><strong>${guidedState.index + 1}/${total} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}</strong></div></div>
             <div class="guided-section-label">Progressão de carga</div>

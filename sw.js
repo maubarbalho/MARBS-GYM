@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v62-sprint-3-progress-comparison';
+const CACHE_NAME = 'marsb-gym-v63-sprint-4-circuits-library';
 const APP_SHELL = [
   './',
   './index.html',
