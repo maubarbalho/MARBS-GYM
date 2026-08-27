@@ -16,7 +16,7 @@ if (missing.length) throw new Error(`Compactação mobile ausente ou alterada: $
 if (html.includes('grid-template-columns:76px 1fr') || html.includes('width:76px; height:76px; min-height:76px')) {
   throw new Error('O tamanho visual anterior de 76 px ainda está presente no modo guiado mobile.');
 }
-if (!html.includes('persistGuidedFormBeforeReload') || !html.includes('Dados salvos. Atualizando o app…')) {
+if (!html.includes('persistGuidedFormBeforeReload') || !html.includes('Dados salvos. Limpando cache e atualizando…')) {
   throw new Error('A atualização forçada segura não está protegida contra perda de dados.');
 }
 console.log('OK: cabeçalho guiado, imagem e ícones de série compactos no mobile, com alvos de toque preservados.');

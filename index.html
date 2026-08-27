@@ -1562,6 +1562,22 @@
     .consistency-day.today { outline:2px solid var(--primary); outline-offset:1px; }
     .consistency-wrap .weekly-note { font-size:.68rem; line-height:1.25; }
     .workout-filter-bar { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:12px 0; padding:10px; border:1px solid var(--border); border-radius:16px; background:var(--card); }
+    .active-workout-panel { margin:12px 0 14px; padding:14px; border:1px solid color-mix(in srgb, var(--primary) 58%, var(--border)); border-left:4px solid var(--primary); border-radius:18px; background:color-mix(in srgb, var(--primary) 10%, var(--card)); box-shadow:0 8px 22px color-mix(in srgb, var(--primary) 10%, transparent); }
+    .active-workout-panel[hidden] { display:none !important; }
+    .active-workout-kicker { display:block; color:var(--primary); font-size:.7rem; font-weight:900; letter-spacing:.09em; text-transform:uppercase; }
+    .active-workout-panel h2 { margin:4px 0 3px; font-size:1.05rem; line-height:1.25; }
+    .active-workout-panel p { margin:0; color:var(--text-muted); font-size:.78rem; line-height:1.35; }
+    .active-workout-progress { display:flex; justify-content:space-between; gap:8px; margin-top:11px; color:var(--text-muted); font-size:.72rem; }
+    .active-workout-progress strong { color:var(--text); }
+    .active-workout-track { height:8px; overflow:hidden; margin-top:6px; border-radius:999px; background:color-mix(in srgb, var(--primary) 15%, var(--bg)); }
+    .active-workout-track span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--primary),var(--accent)); }
+    .active-workout-next { display:grid; gap:2px; margin-top:10px; padding:9px 10px; border-radius:12px; background:color-mix(in srgb,var(--card) 72%,var(--primary) 12%); }
+    .active-workout-next span { color:var(--text-muted); font-size:.66rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+    .active-workout-next strong { font-size:.82rem; line-height:1.3; }
+    .active-workout-next small { color:var(--text-muted); font-size:.7rem; }
+    .active-workout-actions { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:11px; }
+    .active-workout-actions .btn-action { width:100%; margin:0; min-height:44px; }
+    @media (max-width:430px) { .active-workout-panel { margin-top:10px; padding:12px; } .active-workout-actions { grid-template-columns:1fr; } }
     .workout-filter-bar select, .workout-filter-bar input { flex:1 1 140px; min-width:0; }
     .workout-filter-bar select, .workout-filter-bar input { min-height:44px; }
     .swap-filter-hint { margin:-5px 0 10px; color:var(--text-muted); font-size:.72rem; line-height:1.4; }
@@ -1858,6 +1874,7 @@
         <button type="button" class="filter-chip active" id="filterPendingBtn">Pendentes</button>
         <button type="button" class="filter-chip" id="filterAllBtn">Mostrar todos</button>
       </div>
+      <div id="activeWorkoutPanel" class="active-workout-panel" aria-live="polite" hidden></div>
       <div id="sessionLibraryPanel"></div>
       <div id="workoutSummary" class="workout-summary-card" aria-live="polite"></div>
       <div id="treinosContainer"></div>
@@ -3982,9 +3999,34 @@
       el.querySelectorAll('.workout-record-item').forEach((button) => button.addEventListener('click', () => openChart(decodeData(button.dataset.exId))));
     }
 
+    function renderActiveWorkoutPanel() {
+      const panel = document.getElementById('activeWorkoutPanel');
+      if (!panel) return;
+      const activeId = state.activeWorkout?.treino;
+      const treino = activeId ? treinosMap()[activeId] : null;
+      if (!treino || isTreinoComplete(activeId)) {
+        panel.hidden = true;
+        panel.innerHTML = '';
+        return;
+      }
+      const exercises = getTreinoExercises(activeId);
+      const total = exercises.reduce((sum, ex) => sum + ex.series, 0);
+      const done = exercises.reduce((sum, ex) => sum + getDoneArr(ex).filter(Boolean).length, 0);
+      const progress = total ? Math.round((done / total) * 100) : 0;
+      const nextExercise = exercises.find((ex) => getDoneArr(ex).some((isDone) => !isDone));
+      const nextSetIndex = nextExercise ? Math.max(0, getDoneArr(nextExercise).findIndex((isDone) => !isDone)) : 0;
+      const mode = normalizeExecutionMode(state.activeWorkout.executionMode);
+      const startedAt = state.activeWorkout.startedAt ? Date.parse(state.activeWorkout.startedAt) : 0;
+      const elapsedMinutes = startedAt ? Math.max(0, Math.floor((Date.now() - startedAt) / 60000)) : 0;
+      const elapsed = elapsedMinutes ? (elapsedMinutes < 60 ? `${elapsedMinutes} min` : `${Math.floor(elapsedMinutes / 60)}h ${elapsedMinutes % 60}min`) : 'Agora';
+      panel.hidden = false;
+      panel.innerHTML = `<span class="active-workout-kicker">Treino ativo agora</span><h2>Treino ${escapeHtml(treino.id)} · ${escapeHtml(treino.nome.split('+')[0].trim())}</h2><p>${escapeHtml(treino.foco || 'Sessão em andamento')} · ${escapeHtml(elapsed)}</p><div class="active-workout-progress"><span>Progresso da sessão</span><strong>${done}/${total} séries · ${progress}%</strong></div><div class="active-workout-track" role="progressbar" aria-label="${progress}% do treino concluído" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress}"><span style="width:${progress}%"></span></div>${nextExercise ? `<div class="active-workout-next"><span>Próximo exercício</span><strong>${escapeHtml(nextExercise.nome)}</strong><small>Série ${Math.min(nextSetIndex + 1, nextExercise.series)} de ${nextExercise.series} · Modo ${escapeHtml(executionModeLabel(mode))}</small></div>` : ''}<div class="active-workout-actions"><button type="button" class="btn-action primary" onclick="startGuided('${escapeHtml(treino.id)}','${escapeHtml(mode)}')">Continuar treino</button><button type="button" class="btn-action" onclick="openTreino('${escapeHtml(treino.id)}')">Abrir treino</button></div>`;
+    }
+
     function renderTreinos() {
       const container = document.getElementById('treinosContainer');
       container.innerHTML = '';
+      renderActiveWorkoutPanel();
       renderSessionLibrary();
       renderWorkoutSummary();
       const filterTid = workoutFilterState.treino || 'all';
@@ -9139,11 +9181,24 @@
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
       const updateBanner = document.getElementById('updateBanner');
+      const APP_UPDATE_VERSION = 'v71-force-refresh';
+      const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
+      const purgeOldAppCaches = async () => {
+        if (!('caches' in window)) return;
+        const keys = await caches.keys();
+        await Promise.all(keys.filter((key) => key.startsWith('marsb-gym-') && key !== ACTIVE_CACHE_NAME).map((key) => caches.delete(key)));
+      };
+      const forceReloadApp = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('pwa-refresh', APP_UPDATE_VERSION);
+        window.location.replace(url.toString());
+      };
       const activateWaitingWorker = (registration) => {
         const waiting = registration?.waiting;
         if (!waiting) return false;
         refreshAfterUpdate = true;
+        waiting.postMessage({ type: 'PURGE_OLD_CACHES' });
         waiting.postMessage({ type: 'SKIP_WAITING' });
         return true;
       };
@@ -9170,6 +9225,7 @@
       };
       const registerServiceWorker = () => {
         const scriptUrl = new URL('sw.js', window.location.href);
+        scriptUrl.searchParams.set('v', APP_UPDATE_VERSION);
         const scope = new URL('./', window.location.href).pathname;
         navigator.serviceWorker.register(scriptUrl, { scope }).then((registration) => {
           activeServiceWorkerRegistration = registration;
@@ -9185,23 +9241,24 @@
         }).catch((error) => console.warn('Não foi possível ativar o modo offline.', error));
       };
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshAfterUpdate) window.location.reload();
+        if (refreshAfterUpdate) forceReloadApp();
       });
       document.getElementById('updateNowBtn')?.addEventListener('click', async () => {
         if (!navigator.onLine) { showToast('Conecte-se à internet para atualizar'); return; }
         const registration = activeServiceWorkerRegistration;
-        if (registration?.waiting) {
+        try {
           persistGuidedFormBeforeReload();
           updateBanner?.classList.remove('show');
-          if (activateWaitingWorker(registration)) showToast('Dados salvos. Atualizando o app…');
-          return;
-        }
-        try {
-          await registration?.update();
-          if (registration?.waiting) handleUpdateAvailable(registration);
-          else showToast('O app já está atualizado');
+          if (registration) await registration.update();
+          if (registration?.waiting) {
+            if (activateWaitingWorker(registration)) showToast('Dados salvos. Limpando cache e atualizando…');
+            return;
+          }
+          await purgeOldAppCaches();
+          showToast('Cache antigo removido. Atualizando o app…');
+          setTimeout(forceReloadApp, 120);
         } catch (error) {
-          showToast('Não foi possível verificar atualizações agora');
+          showToast('Não foi possível forçar a atualização agora');
         }
       });
       document.getElementById('updateDismiss')?.addEventListener('click', () => {

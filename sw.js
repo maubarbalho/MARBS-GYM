@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v70-mobile-compact';
+const CACHE_NAME = 'marsb-gym-v71-force-refresh';
 const APP_SHELL = [
   './',
   './index.html',
@@ -18,14 +18,17 @@ self.addEventListener('install', (event) => {
   );
 });
 
+async function purgeOldCaches() {
+  const keys = await caches.keys();
+  await Promise.all(keys
+    .filter((key) => key.startsWith('marsb-gym-') && key !== CACHE_NAME)
+    .map((key) => caches.delete(key)));
+}
+
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     Promise.all([
-      caches.keys().then((keys) => Promise.all(
-        keys
-          .filter((key) => key.startsWith('marsb-gym-') && key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      )),
+      purgeOldCaches(),
       self.registration.navigationPreload
         ? self.registration.navigationPreload.enable().catch(() => undefined)
         : Promise.resolve()
@@ -35,6 +38,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'PURGE_OLD_CACHES') event.waitUntil(purgeOldCaches());
   if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
