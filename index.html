@@ -9162,7 +9162,7 @@
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v73-end-buttons-last';
+      const APP_UPDATE_VERSION = 'v74-ios-standalone-update';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
@@ -9204,14 +9204,20 @@
         if (hasActiveWorkout()) updateBanner?.setAttribute('data-active-workout', 'true');
         else updateBanner?.removeAttribute('data-active-workout');
       };
+      const checkForAppUpdate = (registration) => {
+        if (!registration || !navigator.onLine) return;
+        registration.update().then(() => {
+          if (registration.waiting) handleUpdateAvailable(registration);
+        }).catch(() => undefined);
+      };
       const registerServiceWorker = () => {
         const scriptUrl = new URL('sw.js', window.location.href);
         scriptUrl.searchParams.set('v', APP_UPDATE_VERSION);
         const scope = new URL('./', window.location.href).pathname;
         navigator.serviceWorker.register(scriptUrl, { scope }).then((registration) => {
           activeServiceWorkerRegistration = registration;
-          registration.update().catch(() => undefined);
           if (registration.waiting) handleUpdateAvailable(registration);
+          checkForAppUpdate(registration);
           registration.addEventListener('updatefound', () => {
             const installing = registration.installing;
             if (!installing) return;
@@ -9219,6 +9225,11 @@
               if (installing.state === 'installed' && navigator.serviceWorker.controller) handleUpdateAvailable(registration);
             });
           });
+          window.addEventListener('pageshow', () => checkForAppUpdate(registration), { passive: true });
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') checkForAppUpdate(registration);
+          });
+          window.addEventListener('online', () => checkForAppUpdate(registration), { passive: true });
         }).catch((error) => console.warn('Não foi possível ativar o modo offline.', error));
       };
       navigator.serviceWorker.addEventListener('controllerchange', () => {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v73-end-buttons-last';
+const CACHE_NAME = 'marsb-gym-v74-ios-standalone-update';
 const APP_SHELL = [
   './',
   './index.html',
@@ -58,7 +58,8 @@ self.addEventListener('notificationclick', (event) => {
 
 async function networkFirst(request, fallbackUrl) {
   try {
-    const response = await fetch(request);
+    const freshRequest = new Request(request, { cache: 'no-store' });
+    const response = await fetch(freshRequest);
     if (response && response.ok) {
       const cache = await caches.open(CACHE_NAME);
       await cache.put(request, response.clone());
@@ -85,8 +86,15 @@ async function staleWhileRevalidate(request) {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const requestUrl = new URL(event.request.url);
   const isNavigation = event.request.mode === 'navigate';
-  const isManifest = new URL(event.request.url).pathname.endsWith('/manifest.json');
+  const isManifest = requestUrl.pathname.endsWith('/manifest.json');
+  const isServiceWorkerScript = requestUrl.pathname.endsWith('/sw.js');
+
+  if (isServiceWorkerScript) {
+    event.respondWith(fetch(new Request(event.request, { cache: 'no-store' })));
+    return;
+  }
 
   if (isNavigation || isManifest) {
     event.respondWith(networkFirst(event.request, './index.html'));
