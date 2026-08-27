@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v63-sprint-4-circuits-library';
+const CACHE_NAME = 'marsb-gym-v64-timer-notification';
 const APP_SHELL = [
   './',
   './index.html',
@@ -36,6 +36,20 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+self.addEventListener('notificationclick', (event) => {
+  const notification = event.notification;
+  notification.close();
+  if (notification.data && notification.data.type === 'timer-finished') {
+    event.waitUntil(
+      self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+        const openClient = clients.find((client) => 'focus' in client);
+        if (openClient) return openClient.focus();
+        return self.clients.openWindow ? self.clients.openWindow('./#treinos') : undefined;
+      })
+    );
+  }
 });
 
 async function networkFirst(request, fallbackUrl) {

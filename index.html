@@ -1441,6 +1441,10 @@
     .config-profile-hint { color: var(--text-muted); font-size: .72rem; line-height: 1.4; margin: 4px 0 12px; }
     .config-panel { padding: 2px 0 12px; }
     .config-status-card { display: grid; gap: 4px; margin: 0 0 12px; padding: 14px; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-card); }
+    .timer-notification-card { margin-top: 12px; }
+    .timer-notification-card > span { display: block; margin-top: 5px; color: var(--text-muted); font-size: .74rem; line-height: 1.4; }
+    .timer-notification-card .setting-row { margin-top: 10px; }
+    .timer-notification-card .btn-action { width: 100%; margin-top: 10px; }
     .config-status-card strong { font-size: .9rem; }
     .config-status-card span { color: var(--text-muted); font-size: .78rem; line-height: 1.45; }
     .config-status-card.warning { border-color: color-mix(in srgb, #ff9f0a 45%, var(--border)); background: color-mix(in srgb, #ff9f0a 8%, var(--bg-card)); }
@@ -2386,7 +2390,7 @@
   <!-- CONFIGURAÇÃO: painéis independentes -->
   <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span><small id="backupReminder"></small></div><button type="button" class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button type="button" class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button type="button" class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><div class="config-status-card"><strong>Uso offline e atualizações</strong><span>Com internet, o app procura atualizações. Se houver uma versão nova, use o aviso “Atualizar”; seus dados locais permanecem no dispositivo.</span></div><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></div>
   <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)" aria-label="Modo de aparência"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="form-field"><label for="densityMode">Densidade da interface</label><select id="densityMode" onchange="setDensityMode(this.value)" aria-label="Densidade da interface"><option value="comfortable">Confortável</option><option value="compact">Compacta</option><option value="focus">Foco no essencial</option></select></div><div class="config-status-card"><strong>Design mobile</strong><span>Escolha mais espaço para tocar, mais conteúdo por tela ou um modo com menos distrações.</span></div></div></div>
-  <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)"  aria-label="Horário dos lembretes" /></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer e a vibração continuam funcionando sem essa permissão.</p></div></div>
+  <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)"  aria-label="Horário dos lembretes" /></div><div class="config-status-card timer-notification-card"><strong>Aviso quando o descanso terminar</strong><span id="timerNotificationStatus">Ative para tentar receber um aviso do sistema quando o timer terminar.</span><div class="setting-row"><span>Usar aviso do timer</span><button type="button" class="toggle" id="toggleTimerNotification" onclick="toggleTimerNotificationPref()" aria-label="Alternar aviso do fim do descanso"></button></div><button type="button" class="btn-action" id="testTimerNotificationBtn" onclick="testTimerNotification()">Testar aviso</button></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração nos avisos"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer, o aviso dentro do app e a vibração continuam funcionando sem essa permissão.</p></div></div>
   <div class="page" id="page-unidades"><div class="config-panel"><div class="section-title">Unidades</div><div class="form-field"><label for="unitSystemConfig">Sistema de medidas</label><select id="unitSystemConfig" onchange="setUnitSystem(this.value)" aria-label="Sistema de unidades"><option value="metric">Métrico — kg e cm</option><option value="imperial">Imperial — lb e pol.</option></select></div><div class="config-status-card"><strong>Conversão segura</strong><span>Os registros originais permanecem preservados; a preferência controla a forma de exibição e as calculadoras.</span></div></div></div>
   <div class="page" id="page-privacidade"><div class="config-panel"><div class="section-title">Privacidade</div><div class="config-status-card"><strong>Dados do treino</strong><span>Perfil, histórico, plano e diário ficam no armazenamento local do navegador até você exportar ou enviar algo.</span></div><div class="config-status-card"><strong>Compartilhamento consciente</strong><span>Backups, planilhas e planos só saem deste dispositivo quando você escolhe exportar ou compartilhar um arquivo.</span></div><div class="config-status-card warning"><strong>Limite de segurança</strong><span>O aplicativo não diagnostica dor ou lesão, não prescreve medicamentos e não substitui personal trainer ou profissional de saúde.</span></div></div></div>
 
@@ -2671,7 +2675,7 @@
         onboarding: { completed: false, goal: 'hipertrofia', frequency: 4, experience: 'intermediario' },
         unitSystem: 'metric',
         densityMode: 'comfortable',
-        notifications: { enabled: false, reminderTime: '18:00' },
+        notifications: { enabled: false, reminderTime: '18:00', timerEnd: false },
         coachPrefs: { context: 'treino', provider: 'puter', model: 'openrouter:auto' },
         coachHistory: [],
         prefs: { autoTimer: true, vibrate: true, restPresets: [60, 90, 120, 180], restDefault: 90, progression: { mode: 'percent', value: 5, minIncrement: 0.5, requireTopReps: true } },
@@ -2960,7 +2964,7 @@
       clean.unitSystem = source.unitSystem === 'imperial' ? 'imperial' : 'metric';
       clean.densityMode = ['comfortable', 'compact', 'focus'].includes(source.densityMode) ? source.densityMode : 'comfortable';
       clean.appearanceMode = ['system', 'light', 'dark'].includes(source.appearanceMode) ? source.appearanceMode : 'system';
-      clean.notifications = { enabled: Boolean(source.notifications?.enabled), reminderTime: /^\d{2}:\d{2}$/.test(String(source.notifications?.reminderTime || '')) ? String(source.notifications.reminderTime) : '18:00' };
+      clean.notifications = { enabled: Boolean(source.notifications?.enabled), reminderTime: /^\d{2}:\d{2}$/.test(String(source.notifications?.reminderTime || '')) ? String(source.notifications.reminderTime) : '18:00', timerEnd: Boolean(source.notifications?.timerEnd) };
       clean.coachPrefs = { context: ['treino','dieta','progresso'].includes(source.coachPrefs?.context) ? source.coachPrefs.context : 'treino', provider: boundedText(source.coachPrefs?.provider, 40) || 'puter', model: boundedText(source.coachPrefs?.model, 120) || 'openrouter:auto' };
       clean.coachHistory = Array.isArray(source.coachHistory) ? source.coachHistory.slice(-40).map((item) => ({ role: ['user','assistant'].includes(item?.role) ? item.role : 'assistant', content: boundedText(item?.content, 2500), at: boundedText(item?.at, 40) || new Date().toISOString() })).filter((item) => item.content) : [];
       const rawPresets = Array.isArray(source.prefs?.restPresets) ? source.prefs.restPresets : [60, 90, 120, 180];
@@ -4769,6 +4773,79 @@
       localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify({ version: 1, paused: timerPaused, remaining, deadlineAt: timerPaused ? 0 : timerDeadlineAt, savedAt: Date.now() }));
     }
 
+    function ensureNotificationsState() {
+      state.notifications = state.notifications && typeof state.notifications === 'object' ? state.notifications : {};
+      if (typeof state.notifications.enabled !== 'boolean') state.notifications.enabled = false;
+      if (!/^\d{2}:\d{2}$/.test(String(state.notifications.reminderTime || ''))) state.notifications.reminderTime = '18:00';
+      if (typeof state.notifications.timerEnd !== 'boolean') state.notifications.timerEnd = false;
+      return state.notifications;
+    }
+
+    function timerNotificationSupported() {
+      return typeof window !== 'undefined' && 'Notification' in window && 'serviceWorker' in navigator;
+    }
+
+    async function requestTimerNotificationPermission() {
+      if (!timerNotificationSupported()) return 'unsupported';
+      if (Notification.permission === 'granted' || Notification.permission === 'denied') return Notification.permission;
+      try { return await Notification.requestPermission(); } catch (error) { return 'error'; }
+    }
+
+    async function showTimerFinishedNotification(testOnly = false) {
+      const prefs = ensureNotificationsState();
+      if (!testOnly && !prefs.timerEnd) return false;
+      if (!timerNotificationSupported() || Notification.permission !== 'granted') return false;
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        if (!registration || typeof registration.showNotification !== 'function') return false;
+        await registration.showNotification(testOnly ? 'Teste do aviso de descanso' : 'Descanso finalizado', {
+          body: testOnly ? 'As notificações do timer estão funcionando.' : (guidedState.active ? 'Próxima série pronta no treino guiado.' : 'Próxima série pronta.'),
+          icon: './icon-192.png',
+          badge: './icon-192.png',
+          tag: 'marsb-gym-rest-finished',
+          renotify: true,
+          vibrate: [200, 100, 200],
+          data: { type: 'timer-finished' }
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    async function toggleTimerNotificationPref() {
+      const prefs = ensureNotificationsState();
+      if (prefs.timerEnd) {
+        prefs.timerEnd = false;
+        saveState();
+        syncNotificationControls();
+        showToast('Aviso do timer desativado');
+        return;
+      }
+      const permission = await requestTimerNotificationPermission();
+      if (permission !== 'granted') {
+        syncNotificationControls();
+        showToast(permission === 'denied' ? 'Permissão bloqueada no navegador' : permission === 'unsupported' ? 'Notificações indisponíveis neste navegador' : 'Permissão não concedida');
+        return;
+      }
+      prefs.timerEnd = true;
+      saveState();
+      syncNotificationControls();
+      showToast('Aviso do fim do descanso ativado');
+    }
+
+    async function testTimerNotification() {
+      const permission = await requestTimerNotificationPermission();
+      if (permission !== 'granted') {
+        syncNotificationControls();
+        showToast(permission === 'denied' ? 'Permissão bloqueada no navegador' : permission === 'unsupported' ? 'Notificações indisponíveis neste navegador' : 'Permissão não concedida');
+        return;
+      }
+      const shown = await showTimerFinishedNotification(true);
+      showToast(shown ? 'Aviso de teste enviado' : 'Não foi possível exibir o aviso agora');
+      syncNotificationControls();
+    }
+
     function finishTimer() {
       if (timerInterval) clearInterval(timerInterval);
       timerInterval = null;
@@ -4780,6 +4857,7 @@
       releaseWakeLock();
       updateTimerDisplay();
       doVibrate([200, 100, 200]);
+      void showTimerFinishedNotification();
       showToast('Descanso finalizado! 💪');
       setTimeout(() => {
         document.getElementById('timerOverlay').classList.remove('show');
@@ -8687,11 +8765,25 @@
     }
 
     function syncNotificationControls() {
-      state.notifications = state.notifications || { enabled: false, reminderTime: '18:00' };
+      const notificationPrefs = ensureNotificationsState();
       const toggle = document.getElementById('toggleNotifications');
       if (toggle) toggle.classList.toggle('on', !!state.notifications.enabled);
       const time = document.getElementById('notificationTime');
-      if (time) time.value = state.notifications.reminderTime || '18:00';
+      if (time) time.value = notificationPrefs.reminderTime || '18:00';
+      const timerToggle = document.getElementById('toggleTimerNotification');
+      if (timerToggle) timerToggle.classList.toggle('on', !!notificationPrefs.timerEnd);
+      const timerStatus = document.getElementById('timerNotificationStatus');
+      const timerTest = document.getElementById('testTimerNotificationBtn');
+      const supported = timerNotificationSupported();
+      const permission = supported ? Notification.permission : 'unsupported';
+      if (timerStatus) timerStatus.textContent = !supported
+        ? 'Este navegador não oferece notificações compatíveis; o timer, o aviso dentro do app e a vibração continuam disponíveis.'
+        : permission === 'denied'
+          ? 'A permissão foi bloqueada no navegador. Reative-a nas configurações do site para tentar novamente.'
+          : notificationPrefs.timerEnd && permission === 'granted'
+            ? 'Ativo. O app tentará avisar quando o descanso terminar, inclusive fora da tela quando o sistema permitir.'
+            : 'Toque em “Usar aviso do timer” para solicitar permissão. A ativação é opcional e fica neste dispositivo.';
+      if (timerTest) timerTest.disabled = !supported;
       const auto = document.getElementById('configToggleAutoTimer');
       const vib = document.getElementById('configToggleVibrate');
       if (auto) auto.classList.toggle('on', !!(state.prefs && state.prefs.autoTimer !== false));
