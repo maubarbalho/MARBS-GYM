@@ -1511,6 +1511,8 @@
     .consistency-wrap .weekly-note { font-size:.68rem; line-height:1.25; }
     .workout-filter-bar { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:12px 0; padding:10px; border:1px solid var(--border); border-radius:16px; background:var(--card); }
     .workout-filter-bar select, .workout-filter-bar input { flex:1 1 140px; min-width:0; }
+    .workout-filter-bar select, .workout-filter-bar input { min-height:44px; }
+    .swap-filter-hint { margin:-5px 0 10px; color:var(--text-muted); font-size:.72rem; line-height:1.4; }
     .filter-chip { border:1px solid var(--border); border-radius:999px; background:var(--bg); color:var(--text-muted); padding:7px 10px; font-size:.72rem; font-weight:700; }
     .filter-chip.active { color:var(--accent); border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--card)); }
     .workout-summary-card { padding:13px 15px; margin:10px 0; border-radius:18px; background:color-mix(in srgb, var(--card) 88%, var(--cyan) 12%); border:1px solid color-mix(in srgb, var(--cyan) 30%, var(--border)); }
@@ -1719,6 +1721,12 @@
       <div class="workout-filter-bar" aria-label="Filtros de treinos">
         <select id="workoutFilter" aria-label="Filtrar por treino">
           <option value="all">Todos os treinos</option>
+        </select>
+        <select id="muscleFilter" aria-label="Filtrar por grupo muscular">
+          <option value="all">Todos os grupos</option>
+        </select>
+        <select id="equipmentFilter" aria-label="Filtrar por equipamento">
+          <option value="all">Todos os equipamentos</option>
         </select>
         <input id="exerciseFilter" type="search" placeholder="Buscar exercício" aria-label="Buscar exercício" />
         <button type="button" class="filter-chip active" id="filterPendingBtn">Pendentes</button>
@@ -2415,6 +2423,7 @@
       <button type="button" class="modal-close-x" onclick="closeSwapExercise()">✕</button>
       <div class="modal-title" id="swapExerciseTitle">Trocar exercício</div>
       <p class="calc-desc">Escolha uma alternativa. O registro atual do exercício será mantido vinculado à posição do treino.</p>
+      <p class="swap-filter-hint" id="swapExerciseHint">As opções do mesmo grupo muscular aparecem primeiro.</p>
       <div class="form-field"><label for="swapExerciseSelect">Novo exercício</label><select id="swapExerciseSelect" aria-label="Selecionar exercício substituto"></select></div>
       <div class="modal-actions"><button type="button" class="btn-action" onclick="closeSwapExercise()">Cancelar</button><button type="button" class="btn-action primary" onclick="applySwapExercise()">Trocar exercício</button></div>
     </div>
@@ -3446,7 +3455,7 @@
       weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Ritmo de treino</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${activeDays} dia${activeDays === 1 ? '' : 's'} em 28</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">${streak ? `Sequência atual: ${streak} dia${streak === 1 ? '' : 's'} · ` : ''}${totalSets ? `${totalSets} séries registradas hoje.` : 'Registre um treino para iniciar seu ritmo.'}</p><p class="weekly-note">${escapeHtml(getRecoveryHint())}</p><p class="weekly-note save-hint">${escapeHtml(formatLastSavedHint())}</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução completa</button></div>`;
     }
 
-    let workoutFilterState = { treino: 'all', query: '', pendingOnly: true };
+    let workoutFilterState = { treino: 'all', query: '', muscle: 'all', equipment: 'all', pendingOnly: true };
 
     function getLastPerformance(exId) {
       const records = (state.completedWorkouts || []).slice().reverse();
@@ -3549,14 +3558,41 @@
 
     function getExerciseMuscleGroup(ex, fallbackTreino = '') {
       const name = String(ex?.nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      if (/crucifixo inverso|face pull|deltoide posterior/.test(name)) return 'Ombros';
       if (/supino|crucifixo|peitoral|crossover|flexao/.test(name)) return 'Peito';
       if (/remada|puxada|pulldown|barra fixa|costas/.test(name)) return 'Costas';
       if (/agach|leg press|terra|stiff|mesa flexora|cadeira extensora|panturrilha|passada|afundo|gluteo|elevacao pelvica/.test(name)) return 'Pernas';
-      if (/desenvolvimento|elevacao lateral|crucifixo inverso|deltoide|ombro/.test(name)) return 'Ombros';
+      if (/desenvolvimento|elevacao lateral|deltoide|ombro/.test(name)) return 'Ombros';
       if (/rosca|biceps/.test(name)) return 'Bíceps';
       if (/triceps|testa|pulley/.test(name)) return 'Tríceps';
       if (/prancha|abdominal|core|fazendeiro/.test(name)) return 'Core';
       return ({ A: 'Peito', B: 'Costas', C: 'Pernas', D: 'Ombros' })[fallbackTreino] || 'Outros';
+    }
+
+    function getExerciseEquipment(ex) {
+      const name = String(ex?.nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      if (/halter|dumbbell/.test(name)) return 'Halteres';
+      if (/barra|barbell/.test(name)) return 'Barra';
+      if (/polia|crossover|pulley|woodchopper|lenhador|cable/.test(name)) return 'Polia';
+      if (/leg press|extensora|flexora|voador|maquina|máquina/.test(name)) return 'Máquina';
+      if (/prancha|abdominal|flexao|barra fixa|fazendeiro/.test(name)) return 'Peso corporal';
+      return 'Outro';
+    }
+
+    function syncWorkoutFilterOptions() {
+      const muscleSelect = document.getElementById('muscleFilter');
+      const equipmentSelect = document.getElementById('equipmentFilter');
+      if (!muscleSelect || !equipmentSelect) return;
+      const groups = new Set();
+      const equipment = new Set();
+      getAllExercisesFlat().forEach((ex) => { groups.add(getExerciseMuscleGroup(ex, ex.treinoId)); equipment.add(getExerciseEquipment(ex)); });
+      const buildOptions = (values, allLabel, selected) => `<option value="all">${allLabel}</option>${[...values].sort((a, b) => a.localeCompare(b, 'pt-BR')).map((value) => `<option value="${encodeData(value)}" ${value === selected ? 'selected' : ''}>${escapeHtml(value)}</option>`).join('')}`;
+      muscleSelect.innerHTML = buildOptions(groups, 'Todos os grupos', workoutFilterState.muscle);
+      equipmentSelect.innerHTML = buildOptions(equipment, 'Todos os equipamentos', workoutFilterState.equipment);
+      if (![...groups].includes(workoutFilterState.muscle)) workoutFilterState.muscle = 'all';
+      if (![...equipment].includes(workoutFilterState.equipment)) workoutFilterState.equipment = 'all';
+      muscleSelect.value = workoutFilterState.muscle;
+      equipmentSelect.value = workoutFilterState.equipment;
     }
 
     const EXERCISE_GUIDE_RULES = [
@@ -3700,7 +3736,10 @@
       renderWorkoutSummary();
       const filterTid = workoutFilterState.treino || 'all';
       const query = String(workoutFilterState.query || '').toLocaleLowerCase('pt-BR');
+      const muscleFilter = workoutFilterState.muscle || 'all';
+      const equipmentFilter = workoutFilterState.equipment || 'all';
       const pendingOnly = workoutFilterState.pendingOnly !== false;
+      syncWorkoutFilterOptions();
 
       Object.values(treinosMap()).filter((treino) => filterTid === 'all' || treino.id === filterTid).forEach(treino => {
         const allExercises = getTreinoExercises(treino.id);
@@ -3710,10 +3749,12 @@
         const keepCompletedVisible = Boolean(complete && pendingOnly && !query);
         const exercises = allExercises.filter((ex) => {
           const matchesQuery = !query || ex.nome.toLocaleLowerCase('pt-BR').includes(query);
+          const matchesMuscle = muscleFilter === 'all' || getExerciseMuscleGroup(ex, treino.id) === muscleFilter;
+          const matchesEquipment = equipmentFilter === 'all' || getExerciseEquipment(ex) === equipmentFilter;
           const pending = !pendingOnly || keepCompletedVisible || getDoneArr(ex).filter(Boolean).length < ex.series;
-          return matchesQuery && pending;
+          return matchesQuery && matchesMuscle && matchesEquipment && pending;
         });
-        if (!exercises.length && !(complete && !query)) return;
+        if (!exercises.length) return;
         const card = document.createElement('div');
         card.className = `card${complete ? ' is-complete' : ''}`;
         card.id = `card-${treino.id}`;
@@ -3877,9 +3918,20 @@
       if (!select || !modal) return;
       swapExerciseTarget = { exId, treinoId };
       const current = findExercise(exId);
+      const currentGroup = getExerciseMuscleGroup(current, treinoId);
+      const currentEquipment = getExerciseEquipment(current);
       const seen = new Set();
-      const options = getAllExercisesFlat().filter((ex) => ex.id !== exId && ex.nome && !seen.has(ex.nome) && seen.add(ex.nome)).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-      select.innerHTML = options.map((ex) => `<option value="${encodeData(ex.id)}">${escapeHtml(ex.nome)} · ${escapeHtml(ex.series)}×${escapeHtml(ex.reps)}</option>`).join('');
+      const allOptions = getAllExercisesFlat().filter((ex) => ex.id !== exId && ex.nome && !seen.has(ex.nome) && seen.add(ex.nome));
+      const related = allOptions.filter((ex) => getExerciseMuscleGroup(ex, ex.treinoId) === currentGroup && getExerciseEquipment(ex) !== currentEquipment);
+      const fallback = allOptions.filter((ex) => !related.includes(ex));
+      const options = [...related, ...fallback].sort((a, b) => {
+        const relatedA = related.includes(a) ? 0 : 1;
+        const relatedB = related.includes(b) ? 0 : 1;
+        return relatedA - relatedB || a.nome.localeCompare(b.nome, 'pt-BR');
+      });
+      select.innerHTML = options.map((ex) => `<option value="${encodeData(ex.id)}">${escapeHtml(ex.nome)} · ${escapeHtml(getExerciseMuscleGroup(ex, ex.treinoId))} · ${escapeHtml(getExerciseEquipment(ex))} · ${escapeHtml(ex.series)}×${escapeHtml(ex.reps)}</option>`).join('');
+      const hint = document.getElementById('swapExerciseHint');
+      if (hint) hint.textContent = `${related.length ? 'Alternativas do mesmo grupo aparecem primeiro' : 'Não há alternativa do mesmo grupo cadastrada'} · atual: ${currentGroup} · ${currentEquipment}.`;
       document.getElementById('swapExerciseTitle').textContent = current ? `Trocar — ${current.nome}` : 'Trocar exercício';
       modal.classList.add('show');
       select.focus();
@@ -8551,10 +8603,14 @@
     });
 
     const workoutFilter = document.getElementById('workoutFilter');
+    const muscleFilter = document.getElementById('muscleFilter');
+    const equipmentFilter = document.getElementById('equipmentFilter');
     const exerciseFilter = document.getElementById('exerciseFilter');
     const filterPendingBtn = document.getElementById('filterPendingBtn');
     const filterAllBtn = document.getElementById('filterAllBtn');
     workoutFilter?.addEventListener('change', (event) => { workoutFilterState.treino = event.currentTarget.value; renderTreinos(); });
+    muscleFilter?.addEventListener('change', (event) => { workoutFilterState.muscle = event.currentTarget.value; renderTreinos(); });
+    equipmentFilter?.addEventListener('change', (event) => { workoutFilterState.equipment = event.currentTarget.value; renderTreinos(); });
     exerciseFilter?.addEventListener('input', (event) => { workoutFilterState.query = boundedText(event.currentTarget.value, 100); renderTreinos(); });
     filterPendingBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = true; filterPendingBtn.classList.add('active'); filterAllBtn?.classList.remove('active'); renderTreinos(); });
     filterAllBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = false; filterAllBtn.classList.add('active'); filterPendingBtn?.classList.remove('active'); renderTreinos(); });
