@@ -1863,6 +1863,36 @@
       .guided-header { padding: calc(6px + var(--safe-top)) 10px 5px; }
       .guided-brand-logo { width: 15px; height: 15px; flex-basis: 15px; }
     }
+
+    /* Progressive disclosure: keep secondary information compact until requested. */
+    .session-library-collapsible { padding: 0; overflow: hidden; }
+    .session-library-collapsible > .session-library-toggle { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:8px 13px; color:var(--text); cursor:pointer; list-style:none; }
+    .session-library-collapsible > .session-library-toggle::-webkit-details-marker { display:none; }
+    .session-library-collapsible > .session-library-toggle::after { content:'+'; flex:0 0 auto; color:var(--primary); font-size:1.15rem; line-height:1; }
+    .session-library-collapsible[open] > .session-library-toggle::after { content:'−'; }
+    .session-library-toggle-copy { display:flex; min-width:0; flex-direction:column; gap:2px; }
+    .session-library-toggle-title { font-size:.82rem; font-weight:800; }
+    .session-library-toggle-note, .session-library-toggle-label { color:var(--text-muted); font-size:.65rem; line-height:1.25; }
+    .session-library-toggle-label { margin-left:auto; white-space:nowrap; }
+    .session-library-collapsible > .session-library-content { padding:0 13px 11px; border-top:1px solid var(--border); }
+    .session-library-collapsible > .session-library-content > .session-library-intro { margin:9px 0 7px; }
+    .session-library-collapsible > .session-library-content > .session-library-note { margin:8px 0 0; }
+
+    .workout-summary-card { padding:0; overflow:hidden; }
+    .workout-summary-disclosure { display:block; }
+    .workout-summary-disclosure > .workout-summary-disclosure-toggle { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:50px; padding:9px 13px; border:0; background:transparent; color:var(--text); text-align:left; cursor:pointer; list-style:none; }
+    .workout-summary-disclosure > .workout-summary-disclosure-toggle::-webkit-details-marker { display:none; }
+    .workout-summary-disclosure > .workout-summary-disclosure-toggle::after { content:'+'; flex:0 0 auto; color:var(--primary); font-size:1.15rem; line-height:1; }
+    .workout-summary-disclosure[open] > .workout-summary-disclosure-toggle::after { content:'−'; }
+    .workout-summary-disclosure-copy { display:flex; min-width:0; flex-direction:column; gap:3px; }
+    .workout-summary-disclosure-copy > strong { font-size:.82rem; line-height:1.2; }
+    .workout-summary-disclosure-hint { flex:0 0 auto; color:var(--text-muted); font-size:.65rem; white-space:nowrap; }
+    .workout-summary-details { padding:0 13px 12px; border-top:1px solid var(--border); }
+    .workout-summary-details > .workout-summary-grid { margin-top:10px; }
+    @media (max-width:430px) {
+      .session-library-toggle-note { display:none; }
+      .workout-summary-disclosure-hint { font-size:.6rem; }
+    }
   </style>
 </head>
 <body>
@@ -4065,7 +4095,7 @@
       const recordsHtml = recordCards.length
         ? `<div class="workout-records"><div class="daily-action-kicker">Recordes pessoais</div><div class="workout-record-list">${recordCards.map(({ ex, pr }) => `<button type="button" class="workout-record-item" data-ex-id="${encodeData(ex.id)}"><strong>${escapeHtml(ex.nome)}</strong><span>${formatMetricNumber(pr.bestLoad.weight)} kg · ${formatMetricNumber(pr.bestReps?.reps)} reps · ${formatMetricVolume(pr.bestSetVolume?.volume)}</span></button>`).join('')}</div></div>`
         : `<div class="workout-records"><div class="daily-action-kicker">Recordes pessoais</div><p class="weekly-note">Conclua uma sessão com carga e repetições para criar seus primeiros recordes.</p></div>`;
-      el.innerHTML = `<div class="daily-action-kicker">Resumo do treino</div><strong>${summary.done}/${summary.total} séries concluídas · ${pct}% do programa atual</strong><div class="workout-summary-grid"><div class="workout-summary-metric"><strong>${summary.withData}</strong><span>exercícios com dados</span></div><div class="workout-summary-metric"><strong>${formatMetricVolume(summary.volume)}</strong><span>volume registrado</span></div><div class="workout-summary-metric"><strong>${(state.completedWorkouts || []).length}</strong><span>sessões salvas</span></div></div>${recordsHtml}`;
+      el.innerHTML = `<details class="workout-summary-disclosure"><summary class="workout-summary-disclosure-toggle"><span class="workout-summary-disclosure-copy"><span class="daily-action-kicker">Resumo do treino</span><strong>${summary.done}/${summary.total} séries concluídas · ${pct}% do programa atual</strong></span><span class="workout-summary-disclosure-hint">Ver detalhes</span></summary><div class="workout-summary-details"><div class="workout-summary-grid"><div class="workout-summary-metric"><strong>${summary.withData}</strong><span>exercícios com dados</span></div><div class="workout-summary-metric"><strong>${formatMetricVolume(summary.volume)}</strong><span>volume registrado</span></div><div class="workout-summary-metric"><strong>${(state.completedWorkouts || []).length}</strong><span>sessões salvas</span></div></div>${recordsHtml}</div></details>`;
       el.querySelectorAll('.workout-record-item').forEach((button) => button.addEventListener('click', () => openChart(decodeData(button.dataset.exId))));
     }
 
@@ -5434,7 +5464,7 @@
         { title: 'Volta à calma · 3–5 min', note: 'Reduza o ritmo e respire; alongamento deve ser confortável.', items: [['Respiração e caminhada leve', 'Caminhe até a respiração desacelerar, sem transformar em novo esforço.'], ['Alongamento confortável', 'Mantenha 20–30 segundos sem dor, balanço ou insistência em amplitude.']] }
       ];
       const content = sections.map((section) => `<details><summary>${escapeHtml(section.title)} <span class="session-library-summary-note">${escapeHtml(section.note)}</span></summary><div class="session-library-list">${section.items.map((item) => `<div class="session-library-item"><strong>${escapeHtml(item[0])}</strong><span>${escapeHtml(item[1])}</span></div>`).join('')}</div></details>`).join('');
-      return compact ? `<div class="session-library">${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></div>` : `<section class="session-library" aria-labelledby="sessionLibraryTitle"><h3 id="sessionLibraryTitle">Biblioteca rápida da sessão</h3><p class="session-library-intro">Sugestões curtas para preparar o corpo, mobilizar sem dor e encerrar o treino com calma. Abra somente o bloco que quiser usar.</p>${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></section>`;
+      return compact ? `<div class="session-library">${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></div>` : `<details class="session-library session-library-collapsible"><summary class="session-library-toggle"><span class="session-library-toggle-copy"><span class="session-library-toggle-title">Biblioteca rápida da sessão</span><span class="session-library-toggle-note">Aquecimento, mobilidade e volta à calma</span></span><span class="session-library-toggle-label">Abrir opções</span></summary><div class="session-library-content"><p class="session-library-intro">Sugestões curtas para preparar o corpo, mobilizar sem dor e encerrar o treino com calma. Abra somente o bloco que quiser usar.</p>${content}<p class="session-library-note">Pare se houver dor aguda, tontura ou perda de controle. A biblioteca é uma referência geral e não substitui orientação profissional.</p></div></details>`;
     }
 
     function renderSessionLibrary() {
@@ -9242,7 +9272,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v77-box-keyboard-nav';
+      const APP_UPDATE_VERSION = 'v78-collapsible-sections';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

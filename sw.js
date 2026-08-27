@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v77-box-keyboard-nav';
+const CACHE_NAME = 'marsb-gym-v78-collapsible-sections';
 const APP_SHELL = [
   './',
   './index.html',
