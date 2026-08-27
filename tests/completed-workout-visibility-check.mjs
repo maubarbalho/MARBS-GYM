@@ -18,7 +18,7 @@ const renderBody = html.slice(renderStart, renderEnd);
 if (/\bsaveState\s*\(/.test(renderBody)) {
   throw new Error('A renderização da lista não deve gravar ou modificar o estado do usuário.');
 }
-if (!html.includes("if (!exercises.length && !(complete && !query)) return;")) {
-  throw new Error('A lista ainda pode descartar um treino completo sem consulta de busca.');
+if (!html.includes('if (!exercises.length) return;') || !html.includes('keepCompletedVisible')) {
+  throw new Error('A lista não combina corretamente a visibilidade de treinos completos com os filtros.');
 }
 console.log('OK: treinos concluídos permanecem visíveis, identificados e sem alteração do estado salvo.');
