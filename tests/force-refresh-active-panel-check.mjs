@@ -24,7 +24,7 @@ const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Painel/atualização forçada incompletos: ${missingHtml.join(', ')}`);
 
 const requiredSw = [
-  "CACHE_NAME = 'marsb-gym-v72-integrated-actions'",
+  "CACHE_NAME = 'marsb-gym-v73-end-buttons-last'",
   'async function purgeOldCaches()',
   'purgeOldCaches()',
   "event.data.type === 'PURGE_OLD_CACHES'",
@@ -39,6 +39,12 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
 }
 if (html.includes('guided-mobile-actions') || html.includes('guidedQuickComplete') || html.includes('guidedQuickRepeat')) {
   throw new Error('A faixa rápida separada ainda está presente no modo guiado.');
+}
+const actionsMarkup = html.slice(html.indexOf('<div class="guided-actions-grid"'));
+const utilityIndex = actionsMarkup.indexOf('class="guided-utility-row"');
+const interruptIndex = actionsMarkup.indexOf('class="guided-interrupt-row"');
+if (utilityIndex < 0 || interruptIndex < 0 || utilityIndex > interruptIndex) {
+  throw new Error('Os controles de encerramento não estão na última linha do bloco de ações.');
 }
 
 console.log('OK: painel do treino ativo, limpeza forçada do cache e preservação do armazenamento local validados.');

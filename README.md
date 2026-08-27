@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v72-integrated-actions`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v73-end-buttons-last`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga.
 
 ## Coach e funcionamento offline
 
@@ -43,7 +43,7 @@ A área visual do exercício foi reduzida novamente para um bloco compacto de `6
 
 Na aba **Treinos**, quando existe uma sessão ativa, o app mostra o treino atual em um painel próprio, com progresso, próximo exercício, modo de execução e ações para continuar ou abrir o treino. Esse painel é derivado do estado já salvo e não cria registros adicionais.
 
-No modo guiado, os controles **Anterior**, **Próximo**, **Encerrar exercício**, **Encerrar treino agora**, **Iniciar timer** e **Repetir última** ficam agrupados no mesmo bloco do cartão do exercício. A faixa de ações rápida separada foi removida para evitar duplicidade, deslocamento visual e sobreposição no celular.
+No modo guiado, os controles **Anterior** e **Próximo** ficam na primeira linha, **Iniciar timer** e **Repetir última** ficam na segunda, e **Encerrar exercício** e **Encerrar treino agora** ficam por último no mesmo bloco do cartão do exercício. A faixa de ações rápida separada foi removida para evitar duplicidade, deslocamento visual e sobreposição no celular.
 
 ## Controles e foco no celular
 

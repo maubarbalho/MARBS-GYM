@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v72-integrated-actions';
+const CACHE_NAME = 'marsb-gym-v73-end-buttons-last';
 const APP_SHELL = [
   './',
   './index.html',

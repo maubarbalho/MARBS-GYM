@@ -5671,13 +5671,13 @@
                 <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
                 <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? (allDone ? 'Finalizar ✓' : 'Pular por agora →') : (allDone ? 'Próximo →' : 'Pular por agora →')}</button>
               </div>
-              <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
-                <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
-                <button class="guided-interrupt-btn danger js-end-workout" type="button">Encerrar treino agora</button>
-              </div>
               <div class="guided-utility-row" aria-label="Ações adicionais do exercício">
                 <button class="guided-utility-btn js-guided-timer" type="button">⏱ Iniciar timer</button>
                 <button class="guided-utility-btn js-guided-repeat" type="button" ${getLastPerformance(ex.id) || focusSetIndex > 0 ? '' : 'disabled'}>↻ Repetir última</button>
+              </div>
+              <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
+                <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
+                <button class="guided-interrupt-btn danger js-end-workout" type="button">Encerrar treino agora</button>
               </div>
             </div>
           </article>
@@ -9162,7 +9162,7 @@
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v72-integrated-actions';
+      const APP_UPDATE_VERSION = 'v73-end-buttons-last';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
