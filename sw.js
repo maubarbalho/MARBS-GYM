@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v65-zero-weight-completion';
+const CACHE_NAME = 'marsb-gym-v66-mobile-input-focus';
 const APP_SHELL = [
   './',
   './index.html',

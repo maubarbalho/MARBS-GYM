@@ -1314,7 +1314,7 @@
     .guided-header { background: color-mix(in srgb, var(--bg) 90%, transparent); border-bottom-color: var(--separator); }
     .guided-exit-btn { background: var(--control-bg); border: none; color: var(--primary); border-radius: 999px; }
     .guided-mode-select-wrap { display:flex; align-items:center; gap:5px; color:var(--text-muted); font-size:.66rem; font-weight:800; }
-    .guided-mode-select { min-height:40px; max-width:132px; padding:0 7px; border:1px solid var(--border); border-radius:999px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.68rem; }
+    .guided-mode-select { min-height:40px; max-width:132px; padding:0 7px; border:1px solid var(--border); border-radius:999px; background:var(--control-bg); color:var(--text); font:inherit; font-size:16px; }
     .guided-progress-bar { height: 3px; background: var(--control-bg); }
     .guided-progress-fill { background: var(--primary); }
     .guided-session-footer { background: color-mix(in srgb, var(--bg) 88%, transparent); border-top-color: var(--separator); box-shadow: 0 -4px 16px rgba(0,0,0,0.05); }
@@ -1696,9 +1696,9 @@
       :where(button, [role="button"], input, select, textarea, summary):focus-visible {
         outline: 3px solid #0b84ff; outline-offset: 3px; scroll-margin-bottom: 140px;
       }
-      input, select, textarea { font-size: max(16px, 1rem); }
       [role="button"] { cursor: pointer; }
       @media (max-width: 600px) {
+        input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea { font-size: 16px !important; }
         .content, .page, .modal-sheet, .config-window { padding-bottom: calc(32px + env(safe-area-inset-bottom)); }
         .btn-action, .timer-btn, .guided-rest-action, .chart-link-btn, .hi-del { min-height: 46px; }
         .form-row { grid-template-columns: 1fr; }
