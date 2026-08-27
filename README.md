@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v67-mobile-layout`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v68-smaller-guided-image`.
 
 ## Coach e funcionamento offline
 
@@ -35,7 +35,7 @@ O navegador ou o sistema operacional pode suspender completamente o PWA; por iss
 
 ## Layout compacto do treino guiado
 
-A área visual do exercício foi reduzida para deixar mais espaço para o nome, as instruções e os controles de séries no celular. O bloco permanece identificado como elemento visual acessível, mantém o enquadramento e não altera nenhum dado do treino.
+A área visual do exercício foi reduzida novamente para um bloco ainda mais compacto, deixando mais espaço para o nome, as instruções e os controles de séries no celular. O bloco permanece identificado como elemento visual acessível, mantém o enquadramento e não altera nenhum dado do treino.
 
 ## Controles e foco no celular
 

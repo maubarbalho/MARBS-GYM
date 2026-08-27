@@ -23,7 +23,7 @@ const requiredHtml = [
 const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Notificação do timer incompleta no HTML: ${missingHtml.join(', ')}`);
 
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v67-mobile-layout'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v68-smaller-guided-image'")) {
   throw new Error('O cache do PWA não foi atualizado para a versão atual do timer.');
 }
 if (!sw.includes("self.addEventListener('notificationclick'")) {
