@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v74-ios-standalone-update`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v75-global-visual-rebrand`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
 
 ## Coach e funcionamento offline
 
@@ -35,7 +35,11 @@ O navegador ou o sistema operacional pode suspender completamente o PWA; por iss
 
 ## Identidade visual verde-limão
 
-O app usa o logo oficial `apple-touch-icon.png` ao lado do nome `MARSB-GYM` no cabeçalho principal e no treino guiado. A paleta global foi harmonizada em torno de verde-limão, com superfícies grafite no tema escuro, uma variação clara de alto contraste, estados de ação coerentes e cores de foco ajustadas. A troca é somente visual e não altera planos, exercícios, sessões, histórico, pesos, dieta ou demais dados locais.
+O app usa o logo oficial `apple-touch-icon.png` ao lado do nome `MARSB-GYM` no cabeçalho principal e no treino guiado. O header principal mantém apenas a marca, sem o subtítulo “Hipertrofia • Treino livre e progresso contínuo”, e foi reduzido para liberar espaço útil no celular. A paleta global foi harmonizada em torno de verde-limão, com superfícies grafite no tema escuro, uma variação clara acessível (`#58740F` para ações com texto branco), estados de ação coerentes e cores de foco ajustadas. Ícones funcionais seguem um tratamento outline arredondado, enquanto a tipografia usa papéis de display, headline, title, body e label com a fonte do sistema. A troca é somente visual e não altera planos, exercícios, sessões, histórico, pesos, dieta ou demais dados locais.
+
+## Sistema visual global
+
+A mesma linguagem visual é aplicada em Início, Treinos, Progresso, Dieta, Calculadoras e Configuração. Verde-limão é reservado para ações, progresso e seleção; grafite organiza superfícies e controles; texto principal e secundário usam tons claros com contraste elevado. O sistema de ícones mantém estilo único e os rótulos textuais continuam presentes nas ações críticas, sem depender somente de cor ou símbolo.
 
 ## Layout compacto do treino guiado
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v74-ios-standalone-update';
+const CACHE_NAME = 'marsb-gym-v75-global-visual-rebrand';
 const APP_SHELL = [
   './',
   './index.html',

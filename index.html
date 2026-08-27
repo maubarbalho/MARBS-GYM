@@ -28,7 +28,7 @@
       --separator: #2b3a0d;
       --text: #f5f9e6;
       --text-muted: #a8b391;
-      --primary: #c4ee38;
+      --primary: #c5f238;
       --primary-dim: #a8d12b;
       --primary-ink: #172000;
       --accent: #b8e52d;
@@ -36,7 +36,7 @@
       --accent-ink: #142000;
       --warning: #f6b73c;
       --danger: #ff6b5f;
-      --purple: #cf9cff;
+      --purple: #8fae22;
       --cyan: #d3f24a;
       --focus-ring: #dfff63;
       --radius: 14px;
@@ -1170,7 +1170,7 @@
       --separator: rgba(137, 171, 34, 0.32);
       --text: #f5f9e6;
       --text-muted: #a8b391;
-      --primary: #c4ee38;
+      --primary: #c5f238;
       --primary-dim: #a8d12b;
       --primary-ink: #172000;
       --accent: #b8e52d;
@@ -1178,7 +1178,7 @@
       --accent-ink: #142000;
       --warning: #f6b73c;
       --danger: #ff6b5f;
-      --purple: #cf9cff;
+      --purple: #8fae22;
       --cyan: #d3f24a;
       --focus-ring: #dfff63;
       --radius: 13px;
@@ -1372,7 +1372,7 @@
         --separator: rgba(137,171,34,0.32);
         --text: #f5f9e6;
         --text-muted: #a8b391;
-        --primary: #c4ee38;
+        --primary: #c5f238;
         --primary-dim: #a8d12b;
         --primary-ink: #172000;
         --accent: #b8e52d;
@@ -1380,7 +1380,7 @@
         --accent-ink: #142000;
         --warning: #f6b73c;
         --danger: #ff6b5f;
-        --purple: #cf9cff;
+        --purple: #8fae22;
         --cyan: #d3f24a;
         --ios-shadow: 0 1px 3px rgba(0,0,0,0.34), 0 8px 24px rgba(0,0,0,0.22);
       }
@@ -1392,8 +1392,8 @@
       .modal-sheet::before { background: #687448; }
       .guided-set-row.done { background: rgba(184,229,45,0.14); }
     }
-    html[data-theme="light"] { color-scheme: light; --bg:#f4f8ea; --bg-card:#ffffff; --bg-elevated:#f0f6dc; --control-bg:#e8f0cf; --border:rgba(46,68,10,.18); --separator:rgba(46,68,10,.25); --text:#1a210d; --text-muted:#59633f; --primary:#688914; --primary-dim:#52700d; --primary-ink:#ffffff; --accent:#9cbd1d; --accent-dim:#6f8f12; --accent-ink:#152000; --warning:#b47700; --danger:#c7352e; --purple:#7b3ba3; --cyan:#6c8400; }
-    html[data-theme="dark"] { color-scheme: dark; --bg:#070a04; --bg-card:#11170b; --bg-elevated:#1c250f; --control-bg:#202b11; --border:rgba(137,171,34,.42); --separator:rgba(137,171,34,.32); --text:#f5f9e6; --text-muted:#a8b391; --primary:#c4ee38; --primary-dim:#a8d12b; --primary-ink:#172000; --accent:#b8e52d; --accent-dim:#93bd1e; --accent-ink:#142000; --warning:#f6b73c; --danger:#ff6b5f; --purple:#cf9cff; --cyan:#d3f24a; }
+    html[data-theme="light"] { color-scheme: light; --bg:#f4f8ea; --bg-card:#ffffff; --bg-elevated:#f0f6dc; --control-bg:#e8f0cf; --border:rgba(46,68,10,.18); --separator:rgba(46,68,10,.25); --text:#1a210d; --text-muted:#59633f; --primary:#58740f; --primary-dim:#4c640d; --primary-ink:#ffffff; --accent:#58740f; --accent-dim:#4c640d; --accent-ink:#ffffff; --warning:#b47700; --danger:#c7352e; --purple:#58740f; --cyan:#58740f; --focus-ring:#4c640d; }
+    html[data-theme="dark"] { color-scheme: dark; --bg:#070a04; --bg-card:#11170b; --bg-elevated:#1c250f; --control-bg:#202b11; --border:rgba(137,171,34,.42); --separator:rgba(137,171,34,.32); --text:#f5f9e6; --text-muted:#a8b391; --primary:#c5f238; --primary-dim:#a8d12b; --primary-ink:#172000; --accent:#b8e52d; --accent-dim:#93bd1e; --accent-ink:#142000; --warning:#f6b73c; --danger:#ff6b5f; --purple:#8fae22; --cyan:#d3f24a; --focus-ring:#dfff63; }
 
 
     .plano-exercise-accordion { margin: 8px 0; border: 1px solid var(--border); border-radius: 15px; background: var(--bg); overflow: hidden; }
@@ -1784,6 +1784,59 @@
       .guided-set-row.done .guided-set-status::after { opacity:1; }
       .guided-set-status:focus-visible::before { outline:2px solid var(--focus-ring); outline-offset:2px; }
     }
+
+    /* Global MARSB-GYM rebrand: one visual language across every tab. */
+    html, body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+    body { letter-spacing: -0.005em; }
+    .header { background: color-mix(in srgb, var(--bg) 94%, transparent); padding: 8px 12px; padding-top: calc(8px + var(--safe-top)); }
+    .header.header-compact { padding-bottom: 6px; }
+    .header-top { gap: 8px; }
+    .header h1 { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.015em; }
+    .brand-lockup { gap: 6px; }
+    .brand-logo { width: 28px; height: 28px; flex-basis: 28px; border-radius: 8px; }
+    .header .subtitle { display: none; }
+    .header-spacer { min-height: 0; }
+
+    /* Colors, surfaces and actions shared by Home, Treinos, Progresso, Dieta, Calc and Config. */
+    .card, .calc-card, .stat-card, .period-card, .history-item, .personal-card, .config-option, .config-status-card, .setting-row, .daily-action-card, .weekly-progress-card, .diet-meal-item, .decision-card, .progress-snapshot-card, .progress-visual-card { border-color: var(--border); }
+    .daily-action-card, .weekly-progress-card { background: color-mix(in srgb, var(--bg-card) 94%, var(--accent) 6%); }
+    .card-header:active, .config-option:active, .setting-row:active { background: var(--control-bg); }
+    .form-field input, .form-field textarea, .progression-rule-grid select, .progression-rule-grid input, .progress-comparison select, .guided-focus-rpe select, .complete-checkin-grid select, .adherence-controls input, .adherence-controls select { background: var(--bg); border-color: var(--border); color: var(--text); }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: .9; }
+    .btn-action, .seg-control, .timer-preset, .config-option, .guided-prev-btn, .guided-focus-rest { background: var(--control-bg); border-color: var(--border); color: var(--text); }
+    .btn-action.primary, .seg-control button.active, .guided-next-btn, .guided-start-btn, .timer-btn.primary, .rest-btn, .bw-log-row button, .install-banner button, .update-banner button { background: var(--primary); border-color: var(--primary); color: var(--primary-ink); }
+    .btn-action.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 60%, var(--border)); }
+    .badge-orange { background: color-mix(in srgb, var(--warning) 18%, transparent); color: var(--warning); }
+    .badge-purple { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+    .qs-c { color: var(--warning); } .qs-d { color: var(--accent); }
+    .toast { background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text); }
+    .modal-sheet::before, .config-window-header::before { background: var(--text-muted); }
+    .install-banner { background: color-mix(in srgb, var(--primary) 10%, var(--bg-card)); border-color: color-mix(in srgb, var(--primary) 35%, var(--border)); }
+    .guided-media-visual { background: var(--bg-elevated); border-color: color-mix(in srgb, var(--primary) 42%, var(--border)); }
+    .guided-record { background: var(--primary); color: var(--primary-ink); }
+    .plate-chip { color: var(--primary-ink); }
+    .muscle-volume-track i { background: var(--primary); }
+    .section-title, .calc-section-title, .chart-section-title { letter-spacing: .08em; }
+    .section-title, .calc-section-title { font-weight: 800; }
+    .card-title, .calc-card h3, .config-option-title, .config-status-card strong, .setting-row span { font-weight: 750; }
+
+    /* Consistent rounded-outline icon treatment; touch areas remain unchanged. */
+    .nav-icon, .config-option-icon, .exercise-icon-btn, .guided-history-icon, .guided-art-mark, .modal-close-x, .scroll-top-btn { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-variant-emoji: text; }
+    .nav-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid color-mix(in srgb, currentColor 32%, var(--border)); border-radius: 10px; background: color-mix(in srgb, currentColor 10%, transparent); font-size: 1.05rem; line-height: 1; }
+    .nav-item.active .nav-icon { background: var(--primary); border-color: var(--primary); color: var(--primary-ink); }
+    .config-option-icon { background: color-mix(in srgb, var(--primary) 12%, var(--bg-card)); border: 1px solid color-mix(in srgb, var(--primary) 36%, var(--border)); color: var(--primary); }
+    .exercise-icon-btn { background: var(--bg-card); border-color: var(--border); color: var(--primary); }
+    .guided-history-icon { color: var(--primary); }
+    .chart-link-btn { color: var(--primary); }
+
+    @media (max-width: 600px) {
+      .header { padding-left: 12px; padding-right: 12px; }
+      .guided-header { padding: calc(8px + var(--safe-top)) 12px 7px; }
+      .guided-brand-logo { width: 16px; height: 16px; flex-basis: 16px; border-radius: 4px; }
+      .guided-brand-lockup { letter-spacing: .06em; }
+      .nav-item { min-width: 56px; min-height: 48px; padding: 7px 5px; }
+      .nav-icon { width: 28px; height: 28px; font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -1792,12 +1845,12 @@
       <div class="header-top">
         <div>
           <h1><span class="brand-lockup"><img class="brand-logo" src="apple-touch-icon.png" alt="" width="34" height="34" /><span class="brand-wordmark">MARSB-GYM</span></span></h1>
-          <div class="subtitle">Hipertrofia • Treino livre e progresso contínuo</div>
         </div>
       </div>
-    </div>
+          </div>
   </div>
   <div class="header-spacer" id="headerSpacer" aria-hidden="true"></div>
+
   <div id="networkBanner" class="network-banner" role="status" aria-live="polite"></div>
 
   <div class="main">
@@ -3852,11 +3905,11 @@
       const labels = (safeSeries[0]?.values || []).map((point, index) => {
         if (!point || (count > 6 && index % Math.ceil(count / 6) !== 0 && index !== count - 1)) return '';
         const x = padL + index * stepX;
-        return `<text x="${x.toFixed(1)}" y="${H - 8}" font-size="8" fill="#8b9bb4" text-anchor="middle">${escapeHtml(point.label || '')}</text>`;
+        return `<text x="${x.toFixed(1)}" y="${H - 8}" font-size="8" fill="#a8b394" text-anchor="middle">${escapeHtml(point.label || '')}</text>`;
       }).join('');
       const legend = safeSeries.length > 1 ? `<div class="chart-legend">${safeSeries.map((item) => `<span><i style="background:${item.color || '#d3f24a'}"></i>${escapeHtml(item.label || '')}</span>`).join('')}</div>` : '';
       const axis = options.unit === 'kg' ? (value) => `${formatMetricNumber(value)} kg` : (value) => formatMetricNumber(value);
-      return `${legend}<svg class="chart-svg" viewBox="0 0 ${W} ${H}" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHtml(options.ariaLabel || 'Gráfico de evolução')}"><text x="${padL - 6}" y="${padT + 4}" font-size="9" fill="#8b9bb4" text-anchor="end">${escapeHtml(axis(max))}</text><text x="${padL - 6}" y="${H - padB}" font-size="9" fill="#8b9bb4" text-anchor="end">${escapeHtml(axis(min))}</text><line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="#243044" stroke-width="1" /><line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#243044" stroke-width="1" />${lineHtml}${labels}</svg>`;
+      return `${legend}<svg class="chart-svg" viewBox="0 0 ${W} ${H}" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHtml(options.ariaLabel || 'Gráfico de evolução')}"><text x="${padL - 6}" y="${padT + 4}" font-size="9" fill="#a8b394" text-anchor="end">${escapeHtml(axis(max))}</text><text x="${padL - 6}" y="${H - padB}" font-size="9" fill="#a8b394" text-anchor="end">${escapeHtml(axis(min))}</text><line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="#34480f" stroke-width="1" /><line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#34480f" stroke-width="1" />${lineHtml}${labels}</svg>`;
     }
 
     function getLatestExerciseSession(exId) {
@@ -3899,7 +3952,7 @@
       const oneRMValues = history.map((session) => ({ label: session.date ? formatDate(session.date).slice(0, 5) : '—', value: Math.max(0, ...(session.sets || []).map((set) => estimateOneRepMax(set.weight, set.reps))) }));
       const exercise = findExercise(exId);
       const exerciseName = exercise ? escapeHtml(exercise.nome) : 'exercício selecionado';
-      const exerciseCharts = history.length ? `<div class="progress-visual-card"><strong>Carga, volume e 1RM estimado · ${exerciseName}</strong><small>Uma linha por métrica; 1RM calculado somente quando há peso e repetições.</small>${buildMetricChartSVG([{ label: 'Carga máxima', color: '#d3f24a', values: loadValues }, { label: 'Volume', color: '#b8e52d', values: volumeValues }, { label: '1RM estimado', color: '#8b5cf6', values: oneRMValues }], { unit: 'kg', ariaLabel: `Evolução de ${exerciseName}` })}<p class="chart-source-note">As métricas são derivadas do histórico local e servem para comparação, não para prescrever carga.</p></div>` : (exId ? `<div class="progress-visual-card"><strong>Evolução do exercício</strong><p class="progression-rule-note">Ainda não há sessão registrada com este exercício.</p></div>` : '');
+      const exerciseCharts = history.length ? `<div class="progress-visual-card"><strong>Carga, volume e 1RM estimado · ${exerciseName}</strong><small>Uma linha por métrica; 1RM calculado somente quando há peso e repetições.</small>${buildMetricChartSVG([{ label: 'Carga máxima', color: '#d3f24a', values: loadValues }, { label: 'Volume', color: '#b8e52d', values: volumeValues }, { label: '1RM estimado', color: '#8fae22', values: oneRMValues }], { unit: 'kg', ariaLabel: `Evolução de ${exerciseName}` })}<p class="chart-source-note">As métricas são derivadas do histórico local e servem para comparação, não para prescrever carga.</p></div>` : (exId ? `<div class="progress-visual-card"><strong>Evolução do exercício</strong><p class="progression-rule-note">Ainda não há sessão registrada com este exercício.</p></div>` : '');
       if (!overallVolume && !exerciseCharts) return '<p class="progression-rule-note">Conclua treinos com carga e repetições para visualizar gráficos locais de evolução.</p>';
       return `<div class="progress-visuals">${overallVolume}${exerciseCharts}</div>`;
     }
@@ -5260,7 +5313,7 @@
       const volumeValues = history.map((session) => ({ label: session.date ? formatDate(session.date).slice(0, 5) : '—', value: session.volume }));
       const oneRMValues = history.map((session) => ({ label: session.date ? formatDate(session.date).slice(0, 5) : '—', value: Math.max(0, ...(session.sets || []).map((set) => estimateOneRepMax(set.weight, set.reps))) }));
       const chartHtml = hist.length ? buildWeightChartSVG(hist) : '<div class="chart-empty">Ainda não há dados numéricos suficientes para o gráfico.</div>';
-      const metricChartHtml = history.length ? `<div class="chart-section-title">Indicadores por sessão</div>${buildMetricChartSVG([{ label: 'Carga máxima', color: '#d3f24a', values: loadValues }, { label: 'Volume', color: '#b8e52d', values: volumeValues }, { label: '1RM estimado', color: '#8b5cf6', values: oneRMValues }], { unit: 'kg', ariaLabel: 'Carga, volume e 1RM estimado por sessão' })}<p class="chart-source-note">O 1RM é uma estimativa e só aparece quando peso e repetições estão disponíveis.</p>` : '';
+      const metricChartHtml = history.length ? `<div class="chart-section-title">Indicadores por sessão</div>${buildMetricChartSVG([{ label: 'Carga máxima', color: '#d3f24a', values: loadValues }, { label: 'Volume', color: '#b8e52d', values: volumeValues }, { label: '1RM estimado', color: '#8fae22', values: oneRMValues }], { unit: 'kg', ariaLabel: 'Carga, volume e 1RM estimado por sessão' })}<p class="chart-source-note">O 1RM é uma estimativa e só aparece quando peso e repetições estão disponíveis.</p>` : '';
       wrap.innerHTML = recordHtml + buildExerciseComparisonHtml(exId) + `<div class="chart-section-title">Carga máxima por sessão</div>${chartHtml}` + metricChartHtml + (advice ? `<div class="chart-advice">${advice}</div>` : '') + sessionsHtml;
       document.getElementById('chartModal').classList.add('show');
     }
@@ -5296,15 +5349,15 @@
 
       const labels = points.map((p, i) => {
         if (n > 6 && i % Math.ceil(n / 6) !== 0 && i !== n - 1) return '';
-        return `<text x="${p.x.toFixed(1)}" y="${H-8}" font-size="8" fill="#8b9bb4" text-anchor="middle">S${p.week}</text>`;
+        return `<text x="${p.x.toFixed(1)}" y="${H-8}" font-size="8" fill="#a8b394" text-anchor="middle">S${p.week}</text>`;
       }).join('');
 
       return `
         <svg viewBox="0 0 ${W} ${H}" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
-          <text x="${padL-6}" y="${padT+4}" font-size="9" fill="#8b9bb4" text-anchor="end">${max}kg</text>
-          <text x="${padL-6}" y="${H-padB}" font-size="9" fill="#8b9bb4" text-anchor="end">${min}kg</text>
-          <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#243044" stroke-width="1" />
-          <line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#243044" stroke-width="1" />
+          <text x="${padL-6}" y="${padT+4}" font-size="9" fill="#a8b394" text-anchor="end">${max}kg</text>
+          <text x="${padL-6}" y="${H-padB}" font-size="9" fill="#a8b394" text-anchor="end">${min}kg</text>
+          <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#34480f" stroke-width="1" />
+          <line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#34480f" stroke-width="1" />
           <path d="${areaD}" fill="rgba(184,229,45,0.12)" stroke="none" />
           <path d="${pathD}" fill="none" stroke="#b8e52d" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
           ${dots}
@@ -6547,7 +6600,7 @@
       const labels = points.map((p, i) => {
         if (n > 7 && i % Math.ceil(n / 6) !== 0 && i !== n - 1) return '';
         const dd = p.date.slice(8, 10) + '/' + p.date.slice(5, 7);
-        return '<text x="' + p.x.toFixed(1) + '" y="' + (H - 8) + '" font-size="8" fill="#8b9bb4" text-anchor="middle">' + dd + '</text>';
+        return '<text x="' + p.x.toFixed(1) + '" y="' + (H - 8) + '" font-size="8" fill="#a8b394" text-anchor="middle">' + dd + '</text>';
       }).join('');
 
       let goalLine = '';
@@ -6559,10 +6612,10 @@
       }
 
       return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">' +
-        '<text x="' + (padL - 6) + '" y="' + (padT + 4) + '" font-size="9" fill="#8b9bb4" text-anchor="end">' + max.toFixed(1) + '</text>' +
-        '<text x="' + (padL - 6) + '" y="' + (H - padB) + '" font-size="9" fill="#8b9bb4" text-anchor="end">' + min.toFixed(1) + '</text>' +
-        '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (H - padB) + '" stroke="#243044" stroke-width="1" />' +
-        '<line x1="' + padL + '" y1="' + (H - padB) + '" x2="' + (W - padR) + '" y2="' + (H - padB) + '" stroke="#243044" stroke-width="1" />' +
+        '<text x="' + (padL - 6) + '" y="' + (padT + 4) + '" font-size="9" fill="#a8b394" text-anchor="end">' + max.toFixed(1) + '</text>' +
+        '<text x="' + (padL - 6) + '" y="' + (H - padB) + '" font-size="9" fill="#a8b394" text-anchor="end">' + min.toFixed(1) + '</text>' +
+        '<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (H - padB) + '" stroke="#34480f" stroke-width="1" />' +
+        '<line x1="' + padL + '" y1="' + (H - padB) + '" x2="' + (W - padR) + '" y2="' + (H - padB) + '" stroke="#34480f" stroke-width="1" />' +
         goalLine +
         '<path d="' + areaD + '" fill="rgba(34,197,94,0.12)" stroke="none" />' +
         '<path d="' + pathD + '" fill="none" stroke="#b8e52d" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />' +
@@ -8534,7 +8587,7 @@
       var chips = '';
       for (var j = 0; j < plates.length; j++) {
         var p = plates[j];
-        var bg = PLATE_COLORS[p] || '#8b9bb4';
+        var bg = PLATE_COLORS[p] || '#a8b394';
         chips += '<span class="plate-chip" style="background:' + bg + '">' + p + '</span>';
       }
       if (!chips) chips = '<span style="color:var(--text-muted);font-size:0.8rem;">Só a barra</span>';
@@ -9023,7 +9076,7 @@
     function showTextModal(text) {
       const ta = document.createElement('textarea');
       ta.value = text;
-      ta.style.cssText = 'position:fixed;top:10%;left:5%;width:90%;height:60%;z-index:500;background:#1a2332;color:#e8eef7;padding:12px;border-radius:12px;border:1px solid #243044;font-size:12px;';
+      ta.style.cssText = 'position:fixed;top:10%;left:5%;width:90%;height:60%;z-index:500;background:var(--bg);color:var(--text);padding:12px;border-radius:12px;border:1px solid #34480f;font-size:12px;';
       document.body.appendChild(ta);
       ta.select();
       showToast('Selecione e copie o texto');
@@ -9162,7 +9215,7 @@
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v74-ios-standalone-update';
+      const APP_UPDATE_VERSION = 'v75-global-visual-rebrand';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
