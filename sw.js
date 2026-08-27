@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v68-smaller-guided-image';
+const CACHE_NAME = 'marsb-gym-v69-lime-brand';
 const APP_SHELL = [
   './',
   './index.html',
