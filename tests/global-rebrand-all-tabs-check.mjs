@@ -14,7 +14,10 @@ const requiredVisualTokens = [
   'Global MARSB-GYM rebrand',
   '.header .subtitle { display: none; }',
   '.brand-logo { width: 24px; height: 24px;',
+  ".brand-wordmark { font-family: 'Bebas Neue'",
   '.nav-icon',
+  '.nav-icon svg',
+  '.nav-item { min-width: 50px; min-height: 44px;',
   '.config-option-icon',
   '.exercise-icon-btn',
   '.guided-history-icon',
@@ -33,13 +36,22 @@ for (const token of deprecatedVisualTokens) {
 if (html.includes('Hipertrofia • Treino livre e progresso contínuo') || html.includes('<div class="subtitle">')) {
   throw new Error('O subtítulo removido do header voltou ao HTML.');
 }
+if (!html.includes("src: url('assets/fonts/bebas-neue-latin.ttf') format('truetype')")) {
+  throw new Error('A fonte Box não foi incorporada localmente para uso offline.');
+}
+if (!html.includes('data-page="calc"><span class="nav-icon" aria-hidden="true"><svg')) {
+  throw new Error('O ícone Teclas não está aplicado ao botão Calc.');
+}
+if (html.includes('data-page="calc"><span class="nav-icon" aria-hidden="true">＋÷</span>')) {
+  throw new Error('O ícone antigo ＋÷ ainda está aplicado ao botão Calc.');
+}
 if (html.includes('localStorage.clear(') || html.includes('localStorage.removeItem(STORAGE_KEY)')) {
   throw new Error('A alteração visual não pode limpar os dados locais.');
 }
 for (const token of ['function renderTreinos', 'function renderProgressSnapshot', 'function renderDietDiary', 'function runMacroCalc']) {
   if (!html.includes(token)) throw new Error(`Fluxo existente ausente após rebranding: ${token}`);
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v76-compact-shell-auto-update'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v77-box-keyboard-nav'")) {
   throw new Error('O cache do PWA não acompanha o rebranding global.');
 }
 console.log('OK: abas, paleta, ícones, tipografia, header compacto, ausência do subtítulo, fluxos e preservação local validados.');

@@ -19,6 +19,13 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <style>
+    @font-face {
+      font-family: 'Bebas Neue';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('assets/fonts/bebas-neue-latin.ttf') format('truetype');
+    }
     :root {
       --bg: #070a04;
       --bg-card: #11170b;
@@ -1843,12 +1850,15 @@
     .header.header-compact { padding-bottom: 4px; }
     .header h1 { font-size: 1rem; }
     .brand-lockup { gap: 5px; }
+    .brand-wordmark { font-family: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif; font-size: 1.28rem; font-weight: 400; line-height: .78; letter-spacing: .045em; }
+    .guided-brand-lockup span:first-of-type { font-family: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif; font-size: 1.02rem; font-weight: 400; letter-spacing: .045em; }
     .brand-logo { width: 24px; height: 24px; flex-basis: 24px; border-radius: 7px; }
-    .bottom-nav { padding: 3px 0 calc(3px + var(--safe-bottom)); }
+    .bottom-nav { padding: 1px 0 calc(1px + var(--safe-bottom)); }
     .bottom-nav-inner { max-width: 560px; }
-    .nav-item { min-width: 52px; min-height: 44px; padding: 2px 4px 3px; gap: 1px; font-size: .57rem; }
-    .nav-icon { width: 24px; height: 24px; border-radius: 8px; font-size: .9rem; }
-    .nav-item .nav-icon { font-size: .9rem; }
+    .nav-item { min-width: 50px; min-height: 44px; padding: 1px 3px 2px; gap: 0; font-size: .56rem; }
+    .nav-icon { width: 22px; height: 22px; border-radius: 7px; font-size: .82rem; }
+    .nav-item .nav-icon { font-size: .82rem; }
+    .nav-icon svg { width: 15px; height: 15px; display: block; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     @media (max-width: 600px) {
       .guided-header { padding: calc(6px + var(--safe-top)) 10px 5px; }
       .guided-brand-logo { width: 15px; height: 15px; flex-basis: 15px; }
@@ -2515,7 +2525,7 @@
     <div class="bottom-nav-inner">
       <button type="button" class="nav-item active" data-page="home"><span class="nav-icon" aria-hidden="true">⌂</span><span>Início</span></button>
       <button type="button" class="nav-item" data-page="treinos"><span class="nav-icon" aria-hidden="true">◉</span><span>Treinos</span></button>
-      <button type="button" class="nav-item" data-page="calc"><span class="nav-icon" aria-hidden="true">＋÷</span><span>Calc</span></button>
+      <button type="button" class="nav-item" data-page="calc"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="5" width="17" height="14" rx="2"></rect><path d="M7 9h3M14 9h3M7 13h3M14 13h3M7 16h10"></path><path d="M5 3v2M19 3v2"></path></svg></span><span>Calc</span></button>
       <button type="button" class="nav-item" data-page="dieta"><span class="nav-icon" aria-hidden="true">◒</span><span>Dieta</span></button>
     <button type="button" class="nav-item" data-page="config"><span class="nav-icon" aria-hidden="true">⚙</span><span>Config.</span></button>
     </div>
@@ -9232,7 +9242,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v76-compact-shell-auto-update';
+      const APP_UPDATE_VERSION = 'v77-box-keyboard-nav';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

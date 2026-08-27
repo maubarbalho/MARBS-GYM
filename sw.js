@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v76-compact-shell-auto-update';
+const CACHE_NAME = 'marsb-gym-v77-box-keyboard-nav';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,6 +8,7 @@ const APP_SHELL = [
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
+  './assets/fonts/bebas-neue-latin.ttf',
 ];
 
 self.addEventListener('install', (event) => {
