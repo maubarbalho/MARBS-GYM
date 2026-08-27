@@ -16,8 +16,8 @@ const required = [
 ];
 const missing = required.filter((token) => !html.includes(token));
 if (missing.length) throw new Error(`Proteção do plano incompleta: ${missing.join(', ')}`);
-if (!html.includes('if (hasActiveWorkout()) { showToast(\'Finalize ou pause o treino antes de atualizar\'); return; }')) {
-  throw new Error('A atualização ainda precisa proteger uma sessão de treino ativa.');
+if (!html.includes('persistGuidedFormBeforeReload') || !html.includes('saveBeforeMobileSuspend();')) {
+  throw new Error('A atualização ainda precisa salvar uma sessão de treino ativa antes do reload.');
 }
 if (!html.includes("return state.customProgram;\n      }\n      return TREINOS_BASE;")) {
   throw new Error('O plano personalizado não tem prioridade explícita sobre o plano padrão.');
