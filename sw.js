@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v64-timer-notification';
+const CACHE_NAME = 'marsb-gym-v65-zero-weight-completion';
 const APP_SHELL = [
   './',
   './index.html',

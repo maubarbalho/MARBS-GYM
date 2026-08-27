@@ -4587,13 +4587,25 @@
         state.sets[exId] = Array(ex ? ex.series : setIndex + 1).fill(false);
       }
       state.sets[exId][setIndex] = !state.sets[exId][setIndex];
+      const justCompleted = state.sets[exId][setIndex];
+      if (justCompleted) {
+        const ex = findExercise(exId);
+        const details = getSetDetails(ex);
+        const detail = details[setIndex];
+        if (detail && !normalizeWeightValue(detail.weight)) {
+          detail.weight = '0';
+          const previous = state.weights[exId] || '';
+          const latest = [...details].reverse().map((d) => d.weight).find(Boolean) || '0';
+          state.weights[exId] = latest;
+          if (latest !== previous) recordWeightHistory(exId, latest);
+        }
+      }
       saveState();
       renderTreinos();
       updateStats();
       renderQuickStart();
       renderDailyHome();
 
-      const justCompleted = state.sets[exId][setIndex];
       if (guidedState.active && guidedState.treinoId === treinoId) {
         if (getDoneArr(findExercise(exId)).every(Boolean)) {
           guidedState.skippedExercises = (guidedState.skippedExercises || []).filter((id) => id !== exId);

@@ -23,8 +23,8 @@ const requiredHtml = [
 const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Notificação do timer incompleta no HTML: ${missingHtml.join(', ')}`);
 
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v64-timer-notification'")) {
-  throw new Error('O cache do PWA não foi atualizado para a notificação do timer.');
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v65-zero-weight-completion'")) {
+  throw new Error('O cache do PWA não foi atualizado para a versão atual do timer.');
 }
 if (!sw.includes("self.addEventListener('notificationclick'")) {
   throw new Error('O service worker não trata o toque na notificação.');
