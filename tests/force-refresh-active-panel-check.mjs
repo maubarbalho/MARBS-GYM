@@ -11,6 +11,9 @@ const requiredHtml = [
   'Próximo exercício',
   'Continuar treino',
   'Abrir treino',
+  'guided-actions-grid',
+  'js-guided-timer',
+  'js-guided-repeat',
   'APP_UPDATE_VERSION',
   "scriptUrl.searchParams.set('v', APP_UPDATE_VERSION)",
   'await purgeOldAppCaches();',
@@ -21,7 +24,7 @@ const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Painel/atualização forçada incompletos: ${missingHtml.join(', ')}`);
 
 const requiredSw = [
-  "CACHE_NAME = 'marsb-gym-v71-force-refresh'",
+  "CACHE_NAME = 'marsb-gym-v72-integrated-actions'",
   'async function purgeOldCaches()',
   'purgeOldCaches()',
   "event.data.type === 'PURGE_OLD_CACHES'",
@@ -33,6 +36,9 @@ if (missingSw.length) throw new Error(`Service worker sem atualização forçada
 
 if (html.includes('localStorage.clear(') || html.includes('localStorage.removeItem(STORAGE_KEY)')) {
   throw new Error('A atualização forçada não pode limpar o estado principal local.');
+}
+if (html.includes('guided-mobile-actions') || html.includes('guidedQuickComplete') || html.includes('guidedQuickRepeat')) {
+  throw new Error('A faixa rápida separada ainda está presente no modo guiado.');
 }
 
 console.log('OK: painel do treino ativo, limpeza forçada do cache e preservação do armazenamento local validados.');

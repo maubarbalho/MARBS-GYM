@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v71-force-refresh';
+const CACHE_NAME = 'marsb-gym-v72-integrated-actions';
 const APP_SHELL = [
   './',
   './index.html',

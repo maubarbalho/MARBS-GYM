@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v71-force-refresh`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v72-integrated-actions`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga.
 
 ## Coach e funcionamento offline
 
@@ -42,6 +42,8 @@ O app usa o logo oficial `apple-touch-icon.png` ao lado do nome `MARSB-GYM` no c
 A área visual do exercício foi reduzida novamente para um bloco compacto de `60 px` no celular, deixando mais espaço para o nome, as instruções e os controles de séries. O cabeçalho guiado também se reorganiza em duas linhas para evitar sobreposição do nome, modo e ações. Os círculos de conclusão reduzem apenas a área visual para `32 px`, preservando o alvo de toque de `44 px`. O bloco permanece identificado como elemento visual acessível, mantém o enquadramento e não altera nenhum dado do treino.
 
 Na aba **Treinos**, quando existe uma sessão ativa, o app mostra o treino atual em um painel próprio, com progresso, próximo exercício, modo de execução e ações para continuar ou abrir o treino. Esse painel é derivado do estado já salvo e não cria registros adicionais.
+
+No modo guiado, os controles **Anterior**, **Próximo**, **Encerrar exercício**, **Encerrar treino agora**, **Iniciar timer** e **Repetir última** ficam agrupados no mesmo bloco do cartão do exercício. A faixa de ações rápida separada foi removida para evitar duplicidade, deslocamento visual e sobreposição no celular.
 
 ## Controles e foco no celular
 

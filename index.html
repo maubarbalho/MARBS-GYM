@@ -646,10 +646,15 @@
     .guided-prev-btn { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border) !important; }
     .guided-next-btn { background: var(--primary); color: var(--primary-ink); }
     .guided-next-btn.ready { background: var(--accent); color: var(--accent-ink); }
-    .guided-interrupt-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+    .guided-interrupt-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .guided-interrupt-btn { min-height:44px; padding:9px 10px; border:1px solid var(--border); border-radius:12px; background:var(--bg-elevated); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; }
     .guided-interrupt-btn.danger { border-color:rgba(239,68,68,.48); background:rgba(239,68,68,.1); color:#fca5a5; }
     .guided-interrupt-btn:active { transform:scale(.98); }
+    .guided-actions-grid { display:grid; gap:10px; margin-top:16px; padding:10px; border:1px solid color-mix(in srgb,var(--primary) 34%,var(--border)); border-radius:18px; background:color-mix(in srgb,var(--primary) 5%,var(--bg-card)); }
+    .guided-actions-grid .guided-nav-row { margin-top:0; }
+    .guided-utility-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .guided-utility-btn { min-height:44px; padding:9px 10px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; }
+    .guided-utility-btn:disabled { opacity:.5; cursor:not-allowed; }
     .guided-complete-banner {
       text-align: center; padding: 40px 20px;
     }
@@ -666,7 +671,6 @@
     .guided-brand-lockup { display:inline-flex; align-items:center; gap:6px; min-width:0; }
     .guided-brand-logo { width:24px; height:24px; flex:0 0 24px; display:block; object-fit:cover; border-radius:6px; border:1px solid color-mix(in srgb, var(--accent) 48%, var(--border)); background:#080a05; }
     .guided-progress-label { color:var(--text); font-size:0.82rem; }
-    .guided-mobile-actions { display:none; }
     .guided-session-footer {
       flex:0 0 auto; padding:10px 18px calc(12px + var(--safe-bottom));
       background:rgba(10,14,23,0.96); border-top:1px solid var(--border);
@@ -739,12 +743,6 @@
     .guided-overlay.focus-mode .guided-activity-card { padding:18px 14px; }
     .guided-overlay.focus-mode .guided-section-label { margin-top:14px; }
     .guided-nav-row { margin-top:16px; }
-    @media (max-width:600px) {
-      .guided-mobile-actions { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:6px; padding:8px 12px calc(8px + var(--safe-bottom)); background:rgba(10,14,23,0.98); border-top:1px solid var(--border); position:relative; z-index:2; }
-      .guided-mobile-action { min-height:48px; padding:0 8px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; }
-      .guided-mobile-action.primary { background:var(--primary); border-color:var(--primary); color:var(--primary-ink); }
-      .guided-mobile-action:disabled { opacity:.5; cursor:not-allowed; }
-    }
     @media (max-width:430px) {
       .guided-body { padding:14px 12px 18px; }
       .guided-activity-card { border-radius:20px; padding:11px; }
@@ -1356,7 +1354,6 @@
     .guided-pending-list strong { flex:0 0 auto; align-self:center; color:var(--text-muted); font-size:.68rem; }
     .guided-pending-list button { min-height:40px; flex:0 0 auto; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border:1px solid color-mix(in srgb, var(--warning) 55%, var(--border)); border-radius:999px; background:color-mix(in srgb, var(--warning) 12%, var(--bg-card)); color:var(--text); padding:8px 11px; font:inherit; font-size:.72rem; font-weight:800; }
     .guided-skip-note { margin:8px 0 0; padding:9px 11px; border-radius:12px; background:color-mix(in srgb, var(--warning) 10%, var(--bg-card)); color:var(--text-muted); font-size:.72rem; line-height:1.35; }
-    @media (max-width: 560px) { .guided-mobile-actions { grid-template-columns:repeat(2,minmax(0,1fr)); } .guided-mobile-action { min-height:48px; } }
 
     @media (max-width: 430px) {
       .header { padding-left: 14px; padding-right: 14px; }
@@ -2600,12 +2597,6 @@
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>
     <div class="guided-body" id="guidedBody" tabindex="-1"></div>
-    <div class="guided-mobile-actions" id="guidedMobileActions" aria-label="Ações rápidas do treino">
-      <button type="button" class="guided-mobile-action primary" id="guidedQuickComplete">Concluir série</button>
-      <button type="button" class="guided-mobile-action" id="guidedQuickRepeat">Repetir última</button>
-      <button type="button" class="guided-mobile-action" id="guidedQuickTimer">Timer</button>
-      <button type="button" class="guided-mobile-action" id="guidedQuickSkip">Próximo exercício</button>
-    </div>
     <div class="guided-session-footer" aria-label="Progresso da sessão">
       <div class="guided-session-meta"><span id="guidedWorkoutLabel">Treino</span><strong id="guidedTimeLabel">00:00</strong></div>
       <div class="guided-segment-track" id="guidedSegmentTrack" aria-hidden="true"></div>
@@ -5587,22 +5578,6 @@
       toggleSet(ex.id, index, ex.descanso, guidedState.treinoId);
     }
 
-    function syncGuidedMobileActions() {
-      const ex = guidedState.exercises[guidedState.index];
-      const complete = document.getElementById('guidedQuickComplete');
-      const repeat = document.getElementById('guidedQuickRepeat');
-      const timer = document.getElementById('guidedQuickTimer');
-      const skip = document.getElementById('guidedQuickSkip');
-      if (!ex || !guidedState.active) return;
-      const done = getDoneArr(ex);
-      const focusIndex = done.findIndex((value) => !value);
-      const next = focusIndex < 0 ? ex.series : focusIndex + 1;
-      if (complete) { complete.textContent = focusIndex < 0 ? 'Próximo exercício' : `Concluir série ${next}/${ex.series}`; complete.onclick = () => focusIndex < 0 ? guidedGoTo(guidedState.index + 1) : completeCurrentGuidedSet(); }
-      if (repeat) { repeat.disabled = !getLastPerformance(ex.id) && focusIndex < 1; repeat.onclick = repeatLastGuidedSet; }
-      if (timer) { timer.textContent = 'Iniciar timer'; timer.onclick = () => startTimer(ex.descanso); }
-      if (skip) { skip.textContent = 'Próximo exercício'; skip.onclick = skipGuidedExercise; }
-    }
-
     function renderGuidedStep() {
       const ex = guidedState.exercises[guidedState.index];
       if (!ex) return;
@@ -5678,7 +5653,6 @@
               <label class="guided-focus-rpe">RIR/RPE <select class="js-guided-rpe" aria-label="RIR ou RPE médio de ${escapeHtml(ex.nome)}"><option value="">—</option>${Array.from({length:11}, (_, i) => `<option value="${i}" ${focusRpe === String(i) ? 'selected' : ''}>${i}</option>`).join('')}</select></label>
               <button class="guided-focus-rest js-guided-rest" type="button">⏱ ${escapeHtml(formatRest(ex.descanso))}</button>
             </div>
-            <button class="guided-rest-start js-guided-rest" id="guidedRestStart" type="button">⏱ Iniciar descanso • ${escapeHtml(formatRest(ex.descanso))}</button>
             <div class="guided-rest-panel" id="guidedRestPanel" aria-live="polite">
               <div class="guided-rest-copy"><span class="guided-rest-kicker">Descanso em andamento</span><strong class="guided-rest-display" id="guidedRestDisplay">01:30</strong></div>
               <div class="guided-rest-actions" aria-label="Controles do descanso">
@@ -5692,13 +5666,19 @@
               <span class="guided-history-icon" aria-hidden="true">↶</span>
               <div><span class="guided-history-title">Histórico da atividade</span><span class="guided-history-detail">${lastEntry ? `Último registro: ${escapeHtml(lastEntry.weight)} kg • Semana ${escapeHtml(lastEntry.week)}` : 'Marque séries e registre peso e repetições para criar seu histórico.'}</span></div>
             </div>
-            <div class="guided-nav-row">
-              <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
-              <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? (allDone ? 'Finalizar ✓' : 'Pular por agora →') : (allDone ? 'Próximo →' : 'Pular por agora →')}</button>
-            </div>
-            <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
-              <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
-              <button class="guided-interrupt-btn danger js-end-workout" type="button">Encerrar treino agora</button>
+            <div class="guided-actions-grid" aria-label="Ações do exercício">
+              <div class="guided-nav-row">
+                <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
+                <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? (allDone ? 'Finalizar ✓' : 'Pular por agora →') : (allDone ? 'Próximo →' : 'Pular por agora →')}</button>
+              </div>
+              <div class="guided-interrupt-row" aria-label="Opções para interromper a sessão">
+                <button class="guided-interrupt-btn js-end-exercise" type="button">Encerrar exercício</button>
+                <button class="guided-interrupt-btn danger js-end-workout" type="button">Encerrar treino agora</button>
+              </div>
+              <div class="guided-utility-row" aria-label="Ações adicionais do exercício">
+                <button class="guided-utility-btn js-guided-timer" type="button">⏱ Iniciar timer</button>
+                <button class="guided-utility-btn js-guided-repeat" type="button" ${getLastPerformance(ex.id) || focusSetIndex > 0 ? '' : 'disabled'}>↻ Repetir última</button>
+              </div>
             </div>
           </article>
         </div>
@@ -5714,12 +5694,13 @@
       guidedBody.querySelector('.js-guided-rpe')?.addEventListener('change', (event) => saveRpe(ex.id, event.currentTarget.value));
       guidedBody.querySelector('.js-guided-exercise-guide')?.addEventListener('click', () => openExerciseGuide(ex.id, guidedState.treinoId));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
+      guidedBody.querySelector('.js-guided-timer')?.addEventListener('click', () => startTimer(ex.descanso));
+      guidedBody.querySelector('.js-guided-repeat')?.addEventListener('click', repeatLastGuidedSet);
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(guidedState.index + 1) : skipGuidedExercise());
       guidedBody.querySelectorAll('.js-guided-return').forEach((button) => button.addEventListener('click', () => returnToGuidedExercise(decodeData(button.dataset.exerciseId))));
       guidedBody.querySelector('.js-end-exercise').addEventListener('click', endGuidedExercise);
       guidedBody.querySelector('.js-end-workout').addEventListener('click', endGuidedWorkout);
-      syncGuidedMobileActions();
       const focusToggle = document.getElementById('guidedFocusToggle');
       if (focusToggle) {
         focusToggle.setAttribute('aria-pressed', String(guidedState.focusMode));
@@ -9181,7 +9162,7 @@
       let activeServiceWorkerRegistration = null;
       let refreshAfterUpdate = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v71-force-refresh';
+      const APP_UPDATE_VERSION = 'v72-integrated-actions';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
