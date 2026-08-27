@@ -20,7 +20,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v78-collapsible-sections`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v79-diet-collapsible-options`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
 
 ## Coach e funcionamento offline
 
@@ -57,6 +57,10 @@ A **Biblioteca rápida da sessão** e o **Resumo do treino** aparecem recolhidos
 ## Controles e foco no celular
 
 Em telas de até 600 px, os campos editáveis do app — pesos, repetições, busca, datas, horários, seletores e áreas de texto — usam fonte mínima de `16 px` para evitar o zoom automático comum ao focar campos pequenos em navegadores móveis. O ajuste não usa `user-scalable=no` nem `maximum-scale=1`; portanto, o usuário continua podendo ampliar manualmente a página quando precisar.
+
+## Opções recolhíveis na aba Dieta
+
+Na aba **Dieta**, o diário de hoje permanece em primeiro plano. Opções secundárias — duplicar o dia, favoritos, receitas salvas, metas, adicionar alimento, restrições, alergias, lista de compras e a explicação dos cálculos — aparecem recolhidas por padrão e podem ser abertas individualmente. A compactação é apenas visual: os controles e informações continuam disponíveis, não altera registros, metas ou preferências e funciona sem conexão.
 
 ## Registro sem peso informado
 

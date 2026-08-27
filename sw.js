@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v78-collapsible-sections';
+const CACHE_NAME = 'marsb-gym-v79-diet-collapsible-options';
 const APP_SHELL = [
   './',
   './index.html',

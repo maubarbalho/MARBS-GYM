@@ -1893,6 +1893,26 @@
       .session-library-toggle-note { display:none; }
       .workout-summary-disclosure-hint { font-size:.6rem; }
     }
+
+    /* Diet: keep secondary actions and explanations compact until requested. */
+    .diet-options-disclosure, .diet-info-disclosure { margin:10px 0; padding:0; overflow:hidden; border:1px solid var(--border); border-radius:16px; background:var(--bg); }
+    .diet-options-disclosure > summary, .diet-info-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:8px 12px; color:var(--text); cursor:pointer; list-style:none; }
+    .diet-options-disclosure > summary::-webkit-details-marker, .diet-info-disclosure > summary::-webkit-details-marker { display:none; }
+    .diet-options-disclosure > summary::after, .diet-info-disclosure > summary::after { content:'+'; flex:0 0 auto; color:var(--primary); font-size:1.15rem; line-height:1; }
+    .diet-options-disclosure[open] > summary::after, .diet-info-disclosure[open] > summary::after { content:'−'; }
+    .diet-options-summary-copy { display:flex; min-width:0; flex-direction:column; gap:2px; }
+    .diet-options-summary-title { font-size:.78rem; font-weight:800; }
+    .diet-options-summary-note, .diet-options-summary-action { color:var(--text-muted); font-size:.64rem; line-height:1.25; }
+    .diet-options-summary-action { margin-left:auto; white-space:nowrap; }
+    .diet-options-content, .diet-info-content { padding:0 12px 11px; border-top:1px solid var(--border); }
+    .diet-options-content > .diet-actions-row { margin-top:10px; }
+    .diet-options-content > .diet-shopping-head { margin-top:10px; }
+    .diet-info-content { padding-top:10px; }
+    .diet-info-content p { margin:0; }
+    @media (max-width:430px) {
+      .diet-options-summary-note { display:none; }
+      .diet-options-summary-action { font-size:.6rem; }
+    }
   </style>
 </head>
 <body>
@@ -2395,27 +2415,23 @@
       <div class="section-title" style="margin-top:16px;">Registro de hoje</div>
       <div class="calc-card diet-diary-card">
         <div class="diet-day-tools"><div class="form-field"><label for="dietDate">Dia</label><input type="date" id="dietDate"  aria-label="Data do diário alimentar" /></div><div class="form-field"><label for="dietWaterInput">Água registrada</label><div class="diet-water-input"><input type="number" id="dietWaterInput" min="100" max="5000" step="100" inputmode="numeric" placeholder="250"  aria-label="Água registrada em mililitros" /><button type="button" onclick="addDietWater()">Adicionar ml</button></div></div></div>
-        <div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect" aria-label="Cardápio favorito"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button><select id="dietRecipeSelect" aria-label="Receita salva"><option value="">Receitas salvas</option></select><button type="button" class="btn-action" onclick="applyDietRecipe()">Usar receita</button><button type="button" class="btn-action" onclick="saveCurrentDietRecipe()">＋ Salvar receita</button></div>
+        <details class="diet-options-disclosure"><summary class="diet-options-summary"><span class="diet-options-summary-copy"><span class="diet-options-summary-title">Opções do diário</span><span class="diet-options-summary-note">Duplicar dia, favoritos e receitas salvas</span></span><span class="diet-options-summary-action">Abrir opções</span></summary><div class="diet-options-content"><div class="diet-actions-row"><button type="button" class="btn-action" onclick="duplicateDietDay()">⧉ Duplicar dia</button><button type="button" class="btn-action" onclick="saveDietFavorite()">☆ Salvar favorito</button><select id="dietFavoriteSelect" aria-label="Cardápio favorito"><option value="">Cardápios favoritos</option></select><button type="button" class="btn-action" onclick="applyDietFavorite()">Aplicar</button><select id="dietRecipeSelect" aria-label="Receita salva"><option value="">Receitas salvas</option></select><button type="button" class="btn-action" onclick="applyDietRecipe()">Usar receita</button><button type="button" class="btn-action" onclick="saveCurrentDietRecipe()">＋ Salvar receita</button></div></div></details>
         <div class="diet-water-bar"><div class="diet-water-fill" id="dietWaterFill"></div></div><div class="diet-water-label" id="dietWaterLabel">0 ml registrados</div>
         <details class="diet-meal-add"><summary>Metas diárias e consumo</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietTargetKcal">Calorias (kcal)</label><input type="number" id="dietTargetKcal" min="0" max="10000" inputmode="numeric"  aria-label="Meta diária de calorias" /></div><div class="form-field"><label for="dietTargetProtein">Proteína (g)</label><input type="number" id="dietTargetProtein" min="0" max="500" inputmode="numeric"  aria-label="Meta diária de proteína em gramas" /></div><div class="form-field"><label for="dietTargetCarbs">Carboidratos (g)</label><input type="number" id="dietTargetCarbs" min="0" max="1200" inputmode="numeric"  aria-label="Meta diária de carboidratos em gramas" /></div><div class="form-field"><label for="dietTargetFats">Gorduras (g)</label><input type="number" id="dietTargetFats" min="0" max="500" inputmode="numeric"  aria-label="Meta diária de gorduras em gramas" /></div><div class="form-field"><label for="dietTargetWater">Água (ml)</label><input type="number" id="dietTargetWater" min="500" max="15000" step="100" inputmode="numeric"  aria-label="Meta diária de água em mililitros" /></div><button type="button" class="btn-action" onclick="saveDietTargets()">Salvar metas</button></div></details>
-        <details class="diet-meal-add" open><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType" aria-label="Tipo de refeição"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSearch">Buscar na base TACO</label><input type="search" id="dietFoodSearch" placeholder="Ex: frango, arroz, banana" autocomplete="off"  aria-label="Buscar alimento" /></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect" aria-label="Selecionar alimento"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150"  aria-label="Quantidade do alimento em gramas" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
+        <details class="diet-meal-add"><summary>Adicionar alimento ao diário</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietMealType">Refeição</label><select id="dietMealType" aria-label="Tipo de refeição"><option value="Café da manhã">Café da manhã</option><option value="Almoço">Almoço</option><option value="Lanche">Lanche</option><option value="Jantar">Jantar</option><option value="Pós-treino">Pós-treino</option></select></div><div class="form-field"><label for="dietFoodSearch">Buscar na base TACO</label><input type="search" id="dietFoodSearch" placeholder="Ex: frango, arroz, banana" autocomplete="off"  aria-label="Buscar alimento" /></div><div class="form-field"><label for="dietFoodSelect">Alimento da base TACO</label><select id="dietFoodSelect" aria-label="Selecionar alimento"></select></div><div class="form-field"><label for="dietFoodGrams">Quantidade em gramas</label><div class="diet-meal-fields" style="grid-template-columns:minmax(0,1fr) auto;align-items:end;"><input type="number" id="dietFoodGrams" min="1" max="3000" step="1" inputmode="numeric" placeholder="Ex: 150"  aria-label="Quantidade do alimento em gramas" /><button type="button" class="btn-action primary" onclick="addDietMeal()">Adicionar ao diário</button></div></div></div></details>
         <div class="diet-recent-wrap" id="dietRecentWrap" hidden><strong>Recentes</strong><div class="diet-recent-list" id="dietRecentList"></div></div>
         <p id="dietWeekAdherence" class="calc-hint" aria-live="polite"></p>
         <div id="dietDiaryList" class="diet-diary-list"></div>
         <details class="diet-meal-add"><summary>Restrições e alergias</summary><div class="diet-meal-fields"><div class="form-field"><label for="dietRestrictions">Restrições alimentares</label><input id="dietRestrictions" maxlength="300" placeholder="Ex: vegetariano, sem lactose"  aria-label="Restrições alimentares" /></div><div class="form-field"><label for="dietAllergies">Alergias</label><input id="dietAllergies" maxlength="300" placeholder="Ex: amendoim"  aria-label="Alergias alimentares" /></div><button type="button" class="btn-action" onclick="saveDietPrefs()">Salvar preferências alimentares</button></div></details>
-        <div class="diet-shopping-head"><strong>Lista de compras do dia</strong><button type="button" class="chart-link-btn" onclick="copyDietShoppingList()">Copiar lista</button></div><div id="dietShoppingList" class="diet-shopping-list"></div>
-        <p class="calc-hint">Equivalentes e macros de referência usam alimentos da Tabela TACO; confirme rótulos e porções com seu nutricionista, especialmente em caso de alergia.</p>
+        <details class="diet-options-disclosure"><summary class="diet-options-summary"><span class="diet-options-summary-copy"><span class="diet-options-summary-title">Lista de compras do dia</span><span class="diet-options-summary-note">Itens agrupados a partir das refeições registradas</span></span><span class="diet-options-summary-action">Abrir lista</span></summary><div class="diet-options-content"><div class="diet-shopping-head"><strong>Lista de compras do dia</strong><button type="button" class="chart-link-btn" onclick="copyDietShoppingList()">Copiar lista</button></div><div id="dietShoppingList" class="diet-shopping-list"></div><p class="calc-hint">Equivalentes e macros de referência usam alimentos da Tabela TACO; confirme rótulos e porções com seu nutricionista, especialmente em caso de alergia.</p></div></details>
       </div>
 
-      <div class="calc-card" style="margin-top:12px;">
-        <h3>Como as metas são definidas</h3>
-        <p class="calc-desc" style="margin:0;line-height:1.5;">
+      <details class="diet-info-disclosure"><summary><span class="diet-options-summary-copy"><span class="diet-options-summary-title">Como as metas são definidas</span><span class="diet-options-summary-note">Ver a explicação dos cálculos e referências</span></span><span class="diet-options-summary-action">Ver detalhes</span></summary><div class="diet-info-content"><p class="calc-desc">
           Com altura, idade e sexo, estima-se o gasto (TMB × atividade).<br>
           <strong>Hipertrofia:</strong> ~2 g/kg prot · 4,5 g/kg carbo · 0,8 g/kg gord (superávit leve).<br>
           <strong>Déficit −400 kcal:</strong> mesma proteína e gordura; reduz ~100 g de carbo (−400 kcal).<br>
           Água: ~32–40 ml/kg conforme atividade. Porções em gramas com base na <strong>Tabela TACO</strong> (whey é referência comercial).
-        </p>
-      </div>
+        </p></div></details>
     </div>
   </div>
 
@@ -9272,7 +9288,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v78-collapsible-sections';
+      const APP_UPDATE_VERSION = 'v79-diet-collapsible-options';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
