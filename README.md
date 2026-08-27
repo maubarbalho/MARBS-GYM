@@ -19,7 +19,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v61-sprint-2-equipment-filters`.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v62-sprint-3-progress-comparison`.
 
 ## Coach e funcionamento offline
 
@@ -40,6 +40,12 @@ Os campos de carga dos exercícios, do treino guiado, do perfil e das calculador
 ## Sprint 2: filtros e substituições por equipamento
 
 A aba Treinos possui filtros por grupo muscular e equipamento, derivados automaticamente dos exercícios do plano atual, incluindo exercícios personalizados e overrides. O modal de substituição prioriza alternativas do mesmo grupo muscular que utilizem outro equipamento e exibe séries, repetições, grupo e equipamento antes da confirmação. Filtrar e abrir o modal são ações somente de visualização; uma substituição só é aplicada após o usuário confirmar explicitamente, usando o mecanismo de override existente e mantendo os registros vinculados à posição do exercício.
+
+## Sprint 3: gráficos de evolução e planejado versus realizado
+
+A aba Progresso agora apresenta gráficos SVG leves e locais de volume por sessão e, quando existe um exercício selecionado, evolução de carga máxima, volume e 1RM estimado por sessão. O modal de evolução do exercício também reúne esses indicadores, o histórico detalhado e o comparativo entre o objetivo do plano ativo — séries e faixa de repetições — e a última sessão registrada. As visualizações são derivadas dos dados existentes, funcionam sem biblioteca externa e não criam um novo estado persistido.
+
+O comparativo é informativo: ele não altera carga, séries, marcações, histórico, plano personalizado, exercícios personalizados, sessão ativa, dieta ou qualquer outro dado local. O 1RM e os gráficos são estimativas; registros legados somente com carga podem aparecer na carga máxima, mas não geram 1RM ou volume sem repetições. Nenhuma progressão é aplicada automaticamente.
 
 ## Lista de treinos concluídos
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v61-sprint-2-equipment-filters';
+const CACHE_NAME = 'marsb-gym-v62-sprint-3-progress-comparison';
 const APP_SHELL = [
   './',
   './index.html',
