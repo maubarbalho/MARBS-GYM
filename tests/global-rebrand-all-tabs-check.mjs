@@ -24,6 +24,8 @@ const requiredVisualTokens = [
   '.section-title, .calc-section-title, .chart-section-title',
   '.btn-action.primary',
   '.guided-next-btn',
+  '.guided-overlay.focus-mode .guided-actions-grid',
+  '.guided-overlay.focus-mode .guided-prev-btn',
   '.form-field input, .form-field textarea'
 ];
 for (const token of requiredVisualTokens) {
@@ -51,7 +53,7 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
 for (const token of ['function renderTreinos', 'function renderProgressSnapshot', 'function renderDietDiary', 'function runMacroCalc']) {
   if (!html.includes(token)) throw new Error(`Fluxo existente ausente após rebranding: ${token}`);
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v80-ux-collapsible-guidelines'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v82-focus-actions-checkin'")) {
   throw new Error('O cache do PWA não acompanha o rebranding global.');
 }
 console.log('OK: abas, paleta, ícones, tipografia, header compacto, ausência do subtítulo, fluxos e preservação local validados.');

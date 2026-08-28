@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v80-ux-collapsible-guidelines';
+const CACHE_NAME = 'marsb-gym-v82-focus-actions-checkin';
 const APP_SHELL = [
   './',
   './index.html',

@@ -20,7 +20,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v80-ux-collapsible-guidelines`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v82-focus-actions-checkin`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
 
 ## Coach e funcionamento offline
 
@@ -48,7 +48,11 @@ A área visual do exercício foi reduzida novamente para um bloco compacto de `6
 
 Na aba **Treinos**, quando existe uma sessão ativa, o app mostra o treino atual em um painel próprio, com progresso, próximo exercício, modo de execução e ações para continuar ou abrir o treino. Esse painel é derivado do estado já salvo e não cria registros adicionais.
 
-No modo guiado, os controles **Anterior** e **Próximo** ficam na primeira linha, **Iniciar timer** e **Repetir última** ficam na segunda, e **Encerrar exercício** e **Encerrar treino agora** ficam por último no mesmo bloco do cartão do exercício. A faixa de ações rápida separada foi removida para evitar duplicidade, deslocamento visual e sobreposição no celular.
+No modo guiado, os controles **Anterior** e **Próximo** ficam na primeira linha, **Iniciar timer** e **Repetir última** ficam na segunda, e **Encerrar exercício** e **Encerrar treino agora** ficam por último no mesmo bloco do cartão do exercício. O mesmo grupo completo aparece tanto no modo completo quanto no modo foco; a faixa de ações rápida separada foi removida para evitar duplicidade, deslocamento visual e sobreposição no celular.
+
+## Ações completas no modo foco
+
+O modo foco mantém o grupo completo de ações do exercício, com **Anterior**, **Próximo**, **Iniciar timer**, **Repetir última**, **Encerrar exercício** e **Encerrar treino agora**. A disposição e a ordem são iguais às do modo completo para evitar que o usuário precise trocar de modo para encontrar uma ação. O cartão continua usando alvos de toque adequados e o modo foco apenas reduz informações secundárias.
 
 ## Blocos recolhíveis no celular
 
@@ -109,6 +113,10 @@ O filtro inicial continua priorizando exercícios pendentes, mas um treino total
 ## Dica de recuperação ao finalizar o treino
 
 Ao concluir um treino completo, o resumo da sessão mostra uma única dica automática com uma estimativa de recuperação dos grupos musculares trabalhados. A dica usa o treino, as séries concluídas e o volume registrado como referência. Ela aparece somente no resumo final, não cria agenda, não envia lembretes, não acompanha o usuário depois e não bloqueia um novo treino. É uma estimativa informativa, não uma confirmação fisiológica de recuperação.
+
+## Check-in visível ao finalizar a sessão
+
+Ao terminar um treino, o grupo **Como foi esta sessão?** exibe diretamente botões de `—` e de `1` a `10` para **Esforço**, **Energia** e **Desconforto**. Os botões permanecem visíveis no celular, têm alvo de toque mínimo de `44 px`, foco de teclado e indicação visual da opção escolhida. A opção `—` permite não informar um campo. O formato de apresentação foi alterado para facilitar a descoberta das opções; os dados continuam sendo salvos no mesmo objeto local `workoutCheckins`, sem apagar ou regravar planos, sessões, histórico, pesos ou dieta existentes.
 
 ## Sprint 1: ficha local e orientação de progressão
 

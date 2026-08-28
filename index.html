@@ -743,10 +743,14 @@
     .guided-overlay.focus-mode .guided-media-card,
     .guided-overlay.focus-mode .guided-record,
     .guided-overlay.focus-mode .guided-tech-note,
-    .guided-overlay.focus-mode .guided-history-card,
-    .guided-overlay.focus-mode .guided-prev-btn { display:none; }
+    .guided-overlay.focus-mode .guided-history-card { display:none; }
     .guided-overlay.focus-mode .guided-focus-current { display:flex; }
     .guided-overlay.focus-mode .guided-focus-controls { display:grid; }
+    .guided-overlay.focus-mode .guided-actions-grid { display:grid; }
+    .guided-overlay.focus-mode .guided-nav-row { display:flex; }
+    .guided-overlay.focus-mode .guided-utility-row,
+    .guided-overlay.focus-mode .guided-interrupt-row { display:grid; }
+    .guided-overlay.focus-mode .guided-prev-btn { display:block; }
     .guided-overlay.focus-mode .guided-activity-card { padding:18px 14px; }
     .guided-overlay.focus-mode .guided-section-label { margin-top:14px; }
     .guided-nav-row { margin-top:16px; }
@@ -1309,9 +1313,16 @@
     .complete-metrics strong { display:block; font-size:1.05rem; color:var(--primary); }
     .complete-metrics span, .complete-best span, .complete-record span { display:block; color:var(--text-muted); font-size:.68rem; margin-top:3px; }
     .complete-checkin { margin-top:14px; padding:12px; border:1px solid var(--border); border-radius:14px; background:var(--bg); }
-    .complete-checkin-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:9px 0; }
-    .complete-checkin-grid label { display:flex; flex-direction:column; gap:4px; color:var(--text-muted); font-size:.68rem; font-weight:700; }
-    .complete-checkin-grid select, .complete-checkin-note { width:100%; min-height:38px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); padding:7px; }
+    .complete-checkin-help { margin:5px 0 0; color:var(--text-muted); font-size:.72rem; line-height:1.35; }
+    .complete-checkin-grid { display:grid; grid-template-columns:1fr; gap:10px; margin:9px 0; }
+    .complete-checkin-field { display:flex; flex-direction:column; gap:6px; color:var(--text-muted); font-size:.72rem; font-weight:700; }
+    .complete-checkin-label-row { display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+    .complete-checkin-scale { color:var(--text-faint); font-size:.64rem; font-weight:600; }
+    .complete-checkin-options { display:grid; grid-template-columns:repeat(5,minmax(44px,1fr)); gap:5px; }
+    .complete-checkin-score { min-height:44px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); font:inherit; font-size:.82rem; cursor:pointer; }
+    .complete-checkin-score.is-selected { border-color:var(--accent); background:var(--accent); color:var(--accent-ink); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent); }
+    .complete-checkin-score:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+    .complete-checkin-note { width:100%; min-height:44px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); color:var(--text); padding:7px; }
     .complete-checkin-note { margin:0 0 8px; }
     .adherence-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; margin:10px 0; }
     .adherence-day { min-height:58px; padding:6px 3px; border-radius:10px; background:var(--bg); border:1px solid var(--border); text-align:center; }
@@ -1808,7 +1819,7 @@
     .card, .calc-card, .stat-card, .period-card, .history-item, .personal-card, .config-option, .config-status-card, .setting-row, .daily-action-card, .weekly-progress-card, .diet-meal-item, .decision-card, .progress-snapshot-card, .progress-visual-card { border-color: var(--border); }
     .daily-action-card, .weekly-progress-card { background: color-mix(in srgb, var(--bg-card) 94%, var(--accent) 6%); }
     .card-header:active, .config-option:active, .setting-row:active { background: var(--control-bg); }
-    .form-field input, .form-field textarea, .progression-rule-grid select, .progression-rule-grid input, .progress-comparison select, .guided-focus-rpe select, .complete-checkin-grid select, .adherence-controls input, .adherence-controls select { background: var(--bg); border-color: var(--border); color: var(--text); }
+    .form-field input, .form-field textarea, .progression-rule-grid select, .progression-rule-grid input, .progress-comparison select, .guided-focus-rpe select, .complete-checkin-note, .complete-checkin-score, .adherence-controls input, .adherence-controls select { background: var(--bg); border-color: var(--border); color: var(--text); }
     input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: .9; }
     .btn-action, .seg-control, .timer-preset, .config-option, .guided-prev-btn, .guided-focus-rest { background: var(--control-bg); border-color: var(--border); color: var(--text); }
     .btn-action.primary, .seg-control button.active, .guided-next-btn, .guided-start-btn, .timer-btn.primary, .rest-btn, .bw-log-row button, .install-banner button, .update-banner button { background: var(--primary); border-color: var(--primary); color: var(--primary-ink); }
@@ -4554,12 +4565,20 @@
         ? `<div class="complete-recovery" role="note"><strong>Dica de recuperação</strong><span>Para este treino, uma referência de descanso é de aproximadamente <b>${escapeHtml(summary.recovery.overallLabel)}</b> antes de repetir os grupos trabalhados.</span><small>${escapeHtml(summary.recovery.detailText)} Esta é uma estimativa para conhecimento, não uma confirmação de recuperação.</small></div>`
         : '';
       const checkin = state.workoutCheckins?.[summary.recordId] || {};
-      const scoreOptions = (value) => `<option value="">—</option>${Array.from({ length: 10 }, (_, index) => index + 1).map((score) => `<option value="${score}" ${Number(value) === score ? 'selected' : ''}>${score}</option>`).join('')}`;
+      const scoreButtons = (field, label, value, lowLabel, highLabel) => `<div class="complete-checkin-field"><div class="complete-checkin-label-row"><span>${label}</span><span class="complete-checkin-scale">1 ${lowLabel} · 10 ${highLabel}</span></div><div class="complete-checkin-options" role="group" aria-label="${label}">${[0, ...Array.from({ length: 10 }, (_, index) => index + 1)].map((score) => `<button type="button" class="complete-checkin-score ${Number(value) === score || (!value && score === 0) ? 'is-selected' : ''}" data-checkin="${field}" data-checkin-value="${score}" aria-pressed="${Number(value) === score || (!value && score === 0) ? 'true' : 'false'}">${score === 0 ? '—' : score}</button>`).join('')}</div></div>`;
       const interrupted = summary.status === 'interrupted';
       const lead = interrupted ? `Treino ${escapeHtml(summary.treinoId)} encerrado antes do fim. As séries registradas foram salvas no histórico.` : `Treino ${escapeHtml(summary.treinoId)} registrado no histórico.`;
-      content.innerHTML = `<p class="complete-lead">${lead}</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${recoveryText}${interrupted ? '<div class="complete-notes"><strong>Sessão interrompida</strong><p>O restante do treino foi deixado para outro dia.</p></div>' : ''}${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><div class="complete-checkin-grid"><label>Esforço<select data-checkin="effort" aria-label="Esforço percebido na sessão">${scoreOptions(checkin.effort)}</select></label><label>Energia<select data-checkin="energy" aria-label="Energia na sessão">${scoreOptions(checkin.energy)}</select></label><label>Desconforto<select data-checkin="discomfort" aria-label="Desconforto na sessão">${scoreOptions(checkin.discomfort)}</select></label></div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" aria-label="Observação do check-in" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      content.innerHTML = `<p class="complete-lead">${lead}</p><div class="complete-metrics"><div><strong>${formatWorkoutDuration(summary.duration)}</strong><span>duração</span></div><div><strong>${formatMetricVolume(summary.volume)}</strong><span>volume total</span></div><div><strong>${summary.totalSets}</strong><span>séries</span></div><div><strong>${summary.totalReps}</strong><span>repetições</span></div></div>${recoveryText}${interrupted ? '<div class="complete-notes"><strong>Sessão interrompida</strong><p>O restante do treino foi deixado para outro dia.</p></div>' : ''}${mark ? `<div class="complete-best"><span>Melhor marca do dia</span><strong>${escapeHtml(mark.ex.nome)} · ${formatMetricNumber(mark.weight)} kg${mark.reps ? ` × ${formatMetricNumber(mark.reps)} reps` : ''}</strong></div>` : ''}${newRecordText}${notes}<div class="complete-checkin"><strong>Como foi esta sessão?</strong><p class="complete-checkin-help">Toque em uma opção de 1 a 10 em cada linha. Se preferir, mantenha “—” para não informar.</p><div class="complete-checkin-grid">${scoreButtons('effort', 'Esforço', checkin.effort, 'leve', 'máximo')}${scoreButtons('energy', 'Energia', checkin.energy, 'baixa', 'alta')}${scoreButtons('discomfort', 'Desconforto', checkin.discomfort, 'nenhum', 'alto')}</div><input class="complete-checkin-note" maxlength="240" placeholder="Observação opcional" aria-label="Observação do check-in" value="${escapeHtml(checkin.note || '')}" /><button type="button" class="btn-action js-save-checkin">Salvar check-in</button></div>`;
+      content.querySelectorAll('[data-checkin-value]').forEach((button) => button.addEventListener('click', () => {
+        const field = button.dataset.checkin;
+        content.querySelectorAll(`[data-checkin="${field}"]`).forEach((option) => {
+          const selected = option === button;
+          option.classList.toggle('is-selected', selected);
+          option.setAttribute('aria-pressed', String(selected));
+        });
+      }));
       content.querySelector('.js-save-checkin')?.addEventListener('click', () => {
-        const value = (field) => Number(content.querySelector(`[data-checkin="${field}"]`)?.value) || 0;
+        const value = (field) => Number(content.querySelector(`[data-checkin="${field}"].is-selected`)?.dataset.checkinValue) || 0;
         if (!state.workoutCheckins) state.workoutCheckins = {};
         state.workoutCheckins[summary.recordId] = { effort: value('effort'), energy: value('energy'), discomfort: value('discomfort'), note: boundedText(content.querySelector('.complete-checkin-note')?.value, 240), savedAt: new Date().toISOString() };
         saveState();
@@ -9321,7 +9340,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v80-ux-collapsible-guidelines';
+      const APP_UPDATE_VERSION = 'v82-focus-actions-checkin';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

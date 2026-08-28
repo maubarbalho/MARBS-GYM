@@ -14,6 +14,8 @@ const requiredHtml = [
   'guided-actions-grid',
   'js-guided-timer',
   'js-guided-repeat',
+  '.guided-overlay.focus-mode .guided-actions-grid',
+  '.guided-overlay.focus-mode .guided-prev-btn',
   'APP_UPDATE_VERSION',
   "scriptUrl.searchParams.set('v', APP_UPDATE_VERSION)",
   'await purgeOldAppCaches();',
@@ -24,7 +26,7 @@ const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Painel/atualização forçada incompletos: ${missingHtml.join(', ')}`);
 
 const requiredSw = [
-  "CACHE_NAME = 'marsb-gym-v80-ux-collapsible-guidelines'",
+  "CACHE_NAME = 'marsb-gym-v82-focus-actions-checkin'",
   'async function purgeOldCaches()',
   'purgeOldCaches()',
   "event.data.type === 'PURGE_OLD_CACHES'",
