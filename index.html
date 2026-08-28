@@ -1913,6 +1913,42 @@
       .diet-options-summary-note { display:none; }
       .diet-options-summary-action { font-size:.6rem; }
     }
+
+    /* Shared progressive disclosure for secondary content across the app. */
+    .ux-disclosure { margin:10px 0; padding:0; overflow:hidden; border:1px solid var(--border); border-radius:16px; background:var(--bg); }
+    .ux-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:8px 12px; color:var(--text); cursor:pointer; list-style:none; }
+    .ux-disclosure > summary::-webkit-details-marker { display:none; }
+    .ux-disclosure > summary::after { content:'+'; flex:0 0 auto; color:var(--primary); font-size:1.15rem; line-height:1; }
+    .ux-disclosure[open] > summary::after { content:'−'; }
+    .ux-disclosure-summary-copy, .ux-disclosure-copy { display:flex; min-width:0; flex-direction:column; gap:2px; }
+    .ux-disclosure-summary-copy strong, .ux-disclosure-title { font-size:.82rem; line-height:1.2; }
+    .ux-disclosure-note, .ux-disclosure-hint { color:var(--text-muted); font-size:.64rem; line-height:1.25; }
+    .ux-disclosure-hint { margin-left:auto; white-space:nowrap; }
+    .ux-disclosure-content { padding:10px 12px 12px; border-top:1px solid var(--border); }
+    .ux-disclosure-content > :first-child { margin-top:0; }
+    .ux-disclosure-content > :last-child { margin-bottom:0; }
+    .home-rhythm-disclosure { margin:0; border:0; border-radius:inherit; background:transparent; }
+    .home-rhythm-disclosure > summary { padding:0 0 10px; }
+    .home-rhythm-disclosure .ux-disclosure-content { padding:0; border-top:0; }
+    .home-rhythm-disclosure .weekly-bars { margin-top:0; }
+    .history-item-disclosure { padding:0; }
+    .history-item-summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:10px 12px; cursor:pointer; list-style:none; }
+    .history-item-summary::-webkit-details-marker { display:none; }
+    .history-item-summary::after { content:'+'; flex:0 0 auto; color:var(--primary); font-size:1.1rem; }
+    .history-item-disclosure[open] .history-item-summary::after { content:'−'; }
+    .history-item-summary-copy { display:flex; min-width:0; flex:1; flex-direction:column; gap:3px; }
+    .history-item-details { padding:0 12px 12px; border-top:1px solid var(--border); }
+    .history-item-details .hi-weights { margin-top:10px; }
+    .history-item-details .hi-actions { margin-top:10px; }
+    .about-disclosure { margin:10px 0; }
+    .about-disclosure p { margin:0; color:var(--text-muted); font-size:.78rem; line-height:1.5; }
+    @media (max-width:430px) {
+      .ux-disclosure-note { display:none; }
+      .ux-disclosure-hint { font-size:.6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ux-disclosure, .ux-disclosure * { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
+    }
   </style>
 </head>
 <body>
@@ -2517,15 +2553,12 @@
         </div>
       </div>
 
-      <div class="calc-card" style="margin-top:12px;">
-        <h3>Como o personal usa</h3>
-        <p class="calc-desc" style="margin:0;line-height:1.5;">
+      <details class="ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Como o personal usa</span><span class="ux-disclosure-note">Passo a passo para montar, salvar e enviar um plano</span></span><span class="ux-disclosure-hint">Ver instruções</span></summary><div class="ux-disclosure-content"><p class="calc-desc">
           1. Preencha o nome do plano e monte os treinos necessários no editor<br>
           2. Toque em <strong>Salvar plano no app</strong><br>
           3. Toque em <strong>Exportar planilha Excel</strong> e envie o arquivo (WhatsApp, e-mail…)<br>
           4. O aluno abre <strong>Configuração → Plano</strong> → Importar planilha Excel → pronto
-        </p>
-      </div>
+        </p></div></details>
     </div>
   </div>
 
@@ -2555,11 +2588,11 @@
   </div>
 
 <div class="page" id="page-sobre">
-      <div class="about-section"><h3>Sobre o MARSB-GYM</h3><p>O MARSB-GYM é um PWA de treino e nutrição voltado ao acompanhamento prático de hipertrofia. Pode ser instalado no celular, funciona offline após o primeiro carregamento e organiza os dados no próprio navegador.</p></div>
-      <div class="about-section"><h3>Treinos e progresso</h3><p>Mantenha a divisão inicial ABCD ou crie, duplique, ordene e arquive quantos treinos precisar. Registre cargas, repetições, RIR/RPE, notas e tipos de série. O app acompanha volume, recordes, histórico e tendências usando datas reais das sessões, sem ciclo fixo de semanas.</p></div>
-      <div class="about-section"><h3>Nutrição prática</h3><p>O Diário Alimentar usa referências da Tabela TACO para estimar calorias e macronutrientes. Favoritos, refeições recentes, metas por refeição e trocas de alimentos servem como apoio de organização. Os valores são estimativas e não substituem avaliação individual de nutricionista.</p></div>
-      <div class="about-section"><h3>Uso responsável</h3><p>O MARSB-GYM organiza seus registros e estimativas, mas não diagnostica dor, lesão ou condições de saúde. Em caso de sintomas, dor persistente ou necessidade clínica, interrompa o treino e procure um profissional de saúde qualificado.</p></div>
-      <div class="about-section"><h3>Dados, backup e atualização</h3><p>Os dados ficam locais neste aparelho. Faça backup em JSON pela área Progresso antes de trocar de celular ou limpar dados do navegador. Uma atualização do app preserva os registros locais; ainda assim, o backup é a camada de segurança recomendada.</p></div>
+      <details class="about-section about-disclosure ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Sobre o MARSB-GYM</span><span class="ux-disclosure-note">Objetivo e funcionamento geral do aplicativo</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p>O MARSB-GYM é um PWA de treino e nutrição voltado ao acompanhamento prático de hipertrofia. Pode ser instalado no celular, funciona offline após o primeiro carregamento e organiza os dados no próprio navegador.</p></div></details>
+      <details class="about-section about-disclosure ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Treinos e progresso</span><span class="ux-disclosure-note">Registro de cargas, séries, histórico e evolução</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p>Mantenha a divisão inicial ABCD ou crie, duplique, ordene e arquive quantos treinos precisar. Registre cargas, repetições, RIR/RPE, notas e tipos de série. O app acompanha volume, recordes, histórico e tendências usando datas reais das sessões, sem ciclo fixo de semanas.</p></div></details>
+      <details class="about-section about-disclosure ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Nutrição prática</span><span class="ux-disclosure-note">Diário alimentar, metas e referências de alimentos</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p>O Diário Alimentar usa referências da Tabela TACO para estimar calorias e macronutrientes. Favoritos, refeições recentes, metas por refeição e trocas de alimentos servem como apoio de organização. Os valores são estimativas e não substituem avaliação individual de nutricionista.</p></div></details>
+      <details class="about-section about-disclosure ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Uso responsável</span><span class="ux-disclosure-note">Limites importantes para treino e nutrição</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p>O MARSB-GYM organiza seus registros e estimativas, mas não diagnostica dor, lesão ou condições de saúde. Em caso de sintomas, dor persistente ou necessidade clínica, interrompa o treino e procure um profissional de saúde qualificado.</p></div></details>
+      <details class="about-section about-disclosure ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Dados, backup e atualização</span><span class="ux-disclosure-note">Privacidade, cópia de segurança e atualização do PWA</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p>Os dados ficam locais neste aparelho. Faça backup em JSON pela área Progresso antes de trocar de celular ou limpar dados do navegador. Uma atualização do app preserva os registros locais; ainda assim, o backup é a camada de segurança recomendada.</p></div></details>
       <p style="text-align:center;font-size:0.75rem;color:var(--text-muted);margin-top:30px;">
         MARBS • Todos os direitos reservados
       </p>
@@ -2591,9 +2624,9 @@
   </div>
 
   <!-- CONFIGURAÇÃO: painéis independentes -->
-  <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span><small id="backupReminder"></small></div><button type="button" class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button type="button" class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button type="button" class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><div class="config-status-card"><strong>Uso offline e atualizações</strong><span>Com internet, o app procura atualizações. Se houver uma versão nova, use o aviso “Atualizar”; seus dados locais permanecem no dispositivo.</span></div><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></div>
+  <div class="page" id="page-dados"><div class="config-panel"><div class="section-title">Dados e backup</div><div class="config-status-card"><strong id="backupStatus">Dados locais ativos</strong><span>O app salva o histórico neste dispositivo. Faça um backup antes de trocar de celular ou navegador.</span><small id="backupReminder"></small></div><button type="button" class="btn-action primary" onclick="exportBackupJSON(); refreshConfigDataStatus()">💾 Exportar backup completo</button><button type="button" class="btn-action" onclick="document.getElementById('importFileInput').click()">📂 Restaurar backup JSON</button><button type="button" class="btn-action" onclick="exportProgressCSV()">📊 Exportar histórico em CSV</button><details class="ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Uso offline e atualizações</span><span class="ux-disclosure-note">Como o app atualiza e protege os dados deste dispositivo</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><div class="config-status-card"><strong>Uso offline e atualizações</strong><span>Com internet, o app procura atualizações. Se houver uma versão nova, use o aviso “Atualizar”; seus dados locais permanecem no dispositivo.</span></div><p class="calc-desc">A restauração substitui os dados atuais depois da confirmação. O arquivo não é enviado para a internet.</p></div></details></div></div>
   <div class="page" id="page-aparencia"><div class="config-panel"><div class="section-title">Aparência</div><div class="form-field"><label for="appearanceMode">Tema do aplicativo</label><select id="appearanceMode" onchange="setAppearanceMode(this.value)" aria-label="Modo de aparência"><option value="system">Seguir sistema</option><option value="light">Claro</option><option value="dark">Escuro</option></select></div><div class="form-field"><label for="densityMode">Densidade da interface</label><select id="densityMode" onchange="setDensityMode(this.value)" aria-label="Densidade da interface"><option value="comfortable">Confortável</option><option value="compact">Compacta</option><option value="focus">Foco no essencial</option></select></div><div class="config-status-card"><strong>Design mobile</strong><span>Escolha mais espaço para tocar, mais conteúdo por tela ou um modo com menos distrações.</span></div></div></div>
-  <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)"  aria-label="Horário dos lembretes" /></div><div class="config-status-card timer-notification-card"><strong>Aviso quando o descanso terminar</strong><span id="timerNotificationStatus">Ative para tentar receber um aviso do sistema quando o timer terminar.</span><div class="setting-row"><span>Usar aviso do timer</span><button type="button" class="toggle" id="toggleTimerNotification" onclick="toggleTimerNotificationPref()" aria-label="Alternar aviso do fim do descanso"></button></div><button type="button" class="btn-action" id="testTimerNotificationBtn" onclick="testTimerNotification()">Testar aviso</button></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração nos avisos"></button></div><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer, o aviso dentro do app e a vibração continuam funcionando sem essa permissão.</p></div></div>
+  <div class="page" id="page-notificacoes"><div class="config-panel"><div class="section-title">Notificações</div><div class="setting-row"><span>Lembretes do treino</span><button type="button" class="toggle" id="toggleNotifications" onclick="toggleNotificationsPref()" aria-label="Alternar lembretes do treino"></button></div><div class="form-field"><label for="notificationTime">Horário preferido</label><input type="time" id="notificationTime" value="18:00" onchange="setNotificationTime(this.value)"  aria-label="Horário dos lembretes" /></div><div class="config-status-card timer-notification-card"><strong>Aviso quando o descanso terminar</strong><span id="timerNotificationStatus">Ative para tentar receber um aviso do sistema quando o timer terminar.</span><div class="setting-row"><span>Usar aviso do timer</span><button type="button" class="toggle" id="toggleTimerNotification" onclick="toggleTimerNotificationPref()" aria-label="Alternar aviso do fim do descanso"></button></div><button type="button" class="btn-action" id="testTimerNotificationBtn" onclick="testTimerNotification()">Testar aviso</button></div><div class="setting-row"><span>Iniciar timer ao marcar série</span><button type="button" class="toggle" id="configToggleAutoTimer" onclick="togglePref('autoTimer')" aria-label="Alternar timer automático"></button></div><div class="setting-row"><span>Vibração nos avisos</span><button type="button" class="toggle" id="configToggleVibrate" onclick="togglePref('vibrate')" aria-label="Alternar vibração nos avisos"></button></div><details class="ux-disclosure"><summary><span class="ux-disclosure-copy"><span class="ux-disclosure-title">Sobre os avisos</span><span class="ux-disclosure-note">Permissões do navegador e funcionamento offline</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary><div class="ux-disclosure-content"><p class="calc-desc">O navegador pode exigir permissão para notificações. O timer, o aviso dentro do app e a vibração continuam funcionando sem essa permissão.</p></div></details></div></div>
   <div class="page" id="page-unidades"><div class="config-panel"><div class="section-title">Unidades</div><div class="form-field"><label for="unitSystemConfig">Sistema de medidas</label><select id="unitSystemConfig" onchange="setUnitSystem(this.value)" aria-label="Sistema de unidades"><option value="metric">Métrico — kg e cm</option><option value="imperial">Imperial — lb e pol.</option></select></div><div class="config-status-card"><strong>Conversão segura</strong><span>Os registros originais permanecem preservados; a preferência controla a forma de exibição e as calculadoras.</span></div></div></div>
   <div class="page" id="page-privacidade"><div class="config-panel"><div class="section-title">Privacidade</div><div class="config-status-card"><strong>Dados do treino</strong><span>Perfil, histórico, plano e diário ficam no armazenamento local do navegador até você exportar ou enviar algo.</span></div><div class="config-status-card"><strong>Compartilhamento consciente</strong><span>Backups, planilhas e planos só saem deste dispositivo quando você escolhe exportar ou compartilhar um arquivo.</span></div><div class="config-status-card warning"><strong>Limite de segurança</strong><span>O aplicativo não diagnostica dor ou lesão, não prescreve medicamentos e não substitui personal trainer ou profissional de saúde.</span></div></div></div>
 
@@ -3714,7 +3747,7 @@
       const calendar = getConsistencyCalendar(28);
       const activeDays = calendar.filter((day) => day.count > 0).length;
       const streak = calcStreak();
-      weekly.innerHTML = `<div class="weekly-head"><div><div class="daily-action-kicker">Ritmo de treino</div><h3>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</h3></div><span class="weekly-summary">${activeDays} dia${activeDays === 1 ? '' : 's'} em 28</span></div><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">${streak ? `Sequência atual: ${streak} dia${streak === 1 ? '' : 's'} · ` : ''}${totalSets ? `${totalSets} séries registradas hoje.` : 'Registre um treino para iniciar seu ritmo.'}</p><p class="weekly-note">${escapeHtml(getRecoveryHint())}</p><p class="weekly-note save-hint">${escapeHtml(formatLastSavedHint())}</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução completa</button></div>`;
+      weekly.innerHTML = `<details class="home-rhythm-disclosure"><summary><span class="ux-disclosure-summary-copy"><span class="daily-action-kicker">Ritmo de treino</span><strong>${totalWorkouts} treino${totalWorkouts === 1 ? '' : 's'} nos últimos 7 dias</strong></span><span class="ux-disclosure-hint">${activeDays} dia${activeDays === 1 ? '' : 's'} em 28</span></summary><div class="ux-disclosure-content"><div class="weekly-bars">${days.map((day) => `<div class="weekly-day"><div class="weekly-bar-track"><div class="weekly-bar-fill" style="height:${day.count ? Math.max(18, Math.round((day.count / max) * 100)) : 8}%"></div></div><span>${escapeHtml(day.label)}</span><small>${day.count || ''}</small></div>`).join('')}</div><p class="weekly-note">${streak ? `Sequência atual: ${streak} dia${streak === 1 ? '' : 's'} · ` : ''}${totalSets ? `${totalSets} séries registradas hoje.` : 'Registre um treino para iniciar seu ritmo.'}</p><p class="weekly-note">${escapeHtml(getRecoveryHint())}</p><p class="weekly-note save-hint">${escapeHtml(formatLastSavedHint())}</p><div class="daily-action-buttons"><button type="button" class="btn-action" onclick="switchPage('treinos')">Revisar treinos</button><button type="button" class="btn-action" onclick="switchPage('progresso')">Ver evolução completa</button></div></div></details>`;
     }
 
     let workoutFilterState = { treino: 'all', query: '', muscle: 'all', equipment: 'all', pendingOnly: true };
@@ -4399,8 +4432,8 @@
       }
 
       hist.forEach(h => {
-        const item = document.createElement('div');
-        item.className = 'history-item';
+        const item = document.createElement('details');
+        item.className = 'history-item history-item-disclosure';
         
         const weightsStr = Object.entries(h.weights || {})
           .filter(([,v]) => v)
@@ -4416,12 +4449,12 @@
         const durationText = h.duration ? formatWorkoutDuration(h.duration) : 'duração não registrada';
         const metricsText = `${durationText} · ${formatMetricVolume(sessionMetrics.volume)} · ${sessionMetrics.totalSets} séries · ${sessionMetrics.totalReps} reps`;
         item.innerHTML = `
-          <div class="hi-date">${escapeHtml(formatDate(h.date))} • Semana ${escapeHtml(h.week)}</div>
-          <div class="hi-treino">Treino ${escapeHtml(h.treino)} — ${escapeHtml(treinoNome)}</div>
-          <div class="hi-summary">${escapeHtml(metricsText)}</div>
-          ${weightsStr ? `<div class="hi-weights">${weightsStr}</div>` : ''}
-          <div class="hi-actions">
-            <button class="hi-del js-del-hist" type="button">Apagar registro</button>
+          <summary class="history-item-summary"><span class="history-item-summary-copy"><span class="hi-date">${escapeHtml(formatDate(h.date))} • Semana ${escapeHtml(h.week)}</span><span class="hi-treino">Treino ${escapeHtml(h.treino)} — ${escapeHtml(treinoNome)}</span><span class="hi-summary">${escapeHtml(metricsText)}</span></span><span class="ux-disclosure-hint">Ver detalhes</span></summary>
+          <div class="history-item-details">
+            ${weightsStr ? `<div class="hi-weights">${weightsStr}</div>` : '<div class="hi-weights weight-history-empty">Sem pesos registrados neste treino</div>'}
+            <div class="hi-actions">
+              <button class="hi-del js-del-hist" type="button">Apagar registro</button>
+            </div>
           </div>
         `;
         item.querySelector('.js-del-hist').addEventListener('click', () => deleteHistoryEntry(h.id));
@@ -9288,7 +9321,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v79-diet-collapsible-options';
+      const APP_UPDATE_VERSION = 'v80-ux-collapsible-guidelines';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
