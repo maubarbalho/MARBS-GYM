@@ -5715,10 +5715,41 @@
       showToast(`Modo ${executionModeLabel(guidedState.executionMode)} ativado`);
     }
 
+    function updateGuidedSetProgress(ex) {
+      if (!ex || !guidedState.active) return;
+      const guidedBody = document.getElementById('guidedBody');
+      if (!guidedBody) return;
+      const doneArr = getDoneArr(ex);
+      const focusSetIndex = Math.max(0, doneArr.findIndex((done) => !done));
+      guidedBody.querySelectorAll('.guided-set-row').forEach((row) => {
+        const index = Number(row.dataset.setIndex);
+        const done = Boolean(doneArr[index]);
+        row.classList.toggle('done', done);
+        row.classList.toggle('focus-active', index === focusSetIndex);
+        const button = row.querySelector('.js-guided-set-toggle');
+        if (button) {
+          button.setAttribute('aria-pressed', String(done));
+          button.setAttribute('aria-label', `${done ? 'Desmarcar' : 'Marcar'} série ${index + 1} de ${ex.nome}`);
+        }
+      });
+      const progress = guidedBody.querySelector('.guided-focus-set strong');
+      if (progress) progress.textContent = `${guidedState.index + 1}/${guidedState.exercises.length} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}`;
+      const nextButton = guidedBody.querySelector('.js-guided-next');
+      const allDone = doneArr.every(Boolean);
+      if (nextButton) {
+        nextButton.classList.toggle('ready', allDone);
+        nextButton.textContent = guidedState.index === guidedState.exercises.length - 1
+          ? (allDone ? 'Finalizar ✓' : 'Pular por agora →')
+          : (allDone ? 'Próximo →' : 'Pular por agora →');
+      }
+      updateGuidedSessionChrome();
+      syncGuidedRestPanel();
+    }
+
     function refreshGuidedAfterToggle(exId, justCompleted) {
       const ex = guidedState.exercises[guidedState.index];
       if (!ex || ex.id !== exId) return;
-      renderGuidedStep();
+      updateGuidedSetProgress(ex);
       const doneArr = getDoneArr(ex);
       const allDone = doneArr.every(Boolean);
       if (justCompleted && guidedState.executionMode !== 'normal' && !allDone) {
@@ -9356,7 +9387,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v84-mobile-fluidity-stage2';
+      const APP_UPDATE_VERSION = 'v85-mobile-fluidity-stage3';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

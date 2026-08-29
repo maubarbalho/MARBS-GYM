@@ -34,11 +34,11 @@ if (!completeFn.includes("dataset.checkinValue") || !completeFn.includes("conten
 if (!html.includes('.complete-checkin-score { min-height:44px')) {
   throw new Error('As opções do check-in não mantêm alvo de toque mínimo de 44px.');
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v84-mobile-fluidity-stage2'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v85-mobile-fluidity-stage3'")) {
   throw new Error('O service worker não foi versionado para a correção do check-in.');
 }
 if (html.includes('localStorage.clear(') || html.includes('localStorage.removeItem(STORAGE_KEY)')) {
   throw new Error('A correção não pode limpar os dados locais.');
 }
 
-console.log('OK: opções visíveis 1–10, seleção acessível, salvamento retrocompatível, toque mínimo e cache v84 validados.');
+console.log('OK: opções visíveis 1–10, seleção acessível, salvamento retrocompatível, toque mínimo e cache v85 validados.');

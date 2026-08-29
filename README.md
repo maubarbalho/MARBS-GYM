@@ -20,7 +20,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v84-mobile-fluidity-stage2`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v85-mobile-fluidity-stage3`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
 
 ## Coach e funcionamento offline
 
@@ -35,6 +35,10 @@ A Etapa 1 reduz trabalho desnecessário durante a navegação no celular sem alt
 ## Otimizações de fluidez mobile — Etapa 2
 
 A Etapa 2 reduz renderizações fora da tela e atualizações repetidas. Ao registrar uma série, o app persiste o estado uma única vez, atualiza somente a página visível e evita reconstruir os painéis de progresso quando eles estão ocultos. A abertura do painel de adesão não faz mais uma segunda renderização em `requestAnimationFrame`. A sessão guiada continua preservando sua navegação e seus dados antes de iniciar o timer ou avançar de exercício.
+
+## Otimizações de fluidez mobile — Etapa 3
+
+A Etapa 3 atualiza o treino guiado de forma parcial após a marcação de uma série. As linhas de séries, o progresso, o estado acessível dos botões, a ação seguinte e o chrome da sessão são atualizados sem reconstruir o `guidedBody` inteiro. A navegação para outro exercício continua usando a renderização completa somente quando necessário, preservando campos editados, foco e dados da sessão.
 
 ## Timer de descanso em segundo plano
 
