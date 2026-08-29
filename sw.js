@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v83-mobile-fluidity-stage1';
+const CACHE_NAME = 'marsb-gym-v84-mobile-fluidity-stage2';
 const APP_SHELL = [
   './',
   './index.html',

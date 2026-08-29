@@ -4726,9 +4726,21 @@
       document.getElementById('progWorkouts').textContent = workoutsCount;
       document.getElementById('progWeights').textContent = weightsCount;
       document.getElementById('progHistory').textContent = historyCount;
-      renderProgressionPanel();
-      renderProgressSnapshot();
-      renderAdherenceCard();
+      if (currentPage === 'progresso') {
+        renderProgressionPanel();
+        renderProgressSnapshot();
+        renderAdherenceCard();
+      }
+    }
+
+    function refreshVisibleWorkoutView() {
+      if (guidedState.active) return;
+      if (currentPage === 'home') renderQuickStart();
+      if (currentPage === 'treinos') renderTreinos();
+      if (currentPage === 'progresso') {
+        renderPeriod();
+        renderHistory();
+      }
     }
 
     function parseRepsMid(reps) {
@@ -4874,19 +4886,16 @@
           if (latest !== previous) recordWeightHistory(exId, latest);
         }
       }
-      saveState();
-      renderTreinos();
-      updateStats();
-      renderQuickStart();
-      renderDailyHome();
-
       if (guidedState.active && guidedState.treinoId === treinoId) {
         if (getDoneArr(findExercise(exId)).every(Boolean)) {
           guidedState.skippedExercises = (guidedState.skippedExercises || []).filter((id) => id !== exId);
           guidedState.interruptedExercises = (guidedState.interruptedExercises || []).filter((id) => id !== exId);
         }
-        persistGuidedNavigation();
+        persistGuidedNavigation(false);
       }
+      saveState();
+      refreshVisibleWorkoutView();
+      updateStats();
       if (justCompleted) {
         if (state.prefs && state.prefs.autoTimer !== false) {
           startTimer(restSec);
@@ -5553,7 +5562,7 @@
       if (label) label.textContent = formatGuidedElapsed(Math.floor((Date.now() - guidedState.startedAt) / 1000));
     }
 
-    function persistGuidedNavigation() {
+    function persistGuidedNavigation(shouldSave = true) {
       if (!guidedState.treinoId) return;
       if (!state.activeWorkout || state.activeWorkout.treino !== guidedState.treinoId) {
         state.activeWorkout = { treino: guidedState.treinoId, startedAt: new Date(guidedState.startedAt || Date.now()).toISOString(), updatedAt: Date.now(), guidedIndex: guidedState.index, executionMode: normalizeExecutionMode(guidedState.executionMode), skippedExercises: [] };
@@ -5562,7 +5571,7 @@
       state.activeWorkout.executionMode = normalizeExecutionMode(guidedState.executionMode);
       state.activeWorkout.skippedExercises = [...new Set(guidedState.skippedExercises || [])].slice(0, 100);
       state.activeWorkout.updatedAt = Date.now();
-      saveState();
+      if (shouldSave) saveState();
     }
 
     function getGuidedPendingExercises() {
@@ -6540,8 +6549,6 @@
         renderPeriod();
         renderHistory();
         updateStats();
-        renderAdherenceCard();
-        requestAnimationFrame(renderAdherenceCard);
         syncPrefToggles();
       }
       if (page === 'home') {
@@ -9349,7 +9356,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v83-mobile-fluidity-stage1';
+      const APP_UPDATE_VERSION = 'v84-mobile-fluidity-stage2';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

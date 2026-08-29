@@ -53,7 +53,7 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
 for (const token of ['function renderTreinos', 'function renderProgressSnapshot', 'function renderDietDiary', 'function runMacroCalc']) {
   if (!html.includes(token)) throw new Error(`Fluxo existente ausente após rebranding: ${token}`);
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v83-mobile-fluidity-stage1'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v84-mobile-fluidity-stage2'")) {
   throw new Error('O cache do PWA não acompanha o rebranding global.');
 }
 console.log('OK: abas, paleta, ícones, tipografia, header compacto, ausência do subtítulo, fluxos e preservação local validados.');
