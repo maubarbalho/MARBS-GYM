@@ -5861,9 +5861,8 @@
         </div>
       `;
       guidedBody.querySelectorAll('.js-guided-set-field').forEach((field) => {
-        const save = () => saveSetDetail(ex.id, Number(field.dataset.setIndex), field.dataset.field, field.value);
-        field.addEventListener('change', save);
-        field.addEventListener('blur', save);
+        // `change` cobre o commit do campo ao sair; evitar `blur` duplicado reduz gravações completas.
+        field.addEventListener('change', () => saveSetDetail(ex.id, Number(field.dataset.setIndex), field.dataset.field, field.value));
       });
       guidedBody.querySelectorAll('.js-guided-set-toggle').forEach((button) => {
         button.addEventListener('click', () => toggleSet(ex.id, Number(button.dataset.setIndex), ex.descanso, guidedState.treinoId));
@@ -7878,6 +7877,8 @@
       return state.dietDiary[date];
     }
 
+    let dietFoodSearchTimer = null;
+
     function initDietPage() {
       const date = document.getElementById('dietDate');
       if (date && !date.value) date.value = todayKey();
@@ -7887,7 +7888,10 @@
       const search = document.getElementById('dietFoodSearch');
       if (search && !search.dataset.bound) {
         search.dataset.bound = 'true';
-        search.addEventListener('input', () => renderDietFoodOptions(search.value));
+        search.addEventListener('input', () => {
+          clearTimeout(dietFoodSearchTimer);
+          dietFoodSearchTimer = setTimeout(() => renderDietFoodOptions(search.value), 180);
+        });
       }
       const prefs = state.dietPrefs || {};
       const restrictions = document.getElementById('dietRestrictions');
@@ -9243,10 +9247,15 @@
     const exerciseFilter = document.getElementById('exerciseFilter');
     const filterPendingBtn = document.getElementById('filterPendingBtn');
     const filterAllBtn = document.getElementById('filterAllBtn');
+    let exerciseFilterTimer = null;
     workoutFilter?.addEventListener('change', (event) => { workoutFilterState.treino = event.currentTarget.value; renderTreinos(); });
     muscleFilter?.addEventListener('change', (event) => { workoutFilterState.muscle = event.currentTarget.value; renderTreinos(); });
     equipmentFilter?.addEventListener('change', (event) => { workoutFilterState.equipment = event.currentTarget.value; renderTreinos(); });
-    exerciseFilter?.addEventListener('input', (event) => { workoutFilterState.query = boundedText(event.currentTarget.value, 100); renderTreinos(); });
+    exerciseFilter?.addEventListener('input', (event) => {
+      workoutFilterState.query = boundedText(event.currentTarget.value, 100);
+      clearTimeout(exerciseFilterTimer);
+      exerciseFilterTimer = setTimeout(() => renderTreinos(), 180);
+    });
     filterPendingBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = true; filterPendingBtn.classList.add('active'); filterAllBtn?.classList.remove('active'); renderTreinos(); });
     filterAllBtn?.addEventListener('click', () => { workoutFilterState.pendingOnly = false; filterAllBtn.classList.add('active'); filterPendingBtn?.classList.remove('active'); renderTreinos(); });
 
@@ -9340,7 +9349,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v82-focus-actions-checkin';
+      const APP_UPDATE_VERSION = 'v83-mobile-fluidity-stage1';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
@@ -9578,6 +9587,19 @@
       // Primary: scroll event
       window.addEventListener('scroll', onScroll, { passive: true });
 
+      let touchScrollFrame = null;
+      let pendingTouchScroll = null;
+      const scheduleTouchScroll = (y, delta) => {
+        pendingTouchScroll = { y, delta };
+        if (touchScrollFrame) return;
+        touchScrollFrame = requestAnimationFrame(() => {
+          touchScrollFrame = null;
+          const next = pendingTouchScroll;
+          pendingTouchScroll = null;
+          if (next) applyScroll(next.y, next.delta);
+        });
+      };
+
       // iOS momentum / Safari: also track touch
       window.addEventListener('touchstart', (e) => {
         if (!e.touches || !e.touches.length) return;
@@ -9591,7 +9613,7 @@
         const touchY = e.touches[0].clientY;
         // Finger moving up => content goes down => hide header
         const touchDelta = lastTouchY - touchY;
-        applyScroll(y, touchDelta);
+        scheduleTouchScroll(y, touchDelta);
         lastTouchY = touchY;
         lastY = y;
       }, { passive: true });
