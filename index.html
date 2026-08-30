@@ -2884,6 +2884,16 @@
     let currentPage = 'home';
     let browserHistoryReady = false;
     let state = loadState();
+    const derivedSummaryCache = {
+      workout: new Map(),
+      calendar: new Map(),
+      streak: new Map()
+    };
+    function invalidateDerivedSummaryCache() {
+      derivedSummaryCache.workout.clear();
+      derivedSummaryCache.calendar.clear();
+      derivedSummaryCache.streak.clear();
+    }
     document.documentElement.dataset.theme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
     document.documentElement.dataset.density = state.densityMode || 'comfortable';
     document.documentElement.style.colorScheme = state.appearanceMode && state.appearanceMode !== 'system' ? state.appearanceMode : '';
@@ -3512,6 +3522,7 @@
     }
 
     function saveState() {
+      invalidateDerivedSummaryCache();
       state._schemaVersion = STATE_SCHEMA_VERSION;
       state.storageMeta = Object.assign({ lastSavedAt: '', lastBackupAt: '', bytes: 0, migratedAt: '' }, state.storageMeta || {});
       state.storageMeta.lastSavedAt = new Date().toISOString();
@@ -3687,9 +3698,14 @@
     }
 
     function getConsistencyCalendar(daysCount = 28) {
-      const today = new Date();
+      const normalizedDays = Math.max(1, Number(daysCount) || 28);
+      const dayKey = todayKey();
+      const cacheKey = `${dayKey}|${normalizedDays}`;
+      const cached = derivedSummaryCache.calendar.get(cacheKey);
+      if (cached) return cached;
+      const today = new Date(`${dayKey}T12:00:00`);
       const days = [];
-      for (let offset = daysCount - 1; offset >= 0; offset -= 1) {
+      for (let offset = normalizedDays - 1; offset >= 0; offset -= 1) {
         const date = new Date(today);
         date.setHours(12, 0, 0, 0);
         date.setDate(today.getDate() - offset);
@@ -3697,6 +3713,7 @@
         const count = (state.completedWorkouts || []).filter((entry) => entry.date === key).length;
         days.push({ key, count, day: date.getDate(), label: date.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '') });
       }
+      derivedSummaryCache.calendar.set(cacheKey, days);
       return days;
     }
 
@@ -4124,6 +4141,9 @@
     }
 
     function getWorkoutSummary(treinoId) {
+      const cacheKey = String(treinoId || '');
+      const cached = derivedSummaryCache.workout.get(cacheKey);
+      if (cached) return cached;
       const exercises = getTreinoExercises(treinoId);
       let done = 0, total = 0, volume = 0, withData = 0;
       exercises.forEach((ex) => {
@@ -4139,7 +4159,9 @@
         });
         if (hasData || state.weights[ex.id]) withData++;
       });
-      return { done, total, volume: Math.round(volume), exercises: exercises.length, withData };
+      const summary = { done, total, volume: Math.round(volume), exercises: exercises.length, withData };
+      derivedSummaryCache.workout.set(cacheKey, summary);
+      return summary;
     }
 
     function renderWorkoutSummary() {
@@ -4796,16 +4818,24 @@
       card.innerHTML = `<div class="daily-action-kicker">Próximo passo</div><strong>${escapeHtml(nextLabel)}</strong><p class="weekly-note">${escapeHtml(nextHint)} O que já foi concluído aparece no seu ritmo e no Progresso.</p><div class="adherence-grid">${dates.map((date) => { const item = schedule[date]; const status = statusFor(date); const workout = item?.treino ? treinosMap()[item.treino] : null; return `<div class="adherence-day ${status}"><span>${escapeHtml(labelFor(date))}</span><strong>${escapeHtml(statusLabel[status])}</strong><small>${escapeHtml(workout?.id || '')}</small></div>`; }).join('')}</div><div class="adherence-controls"><label>Data<input id="adherenceDate" type="date" value="${todayKey()}"  aria-label="Data do planejamento" /></label><label>Treino<select id="adherenceWorkout" aria-label="Treino do planejamento"><option value="">Escolha</option>${workouts.map((workout) => `<option value="${encodeData(workout.id)}">${escapeHtml(workout.id)} · ${escapeHtml(workout.nome)}</option>`).join('')}</select></label><div class="adherence-actions"><button type="button" class="btn-action primary" onclick="setWorkoutScheduleStatus('planned')">Planejar</button><button type="button" class="btn-action" onclick="setWorkoutScheduleStatus('rest')">Descanso</button><button type="button" class="btn-action" onclick="rescheduleWorkout()">Reagendar +1</button></div></div>`;
     }
     function calcStreak() {
-      const dates = [...new Set((state.completedWorkouts || []).map(h => h.date))].sort().reverse();
-      if (!dates.length) return 0;
       const today = todayKey();
+      const cached = derivedSummaryCache.streak.get(today);
+      if (cached !== undefined) return cached;
+      const dates = [...new Set((state.completedWorkouts || []).map(h => h.date))].sort().reverse();
+      if (!dates.length) {
+        derivedSummaryCache.streak.set(today, 0);
+        return 0;
+      }
       const yesterday = (() => {
         const d = new Date();
         d.setDate(d.getDate() - 1);
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       })();
       // Streak counts if last workout is today or yesterday
-      if (dates[0] !== today && dates[0] !== yesterday) return 0;
+      if (dates[0] !== today && dates[0] !== yesterday) {
+        derivedSummaryCache.streak.set(today, 0);
+        return 0;
+      }
       let streak = 0;
       let cursor = new Date(dates[0] + 'T12:00:00');
       const set = new Set(dates);
@@ -4815,6 +4845,7 @@
         streak++;
         cursor.setDate(cursor.getDate() - 1);
       }
+      derivedSummaryCache.streak.set(today, streak);
       return streak;
     }
 
@@ -9387,7 +9418,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v85-mobile-fluidity-stage3';
+      const APP_UPDATE_VERSION = 'v86-mobile-fluidity-stage4';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
@@ -9744,7 +9775,10 @@
         }
       });
       const dialogObserver = new MutationObserver(syncDialogFocus);
-      dialogObserver.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      const dialogRoots = [...document.querySelectorAll('[role="dialog"]')];
+      dialogRoots.forEach((dialogRoot) => {
+        dialogObserver.observe(dialogRoot, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      });
       syncDialogFocus();
       window.addEventListener('resize', setKeyboardState, { passive: true });
       if (window.visualViewport) window.visualViewport.addEventListener('resize', setKeyboardState, { passive: true });

@@ -26,7 +26,7 @@ const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Painel/atualização forçada incompletos: ${missingHtml.join(', ')}`);
 
 const requiredSw = [
-  "CACHE_NAME = 'marsb-gym-v85-mobile-fluidity-stage3'",
+  "CACHE_NAME = 'marsb-gym-v86-mobile-fluidity-stage4'",
   'async function purgeOldCaches()',
   'purgeOldCaches()',
   "event.data.type === 'PURGE_OLD_CACHES'",
