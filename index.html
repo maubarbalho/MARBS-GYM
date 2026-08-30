@@ -5553,16 +5553,27 @@
       return Array.from({ length: total }, (_, item) => item);
     }
 
-    function getNextGuidedExecutionIndex(index) {
+    function getNextGuidedExecutionIndex(index, excludeCurrent = false) {
+      const total = guidedState.exercises.length;
       const group = getExecutionGroupIndexes(index);
-      if (!group.length) return index + 1;
+      if (!total || !group.length) return index + 1;
       const currentPosition = Math.max(0, group.indexOf(index));
+      const groupSet = new Set(group);
       for (let offset = 1; offset <= group.length; offset++) {
         const candidate = group[(currentPosition + offset) % group.length];
+        if (candidate === index) continue;
         const exercise = guidedState.exercises[candidate];
         if (exercise && !getDoneArr(exercise).every(Boolean)) return candidate;
       }
-      return Math.max(...group) + 1;
+      for (let offset = 1; offset <= total; offset++) {
+        const candidate = (index + offset + total) % total;
+        if (candidate === index || groupSet.has(candidate)) continue;
+        const exercise = guidedState.exercises[candidate];
+        if (exercise && !getDoneArr(exercise).every(Boolean)) return candidate;
+      }
+      const current = guidedState.exercises[index];
+      if (!excludeCurrent && current && !getDoneArr(current).every(Boolean)) return index;
+      return total;
     }
 
     function buildSessionLibraryHtml(compact = false) {
@@ -5694,7 +5705,7 @@
       persistGuidedNavigation();
       skipTimer();
       showToast(`${ex.nome} ficou pendente. Você pode voltar depois.`);
-      guidedGoTo(guidedState.index + 1);
+      guidedGoTo(getNextGuidedExecutionIndex(guidedState.index, true));
     }
 
     function returnToGuidedExercise(exId) {
@@ -5718,7 +5729,7 @@
       persistGuidedNavigation();
       skipTimer();
       showToast(done ? 'Exercício encerrado. As séries registradas foram preservadas.' : 'Exercício pulado.');
-      guidedGoTo(guidedState.index + 1);
+      guidedGoTo(getNextGuidedExecutionIndex(guidedState.index, true));
     }
 
     function endGuidedWorkout() {
@@ -5792,7 +5803,7 @@
       } else if (allDone && justCompleted) {
         if (guidedState.advanceTimeout) clearTimeout(guidedState.advanceTimeout);
         guidedState.advanceTimeout = setTimeout(() => {
-          if (guidedState.active) guidedGoTo(guidedState.executionMode === 'normal' ? guidedState.index + 1 : getNextGuidedExecutionIndex(guidedState.index));
+          if (guidedState.active) guidedGoTo(getNextGuidedExecutionIndex(guidedState.index));
         }, 1400);
       }
     }
@@ -5944,7 +5955,7 @@
       guidedBody.querySelector('.js-guided-timer')?.addEventListener('click', () => startTimer(ex.descanso));
       guidedBody.querySelector('.js-guided-repeat')?.addEventListener('click', repeatLastGuidedSet);
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
-      guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(guidedState.index + 1) : skipGuidedExercise());
+      guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(getNextGuidedExecutionIndex(guidedState.index)) : skipGuidedExercise());
       guidedBody.querySelectorAll('.js-guided-return').forEach((button) => button.addEventListener('click', () => returnToGuidedExercise(decodeData(button.dataset.exerciseId))));
       guidedBody.querySelector('.js-end-exercise').addEventListener('click', endGuidedExercise);
       guidedBody.querySelector('.js-end-workout').addEventListener('click', endGuidedWorkout);
@@ -9418,7 +9429,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v86-mobile-fluidity-stage4';
+      const APP_UPDATE_VERSION = 'v87-guided-next-pending';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

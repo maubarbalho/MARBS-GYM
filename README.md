@@ -20,7 +20,7 @@ Envie todos os arquivos para a pasta pública do seu serviço de hospedagem. O e
 
 Para que a instalação como PWA e o service worker funcionem corretamente, publique o site usando **HTTPS**. A exceção é o ambiente local `localhost` ou `127.0.0.1`, que os navegadores tratam como seguro para testes.
 
-Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v86-mobile-fluidity-stage4`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
+Depois da publicação, abra o app uma vez, recarregue a página e verifique no navegador a opção de instalar o aplicativo. Se uma versão antiga continuar aparecendo, use o botão **Atualizar app** no topo da tela inicial ou feche as abas do app e faça uma atualização forçada; o service worker usa o cache `marsb-gym-v87-guided-next-pending`. A ativação remove caches antigos, salva a sessão guiada, os campos visíveis e a navegação antes de recarregar, sem limpar o `localStorage`. O endereço recebe um parâmetro de atualização para evitar que o navegador reutilize a página antiga. No PWA instalado no iPhone, a checagem também acontece ao abrir novamente o app, voltar para ele depois de deixá-lo em segundo plano e recuperar a conexão; o fluxo usa `registration.update()` e o service worker busca os arquivos de navegação sem reutilizar o cache HTTP antigo.
 
 ## Coach e funcionamento offline
 
@@ -43,6 +43,10 @@ A Etapa 3 atualiza o treino guiado de forma parcial após a marcação de uma s�
 ## Otimizações de fluidez mobile — Etapa 4
 
 A Etapa 4 adiciona cache em memória, sob demanda e invalidado quando o estado muda, para resumos por treino, calendário de consistência e streak. O cache não é persistido e não altera o formato de `marsbGym_v2`. O observador de foco dos diálogos acompanha somente os contêineres com `role="dialog"`, em vez de observar alterações de classe no `body` inteiro.
+
+## Avanço ao próximo exercício pendente
+
+Quando um exercício é pulado ou encerrado parcialmente e o usuário retorna a ele, o botão Próximo procura o próximo exercício com séries pendentes. Exercícios já concluídos não são reabertos automaticamente; se houver uma pendência anterior, o fluxo pode voltar a ela antes de finalizar o treino. O índice guiado, a sessão ativa e a lista de exercícios pendentes continuam sendo persistidos sem alterar os dados históricos.
 
 ## Timer de descanso em segundo plano
 
