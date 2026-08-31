@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v88-session-reset';
+const CACHE_NAME = 'marsb-gym-v89-guided-buttons';
 const APP_SHELL = [
   './',
   './index.html',
