@@ -681,9 +681,11 @@
     .guided-kicker { color:var(--text-muted); font-size:0.66rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; }
     .guided-brand-lockup { display:inline-flex; align-items:center; gap:6px; min-width:0; }
     .guided-brand-logo { width:24px; height:24px; flex:0 0 24px; display:block; object-fit:cover; border-radius:6px; border:1px solid color-mix(in srgb, var(--accent) 48%, var(--border)); background:#080a05; }
-    .guided-progress-label { color:var(--text); font-size:0.82rem; }
+    .guided-progress-label { color:var(--text); font-size:1.18rem; font-weight:900; line-height:1.1; }
+    .guided-step-label { color:var(--text-muted); font-size:0.78rem; margin-top:2px; }
+    .guided-segment-track-top { padding:10px 18px 0; }
     .guided-session-footer {
-      flex:0 0 auto; padding:10px 18px calc(12px + var(--safe-bottom));
+      flex:0 0 auto; padding:8px 18px calc(10px + var(--safe-bottom));
       background:rgba(10,14,23,0.96); border-top:1px solid var(--border);
     }
     .guided-session-meta { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--text-muted); font-size:0.75rem; margin-bottom:9px; }
@@ -2769,7 +2771,8 @@
     <div class="guided-header">
       <div class="guided-header-copy">
         <div class="guided-kicker guided-brand-lockup"><img class="guided-brand-logo" src="apple-touch-icon.png" alt="" width="24" height="24" /><span>MARSB-GYM</span><span aria-hidden="true">•</span><span>Treino guiado</span></div>
-        <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Exercício 1/6</div>
+        <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Treino A</div>
+        <div class="guided-step-label" id="guidedStepLabel" aria-live="polite">Exercício 1 de 6</div>
       </div>
       <div class="guided-header-actions">
         <label class="guided-mode-select-wrap" for="guidedExecutionMode">Modo<select id="guidedExecutionMode" class="guided-mode-select" aria-label="Modo de execução guiada" onchange="setGuidedExecutionMode(this.value)"><option value="normal">Normal</option><option value="superset">Superset (2)</option><option value="circuit">Circuito</option></select></label>
@@ -2778,10 +2781,10 @@
       </div>
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>
+    <div class="guided-segment-track guided-segment-track-top" id="guidedSegmentTrack" aria-hidden="true"></div>
     <div class="guided-body" id="guidedBody" tabindex="-1"></div>
     <div class="guided-session-footer" aria-label="Progresso da sessão">
       <div class="guided-session-meta"><span id="guidedWorkoutLabel">Treino</span><strong id="guidedTimeLabel">00:00</strong></div>
-      <div class="guided-segment-track" id="guidedSegmentTrack" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -5913,7 +5916,9 @@
       const executionCard = guidedState.executionMode === 'normal' ? '' : `<div class="guided-execution-card"><strong>${escapeHtml(executionModeLabel(guidedState.executionMode))} · ${escapeHtml(executionNames)}</strong><span>${guidedState.executionMode === 'circuit' ? 'Faça uma série de cada estação e avance para a próxima rodada.' : 'Alterne entre os dois exercícios da estação antes de repetir a série.'} O app alterna após cada série marcada; o registro continua vinculado ao exercício original.</span></div>`;
       const guidedLibraryHtml = `<details class="guided-library-disclosure"><summary>Biblioteca rápida de preparação e recuperação</summary>${buildSessionLibraryHtml(true)}</details>`;
 
-      document.getElementById('guidedTitle').textContent = `Exercício ${guidedState.index + 1}/${total}`;
+      document.getElementById('guidedTitle').textContent = workout ? `Treino ${workout.id}` : 'Treino guiado';
+      const guidedStepLabel = document.getElementById('guidedStepLabel');
+      if (guidedStepLabel) guidedStepLabel.textContent = `Exercício ${guidedState.index + 1} de ${total}`;
       const modeSelect = document.getElementById('guidedExecutionMode');
       if (modeSelect) modeSelect.value = normalizeExecutionMode(guidedState.executionMode);
       guidedBody.innerHTML = `
@@ -6030,7 +6035,9 @@
       const pending = getGuidedPendingExercises();
       const hasPending = pending.length > 0;
       document.getElementById('guidedProgressFill').style.width = hasPending ? `${Math.min(100, (guidedState.exercises.length - pending.length) / guidedState.exercises.length * 100)}%` : '100%';
-      document.getElementById('guidedTitle').textContent = hasPending ? 'Exercícios pendentes' : 'Concluído';
+      document.getElementById('guidedTitle').textContent = hasPending ? 'Treino com pendências' : 'Treino concluído';
+      const guidedStepLabel = document.getElementById('guidedStepLabel');
+      if (guidedStepLabel) guidedStepLabel.textContent = hasPending ? `${pending.length} exercício${pending.length === 1 ? '' : 's'} pendente${pending.length === 1 ? '' : 's'}` : 'Sessão finalizada';
       const workout = treinosMap()[guidedState.treinoId];
       const workoutLabel = document.getElementById('guidedWorkoutLabel');
       if (workoutLabel) workoutLabel.textContent = hasPending ? `Treino ${workout?.id || ''} · ${pending.length} pendente${pending.length === 1 ? '' : 's'}` : (workout ? `Treino ${workout.id} concluído` : 'Treino concluído');
@@ -9486,7 +9493,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v91-guided-screen';
+      const APP_UPDATE_VERSION = 'v92-guided-preview';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
