@@ -15,11 +15,14 @@ for (const token of [
   ':focus-visible',
   'translateY(1px) scale(.985)',
   'guided-next-btn.ready',
+  "updateViaCache: 'none'",
+  'checkRemoteAppVersion',
+  "cache: 'no-store'",
   'Pular por agora →',
   'Encerrar exercício',
   'Encerrar treino agora',
-  "const APP_UPDATE_VERSION = 'v89-guided-buttons'",
-  "CACHE_NAME = 'marsb-gym-v89-guided-buttons'"
+  "const APP_UPDATE_VERSION = 'v90-update-hardening'",
+  "CACHE_NAME = 'marsb-gym-v90-update-hardening'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Refinamento de botões sem suporte esperado: ${token}`);
 }
@@ -32,4 +35,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('O refinamento visual não pode apagar dados locais.');
 }
 
-console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v89 validados.');
+console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v90 validados.');

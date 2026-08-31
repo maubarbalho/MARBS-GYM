@@ -4,8 +4,8 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 const required = [
-  "const APP_UPDATE_VERSION = 'v89-guided-buttons'",
-  "const CACHE_NAME = 'marsb-gym-v89-guided-buttons'",
+  "const APP_UPDATE_VERSION = 'v90-update-hardening'",
+  "const CACHE_NAME = 'marsb-gym-v90-update-hardening'",
   "field.addEventListener('change'",
   'let dietFoodSearchTimer = null',
   'setTimeout(() => renderDietFoodOptions(search.value), 180)',

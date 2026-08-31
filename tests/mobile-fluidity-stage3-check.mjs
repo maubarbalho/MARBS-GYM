@@ -4,14 +4,14 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v89-guided-buttons'",
+  "const APP_UPDATE_VERSION = 'v90-update-hardening'",
   'function updateGuidedSetProgress(ex)',
   'updateGuidedSetProgress(ex);',
   "row.classList.toggle('done', done)",
   "button.setAttribute('aria-pressed', String(done))",
   "guidedBody.querySelector('.guided-focus-set strong')",
   "guidedBody.querySelector('.js-guided-next')",
-  "CACHE_NAME = 'marsb-gym-v89-guided-buttons'"
+  "CACHE_NAME = 'marsb-gym-v90-update-hardening'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 3 sem suporte esperado: ${token}`);
 }

@@ -4,7 +4,7 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v89-guided-buttons'",
+  "const APP_UPDATE_VERSION = 'v90-update-hardening'",
   'function refreshVisibleWorkoutView()',
   'if (guidedState.active) return;',
   'persistGuidedNavigation(false);',
@@ -12,7 +12,7 @@ for (const token of [
   'renderProgressionPanel();',
   'renderProgressSnapshot();',
   'renderAdherenceCard();',
-  "CACHE_NAME = 'marsb-gym-v89-guided-buttons'"
+  "CACHE_NAME = 'marsb-gym-v90-update-hardening'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 2 sem suporte esperado: ${token}`);
 }

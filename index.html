@@ -9445,7 +9445,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v89-guided-buttons';
+      const APP_UPDATE_VERSION = 'v90-update-hardening';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
@@ -9457,6 +9457,24 @@
         const url = new URL(window.location.href);
         url.searchParams.set('pwa-refresh', APP_UPDATE_VERSION);
         window.location.replace(url.toString());
+      };
+      const checkRemoteAppVersion = async () => {
+        if (!navigator.onLine || hasAutoRefreshedThisVersion()) return;
+        try {
+          const url = new URL('./index.html', window.location.href);
+          url.searchParams.set('app-version-check', `${APP_UPDATE_VERSION}-${Date.now()}`);
+          const response = await fetch(url, { cache: 'no-store', credentials: 'same-origin' });
+          if (!response.ok) return;
+          const source = await response.text();
+          const remoteVersion = source.match(/APP_UPDATE_VERSION\s*=\s*['\"]([^'\"]+)/)?.[1];
+          if (!remoteVersion || remoteVersion === APP_UPDATE_VERSION) return;
+          persistGuidedFormBeforeReload();
+          markAutoRefreshStarted();
+          await purgeOldAppCaches();
+          forceReloadApp();
+        } catch (error) {
+          // A falha de rede não impede o uso offline nem altera os dados locais.
+        }
       };
       const activateWaitingWorker = (registration) => {
         const waiting = registration?.waiting;
@@ -9526,13 +9544,14 @@
         const scriptUrl = new URL('sw.js', window.location.href);
         scriptUrl.searchParams.set('v', APP_UPDATE_VERSION);
         const scope = new URL('./', window.location.href).pathname;
-        navigator.serviceWorker.register(scriptUrl, { scope }).then((registration) => {
+        navigator.serviceWorker.register(scriptUrl, { scope, updateViaCache: 'none' }).then((registration) => {
           activeServiceWorkerRegistration = registration;
           if (registration.waiting) {
             handleUpdateAvailable(registration);
             void applyWaitingWorkerAutomatically(registration);
           }
           checkForAppUpdate(registration);
+          void checkRemoteAppVersion();
           registration.addEventListener('updatefound', () => {
             const installing = registration.installing;
             if (!installing) return;
@@ -9543,9 +9562,9 @@
               }
             });
           });
-          window.addEventListener('pageshow', () => checkForAppUpdate(registration), { passive: true });
+          window.addEventListener('pageshow', () => { checkForAppUpdate(registration); void checkRemoteAppVersion(); }, { passive: true });
           document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') checkForAppUpdate(registration);
+            if (document.visibilityState === 'visible') { checkForAppUpdate(registration); void checkRemoteAppVersion(); }
           });
           window.addEventListener('online', () => checkForAppUpdate(registration), { passive: true });
         }).catch((error) => console.warn('Não foi possível ativar o modo offline.', error));

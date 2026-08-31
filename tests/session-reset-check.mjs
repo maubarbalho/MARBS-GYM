@@ -15,8 +15,8 @@ for (const token of [
   'if (state.activeWorkout?.treino === treinoId) state.activeWorkout = null;',
   'resetCompletedWorkoutForNewSession(treinoId);',
   "const resetCompleted = resetCompletedWorkoutForNewSession(treinoId);",
-  "const APP_UPDATE_VERSION = 'v89-guided-buttons'",
-  "CACHE_NAME = 'marsb-gym-v89-guided-buttons'"
+  "const APP_UPDATE_VERSION = 'v90-update-hardening'",
+  "CACHE_NAME = 'marsb-gym-v90-update-hardening'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Correção de sessão sem suporte esperado: ${token}`);
 }
