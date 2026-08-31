@@ -7,7 +7,7 @@ const required = [
   'getExerciseGuide',
   'openExerciseGuide',
   'closeExerciseGuide',
-  'Ver ficha local do exercício',
+  'Ver execução do exercício',
   'js-guide-exercise',
   'js-guided-exercise-guide',
   'guide-steps',

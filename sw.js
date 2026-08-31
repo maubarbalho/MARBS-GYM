@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v90-update-hardening';
+const CACHE_NAME = 'marsb-gym-v91-guided-screen';
 const APP_SHELL = [
   './',
   './index.html',

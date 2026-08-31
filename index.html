@@ -704,6 +704,15 @@
     .guided-ex-name { font-size:clamp(1.28rem, 5vw, 1.8rem); line-height:1.1; margin-bottom:10px; }
     .guided-record { display:inline-flex; align-items:center; gap:6px; width:max-content; max-width:100%; margin:0 0 15px; padding:7px 11px; border-radius:999px; background:#f5ec43; color:#171717; font-size:0.76rem; font-weight:800; }
     .guided-record.empty { background:var(--bg-elevated); color:var(--text-muted); }
+    .guided-guide-btn, .guided-copy-btn { width:100%; min-height:48px; margin:8px 0 0; padding:11px 13px; border:1px solid var(--border); border-radius:14px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; text-align:left; transition:transform 140ms var(--ease-out, ease-out), background 140ms var(--ease-out, ease-out), border-color 140ms var(--ease-out, ease-out); -webkit-tap-highlight-color:transparent; }
+    .guided-guide-btn { border-color:color-mix(in srgb,var(--primary) 38%,var(--border)); }
+    .guided-copy-btn { background:color-mix(in srgb,var(--accent) 10%,var(--control-bg)); color:var(--accent); }
+    .guided-guide-btn:focus-visible, .guided-copy-btn:focus-visible { outline:3px solid color-mix(in srgb,var(--primary) 38%,transparent); outline-offset:2px; }
+    .guided-guide-btn:active, .guided-copy-btn:active { transform:translateY(1px) scale(.985); }
+    .guided-next-card { display:grid; grid-template-columns:1fr; gap:3px; margin-top:16px; padding:13px 14px; border:1px solid color-mix(in srgb,var(--primary) 30%,var(--border)); border-radius:16px; background:color-mix(in srgb,var(--primary) 8%,var(--bg-card)); }
+    .guided-next-kicker { color:var(--primary); font-size:.65rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+    .guided-next-card strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.95rem; }
+    .guided-next-hint { color:var(--text-muted); font-size:.72rem; line-height:1.35; }
     .guided-section-label { color:var(--text-muted); font-size:0.83rem; text-align:center; margin:5px 0 10px; }
     .guided-metric-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; text-align:center; }
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
@@ -736,7 +745,7 @@
     .guided-focus-rest { min-height:48px; padding:0 13px; border:1px solid var(--border); border-radius:14px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.76rem; font-weight:800; cursor:pointer; transition:transform 140ms var(--ease-out, ease-out), background 140ms var(--ease-out, ease-out), border-color 140ms var(--ease-out, ease-out); -webkit-tap-highlight-color:transparent; }
     .guided-rest-panel { display:none; align-items:center; gap:10px; margin:12px 0 4px; padding:10px 12px; border:1px solid color-mix(in srgb, var(--primary) 36%, var(--border)); border-radius:16px; background:color-mix(in srgb, var(--primary) 9%, var(--bg-card)); }
     .guided-rest-panel.active { display:flex; }
-    .guided-rest-start { display:inline-flex; align-items:center; justify-content:center; min-height:42px; margin:10px 0 2px; padding:0 12px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .guided-rest-start { display:inline-flex; align-items:center; justify-content:center; min-height:48px; margin:10px 0 2px; padding:0 12px; border:1px solid var(--border); border-radius:14px; background:var(--control-bg); color:var(--text); font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; transition:transform 140ms var(--ease-out, ease-out), background 140ms var(--ease-out, ease-out), border-color 140ms var(--ease-out, ease-out); -webkit-tap-highlight-color:transparent; }
     .guided-rest-start[hidden] { display:none; }
     .guided-rest-copy { min-width:0; flex:1; }
     .guided-rest-kicker { display:block; color:var(--text-muted); font-size:.63rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
@@ -5824,6 +5833,32 @@
       }
     }
 
+    function getLastWorkoutSetDetails(exId) {
+      const records = (state.completedWorkouts || []).slice().reverse();
+      for (const record of records) {
+        const details = record.setDetails && Array.isArray(record.setDetails[exId]) ? record.setDetails[exId] : [];
+        if (details.some((detail) => detail && (detail.reps || detail.weight))) return details;
+      }
+      return [];
+    }
+
+    function copyLastGuidedWorkout() {
+      if (!guidedState.active) return;
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      const details = getLastWorkoutSetDetails(ex.id);
+      const fallback = getLastPerformance(ex.id);
+      if (!details.length && !fallback) { showToast('Ainda não há dados anteriores para copiar'); return; }
+      if (!confirm('Copiar os dados do último treino para esta sessão? As séries continuarão desmarcadas.')) return;
+      const copied = Array.from({ length: ex.series }, (_, index) => details[index] || { reps: fallback?.reps?.[index] || fallback?.reps?.[0] || '', weight: fallback?.weight || '' });
+      copied.forEach((detail, index) => {
+        if (detail?.reps) saveSetDetail(ex.id, index, 'reps', detail.reps);
+        if (detail?.weight) saveSetDetail(ex.id, index, 'weight', detail.weight);
+      });
+      renderGuidedStep();
+      showToast('Dados do último treino copiados. Confira e marque cada série ao concluir.');
+    }
+
     function repeatLastGuidedSet() {
       if (!guidedState.active) return;
       const ex = guidedState.exercises[guidedState.index];
@@ -5870,6 +5905,9 @@
       const guidedBody = document.getElementById('guidedBody');
       const pendingExercises = getGuidedPendingExercises().filter((exercise) => exercise.id !== ex.id);
       const pendingHtml = pendingExercises.length ? `<div class="guided-pending-list" aria-label="Exercícios pendentes"><strong>Voltar depois:</strong>${pendingExercises.map((exercise) => `<button type="button" class="js-guided-return" data-exercise-id="${encodeData(exercise.id)}" title="Voltar para ${escapeHtml(exercise.nome)}">${escapeHtml(exercise.nome)}</button>`).join('')}</div>` : '';
+      const nextIndex = getNextGuidedExecutionIndex(guidedState.index, true);
+      const nextExercise = nextIndex < total ? guidedState.exercises[nextIndex] : null;
+      const nextExerciseHtml = nextExercise ? `<div class="guided-next-card" aria-label="Próximo exercício"><span class="guided-next-kicker">Próximo exercício</span><strong>${escapeHtml(nextExercise.nome)}</strong><span class="guided-next-hint">Você pode avançar agora ou concluir a série atual.</span></div>` : '';
       const executionGroup = getExecutionGroupIndexes(guidedState.index).map((item) => guidedState.exercises[item]).filter(Boolean);
       const executionNames = executionGroup.map((exercise) => exercise.nome).join(' + ');
       const executionCard = guidedState.executionMode === 'normal' ? '' : `<div class="guided-execution-card"><strong>${escapeHtml(executionModeLabel(guidedState.executionMode))} · ${escapeHtml(executionNames)}</strong><span>${guidedState.executionMode === 'circuit' ? 'Faça uma série de cada estação e avance para a próxima rodada.' : 'Alterne entre os dois exercícios da estação antes de repetir a série.'} O app alterna após cada série marcada; o registro continua vinculado ao exercício original.</span></div>`;
@@ -5895,7 +5933,8 @@
             </div>
             <div class="guided-skip-note">Pode avançar sem começar este exercício. As séries já registradas ficam salvas e você pode voltar por “Voltar depois”.</div>
             ${executionCard}
-            <button type="button" class="guided-guide-btn js-guided-exercise-guide">ⓘ Ver ficha local do exercício</button>
+            <button type="button" class="guided-guide-btn js-guided-exercise-guide">ⓘ Ver execução do exercício</button>
+            ${getLastPerformance(ex.id) ? '<button type="button" class="guided-copy-btn js-guided-copy">↶ Usar dados do último treino</button>' : ''}
             ${guidedLibraryHtml}
             <div class="guided-record ${personalRecord ? '' : 'empty'}">★ Recorde pessoal: ${personalRecord ? `${escapeHtml(personalRecord)} kg` : 'sem registro'}</div>
             <div class="guided-focus-current"><div><span>Exercício em foco</span><strong>${escapeHtml(ex.nome)}</strong></div><div class="guided-focus-set"><span>Progresso</span><strong>${guidedState.index + 1}/${total} · série ${Math.min(ex.series, focusSetIndex + 1)}/${ex.series}</strong></div></div>
@@ -5937,6 +5976,7 @@
                 <button class="guided-rest-action" type="button" onclick="skipTimer()">Pular</button>
               </div>
             </div>
+            ${nextExerciseHtml}
             <div class="guided-history-card">
               <span class="guided-history-icon" aria-hidden="true">↶</span>
               <div><span class="guided-history-title">Histórico da atividade</span><span class="guided-history-detail">${lastEntry ? `Último registro: ${escapeHtml(lastEntry.weight)} kg • Semana ${escapeHtml(lastEntry.week)}` : 'Marque séries e registre peso e repetições para criar seu histórico.'}</span></div>
@@ -5969,6 +6009,7 @@
       guidedBody.querySelector('.js-guided-exercise-guide')?.addEventListener('click', () => openExerciseGuide(ex.id, guidedState.treinoId));
       guidedBody.querySelectorAll('.js-guided-rest').forEach((button) => button.addEventListener('click', () => startTimer(ex.descanso)));
       guidedBody.querySelector('.js-guided-timer')?.addEventListener('click', () => startTimer(ex.descanso));
+      guidedBody.querySelector('.js-guided-copy')?.addEventListener('click', copyLastGuidedWorkout);
       guidedBody.querySelector('.js-guided-repeat')?.addEventListener('click', repeatLastGuidedSet);
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(getNextGuidedExecutionIndex(guidedState.index)) : skipGuidedExercise());
@@ -9445,7 +9486,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v90-update-hardening';
+      const APP_UPDATE_VERSION = 'v91-guided-screen';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
