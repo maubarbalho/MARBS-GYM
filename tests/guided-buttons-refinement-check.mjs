@@ -16,6 +16,11 @@ for (const token of [
   'translateY(1px) scale(.985)',
   'guided-next-btn.ready',
   'guided-copy-btn',
+  'Completar atividade',
+  'Último treino',
+  'guided-checkin-scale',
+  'guidedActivityCheckinModal',
+  'guided-complete-activity',
   'guidedStepLabel',
   'guided-segment-track-top',
   'Treino A',
@@ -28,8 +33,8 @@ for (const token of [
   'Pular por agora →',
   'Encerrar exercício',
   'Encerrar treino agora',
-  "const APP_UPDATE_VERSION = 'v92-guided-preview'",
-  "CACHE_NAME = 'marsb-gym-v92-guided-preview'"
+  "const APP_UPDATE_VERSION = 'v93-activity-flow'",
+  "CACHE_NAME = 'marsb-gym-v93-activity-flow'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Refinamento de botões sem suporte esperado: ${token}`);
 }
@@ -42,4 +47,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('O refinamento visual não pode apagar dados locais.');
 }
 
-console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v92 validados.');
+console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v93 validados.');

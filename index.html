@@ -715,6 +715,14 @@
     .guided-next-kicker { color:var(--primary); font-size:.65rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
     .guided-next-card strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.95rem; }
     .guided-next-hint { color:var(--text-muted); font-size:.72rem; line-height:1.35; }
+    .guided-checkin-sheet { max-width:430px; }
+    .guided-checkin-summary, .guided-checkin-question { color:var(--text-muted); font-size:.82rem; line-height:1.4; }
+    .guided-checkin-question { color:var(--text); font-weight:850; margin:18px 0 8px; }
+    .guided-checkin-scale { display:grid; grid-template-columns:repeat(5, 1fr); gap:7px; }
+    .guided-checkin-score { min-height:46px; border:1px solid var(--border); border-radius:12px; background:var(--control-bg); color:var(--text); font:inherit; font-weight:850; cursor:pointer; }
+    .guided-checkin-score[aria-pressed="true"] { background:var(--primary); border-color:var(--primary); color:var(--primary-ink); }
+    .guided-checkin-value { margin:9px 0; color:var(--primary); font-size:.78rem; font-weight:800; }
+    .guided-checkin-note { width:100%; min-height:78px; resize:vertical; border:1px solid var(--border); border-radius:12px; padding:10px; background:var(--bg); color:var(--text); font:inherit; font-size:16px; }
     .guided-section-label { color:var(--text-muted); font-size:0.83rem; text-align:center; margin:5px 0 10px; }
     .guided-metric-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; text-align:center; }
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
@@ -2764,6 +2772,20 @@
       <button type="button" class="config-window-close" onclick="closeConfigWindow()">Fechar</button>
     </div>
     <div id="configWindowBody"></div>
+  </div>
+
+  <!-- MODAL: esforço percebido da atividade guiada -->
+  <div class="modal-overlay" id="guidedActivityCheckinModal" role="dialog" aria-modal="true" aria-labelledby="guidedActivityCheckinTitle">
+    <div class="modal-sheet guided-checkin-sheet">
+      <button type="button" class="modal-close-x" id="guidedActivityCheckinClose" aria-label="Cancelar conclusão da atividade">✕</button>
+      <div class="modal-title" id="guidedActivityCheckinTitle">Esforço percebido</div>
+      <p class="guided-checkin-summary" id="guidedActivityCheckinSummary"></p>
+      <div class="guided-checkin-question">Como foi esta atividade?</div>
+      <div class="guided-checkin-scale" role="group" aria-label="Esforço percebido de 1 a 10">${Array.from({length:10}, (_, i) => `<button type="button" class="guided-checkin-score" data-guided-effort="${i + 1}" aria-pressed="false">${i + 1}</button>`).join('')}</div>
+      <div class="guided-checkin-value" id="guidedActivityCheckinValue">Selecione de 1 a 10</div>
+      <textarea class="guided-checkin-note" id="guidedActivityCheckinNote" maxlength="240" placeholder="Comentário opcional" aria-label="Comentário opcional da atividade"></textarea>
+      <div class="modal-actions"><button type="button" class="btn-action" id="guidedActivityCheckinCancel">Cancelar</button><button type="button" class="btn-action primary" id="guidedActivityCheckinSave">Salvar e continuar</button></div>
+    </div>
   </div>
 
   <!-- GUIDED MODE OVERLAY -->
@@ -5746,6 +5768,34 @@
       showToast('Exercício pendente reaberto');
     }
 
+    function completeGuidedActivity() {
+      if (!guidedState.active) return;
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex || !getDoneArr(ex).every(Boolean)) { showToast('Marque todas as séries antes de completar a atividade.'); return; }
+      const modal = document.getElementById('guidedActivityCheckinModal');
+      const summary = document.getElementById('guidedActivityCheckinSummary');
+      if (summary) summary.textContent = `${ex.nome} · ${getDoneArr(ex).filter(Boolean).length}/${ex.series} séries registradas`;
+      document.querySelectorAll('[data-guided-effort]').forEach((button) => { button.setAttribute('aria-pressed', 'false'); button.classList.remove('is-selected'); });
+      const note = document.getElementById('guidedActivityCheckinNote');
+      if (note) note.value = '';
+      modal?.classList.add('show');
+      document.querySelector('[data-guided-effort="5"]')?.focus();
+    }
+
+    function saveGuidedActivityCheckin() {
+      const ex = guidedState.exercises[guidedState.index];
+      if (!ex) return;
+      const effort = Number(document.querySelector('[data-guided-effort][aria-pressed="true"]')?.dataset.guidedEffort) || 0;
+      if (!effort) { showToast('Selecione o esforço percebido para continuar.'); return; }
+      if (!state.guidedActivityCheckins) state.guidedActivityCheckins = {};
+      state.guidedActivityCheckins[`${guidedState.treinoId}:${ex.id}:${todayKey()}`] = { effort, note: boundedText(document.getElementById('guidedActivityCheckinNote')?.value, 240), savedAt: new Date().toISOString() };
+      saveState();
+      document.getElementById('guidedActivityCheckinModal')?.classList.remove('show');
+      const nextIndex = getNextGuidedExecutionIndex(guidedState.index);
+      startTimer(ex.descanso);
+      guidedGoTo(nextIndex);
+    }
+
     function endGuidedExercise() {
       const ex = guidedState.exercises[guidedState.index];
       if (!ex) return;
@@ -5899,6 +5949,7 @@
       const doneArr = getDoneArr(ex);
       const setDetails = getSetDetails(ex);
       const setTypes = getSetTypes(ex);
+      const lastWorkoutDetails = getLastWorkoutSetDetails(ex.id);
       const allDone = doneArr.every(Boolean);
       const fullHist = (state.weightHistory[ex.id] || []);
       const lastEntry = fullHist[fullHist.length - 1];
@@ -5948,10 +5999,12 @@
               <div class="guided-metric">Técnica<strong>${escapeHtml(ex.tech.split('•')[0].trim())}</strong></div>
             </div>
             <div class="guided-tech-note">${escapeHtml(ex.tech)}</div>
-            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Reps</span><span>Peso (kg)</span><span></span></div>
+            <div class="guided-set-head" aria-hidden="true"><span>Série</span><span>Reps</span><span>Carga (kg)</span><span>Último treino</span><span></span></div>
             <div class="guided-set-list">
               ${Array.from({length: ex.series}, (_, i) => {
                 const detail = setDetails[i] || { reps: '', weight: '' };
+                const previous = lastWorkoutDetails[i] || {};
+                const previousText = previous.reps || previous.weight ? `${escapeHtml(previous.reps || '—')} × ${escapeHtml(previous.weight || '0')} kg` : '—';
                 const repsId = `guidedReps-${encodeData(ex.id)}-${i}`;
                 const weightId = `guidedWeight-${encodeData(ex.id)}-${i}`;
                 return `
@@ -5961,6 +6014,7 @@
                   <input id="${repsId}" class="guided-set-input js-guided-set-field" type="number" inputmode="numeric" min="0" max="2000" step="1" placeholder="${escapeHtml(ex.reps)}" value="${escapeHtml(detail.reps)}" data-set-index="${i}" data-field="reps" aria-label="Repetições da série ${i + 1}" />
                   <label class="sr-only" for="${weightId}">Peso da série ${i + 1} de ${escapeHtml(ex.nome)} em quilogramas</label>
                   <input id="${weightId}" class="guided-set-input js-guided-set-field" type="text" inputmode="decimal" min="0" max="1000" step="0.1" placeholder="Ex: 2,5" value="${escapeHtml(detail.weight)}" data-set-index="${i}" data-field="weight" aria-label="Peso da série ${i + 1} em quilogramas" />
+                  <span class="guided-last-set">${previousText}</span>
                   <button class="guided-set-status js-guided-set-toggle" type="button" data-set-index="${i}" aria-pressed="${doneArr[i] ? 'true' : 'false'}" aria-label="${doneArr[i] ? 'Desmarcar' : 'Marcar'} série ${i + 1} de ${escapeHtml(ex.nome)}">✓</button>
                 </div>
               `;
@@ -5990,6 +6044,7 @@
                 <button class="guided-prev-btn js-guided-prev" type="button" ${guidedState.index === 0 ? 'disabled' : ''}>← Anterior</button>
                 <button class="guided-next-btn js-guided-next ${allDone ? 'ready' : ''}" type="button">${guidedState.index === total - 1 ? (allDone ? 'Finalizar ✓' : 'Pular por agora →') : (allDone ? 'Próximo →' : 'Pular por agora →')}</button>
               </div>
+              <button class="guided-complete-activity js-guided-complete-activity" type="button" ${allDone ? '' : 'disabled'}>✓ Completar atividade</button>
               <div class="guided-utility-row" aria-label="Ações adicionais do exercício">
                 <button class="guided-utility-btn js-guided-timer" type="button">⏱ Iniciar timer</button>
                 <button class="guided-utility-btn js-guided-repeat" type="button" ${getLastPerformance(ex.id) || focusSetIndex > 0 ? '' : 'disabled'}>↻ Repetir última</button>
@@ -6015,6 +6070,7 @@
       guidedBody.querySelector('.js-guided-timer')?.addEventListener('click', () => startTimer(ex.descanso));
       guidedBody.querySelector('.js-guided-copy')?.addEventListener('click', copyLastGuidedWorkout);
       guidedBody.querySelector('.js-guided-repeat')?.addEventListener('click', repeatLastGuidedSet);
+      guidedBody.querySelector('.js-guided-complete-activity')?.addEventListener('click', () => completeGuidedActivity());
       guidedBody.querySelector('.js-guided-prev').addEventListener('click', () => guidedGoTo(guidedState.index - 1));
       guidedBody.querySelector('.js-guided-next').addEventListener('click', () => allDone || guidedState.index === total - 1 && allDone ? guidedGoTo(getNextGuidedExecutionIndex(guidedState.index)) : skipGuidedExercise());
       guidedBody.querySelectorAll('.js-guided-return').forEach((button) => button.addEventListener('click', () => returnToGuidedExercise(decodeData(button.dataset.exerciseId))));
@@ -9362,6 +9418,19 @@
     }
 
     // ===================== INIT =====================
+    document.querySelectorAll('[data-guided-effort]').forEach((button) => button.addEventListener('click', () => {
+      const value = Number(button.dataset.guidedEffort);
+      document.querySelectorAll('[data-guided-effort]').forEach((option) => {
+        const selected = option === button;
+        option.setAttribute('aria-pressed', String(selected));
+        option.classList.toggle('is-selected', selected);
+      });
+      const valueLabel = document.getElementById('guidedActivityCheckinValue');
+      if (valueLabel) valueLabel.textContent = `Esforço selecionado: ${value}/10`;
+    }));
+    document.getElementById('guidedActivityCheckinClose')?.addEventListener('click', () => document.getElementById('guidedActivityCheckinModal')?.classList.remove('show'));
+    document.getElementById('guidedActivityCheckinCancel')?.addEventListener('click', () => document.getElementById('guidedActivityCheckinModal')?.classList.remove('show'));
+    document.getElementById('guidedActivityCheckinSave')?.addEventListener('click', saveGuidedActivityCheckin);
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => switchPage(btn.dataset.page));
     });
@@ -9492,7 +9561,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v92-guided-preview';
+      const APP_UPDATE_VERSION = 'v93-activity-flow';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
