@@ -4,8 +4,8 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 const required = [
-  "const APP_UPDATE_VERSION = 'v87-guided-next-pending'",
-  "const CACHE_NAME = 'marsb-gym-v87-guided-next-pending'",
+  "const APP_UPDATE_VERSION = 'v88-session-reset'",
+  "const CACHE_NAME = 'marsb-gym-v88-session-reset'",
   "field.addEventListener('change'",
   'let dietFoodSearchTimer = null',
   'setTimeout(() => renderDietFoodOptions(search.value), 180)',
@@ -32,4 +32,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('A Etapa 1 não pode limpar o estado principal local.');
 }
 
-console.log('OK: fluidez mobile da Etapa 1, salvamento sem blur duplicado, debounces, toque agrupado e cache v87 validados.');
+console.log('OK: fluidez mobile da Etapa 1, salvamento sem blur duplicado, debounces, toque agrupado e cache v88 validados.');

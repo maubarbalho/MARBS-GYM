@@ -11,8 +11,8 @@ for (const token of [
   'if (exercise && !getDoneArr(exercise).every(Boolean)) return candidate',
   'const current = guidedState.exercises[index]',
   'guidedGoTo(getNextGuidedExecutionIndex(guidedState.index, true))',
-  "const APP_UPDATE_VERSION = 'v87-guided-next-pending'",
-  "CACHE_NAME = 'marsb-gym-v87-guided-next-pending'"
+  "const APP_UPDATE_VERSION = 'v88-session-reset'",
+  "CACHE_NAME = 'marsb-gym-v88-session-reset'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Avanço pendente sem suporte esperado: ${token}`);
 }
@@ -27,4 +27,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('A correção não pode limpar o estado local principal.');
 }
 
-console.log('OK: avanço ao próximo exercício pendente, retorno após salto, modos de execução e cache v87 validados.');
+console.log('OK: avanço ao próximo exercício pendente, retorno após salto, modos de execução e cache v88 validados.');

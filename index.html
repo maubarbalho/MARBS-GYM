@@ -3658,10 +3658,21 @@
       return incomplete ? incomplete.tid : Object.keys(treinosMap())[0];
     }
 
+    function resetCompletedWorkoutForNewSession(treinoId) {
+      if (!isTreinoComplete(treinoId)) return false;
+      getTreinoExercises(treinoId).forEach((ex) => {
+        state.sets[ex.id] = Array.from({ length: ex.series }, () => false);
+        state.setDetails[ex.id] = Array.from({ length: ex.series }, () => ({ reps: '', weight: '' }));
+      });
+      if (state.activeWorkout?.treino === treinoId) state.activeWorkout = null;
+      return true;
+    }
+
     function startWorkoutSession(treinoId) {
       if (!treinosMap()[treinoId]) return;
       const current = getInProgressWorkoutId();
       if (current && current !== treinoId && !confirm(`Você tem o Treino ${current} em andamento. Deseja abrir o Treino ${treinoId} mesmo assim?`)) return;
+      resetCompletedWorkoutForNewSession(treinoId);
       state.pausedWorkouts = (Array.isArray(state.pausedWorkouts) ? state.pausedWorkouts : []).filter((id) => id !== treinoId);
       state.activeWorkout = { treino: treinoId, startedAt: state.activeWorkout?.treino === treinoId ? state.activeWorkout.startedAt : new Date().toISOString(), updatedAt: Date.now() };
       saveState();
@@ -5643,7 +5654,8 @@
     function startGuided(treinoId, requestedMode = 'normal') {
       const exercises = getTreinoExercises(treinoId);
       if (!exercises.length) { showToast('Nenhum exercício neste treino'); return; }
-      const savedSession = state.activeWorkout?.treino === treinoId ? state.activeWorkout : null;
+      const resetCompleted = resetCompletedWorkoutForNewSession(treinoId);
+      const savedSession = resetCompleted ? null : (state.activeWorkout?.treino === treinoId ? state.activeWorkout : null);
       guidedState.active = true;
       guidedState.treinoId = treinoId;
       guidedState.exercises = exercises;
@@ -9429,7 +9441,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v87-guided-next-pending';
+      const APP_UPDATE_VERSION = 'v88-session-reset';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

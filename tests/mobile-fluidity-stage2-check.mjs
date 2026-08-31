@@ -4,7 +4,7 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v87-guided-next-pending'",
+  "const APP_UPDATE_VERSION = 'v88-session-reset'",
   'function refreshVisibleWorkoutView()',
   'if (guidedState.active) return;',
   'persistGuidedNavigation(false);',
@@ -12,7 +12,7 @@ for (const token of [
   'renderProgressionPanel();',
   'renderProgressSnapshot();',
   'renderAdherenceCard();',
-  "CACHE_NAME = 'marsb-gym-v87-guided-next-pending'"
+  "CACHE_NAME = 'marsb-gym-v88-session-reset'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 2 sem suporte esperado: ${token}`);
 }
@@ -39,4 +39,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('A Etapa 2 não pode limpar o estado principal local.');
 }
 
-console.log('OK: Etapa 2, tela visível, persistência única, renderizações duplicadas removidas e cache v87 validados.');
+console.log('OK: Etapa 2, tela visível, persistência única, renderizações duplicadas removidas e cache v88 validados.');
