@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v96-focus-reference';
+const CACHE_NAME = 'marsb-gym-v97-focus-header';
 const APP_SHELL = [
   './',
   './index.html',

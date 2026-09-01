@@ -2030,26 +2030,27 @@
     }
     @media (max-width:600px) {
       .guided-overlay { background:#080c10; }
-      .guided-header { display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:8px; align-items:center; min-height:92px; padding:calc(12px + var(--safe-top)) 16px 10px; border-bottom:1px solid #293038; }
+      .guided-header { display:grid; grid-template-columns:36px minmax(0,1fr) 36px; gap:6px; align-items:center; min-height:68px; padding:calc(7px + var(--safe-top)) 12px 6px; border-bottom:1px solid #293038; }
       .guided-back-btn { width:44px; height:44px; font-size:2.25rem; }
       .guided-header-copy { min-width:0; }
-      .guided-brand-lockup { display:flex; color:var(--primary); font-size:.9rem; letter-spacing:.06em; }
+      .guided-brand-lockup { display:none; }
       .guided-brand-lockup span:nth-of-type(2), .guided-brand-lockup span:nth-of-type(3) { display:none; }
       .guided-brand-logo { width:16px; height:16px; flex-basis:16px; }
-      .guided-progress-label { margin-top:4px; font-size:2rem; line-height:1; letter-spacing:-.04em; }
-      .guided-step-label { font-size:.98rem; margin-top:5px; }
+      .guided-progress-label { margin-top:0; text-align:center; font-size:1.38rem; line-height:1; letter-spacing:-.03em; }
+      .guided-step-label { text-align:center; font-size:.78rem; margin-top:3px; }
       .guided-header-actions { display:flex; align-items:center; gap:6px; }
       .guided-mode-select-wrap, .guided-focus-toggle { display:none; }
-      .guided-exit-btn { width:42px; min-height:42px; overflow:hidden; padding:0; border:0; border-radius:50%; background:transparent; color:var(--primary); font-size:0; }
+      .guided-exit-btn { width:36px; min-height:36px; overflow:hidden; padding:0; border:0; border-radius:50%; background:transparent; color:var(--primary); font-size:0; }
       .guided-exit-btn::after { content:'⋮'; font-size:2rem; line-height:1; }
       .guided-progress-bar { height:3px; background:#20272d; }
       .guided-segment-track-top { padding:14px 16px 0; }
       .guided-body { padding:14px 12px 128px; }
       .guided-workout-shell { max-width:none; }
       .guided-activity-card { position:relative; padding:14px; border-radius:20px; background:#1a2024; border-color:#3a444d; box-shadow:none; }
-      .guided-media-card { grid-template-columns:132px minmax(0,1fr); gap:14px; align-items:center; margin-bottom:12px; }
-      .guided-media-visual { width:132px; height:132px; border-radius:50%; }
-      .guided-art-mark { width:68px; height:68px; font-size:1.75rem; }
+      .guided-media-card { grid-template-columns:112px minmax(0,1fr); gap:12px; align-items:center; margin-bottom:12px; }
+      .guided-media-visual { width:112px; height:112px; border-radius:16px; }
+      .guided-art-mark { width:auto; height:auto; border:0; box-shadow:none; }
+      .guided-art-image { width:64px; height:44px; color:var(--primary); }
       .guided-muscle-label { display:inline-block; margin:0 0 8px; padding:5px 9px; border:1px solid #65717b; border-radius:9px; color:var(--primary); font-size:.76rem; }
       .guided-ex-name { font-size:1.55rem; line-height:1.05; margin-bottom:12px; }
       .guided-record { position:absolute; right:14px; top:150px; margin:0; padding:8px 10px; border-radius:10px; font-size:.7rem; }
@@ -6125,7 +6126,7 @@
           <article class="guided-activity-card" aria-labelledby="guidedExerciseTitle">
             <div class="guided-media-card">
               <div class="guided-media-visual" role="img" aria-label="Elemento visual da atividade">
-                <span class="guided-art-mark" aria-hidden="true">✦</span>
+                <svg class="guided-art-image" viewBox="0 0 120 80" aria-hidden="true" focusable="false"><path d="M18 28v24M30 20v40M42 28v24M30 40h60M78 28v24M90 20v40M102 28v24" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M8 32v16M112 32v16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>
               </div>
               <div class="guided-media-copy">
                 <div class="guided-muscle-label">${escapeHtml(workout ? workout.nome.split('+')[0].trim() : 'Treino')}</div>
@@ -9707,7 +9708,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v96-focus-reference';
+      const APP_UPDATE_VERSION = 'v97-focus-header';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
