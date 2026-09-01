@@ -4,7 +4,7 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v98-focus-fixed-bar'",
+  "const APP_UPDATE_VERSION = 'v97-focus-header'",
   'function refreshVisibleWorkoutView()',
   'if (guidedState.active) return;',
   'persistGuidedNavigation(false);',
@@ -12,7 +12,7 @@ for (const token of [
   'renderProgressionPanel();',
   'renderProgressSnapshot();',
   'renderAdherenceCard();',
-  "CACHE_NAME = 'marsb-gym-v98-focus-fixed-bar'"
+  "CACHE_NAME = 'marsb-gym-v97-focus-header'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 2 sem suporte esperado: ${token}`);
 }

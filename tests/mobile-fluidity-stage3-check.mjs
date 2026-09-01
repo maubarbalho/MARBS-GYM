@@ -4,14 +4,14 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v98-focus-fixed-bar'",
+  "const APP_UPDATE_VERSION = 'v97-focus-header'",
   'function updateGuidedSetProgress(ex)',
   'updateGuidedSetProgress(ex);',
   "row.classList.toggle('done', done)",
   "button.setAttribute('aria-pressed', String(done))",
   "guidedBody.querySelector('.guided-focus-set strong')",
   "guidedBody.querySelector('.js-guided-next')",
-  "CACHE_NAME = 'marsb-gym-v98-focus-fixed-bar'"
+  "CACHE_NAME = 'marsb-gym-v97-focus-header'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 3 sem suporte esperado: ${token}`);
 }

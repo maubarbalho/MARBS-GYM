@@ -2082,10 +2082,11 @@
     }
     @media (max-width:600px) {
       /* Modo Foco: composição dedicada baseada na imagem de referência. */
-      .guided-overlay.focus-mode .guided-media-card { display:none; }
+      .guided-overlay.focus-mode .guided-media-card,
       .guided-overlay.focus-mode .guided-record,
-      .guided-overlay.focus-mode .guided-history-card { display:flex; }
-      .guided-overlay.focus-mode .guided-record { position:static; margin:10px 0 14px; }
+      .guided-overlay.focus-mode .guided-history-card { display:grid; }
+      .guided-overlay.focus-mode .guided-media-card { grid-template-columns:132px minmax(0,1fr); gap:14px; align-items:center; margin-bottom:12px; }
+      .guided-overlay.focus-mode .guided-record { position:absolute; right:14px; top:150px; }
       .guided-overlay.focus-mode .guided-focus-current,
       .guided-overlay.focus-mode .guided-focus-controls,
       .guided-overlay.focus-mode .guided-tech-note { display:none; }
@@ -2099,18 +2100,6 @@
       .guided-overlay.focus-mode .guided-utility-row,
       .guided-overlay.focus-mode .guided-interrupt-row { display:none; }
       .guided-overlay.focus-mode .guided-session-footer { display:none; }
-      .guided-overlay.focus-mode .guided-header { position:relative; display:flex; justify-content:center; align-items:center; min-height:60px; padding:calc(5px + var(--safe-top)) 48px 5px; }
-      .guided-overlay.focus-mode .guided-back-btn { position:absolute; left:8px; top:calc(5px + var(--safe-top)); width:40px; height:40px; font-size:1.9rem; }
-      .guided-overlay.focus-mode .guided-header-copy { width:100%; align-items:center; text-align:center; }
-      .guided-overlay.focus-mode .guided-progress-label { font-size:1.15rem; }
-      .guided-overlay.focus-mode .guided-step-label { font-size:.7rem; }
-      .guided-overlay.focus-mode .guided-header-actions { position:absolute; right:8px; top:calc(5px + var(--safe-top)); }
-      .guided-overlay.focus-mode .guided-exit-btn { width:36px; min-height:36px; }
-      .guided-overlay.focus-mode .guided-body { padding-bottom:calc(112px + var(--safe-bottom)); }
-      .guided-overlay.focus-mode .guided-actions-grid { position:fixed; left:0; right:0; bottom:0; z-index:300; display:grid; grid-template-columns:1fr 1.25fr 1.55fr; gap:7px; margin:0; padding:10px 10px calc(10px + var(--safe-bottom)); border:0; border-top:1px solid #293038; border-radius:0; background:rgba(8,12,16,.98); box-shadow:0 -8px 24px rgba(0,0,0,.32); }
-      .guided-overlay.focus-mode .guided-actions-grid .guided-prev-btn,
-      .guided-overlay.focus-mode .guided-actions-grid .guided-next-btn,
-      .guided-overlay.focus-mode .guided-actions-grid .guided-complete-activity { min-height:56px; font-size:.72rem; }
     }
   </style>
 </head>
@@ -9719,7 +9708,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v98-focus-fixed-bar';
+      const APP_UPDATE_VERSION = 'v97-focus-header';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
