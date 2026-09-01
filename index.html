@@ -375,12 +375,13 @@
     .qs-a { color: var(--primary); } .qs-b { color: var(--accent); }
     .qs-c { color: #fbbf24; } .qs-d { color: #c084fc; }
 
-    .qs-done {
+    .qs-done, .qs-week-pending {
       position: absolute; top: 8px; right: 8px;
-      background: var(--accent); color: var(--accent-ink);
-      font-size: 0.65rem; font-weight: 700;
-      padding: 2px 6px; border-radius: 6px;
+      font-size: 0.62rem; font-weight: 800;
+      padding: 3px 7px; border-radius: 999px; white-space: nowrap;
     }
+    .qs-done { background: var(--accent); color: var(--accent-ink); }
+    .qs-week-pending { background: var(--control-bg); color: var(--text-muted); }
 
     .about-section { margin-bottom: 20px; }
     .about-section h3 { font-size: 1rem; margin-bottom: 8px; color: var(--primary); }
@@ -3616,13 +3617,38 @@
       return `${d}/${m}/${y}`;
     }
 
+    function getWeekStartKey(dateValue = new Date()) {
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) return '';
+      date.setHours(12, 0, 0, 0);
+      const mondayOffset = (date.getDay() + 6) % 7;
+      date.setDate(date.getDate() - mondayOffset);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function isDateInCurrentWeek(dateValue) {
+      if (!isValidDateKey(dateValue)) return false;
+      return getWeekStartKey(`${dateValue}T12:00:00`) === getWeekStartKey(new Date());
+    }
+
+    function getCompletedWorkoutIdsThisWeek() {
+      return new Set((state.completedWorkouts || [])
+        .filter((entry) => entry && entry.status === 'completed' && isDateInCurrentWeek(entry.date))
+        .map((entry) => entry.treino)
+        .filter(Boolean));
+    }
+
+    function isWorkoutCompletedThisWeek(treinoId) {
+      return getCompletedWorkoutIdsThisWeek().has(treinoId);
+    }
+
     // ===================== RENDER =====================
     function renderQuickStart() {
       renderHomeProfile();
       const container = document.getElementById('quickStart');
       container.innerHTML = '';
       Object.values(treinosMap()).forEach(t => {
-        const done = getTreinoExercises(t.id).length > 0 && isTreinoComplete(t.id);
+        const done = isWorkoutCompletedThisWeek(t.id);
         const el = document.createElement('div');
         el.className = 'qs-card';
         el.setAttribute('role', 'button');
@@ -3634,7 +3660,7 @@
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
         });
         el.innerHTML = `
-          ${done ? '<span class="qs-done">✓ Feito</span>' : ''}
+          <span class="${done ? 'qs-done' : 'qs-week-pending'}">${done ? '✓ Feito nesta semana' : '○ Pendente nesta semana'}</span>
           <div class="qs-letter qs-${escapeHtml(t.id.toLowerCase())}">${escapeHtml(t.id)}</div>
           <div class="qs-name">${escapeHtml(t.nome.split('+')[0].trim())}</div>
         `;
@@ -9561,7 +9587,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v93-activity-flow';
+      const APP_UPDATE_VERSION = 'v94-weekly-status';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
