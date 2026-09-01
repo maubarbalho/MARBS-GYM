@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v94-weekly-status';
+const CACHE_NAME = 'marsb-gym-v95-weekly-card-layout';
 const APP_SHELL = [
   './',
   './index.html',

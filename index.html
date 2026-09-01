@@ -366,19 +366,21 @@
     }
     .qs-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px; text-align: center;
+      border-radius: var(--radius); padding: 12px 10px 14px; text-align: center;
       cursor: pointer; transition: border-color 0.2s; position: relative;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
     }
     .qs-card:active { border-color: var(--primary); }
-    .qs-letter { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
-    .qs-name { font-size: 0.8rem; color: var(--text-muted); }
+    .qs-letter { font-size: 1.8rem; font-weight: 800; line-height: 1; margin: 2px 0 0; }
+    .qs-name { font-size: 0.8rem; color: var(--text-muted); line-height: 1.25; }
     .qs-a { color: var(--primary); } .qs-b { color: var(--accent); }
     .qs-c { color: #fbbf24; } .qs-d { color: #c084fc; }
 
     .qs-done, .qs-week-pending {
-      position: absolute; top: 8px; right: 8px;
-      font-size: 0.62rem; font-weight: 800;
-      padding: 3px 7px; border-radius: 999px; white-space: nowrap;
+      position: static; display: inline-flex; align-items: center; justify-content: center;
+      max-width: 100%; font-size: 0.62rem; font-weight: 800;
+      line-height: 1.15; text-align: center; padding: 3px 7px;
+      border-radius: 999px; white-space: normal;
     }
     .qs-done { background: var(--accent); color: var(--accent-ink); }
     .qs-week-pending { background: var(--control-bg); color: var(--text-muted); }
@@ -9587,7 +9589,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v94-weekly-status';
+      const APP_UPDATE_VERSION = 'v95-weekly-card-layout';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
