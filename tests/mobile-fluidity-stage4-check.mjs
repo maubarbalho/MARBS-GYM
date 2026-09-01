@@ -4,7 +4,7 @@ const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 for (const token of [
-  "const APP_UPDATE_VERSION = 'v95-mobile-reference'",
+  "const APP_UPDATE_VERSION = 'v96-focus-reference'",
   'const derivedSummaryCache = {',
   'function invalidateDerivedSummaryCache()',
   'derivedSummaryCache.workout.clear()',
@@ -16,7 +16,7 @@ for (const token of [
   'derivedSummaryCache.calendar.set(cacheKey, days)',
   'const dialogRoots = [...document.querySelectorAll(\'[role="dialog"]\')]',
   'dialogObserver.observe(dialogRoot, { subtree: true, attributes: true, attributeFilter: [\'class\'] })',
-  "CACHE_NAME = 'marsb-gym-v95-mobile-reference'"
+  "CACHE_NAME = 'marsb-gym-v96-focus-reference'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 4 sem suporte esperado: ${token}`);
 }

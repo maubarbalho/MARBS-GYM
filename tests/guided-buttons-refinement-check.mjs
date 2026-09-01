@@ -24,6 +24,9 @@ for (const token of [
   'guided-back-btn',
   'grid-template-columns:90px 1fr 1fr 1.25fr 64px',
   'guided-session-footer',
+  '.guided-overlay.focus-mode .guided-media-card',
+  '.guided-overlay.focus-mode .guided-next-card',
+  'Modo Foco: composição dedicada',
   'guidedStepLabel',
   'guided-segment-track-top',
   'Treino A',
@@ -36,8 +39,8 @@ for (const token of [
   'Pular por agora →',
   'Encerrar exercício',
   'Encerrar treino agora',
-  "const APP_UPDATE_VERSION = 'v95-mobile-reference'",
-  "CACHE_NAME = 'marsb-gym-v95-mobile-reference'"
+  "const APP_UPDATE_VERSION = 'v96-focus-reference'",
+  "CACHE_NAME = 'marsb-gym-v96-focus-reference'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Refinamento de botões sem suporte esperado: ${token}`);
 }

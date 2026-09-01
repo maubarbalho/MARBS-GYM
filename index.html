@@ -2079,6 +2079,27 @@
       .guided-utility-row, .guided-interrupt-row { display:none; }
       .guided-session-footer { display:none; }
     }
+    @media (max-width:600px) {
+      /* Modo Foco: composição dedicada baseada na imagem de referência. */
+      .guided-overlay.focus-mode .guided-media-card,
+      .guided-overlay.focus-mode .guided-record,
+      .guided-overlay.focus-mode .guided-history-card { display:grid; }
+      .guided-overlay.focus-mode .guided-media-card { grid-template-columns:132px minmax(0,1fr); gap:14px; align-items:center; margin-bottom:12px; }
+      .guided-overlay.focus-mode .guided-record { position:absolute; right:14px; top:150px; }
+      .guided-overlay.focus-mode .guided-focus-current,
+      .guided-overlay.focus-mode .guided-focus-controls,
+      .guided-overlay.focus-mode .guided-tech-note { display:none; }
+      .guided-overlay.focus-mode .guided-next-card { display:grid; }
+      .guided-overlay.focus-mode .guided-library-disclosure { display:none; }
+      .guided-overlay.focus-mode .guided-nav-row { display:contents; }
+      .guided-overlay.focus-mode .guided-actions-grid { display:grid; grid-template-columns:1fr 1.35fr 1.65fr; }
+      .guided-overlay.focus-mode .guided-prev-btn { display:block; grid-column:1; }
+      .guided-overlay.focus-mode .guided-next-btn { grid-column:2; }
+      .guided-overlay.focus-mode .guided-complete-activity { grid-column:3; display:block; }
+      .guided-overlay.focus-mode .guided-utility-row,
+      .guided-overlay.focus-mode .guided-interrupt-row { display:none; }
+      .guided-overlay.focus-mode .guided-session-footer { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -9686,7 +9707,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v95-mobile-reference';
+      const APP_UPDATE_VERSION = 'v96-focus-reference';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
