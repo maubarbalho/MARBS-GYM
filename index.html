@@ -375,12 +375,12 @@
     .qs-a { color: var(--primary); } .qs-b { color: var(--accent); }
     .qs-c { color: #fbbf24; } .qs-d { color: #c084fc; }
 
-    .qs-done {
-      position: absolute; top: 8px; right: 8px;
-      background: var(--accent); color: var(--accent-ink);
-      font-size: 0.65rem; font-weight: 700;
-      padding: 2px 6px; border-radius: 6px;
+    .qs-week-state {
+      position:absolute; top:8px; right:8px; max-width:calc(100% - 16px);
+      font-size:.62rem; font-weight:800; padding:3px 7px; border-radius:999px;
+      background:var(--control-bg); color:var(--text-muted); white-space:nowrap;
     }
+    .qs-week-state.is-done { background:var(--accent); color:var(--accent-ink); }
 
     .about-section { margin-bottom: 20px; }
     .about-section h3 { font-size: 1rem; margin-bottom: 8px; color: var(--primary); }
@@ -728,7 +728,7 @@
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-metric strong { display:block; color:var(--text); font-size:0.94rem; margin-top:4px; letter-spacing:0; text-transform:none; }
     .guided-tech-note { margin:2px 0 12px; padding:9px 11px; border-left:3px solid var(--primary); border-radius:8px; background:color-mix(in srgb, var(--primary) 8%, transparent); color:var(--text-muted); font-size:0.76rem; line-height:1.4; }
-    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 44px; align-items:center; gap:8px; }
+    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,.75fr) minmax(0,.9fr) minmax(0,1.2fr) 44px; align-items:center; gap:8px; }
     .guided-set-head { padding:0 12px 6px; color:var(--text-muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-set-row { width:100%; min-height:54px; margin-top:6px; padding:8px 12px; background:var(--bg); color:var(--text); border:1px solid transparent; border-radius:18px; text-align:left; }
     .guided-set-row:focus-within { border-color:var(--primary); }
@@ -784,7 +784,9 @@
       .guided-media-visual { width:60px; height:60px; min-height:60px; border-radius:10px; }
       .guided-media-visual::after { inset:6px; }
       .guided-art-mark { width:30px; height:30px; border-width:2px; font-size:1rem; box-shadow:0 0 0 3px rgba(255,255,255,0.05); }
-      .guided-set-head, .guided-set-row { grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
+      .guided-set-head, .guided-set-row { grid-template-columns:26px minmax(0,.7fr) minmax(0,.85fr) minmax(0,1.2fr) 44px; gap:4px; padding-left:8px; padding-right:8px; }
+      .guided-set-head { font-size:.58rem; }
+      .guided-last-set { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.68rem; color:var(--text-muted); }
       .guided-set-input { min-height:36px; padding-left:3px; padding-right:3px; font-size:0.8rem; }
       .guided-set-status { width:44px; height:44px; }
     }
@@ -3605,6 +3607,30 @@
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
+    function getWeekStartKey(date = new Date()) {
+      const local = new Date(date);
+      local.setHours(12, 0, 0, 0);
+      const day = local.getDay();
+      const mondayOffset = day === 0 ? -6 : 1 - day;
+      local.setDate(local.getDate() + mondayOffset);
+      return `${local.getFullYear()}-${String(local.getMonth() + 1).padStart(2, '0')}-${String(local.getDate()).padStart(2, '0')}`;
+    }
+
+    function isDateInCurrentWeek(dateKey) {
+      if (!isValidDateKey(dateKey)) return false;
+      const start = getWeekStartKey();
+      const today = todayKey();
+      return String(dateKey) >= start && String(dateKey) <= today;
+    }
+
+    function getCompletedWorkoutIdsThisWeek() {
+      return new Set((state.completedWorkouts || []).filter((entry) => entry.status === 'completed' && isDateInCurrentWeek(entry.date)).map((entry) => entry.treino));
+    }
+
+    function isWorkoutCompletedThisWeek(treinoId) {
+      return getCompletedWorkoutIdsThisWeek().has(treinoId);
+    }
+
     function isValidDateKey(value) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ''))) return false;
       const d = new Date(String(value) + 'T12:00:00');
@@ -3622,7 +3648,8 @@
       const container = document.getElementById('quickStart');
       container.innerHTML = '';
       Object.values(treinosMap()).forEach(t => {
-        const done = getTreinoExercises(t.id).length > 0 && isTreinoComplete(t.id);
+        const done = isWorkoutCompletedThisWeek(t.id);
+        const weekState = done ? '✓ Feito nesta semana' : '○ Pendente nesta semana';
         const el = document.createElement('div');
         el.className = 'qs-card';
         el.setAttribute('role', 'button');
@@ -3634,7 +3661,7 @@
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
         });
         el.innerHTML = `
-          ${done ? '<span class="qs-done">✓ Feito</span>' : ''}
+          <span class="qs-week-state ${done ? 'is-done' : ''}">${weekState}</span>
           <div class="qs-letter qs-${escapeHtml(t.id.toLowerCase())}">${escapeHtml(t.id)}</div>
           <div class="qs-name">${escapeHtml(t.nome.split('+')[0].trim())}</div>
         `;
@@ -3691,7 +3718,8 @@
     }
 
     function getNextWorkoutId() {
-      const progress = Object.keys(treinosMap()).map((tid) => ({ tid, complete: isTreinoComplete(tid) }));
+      const completedThisWeek = getCompletedWorkoutIdsThisWeek();
+      const progress = Object.keys(treinosMap()).map((tid) => ({ tid, complete: completedThisWeek.has(tid) }));
       const incomplete = progress.find((item) => !item.complete);
       return incomplete ? incomplete.tid : Object.keys(treinosMap())[0];
     }
@@ -3811,10 +3839,12 @@
           action.classList.add('active-session-card');
           action.innerHTML = `<div class="active-session-summary"><div><div class="daily-action-kicker">${sessionIsActive ? 'Sessão em andamento' : 'Sessão pendente'}</div><h3>Treino ${escapeHtml(treino.id)}${sessionIsActive ? ' em andamento' : ' pronto para continuar'}</h3><p>${escapeHtml(treino.nome)}</p></div><span class="active-session-elapsed">${elapsedText}</span></div><div class="session-progress-head"><span>Progresso da sessão</span><strong>${done}/${total} séries · ${progress}%</strong></div><div class="session-progress-track" aria-label="${progress}% do treino concluído"><span style="width:${progress}%"></span></div>${nextExercise ? `<div class="session-next"><span>Próximo exercício</span><strong>${escapeHtml(nextExercise.nome)}</strong><small>Série ${Math.min(nextSetIndex + 1, nextExercise.series)} de ${nextExercise.series}</small></div>` : ''}<div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Continuar treino</button><button type="button" class="btn-action session-pause-btn" onclick="pauseActiveWorkout()">Encerrar por agora</button></div>`;
         } else {
-          action.innerHTML = `<div class="daily-action-kicker">Ação do dia</div><h3>Próximo: Treino ${escapeHtml(treino.id)}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Iniciar treino</button></div>`;
+          const completedThisWeek = isWorkoutCompletedThisWeek(treino.id);
+          action.innerHTML = `<div class="daily-action-kicker">${completedThisWeek ? 'Próxima opção da semana' : 'Ação do dia'}</div><h3>${completedThisWeek ? 'Treino da próxima sessão' : `Próximo: Treino ${escapeHtml(treino.id)}`}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%${completedThisWeek ? ' · este treino já foi feito nesta semana' : ''}</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">${completedThisWeek ? 'Repetir treino' : 'Iniciar treino'}</button></div>`;
         }
       } else {
-        action.innerHTML = '<div class="daily-action-kicker">Ação do dia</div><h3>Treinos concluídos</h3><p>Você completou todos os treinos disponíveis. Escolha um treino para revisar ou começar uma nova semana.</p>';
+        const completedCount = getCompletedWorkoutIdsThisWeek().size;
+        action.innerHTML = `<div class="daily-action-kicker">Semana atual</div><h3>${completedCount ? `${completedCount} treino${completedCount === 1 ? '' : 's'} feito${completedCount === 1 ? '' : 's'} nesta semana` : 'Nenhum treino concluído nesta semana'}</h3><p>O histórico permanece salvo. Na próxima semana, os treinos serão mostrados novamente como pendentes para facilitar sua organização.</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="switchPage('treinos')">Ver treinos da semana</button></div>`;
       }
 
       const days = getWeeklyTrainingDays();
@@ -9561,7 +9591,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v93-activity-flow';
+      const APP_UPDATE_VERSION = 'v94-weekly-guided-ui';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {

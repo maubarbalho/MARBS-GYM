@@ -11,8 +11,8 @@ for (const token of [
   'if (exercise && !getDoneArr(exercise).every(Boolean)) return candidate',
   'const current = guidedState.exercises[index]',
   'guidedGoTo(getNextGuidedExecutionIndex(guidedState.index, true))',
-  "const APP_UPDATE_VERSION = 'v93-activity-flow'",
-  "CACHE_NAME = 'marsb-gym-v93-activity-flow'"
+  "const APP_UPDATE_VERSION = 'v94-weekly-guided-ui'",
+  "CACHE_NAME = 'marsb-gym-v94-weekly-guided-ui'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Avanço pendente sem suporte esperado: ${token}`);
 }

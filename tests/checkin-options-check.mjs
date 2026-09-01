@@ -34,7 +34,7 @@ if (!completeFn.includes("dataset.checkinValue") || !completeFn.includes("conten
 if (!html.includes('.complete-checkin-score { min-height:44px')) {
   throw new Error('As opções do check-in não mantêm alvo de toque mínimo de 44px.');
 }
-if (!sw.includes("CACHE_NAME = 'marsb-gym-v93-activity-flow'")) {
+if (!sw.includes("CACHE_NAME = 'marsb-gym-v94-weekly-guided-ui'")) {
   throw new Error('O service worker não foi versionado para a correção do check-in.');
 }
 if (html.includes('localStorage.clear(') || html.includes('localStorage.removeItem(STORAGE_KEY)')) {

@@ -33,8 +33,8 @@ for (const token of [
   'Pular por agora →',
   'Encerrar exercício',
   'Encerrar treino agora',
-  "const APP_UPDATE_VERSION = 'v93-activity-flow'",
-  "CACHE_NAME = 'marsb-gym-v93-activity-flow'"
+  "const APP_UPDATE_VERSION = 'v94-weekly-guided-ui'",
+  "CACHE_NAME = 'marsb-gym-v94-weekly-guided-ui'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Refinamento de botões sem suporte esperado: ${token}`);
 }
