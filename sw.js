@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v94-weekly-guided-ui';
+const CACHE_NAME = 'marsb-gym-v95-mobile-reference';
 const APP_SHELL = [
   './',
   './index.html',

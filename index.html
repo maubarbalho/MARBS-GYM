@@ -2028,6 +2028,57 @@
       .guided-utility-row, .guided-interrupt-row { display:none; }
       .guided-session-footer { display:none; }
     }
+    @media (max-width:600px) {
+      .guided-overlay { background:#080c10; }
+      .guided-header { display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:8px; align-items:center; min-height:92px; padding:calc(12px + var(--safe-top)) 16px 10px; border-bottom:1px solid #293038; }
+      .guided-back-btn { width:44px; height:44px; font-size:2.25rem; }
+      .guided-header-copy { min-width:0; }
+      .guided-brand-lockup { display:flex; color:var(--primary); font-size:.9rem; letter-spacing:.06em; }
+      .guided-brand-lockup span:nth-of-type(2), .guided-brand-lockup span:nth-of-type(3) { display:none; }
+      .guided-brand-logo { width:16px; height:16px; flex-basis:16px; }
+      .guided-progress-label { margin-top:4px; font-size:2rem; line-height:1; letter-spacing:-.04em; }
+      .guided-step-label { font-size:.98rem; margin-top:5px; }
+      .guided-header-actions { display:flex; align-items:center; gap:6px; }
+      .guided-mode-select-wrap, .guided-focus-toggle { display:none; }
+      .guided-exit-btn { width:42px; min-height:42px; overflow:hidden; padding:0; border:0; border-radius:50%; background:transparent; color:var(--primary); font-size:0; }
+      .guided-exit-btn::after { content:'⋮'; font-size:2rem; line-height:1; }
+      .guided-progress-bar { height:3px; background:#20272d; }
+      .guided-segment-track-top { padding:14px 16px 0; }
+      .guided-body { padding:14px 12px 128px; }
+      .guided-workout-shell { max-width:none; }
+      .guided-activity-card { position:relative; padding:14px; border-radius:20px; background:#1a2024; border-color:#3a444d; box-shadow:none; }
+      .guided-media-card { grid-template-columns:132px minmax(0,1fr); gap:14px; align-items:center; margin-bottom:12px; }
+      .guided-media-visual { width:132px; height:132px; border-radius:50%; }
+      .guided-art-mark { width:68px; height:68px; font-size:1.75rem; }
+      .guided-muscle-label { display:inline-block; margin:0 0 8px; padding:5px 9px; border:1px solid #65717b; border-radius:9px; color:var(--primary); font-size:.76rem; }
+      .guided-ex-name { font-size:1.55rem; line-height:1.05; margin-bottom:12px; }
+      .guided-record { position:absolute; right:14px; top:150px; margin:0; padding:8px 10px; border-radius:10px; font-size:.7rem; }
+      .guided-guide-btn { display:inline-flex; width:auto; margin:0; min-height:46px; padding:0 12px; align-items:center; font-size:.8rem; }
+      .guided-copy-btn { display:none; }
+      .guided-section-label { margin:30px 0 12px; text-align:left; font-size:1.35rem; color:var(--text); font-weight:850; }
+      .guided-metric-grid, .guided-tech-note, .guided-focus-current, .guided-next-card, .guided-library-disclosure { display:none; }
+      .guided-set-head, .guided-set-row { grid-template-columns:42px minmax(0,.72fr) minmax(0,.9fr) minmax(0,1.25fr) 42px; gap:5px; }
+      .guided-set-head { padding:0 8px 7px; font-size:.55rem; letter-spacing:.04em; }
+      .guided-set-row { min-height:62px; padding:7px 8px; margin-top:4px; border-radius:10px; border-color:#303940; background:#14191e; }
+      .guided-set-input { min-height:44px; padding:5px 3px; font-size:.88rem; border-radius:9px; }
+      .guided-last-set { font-size:.68rem; color:var(--text); }
+      .guided-set-status { width:40px; height:40px; border-width:2px; }
+      .guided-rest-panel { margin:16px 0 8px; min-height:94px; padding:12px 14px; border-radius:16px; }
+      .guided-rest-display { font-size:1.55rem; }
+      .guided-rest-action { min-height:46px; padding:0 8px; font-size:.7rem; }
+      .guided-history-card { justify-content:center; border-top:0; margin-top:18px; padding:8px; color:var(--primary); }
+      .guided-history-title { color:var(--primary); font-size:.9rem; text-decoration:underline; }
+      .guided-history-detail { display:none; }
+      .guided-actions-grid { position:sticky; bottom:0; z-index:5; display:grid; grid-template-columns:1fr 1.35fr 1.65fr; gap:8px; margin:22px -12px -110px; padding:12px 12px calc(12px + var(--safe-bottom)); background:rgba(8,12,16,.98); border-top:1px solid #293038; border-radius:0; }
+      .guided-nav-row { display:contents; }
+      .guided-prev-btn, .guided-next-btn, .guided-complete-activity { grid-row:1; min-width:0; min-height:60px; padding:0 8px; border-radius:12px; font-size:.78rem; }
+      .guided-prev-btn { grid-column:1; }
+      .guided-next-btn { grid-column:2; }
+      .guided-complete-activity { grid-column:3; display:block; background:var(--primary); border:1px solid var(--primary); color:var(--primary-ink); font:inherit; font-weight:850; cursor:pointer; }
+      .guided-complete-activity:disabled { opacity:.45; cursor:not-allowed; }
+      .guided-utility-row, .guided-interrupt-row { display:none; }
+      .guided-session-footer { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -6043,7 +6094,7 @@
 
       document.getElementById('guidedTitle').textContent = workout ? `Treino ${workout.id}` : 'Treino guiado';
       const guidedStepLabel = document.getElementById('guidedStepLabel');
-      if (guidedStepLabel) guidedStepLabel.textContent = `Exercício ${guidedState.index + 1} de ${total}`;
+      if (guidedStepLabel) guidedStepLabel.textContent = `${guidedState.index + 1} de ${total} exercícios`;
       const modeSelect = document.getElementById('guidedExecutionMode');
       if (modeSelect) modeSelect.value = normalizeExecutionMode(guidedState.executionMode);
       guidedBody.innerHTML = `
@@ -9635,7 +9686,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v94-weekly-guided-ui';
+      const APP_UPDATE_VERSION = 'v95-mobile-reference';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
