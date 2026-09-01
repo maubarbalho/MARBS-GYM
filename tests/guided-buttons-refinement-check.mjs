@@ -41,8 +41,8 @@ for (const token of [
   'Pular por agora →',
   'Encerrar exercício',
   'Encerrar treino agora',
-  "const APP_UPDATE_VERSION = 'v97-focus-header'",
-  "CACHE_NAME = 'marsb-gym-v97-focus-header'"
+  "const APP_UPDATE_VERSION = 'v98-focus-fixed-bar'",
+  "CACHE_NAME = 'marsb-gym-v98-focus-fixed-bar'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Refinamento de botões sem suporte esperado: ${token}`);
 }
