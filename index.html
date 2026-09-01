@@ -636,6 +636,7 @@
       display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
+    .guided-back-btn { flex:0 0 auto; width:48px; height:48px; border:0; background:transparent; color:var(--primary); font:inherit; font-size:2.2rem; line-height:1; cursor:pointer; }
     .guided-progress-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
     .guided-exit-btn {
       background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text);
@@ -729,6 +730,7 @@
     .guided-metric strong { display:block; color:var(--text); font-size:0.94rem; margin-top:4px; letter-spacing:0; text-transform:none; }
     .guided-tech-note { margin:2px 0 12px; padding:9px 11px; border-left:3px solid var(--primary); border-radius:8px; background:color-mix(in srgb, var(--primary) 8%, transparent); color:var(--text-muted); font-size:0.76rem; line-height:1.4; }
     .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,.75fr) minmax(0,.9fr) minmax(0,1.2fr) 44px; align-items:center; gap:8px; }
+    .guided-last-set { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font-size:.72rem; }
     .guided-set-head { padding:0 12px 6px; color:var(--text-muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-set-row { width:100%; min-height:54px; margin-top:6px; padding:8px 12px; background:var(--bg); color:var(--text); border:1px solid transparent; border-radius:18px; text-align:left; }
     .guided-set-row:focus-within { border-color:var(--primary); }
@@ -1985,6 +1987,47 @@
     @media (prefers-reduced-motion: reduce) {
       .ux-disclosure, .ux-disclosure * { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
     }
+      @media (min-width:601px) {
+      .guided-overlay { background:#090d11; }
+      .guided-header { min-height:90px; padding:18px 30px 12px; border-bottom:1px solid #293038; }
+      .guided-brand-lockup { display:none; }
+      .guided-progress-label { font-size:2.45rem; line-height:1; letter-spacing:-.04em; }
+      .guided-step-label { font-size:1.15rem; margin-top:5px; }
+      .guided-mode-select-wrap, .guided-focus-toggle { display:none; }
+      .guided-exit-btn { min-height:50px; padding:0 17px; border:1px solid #66717b; border-radius:12px; background:#171d21; color:var(--text); font:inherit; font-weight:800; }
+      .guided-body { padding:26px 40px 150px; }
+      .guided-workout-shell { max-width:1350px; }
+      .guided-activity-card { position:relative; padding:28px; border-radius:24px; background:#1a2024; border-color:#3a444d; box-shadow:none; }
+      .guided-media-card { grid-template-columns:225px 1fr; gap:28px; margin-bottom:22px; }
+      .guided-media-visual { width:225px; height:225px; border-radius:50%; }
+      .guided-art-mark { width:115px; height:115px; font-size:3rem; }
+      .guided-muscle-label { display:inline-block; margin:0 0 12px; padding:7px 13px; border:1px solid #65717b; border-radius:10px; color:var(--primary); font-size:1.2rem; }
+      .guided-ex-name { font-size:2.8rem; margin-bottom:18px; }
+      .guided-record { position:absolute; right:32px; top:198px; margin:0; padding:12px 18px; border-radius:12px; font-size:1rem; }
+      .guided-guide-btn { display:inline-flex; width:auto; margin:0; padding:0 20px; align-items:center; font-size:1.15rem; }
+      .guided-copy-btn { display:none; }
+      .guided-section-label { margin:32px 0 18px; text-align:left; font-size:1.75rem; color:var(--text); font-weight:850; }
+      .guided-metric-grid, .guided-tech-note, .guided-focus-current, .guided-next-card, .guided-library-disclosure { display:none; }
+      .guided-set-head, .guided-set-row { grid-template-columns:90px 1fr 1fr 1.25fr 64px; gap:18px; }
+      .guided-set-head { padding:0 24px 12px; font-size:1rem; }
+      .guided-set-row { min-height:92px; padding:14px 24px; margin-top:4px; border-radius:0; border-color:#313a42; background:#151a1f; }
+      .guided-set-input { min-height:60px; font-size:1.35rem; border-radius:12px; }
+      .guided-last-set { font-size:1.25rem; color:var(--text); }
+      .guided-set-status { width:58px; height:58px; }
+      .guided-rest-panel { margin:24px 0 10px; min-height:110px; padding:18px 24px; }
+      .guided-rest-display { font-size:2.2rem; }
+      .guided-rest-action { min-height:58px; font-size:1rem; }
+      .guided-history-card { justify-content:center; border-top:0; margin-top:28px; padding:12px; color:var(--primary); }
+      .guided-history-title { color:var(--primary); font-size:1.2rem; text-decoration:underline; }
+      .guided-history-detail { display:none; }
+      .guided-actions-grid { position:sticky; bottom:0; z-index:5; margin:34px -40px -132px; padding:18px 40px calc(18px + var(--safe-bottom)); background:rgba(9,13,17,.97); border-top:1px solid #293038; }
+      .guided-nav-row { display:grid; grid-template-columns:1fr 1.35fr; gap:18px; margin:0; }
+      .guided-prev-btn, .guided-next-btn, .guided-complete-activity { min-height:76px; border-radius:14px; font-size:1.25rem; }
+      .guided-complete-activity { display:block; background:var(--primary); border:1px solid var(--primary); color:var(--primary-ink); font:inherit; font-weight:850; cursor:pointer; }
+      .guided-complete-activity:disabled { opacity:.45; cursor:not-allowed; }
+      .guided-utility-row, .guided-interrupt-row { display:none; }
+      .guided-session-footer { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -2793,6 +2836,7 @@
   <!-- GUIDED MODE OVERLAY -->
   <div class="guided-overlay" id="guidedOverlay" role="dialog" aria-modal="true" aria-labelledby="guidedTitle" aria-describedby="guidedBody" tabindex="-1">
     <div class="guided-header">
+      <button type="button" class="guided-back-btn" aria-label="Voltar para o exercício anterior" onclick="guidedGoTo(guidedState.index - 1)">←</button>
       <div class="guided-header-copy">
         <div class="guided-kicker guided-brand-lockup"><img class="guided-brand-logo" src="apple-touch-icon.png" alt="" width="24" height="24" /><span>MARSB-GYM</span><span aria-hidden="true">•</span><span>Treino guiado</span></div>
         <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Treino A</div>
@@ -2801,7 +2845,7 @@
       <div class="guided-header-actions">
         <label class="guided-mode-select-wrap" for="guidedExecutionMode">Modo<select id="guidedExecutionMode" class="guided-mode-select" aria-label="Modo de execução guiada" onchange="setGuidedExecutionMode(this.value)"><option value="normal">Normal</option><option value="superset">Superset (2)</option><option value="circuit">Circuito</option></select></label>
         <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="false" onclick="toggleGuidedFocus()">Foco</button>
-        <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
+        <button type="button" class="guided-exit-btn" aria-label="Encerrar treino guiado" onclick="exitGuided()">✓ Encerrar</button>
       </div>
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>

@@ -21,6 +21,9 @@ for (const token of [
   'guided-checkin-scale',
   'guidedActivityCheckinModal',
   'guided-complete-activity',
+  'guided-back-btn',
+  'grid-template-columns:90px 1fr 1fr 1.25fr 64px',
+  'guided-session-footer',
   'guidedStepLabel',
   'guided-segment-track-top',
   'Treino A',
@@ -47,4 +50,4 @@ if (html.includes('localStorage.clear(') || html.includes('localStorage.removeIt
   throw new Error('O refinamento visual não pode apagar dados locais.');
 }
 
-console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v93 validados.');
+console.log('OK: botões atuais preservados, toque mínimo, foco visível, estados de ação e cache v94 validados.');
