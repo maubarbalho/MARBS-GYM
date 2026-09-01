@@ -6,7 +6,7 @@ Esta pasta contém o protótipo funcional da versão 2.0 do MARSB-GYM. Ele foi c
 
 O protótipo inclui Hoje, Treinos, Treino guiado/Foco, Progresso, Dieta e Biblioteca. A navegação inferior é própria para celular e os cartões seguem a direção visual dos mockups aprovados: fundo escuro, cartões grafite, verde-limão e áreas de toque amplas.
 
-O treino guiado permite editar repetições e carga decimal, marcar séries, consultar valores anteriores, copiar o último treino com confirmação, usar timer de descanso, pausar/pular descanso, pular exercício e concluir atividade com esforço percebido de 1 a 10.
+O treino guiado permite editar repetições e carga decimal, marcar séries, consultar valores anteriores, copiar o último treino com confirmação, usar timer de descanso, pausar/pular descanso, pular exercício e concluir atividade com esforço percebido de 1 a 10. A tabela de séries possui um modo compacto responsivo que mantém série, reps, carga, último treino e seleção visíveis na largura do celular, sem rolagem horizontal.
 
 ## Dados e segurança
 
@@ -23,6 +23,10 @@ python3 -m http.server 4173 --directory .
 ```
 
 Depois visite `http://localhost:4173/v2/`.
+
+## Validação
+
+O protótipo foi validado em viewport móvel de 390 px com teste de navegador. O teste confirma a navegação entre as telas, abertura do treino guiado, modal de cópia, registro de série, modal de esforço e a ausência de overflow horizontal na tabela de séries.
 
 ## Status de publicação
 
