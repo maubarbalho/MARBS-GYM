@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v97-focus-header';
+const CACHE_NAME = 'marsb-gym-v93-activity-flow';
 const APP_SHELL = [
   './',
   './index.html',

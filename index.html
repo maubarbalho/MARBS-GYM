@@ -375,12 +375,12 @@
     .qs-a { color: var(--primary); } .qs-b { color: var(--accent); }
     .qs-c { color: #fbbf24; } .qs-d { color: #c084fc; }
 
-    .qs-week-state {
-      position:absolute; top:8px; right:8px; max-width:calc(100% - 16px);
-      font-size:.62rem; font-weight:800; padding:3px 7px; border-radius:999px;
-      background:var(--control-bg); color:var(--text-muted); white-space:nowrap;
+    .qs-done {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--accent); color: var(--accent-ink);
+      font-size: 0.65rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 6px;
     }
-    .qs-week-state.is-done { background:var(--accent); color:var(--accent-ink); }
 
     .about-section { margin-bottom: 20px; }
     .about-section h3 { font-size: 1rem; margin-bottom: 8px; color: var(--primary); }
@@ -636,7 +636,6 @@
       display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
-    .guided-back-btn { flex:0 0 auto; width:48px; height:48px; border:0; background:transparent; color:var(--primary); font:inherit; font-size:2.2rem; line-height:1; cursor:pointer; }
     .guided-progress-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
     .guided-exit-btn {
       background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text);
@@ -729,8 +728,7 @@
     .guided-metric { color:var(--text-muted); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-metric strong { display:block; color:var(--text); font-size:0.94rem; margin-top:4px; letter-spacing:0; text-transform:none; }
     .guided-tech-note { margin:2px 0 12px; padding:9px 11px; border-left:3px solid var(--primary); border-radius:8px; background:color-mix(in srgb, var(--primary) 8%, transparent); color:var(--text-muted); font-size:0.76rem; line-height:1.4; }
-    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,.75fr) minmax(0,.9fr) minmax(0,1.2fr) 44px; align-items:center; gap:8px; }
-    .guided-last-set { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font-size:.72rem; }
+    .guided-set-head, .guided-set-row { display:grid; grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 44px; align-items:center; gap:8px; }
     .guided-set-head { padding:0 12px 6px; color:var(--text-muted); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; }
     .guided-set-row { width:100%; min-height:54px; margin-top:6px; padding:8px 12px; background:var(--bg); color:var(--text); border:1px solid transparent; border-radius:18px; text-align:left; }
     .guided-set-row:focus-within { border-color:var(--primary); }
@@ -786,9 +784,7 @@
       .guided-media-visual { width:60px; height:60px; min-height:60px; border-radius:10px; }
       .guided-media-visual::after { inset:6px; }
       .guided-art-mark { width:30px; height:30px; border-width:2px; font-size:1rem; box-shadow:0 0 0 3px rgba(255,255,255,0.05); }
-      .guided-set-head, .guided-set-row { grid-template-columns:26px minmax(0,.7fr) minmax(0,.85fr) minmax(0,1.2fr) 44px; gap:4px; padding-left:8px; padding-right:8px; }
-      .guided-set-head { font-size:.58rem; }
-      .guided-last-set { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.68rem; color:var(--text-muted); }
+      .guided-set-head, .guided-set-row { grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 48px; gap:4px; padding-left:8px; padding-right:8px; }
       .guided-set-input { min-height:36px; padding-left:3px; padding-right:3px; font-size:0.8rem; }
       .guided-set-status { width:44px; height:44px; }
     }
@@ -1987,120 +1983,6 @@
     @media (prefers-reduced-motion: reduce) {
       .ux-disclosure, .ux-disclosure * { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
     }
-      @media (min-width:601px) {
-      .guided-overlay { background:#090d11; }
-      .guided-header { min-height:90px; padding:18px 30px 12px; border-bottom:1px solid #293038; }
-      .guided-brand-lockup { display:none; }
-      .guided-progress-label { font-size:2.45rem; line-height:1; letter-spacing:-.04em; }
-      .guided-step-label { font-size:1.15rem; margin-top:5px; }
-      .guided-mode-select-wrap, .guided-focus-toggle { display:none; }
-      .guided-exit-btn { min-height:50px; padding:0 17px; border:1px solid #66717b; border-radius:12px; background:#171d21; color:var(--text); font:inherit; font-weight:800; }
-      .guided-body { padding:26px 40px 150px; }
-      .guided-workout-shell { max-width:1350px; }
-      .guided-activity-card { position:relative; padding:28px; border-radius:24px; background:#1a2024; border-color:#3a444d; box-shadow:none; }
-      .guided-media-card { grid-template-columns:225px 1fr; gap:28px; margin-bottom:22px; }
-      .guided-media-visual { width:225px; height:225px; border-radius:50%; }
-      .guided-art-mark { width:115px; height:115px; font-size:3rem; }
-      .guided-muscle-label { display:inline-block; margin:0 0 12px; padding:7px 13px; border:1px solid #65717b; border-radius:10px; color:var(--primary); font-size:1.2rem; }
-      .guided-ex-name { font-size:2.8rem; margin-bottom:18px; }
-      .guided-record { position:absolute; right:32px; top:198px; margin:0; padding:12px 18px; border-radius:12px; font-size:1rem; }
-      .guided-guide-btn { display:inline-flex; width:auto; margin:0; padding:0 20px; align-items:center; font-size:1.15rem; }
-      .guided-copy-btn { display:none; }
-      .guided-section-label { margin:32px 0 18px; text-align:left; font-size:1.75rem; color:var(--text); font-weight:850; }
-      .guided-metric-grid, .guided-tech-note, .guided-focus-current, .guided-next-card, .guided-library-disclosure { display:none; }
-      .guided-set-head, .guided-set-row { grid-template-columns:90px 1fr 1fr 1.25fr 64px; gap:18px; }
-      .guided-set-head { padding:0 24px 12px; font-size:1rem; }
-      .guided-set-row { min-height:92px; padding:14px 24px; margin-top:4px; border-radius:0; border-color:#313a42; background:#151a1f; }
-      .guided-set-input { min-height:60px; font-size:1.35rem; border-radius:12px; }
-      .guided-last-set { font-size:1.25rem; color:var(--text); }
-      .guided-set-status { width:58px; height:58px; }
-      .guided-rest-panel { margin:24px 0 10px; min-height:110px; padding:18px 24px; }
-      .guided-rest-display { font-size:2.2rem; }
-      .guided-rest-action { min-height:58px; font-size:1rem; }
-      .guided-history-card { justify-content:center; border-top:0; margin-top:28px; padding:12px; color:var(--primary); }
-      .guided-history-title { color:var(--primary); font-size:1.2rem; text-decoration:underline; }
-      .guided-history-detail { display:none; }
-      .guided-actions-grid { position:sticky; bottom:0; z-index:5; margin:34px -40px -132px; padding:18px 40px calc(18px + var(--safe-bottom)); background:rgba(9,13,17,.97); border-top:1px solid #293038; }
-      .guided-nav-row { display:grid; grid-template-columns:1fr 1.35fr; gap:18px; margin:0; }
-      .guided-prev-btn, .guided-next-btn, .guided-complete-activity { min-height:76px; border-radius:14px; font-size:1.25rem; }
-      .guided-complete-activity { display:block; background:var(--primary); border:1px solid var(--primary); color:var(--primary-ink); font:inherit; font-weight:850; cursor:pointer; }
-      .guided-complete-activity:disabled { opacity:.45; cursor:not-allowed; }
-      .guided-utility-row, .guided-interrupt-row { display:none; }
-      .guided-session-footer { display:none; }
-    }
-    @media (max-width:600px) {
-      .guided-overlay { background:#080c10; }
-      .guided-header { display:grid; grid-template-columns:36px minmax(0,1fr) 36px; gap:6px; align-items:center; min-height:68px; padding:calc(7px + var(--safe-top)) 12px 6px; border-bottom:1px solid #293038; }
-      .guided-back-btn { width:44px; height:44px; font-size:2.25rem; }
-      .guided-header-copy { min-width:0; }
-      .guided-brand-lockup { display:none; }
-      .guided-brand-lockup span:nth-of-type(2), .guided-brand-lockup span:nth-of-type(3) { display:none; }
-      .guided-brand-logo { width:16px; height:16px; flex-basis:16px; }
-      .guided-progress-label { margin-top:0; text-align:center; font-size:1.38rem; line-height:1; letter-spacing:-.03em; }
-      .guided-step-label { text-align:center; font-size:.78rem; margin-top:3px; }
-      .guided-header-actions { display:flex; align-items:center; gap:6px; }
-      .guided-mode-select-wrap, .guided-focus-toggle { display:none; }
-      .guided-exit-btn { width:36px; min-height:36px; overflow:hidden; padding:0; border:0; border-radius:50%; background:transparent; color:var(--primary); font-size:0; }
-      .guided-exit-btn::after { content:'⋮'; font-size:2rem; line-height:1; }
-      .guided-progress-bar { height:3px; background:#20272d; }
-      .guided-segment-track-top { padding:14px 16px 0; }
-      .guided-body { padding:14px 12px 128px; }
-      .guided-workout-shell { max-width:none; }
-      .guided-activity-card { position:relative; padding:14px; border-radius:20px; background:#1a2024; border-color:#3a444d; box-shadow:none; }
-      .guided-media-card { grid-template-columns:112px minmax(0,1fr); gap:12px; align-items:center; margin-bottom:12px; }
-      .guided-media-visual { width:112px; height:112px; border-radius:16px; }
-      .guided-art-mark { width:auto; height:auto; border:0; box-shadow:none; }
-      .guided-art-image { width:64px; height:44px; color:var(--primary); }
-      .guided-muscle-label { display:inline-block; margin:0 0 8px; padding:5px 9px; border:1px solid #65717b; border-radius:9px; color:var(--primary); font-size:.76rem; }
-      .guided-ex-name { font-size:1.55rem; line-height:1.05; margin-bottom:12px; }
-      .guided-record { position:absolute; right:14px; top:150px; margin:0; padding:8px 10px; border-radius:10px; font-size:.7rem; }
-      .guided-guide-btn { display:inline-flex; width:auto; margin:0; min-height:46px; padding:0 12px; align-items:center; font-size:.8rem; }
-      .guided-copy-btn { display:none; }
-      .guided-section-label { margin:30px 0 12px; text-align:left; font-size:1.35rem; color:var(--text); font-weight:850; }
-      .guided-metric-grid, .guided-tech-note, .guided-focus-current, .guided-next-card, .guided-library-disclosure { display:none; }
-      .guided-set-head, .guided-set-row { grid-template-columns:42px minmax(0,.72fr) minmax(0,.9fr) minmax(0,1.25fr) 42px; gap:5px; }
-      .guided-set-head { padding:0 8px 7px; font-size:.55rem; letter-spacing:.04em; }
-      .guided-set-row { min-height:62px; padding:7px 8px; margin-top:4px; border-radius:10px; border-color:#303940; background:#14191e; }
-      .guided-set-input { min-height:44px; padding:5px 3px; font-size:.88rem; border-radius:9px; }
-      .guided-last-set { font-size:.68rem; color:var(--text); }
-      .guided-set-status { width:40px; height:40px; border-width:2px; }
-      .guided-rest-panel { margin:16px 0 8px; min-height:94px; padding:12px 14px; border-radius:16px; }
-      .guided-rest-display { font-size:1.55rem; }
-      .guided-rest-action { min-height:46px; padding:0 8px; font-size:.7rem; }
-      .guided-history-card { justify-content:center; border-top:0; margin-top:18px; padding:8px; color:var(--primary); }
-      .guided-history-title { color:var(--primary); font-size:.9rem; text-decoration:underline; }
-      .guided-history-detail { display:none; }
-      .guided-actions-grid { position:sticky; bottom:0; z-index:5; display:grid; grid-template-columns:1fr 1.35fr 1.65fr; gap:8px; margin:22px -12px -110px; padding:12px 12px calc(12px + var(--safe-bottom)); background:rgba(8,12,16,.98); border-top:1px solid #293038; border-radius:0; }
-      .guided-nav-row { display:contents; }
-      .guided-prev-btn, .guided-next-btn, .guided-complete-activity { grid-row:1; min-width:0; min-height:60px; padding:0 8px; border-radius:12px; font-size:.78rem; }
-      .guided-prev-btn { grid-column:1; }
-      .guided-next-btn { grid-column:2; }
-      .guided-complete-activity { grid-column:3; display:block; background:var(--primary); border:1px solid var(--primary); color:var(--primary-ink); font:inherit; font-weight:850; cursor:pointer; }
-      .guided-complete-activity:disabled { opacity:.45; cursor:not-allowed; }
-      .guided-utility-row, .guided-interrupt-row { display:none; }
-      .guided-session-footer { display:none; }
-    }
-    @media (max-width:600px) {
-      /* Modo Foco: composição dedicada baseada na imagem de referência. */
-      .guided-overlay.focus-mode .guided-media-card,
-      .guided-overlay.focus-mode .guided-record,
-      .guided-overlay.focus-mode .guided-history-card { display:grid; }
-      .guided-overlay.focus-mode .guided-media-card { grid-template-columns:132px minmax(0,1fr); gap:14px; align-items:center; margin-bottom:12px; }
-      .guided-overlay.focus-mode .guided-record { position:absolute; right:14px; top:150px; }
-      .guided-overlay.focus-mode .guided-focus-current,
-      .guided-overlay.focus-mode .guided-focus-controls,
-      .guided-overlay.focus-mode .guided-tech-note { display:none; }
-      .guided-overlay.focus-mode .guided-next-card { display:grid; }
-      .guided-overlay.focus-mode .guided-library-disclosure { display:none; }
-      .guided-overlay.focus-mode .guided-nav-row { display:contents; }
-      .guided-overlay.focus-mode .guided-actions-grid { display:grid; grid-template-columns:1fr 1.35fr 1.65fr; }
-      .guided-overlay.focus-mode .guided-prev-btn { display:block; grid-column:1; }
-      .guided-overlay.focus-mode .guided-next-btn { grid-column:2; }
-      .guided-overlay.focus-mode .guided-complete-activity { grid-column:3; display:block; }
-      .guided-overlay.focus-mode .guided-utility-row,
-      .guided-overlay.focus-mode .guided-interrupt-row { display:none; }
-      .guided-overlay.focus-mode .guided-session-footer { display:none; }
-    }
   </style>
 </head>
 <body>
@@ -2909,7 +2791,6 @@
   <!-- GUIDED MODE OVERLAY -->
   <div class="guided-overlay" id="guidedOverlay" role="dialog" aria-modal="true" aria-labelledby="guidedTitle" aria-describedby="guidedBody" tabindex="-1">
     <div class="guided-header">
-      <button type="button" class="guided-back-btn" aria-label="Voltar para o exercício anterior" onclick="guidedGoTo(guidedState.index - 1)">←</button>
       <div class="guided-header-copy">
         <div class="guided-kicker guided-brand-lockup"><img class="guided-brand-logo" src="apple-touch-icon.png" alt="" width="24" height="24" /><span>MARSB-GYM</span><span aria-hidden="true">•</span><span>Treino guiado</span></div>
         <div class="guided-progress-label" id="guidedTitle" aria-live="polite">Treino A</div>
@@ -2918,7 +2799,7 @@
       <div class="guided-header-actions">
         <label class="guided-mode-select-wrap" for="guidedExecutionMode">Modo<select id="guidedExecutionMode" class="guided-mode-select" aria-label="Modo de execução guiada" onchange="setGuidedExecutionMode(this.value)"><option value="normal">Normal</option><option value="superset">Superset (2)</option><option value="circuit">Circuito</option></select></label>
         <button type="button" class="guided-focus-toggle" id="guidedFocusToggle" aria-pressed="false" onclick="toggleGuidedFocus()">Foco</button>
-        <button type="button" class="guided-exit-btn" aria-label="Encerrar treino guiado" onclick="exitGuided()">✓ Encerrar</button>
+        <button type="button" class="guided-exit-btn" aria-label="Sair do treino guiado" onclick="exitGuided()">Sair</button>
       </div>
     </div>
     <div class="guided-progress-bar" aria-hidden="true"><div class="guided-progress-fill" id="guidedProgressFill" style="width:0%"></div></div>
@@ -3724,30 +3605,6 @@
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
-    function getWeekStartKey(date = new Date()) {
-      const local = new Date(date);
-      local.setHours(12, 0, 0, 0);
-      const day = local.getDay();
-      const mondayOffset = day === 0 ? -6 : 1 - day;
-      local.setDate(local.getDate() + mondayOffset);
-      return `${local.getFullYear()}-${String(local.getMonth() + 1).padStart(2, '0')}-${String(local.getDate()).padStart(2, '0')}`;
-    }
-
-    function isDateInCurrentWeek(dateKey) {
-      if (!isValidDateKey(dateKey)) return false;
-      const start = getWeekStartKey();
-      const today = todayKey();
-      return String(dateKey) >= start && String(dateKey) <= today;
-    }
-
-    function getCompletedWorkoutIdsThisWeek() {
-      return new Set((state.completedWorkouts || []).filter((entry) => entry.status === 'completed' && isDateInCurrentWeek(entry.date)).map((entry) => entry.treino));
-    }
-
-    function isWorkoutCompletedThisWeek(treinoId) {
-      return getCompletedWorkoutIdsThisWeek().has(treinoId);
-    }
-
     function isValidDateKey(value) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ''))) return false;
       const d = new Date(String(value) + 'T12:00:00');
@@ -3765,8 +3622,7 @@
       const container = document.getElementById('quickStart');
       container.innerHTML = '';
       Object.values(treinosMap()).forEach(t => {
-        const done = isWorkoutCompletedThisWeek(t.id);
-        const weekState = done ? '✓ Feito nesta semana' : '○ Pendente nesta semana';
+        const done = getTreinoExercises(t.id).length > 0 && isTreinoComplete(t.id);
         const el = document.createElement('div');
         el.className = 'qs-card';
         el.setAttribute('role', 'button');
@@ -3778,7 +3634,7 @@
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
         });
         el.innerHTML = `
-          <span class="qs-week-state ${done ? 'is-done' : ''}">${weekState}</span>
+          ${done ? '<span class="qs-done">✓ Feito</span>' : ''}
           <div class="qs-letter qs-${escapeHtml(t.id.toLowerCase())}">${escapeHtml(t.id)}</div>
           <div class="qs-name">${escapeHtml(t.nome.split('+')[0].trim())}</div>
         `;
@@ -3835,8 +3691,7 @@
     }
 
     function getNextWorkoutId() {
-      const completedThisWeek = getCompletedWorkoutIdsThisWeek();
-      const progress = Object.keys(treinosMap()).map((tid) => ({ tid, complete: completedThisWeek.has(tid) }));
+      const progress = Object.keys(treinosMap()).map((tid) => ({ tid, complete: isTreinoComplete(tid) }));
       const incomplete = progress.find((item) => !item.complete);
       return incomplete ? incomplete.tid : Object.keys(treinosMap())[0];
     }
@@ -3956,12 +3811,10 @@
           action.classList.add('active-session-card');
           action.innerHTML = `<div class="active-session-summary"><div><div class="daily-action-kicker">${sessionIsActive ? 'Sessão em andamento' : 'Sessão pendente'}</div><h3>Treino ${escapeHtml(treino.id)}${sessionIsActive ? ' em andamento' : ' pronto para continuar'}</h3><p>${escapeHtml(treino.nome)}</p></div><span class="active-session-elapsed">${elapsedText}</span></div><div class="session-progress-head"><span>Progresso da sessão</span><strong>${done}/${total} séries · ${progress}%</strong></div><div class="session-progress-track" aria-label="${progress}% do treino concluído"><span style="width:${progress}%"></span></div>${nextExercise ? `<div class="session-next"><span>Próximo exercício</span><strong>${escapeHtml(nextExercise.nome)}</strong><small>Série ${Math.min(nextSetIndex + 1, nextExercise.series)} de ${nextExercise.series}</small></div>` : ''}<div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Continuar treino</button><button type="button" class="btn-action session-pause-btn" onclick="pauseActiveWorkout()">Encerrar por agora</button></div>`;
         } else {
-          const completedThisWeek = isWorkoutCompletedThisWeek(treino.id);
-          action.innerHTML = `<div class="daily-action-kicker">${completedThisWeek ? 'Próxima opção da semana' : 'Ação do dia'}</div><h3>${completedThisWeek ? 'Treino da próxima sessão' : `Próximo: Treino ${escapeHtml(treino.id)}`}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%${completedThisWeek ? ' · este treino já foi feito nesta semana' : ''}</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">${completedThisWeek ? 'Repetir treino' : 'Iniciar treino'}</button></div>`;
+          action.innerHTML = `<div class="daily-action-kicker">Ação do dia</div><h3>Próximo: Treino ${escapeHtml(treino.id)}</h3><p>${escapeHtml(treino.nome)} · ${done}/${total} séries registradas · ${progress}%</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="startWorkoutSession('${escapeHtml(treino.id)}')">Iniciar treino</button></div>`;
         }
       } else {
-        const completedCount = getCompletedWorkoutIdsThisWeek().size;
-        action.innerHTML = `<div class="daily-action-kicker">Semana atual</div><h3>${completedCount ? `${completedCount} treino${completedCount === 1 ? '' : 's'} feito${completedCount === 1 ? '' : 's'} nesta semana` : 'Nenhum treino concluído nesta semana'}</h3><p>O histórico permanece salvo. Na próxima semana, os treinos serão mostrados novamente como pendentes para facilitar sua organização.</p><div class="daily-action-buttons"><button type="button" class="btn-action primary" onclick="switchPage('treinos')">Ver treinos da semana</button></div>`;
+        action.innerHTML = '<div class="daily-action-kicker">Ação do dia</div><h3>Treinos concluídos</h3><p>Você completou todos os treinos disponíveis. Escolha um treino para revisar ou começar uma nova semana.</p>';
       }
 
       const days = getWeeklyTrainingDays();
@@ -6116,7 +5969,7 @@
 
       document.getElementById('guidedTitle').textContent = workout ? `Treino ${workout.id}` : 'Treino guiado';
       const guidedStepLabel = document.getElementById('guidedStepLabel');
-      if (guidedStepLabel) guidedStepLabel.textContent = `${guidedState.index + 1} de ${total} exercícios`;
+      if (guidedStepLabel) guidedStepLabel.textContent = `Exercício ${guidedState.index + 1} de ${total}`;
       const modeSelect = document.getElementById('guidedExecutionMode');
       if (modeSelect) modeSelect.value = normalizeExecutionMode(guidedState.executionMode);
       guidedBody.innerHTML = `
@@ -6126,7 +5979,7 @@
           <article class="guided-activity-card" aria-labelledby="guidedExerciseTitle">
             <div class="guided-media-card">
               <div class="guided-media-visual" role="img" aria-label="Elemento visual da atividade">
-                <svg class="guided-art-image" viewBox="0 0 120 80" aria-hidden="true" focusable="false"><path d="M18 28v24M30 20v40M42 28v24M30 40h60M78 28v24M90 20v40M102 28v24" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M8 32v16M112 32v16" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>
+                <span class="guided-art-mark" aria-hidden="true">✦</span>
               </div>
               <div class="guided-media-copy">
                 <div class="guided-muscle-label">${escapeHtml(workout ? workout.nome.split('+')[0].trim() : 'Treino')}</div>
@@ -9708,7 +9561,7 @@
       let refreshAfterUpdate = false;
       let automaticUpdateInProgress = false;
       const updateBanner = document.getElementById('updateBanner');
-      const APP_UPDATE_VERSION = 'v97-focus-header';
+      const APP_UPDATE_VERSION = 'v93-activity-flow';
       const ACTIVE_CACHE_NAME = `marsb-gym-${APP_UPDATE_VERSION}`;
       const hasActiveWorkout = () => Boolean(state?.activeWorkout || guidedState?.active);
       const purgeOldAppCaches = async () => {
