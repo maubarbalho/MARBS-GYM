@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0c">
+  <meta name="description" content="MARSB-GYM 2.0 — protótipo funcional da nova experiência de treino e nutrição.">
+  <link rel="manifest" href="./manifest.json">
+  <title>MARSB-GYM 2.0</title>
+  <style>
+    :root {
+      --bg: #0b0d0c;
+      --surface: #151918;
+      --surface-2: #1c211f;
+      --surface-3: #252c29;
+      --line: #39413d;
+      --muted: #a7b0ab;
+      --text: #f4f7f5;
+      --lime: #b9f21a;
+      --lime-strong: #c9ff23;
+      --lime-soft: rgba(185,242,26,.16);
+      --warning: #f7bd42;
+      --danger: #ff7676;
+      --shadow: 0 18px 50px rgba(0,0,0,.25);
+      --radius: 18px;
+      --nav-h: 78px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); color-scheme: dark; }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); font: 500 16px/1.4 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .01em; }
+    button, input, select, textarea { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+    button:active { transform: translateY(1px); }
+    .app { min-height: 100dvh; padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px); }
+    .topbar { height: 74px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #202622; background: rgba(11,13,12,.94); position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); }
+    .brand { font-weight: 900; font-style: italic; letter-spacing: -.06em; font-size: 1.4rem; }
+    .brand span { color: var(--lime); }
+    .icon-btn { min-width: 46px; min-height: 46px; padding: 8px; border: 1px solid transparent; border-radius: 14px; background: transparent; display: inline-grid; place-items: center; cursor: pointer; }
+    .icon-btn:hover { background: var(--surface-2); border-color: var(--line); }
+    .hamburger { width: 24px; display: grid; gap: 5px; }
+    .hamburger i { display: block; height: 3px; border-radius: 99px; background: var(--lime); }
+    main { width: min(100% - 28px, 760px); margin: 0 auto; padding: 22px 0 24px; }
+    .screen { display: none; animation: enter .22s ease both; }
+    .screen.active { display: block; }
+    @keyframes enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+    h1,h2,h3,p { margin: 0; }
+    h1 { font-size: clamp(1.8rem, 6vw, 2.45rem); line-height: 1.05; letter-spacing: -.05em; }
+    h2 { font-size: 1.25rem; letter-spacing: -.03em; }
+    h3 { font-size: 1rem; }
+    .eyebrow { color: var(--lime); font-weight: 850; font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; }
+    .muted { color: var(--muted); }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin: 25px 0 12px; }
+    .section-head a, .text-link { color: var(--lime); text-decoration: none; font-weight: 750; cursor: pointer; }
+    .card { background: linear-gradient(145deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .pad { padding: 18px; }
+    .hero { padding: 21px; margin-top: 14px; overflow: hidden; position: relative; }
+    .hero:after { content: ""; position: absolute; width: 180px; height: 180px; right: -60px; top: -60px; border-radius: 50%; background: radial-gradient(circle, rgba(185,242,26,.2), transparent 67%); pointer-events: none; }
+    .hero h2 { font-size: 2rem; margin: 5px 0 2px; font-style: italic; letter-spacing: -.06em; }
+    .hero-sub { color: var(--muted); }
+    .primary-btn, .secondary-btn, .danger-btn { border-radius: 13px; min-height: 48px; padding: 11px 16px; font-weight: 850; cursor: pointer; border: 1px solid transparent; }
+    .primary-btn { color: #11170d; background: var(--lime); box-shadow: 0 10px 26px rgba(185,242,26,.15); }
+    .primary-btn:hover { background: var(--lime-strong); }
+    .secondary-btn { background: var(--surface-3); border-color: #4b5650; }
+    .danger-btn { background: rgba(255,118,118,.12); border-color: rgba(255,118,118,.5); color: #ffb4b4; }
+    .wide { width: 100%; }
+    .hero-action { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 14px; color: var(--muted); font-size: .88rem; }
+    .meta-row strong { color: var(--text); }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .day { min-width: 0; min-height: 78px; padding: 8px 3px; display: grid; place-items: center; align-content: center; gap: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--muted); font-size: .7rem; text-align: center; }
+    .day.current { border-color: var(--lime); background: var(--lime-soft); color: var(--text); }
+    .day.done:after { content: "✓"; display: grid; place-items: center; width: 21px; height: 21px; color: #11170d; background: var(--lime); border-radius: 50%; font-weight: 900; }
+    .day.pending:after { content: ""; display: block; width: 17px; height: 17px; border: 2px solid #68726b; border-radius: 50%; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .summary-card { padding: 15px; min-height: 130px; }
+    .summary-value { font-size: 1.75rem; font-weight: 900; margin: 10px 0 1px; letter-spacing: -.06em; }
+    .summary-value.lime { color: var(--lime); }
+    .progress-line { height: 8px; margin-top: 13px; border-radius: 99px; background: #343b37; overflow: hidden; }
+    .progress-line i { display: block; height: 100%; border-radius: inherit; background: var(--lime); }
+    .workout-list { display: grid; gap: 10px; }
+    .workout-card { padding: 15px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+    .workout-card:hover { border-color: var(--lime); }
+    .workout-letter { flex: 0 0 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; background: var(--lime-soft); color: var(--lime); font-weight: 950; font-size: 1.45rem; }
+    .workout-copy { min-width: 0; flex: 1; }
+    .workout-copy strong { display: block; font-size: 1.05rem; }
+    .status { display: inline-flex; margin-top: 5px; padding: 3px 8px; border-radius: 99px; font-size: .7rem; font-weight: 850; }
+    .status.done { background: var(--lime-soft); color: var(--lime); }
+    .status.pending { background: rgba(247,189,66,.12); color: var(--warning); }
+    .chevron { color: var(--lime); font-size: 1.5rem; }
+    .focus-top { display: flex; align-items: center; gap: 12px; margin-bottom: 13px; }
+    .focus-top .title { flex: 1; text-align: center; }
+    .focus-top h1 { font-size: 1.35rem; }
+    .focus-top .muted { font-size: .85rem; }
+    .segments { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-bottom: 16px; }
+    .segments i { height: 8px; border-radius: 99px; background: #343b37; }
+    .segments i.done, .segments i.current { background: var(--lime); }
+    .exercise-card { padding: 18px; margin-bottom: 16px; }
+    .exercise-card h2 { font-size: clamp(1.6rem, 7vw, 2.25rem); margin: 5px 0 14px; letter-spacing: -.06em; }
+    .exercise-tools { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; }
+    .exercise-tools .secondary-btn { min-height: 43px; padding: 8px 12px; }
+    .record { margin-left: auto; color: var(--lime); font-weight: 850; font-size: .88rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; min-width: 540px; }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #303833; }
+    th { color: var(--muted); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; background: rgba(0,0,0,.12); }
+    tr:last-child td { border-bottom: 0; }
+    td { font-size: .9rem; }
+    td:first-child, th:first-child { text-align: center; width: 50px; }
+    .set-input { width: 82px; min-height: 40px; color: var(--text); background: #101311; border: 1px solid #4a554e; border-radius: 10px; padding: 7px 8px; }
+    .set-input:focus { border-color: var(--lime); }
+    .check { appearance: none; width: 27px; height: 27px; border: 2px solid #7b887f; border-radius: 50%; vertical-align: middle; cursor: pointer; }
+    .check:checked { border-color: var(--lime); background: var(--lime); position: relative; }
+    .check:checked:after { content: "✓"; color: #101311; position: absolute; inset: 0; display: grid; place-items: center; font-weight: 950; }
+    .rest-card, .next-card, .history-card { padding: 16px; margin-top: 13px; }
+    .rest-card { display: flex; align-items: center; gap: 15px; }
+    .timer-ring { width: 67px; height: 67px; display: grid; place-items: center; border-radius: 50%; border: 5px solid var(--lime); color: var(--lime); font-weight: 900; font-size: .8rem; flex: 0 0 auto; }
+    .timer-main { flex: 1; min-width: 0; }
+    .timer-main strong { display: block; font-size: 2.1rem; letter-spacing: -.06em; line-height: 1; margin: 2px 0; }
+    .rest-actions { display: flex; gap: 7px; }
+    .rest-actions button { min-height: 42px; padding: 7px 10px; }
+    .next-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .nav-item { min-height: 58px; padding: 5px 3px; border: 0; border-radius: 12px; background: transparent; color: var(--muted); display: grid; place-items: center; align-content: center; gap: 2px; cursor: pointer; }
+    .nav-item span { font-size: 1.45rem; line-height: 1; }
+    .nav-item small { font-size: .68rem; }
+    .nav-item.active { color: var(--lime); background: var(--lime-soft); }
+    .bottom-actions { position: fixed; z-index: 30; bottom: 0; left: 0; right: 0; padding: 10px max(14px, calc((100vw - 760px) / 2)) calc(10px + var(--safe-bottom)); background: rgba(11,13,12,.95); border-top: 1px solid var(--line); backdrop-filter: blur(16px); display: grid; grid-template-columns: 1fr 1.35fr 1.45fr; gap: 8px; }
+    .bottom-actions button { min-height: 50px; padding: 8px 7px; border-radius: 12px; font-size: .82rem; font-weight: 850; }
+    .bottom-actions .primary-btn { color: #0e130b; }
+    .chart { padding: 16px; }
+    .chart svg { display: block; width: 100%; height: 180px; margin-top: 10px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .metric { padding: 14px 11px; min-height: 105px; }
+    .metric strong { display: block; font-size: 1.45rem; margin-top: 8px; color: var(--lime); }
+    .bar-list { display: grid; gap: 13px; }
+    .bar-row { display: grid; grid-template-columns: 75px 1fr 40px; align-items: center; gap: 8px; color: var(--muted); font-size: .82rem; }
+    .bar-row .progress-line { margin: 0; }
+    .food-goal { padding: 18px; }
+    .calorie { display: flex; justify-content: space-between; align-items: end; margin: 10px 0 5px; }
+    .calorie strong { font-size: 2.1rem; letter-spacing: -.06em; }
+    .macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 17px; }
+    .macro { min-width: 0; }
+    .macro .progress-line { height: 6px; }
+    .meal-list { display: grid; gap: 9px; }
+    .meal { display: flex; align-items: center; gap: 12px; padding: 14px; }
+    .meal-icon { width: 35px; height: 35px; border: 2px solid var(--lime); border-radius: 12px; display: grid; place-items: center; color: var(--lime); }
+    .meal-copy { flex: 1; }
+    .meal .secondary-btn { min-width: 43px; min-height: 43px; padding: 5px; color: var(--lime); font-size: 1.35rem; }
+    .search { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); padding: 12px 15px; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; scrollbar-width: none; }
+    .chips button { min-height: 40px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface-2); white-space: nowrap; cursor: pointer; }
+    .chips button.active { border-color: var(--lime); color: var(--lime); background: var(--lime-soft); }
+    .library-list { display: grid; gap: 9px; margin-top: 12px; }
+    .library-item { padding: 14px; display: flex; align-items: center; gap: 13px; cursor: pointer; }
+    .library-symbol { width: 42px; height: 42px; display: grid; place-items: center; color: var(--lime); border: 1px solid #4d5b50; border-radius: 13px; font-weight: 900; }
+    .library-copy { flex: 1; }
+    .library-copy strong { display: block; }
+    .library-copy small { color: var(--muted); }
+    .drawer-backdrop, .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.67); display: none; align-items: flex-end; }
+    .drawer-backdrop.open, .modal-backdrop.open { display: flex; }
+    .drawer, .modal { width: 100%; max-height: 88dvh; overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 22px 22px 0 0; padding: 20px; box-shadow: var(--shadow); }
+    .drawer h2, .modal h2 { margin-bottom: 12px; }
+    .drawer-row { display: flex; justify-content: space-between; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+    .modal-backdrop { align-items: center; justify-content: center; padding: 18px; }
+    .modal { max-width: 500px; border-radius: 20px; }
+    .modal-actions { display: flex; gap: 9px; margin-top: 18px; }
+    .modal-actions button { flex: 1; }
+    .rpe-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 14px; }
+    .rpe-grid button { min-height: 48px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); cursor: pointer; }
+    .rpe-grid button.selected { background: var(--lime); color: #101311; border-color: var(--lime); font-weight: 900; }
+    .toast { position: fixed; z-index: 80; left: 50%; bottom: calc(var(--nav-h) + var(--safe-bottom) + 17px); transform: translate(-50%, 15px); opacity: 0; pointer-events: none; padding: 11px 14px; border: 1px solid var(--lime); border-radius: 99px; background: #18200f; color: var(--text); transition: .2s; white-space: nowrap; font-size: .84rem; }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .empty { padding: 25px; text-align: center; color: var(--muted); }
+    @media (min-width: 700px) {
+      .summary-grid { grid-template-columns: repeat(4, 1fr); }
+      .hero { padding: 28px; }
+      .hero-action { max-width: 620px; }
+      .metric-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+      main { width: min(100% - 20px, 760px); padding-top: 15px; }
+      .topbar { padding: 0 14px; height: 68px; }
+      .brand { font-size: 1.25rem; }
+      .hero h2 { font-size: 1.7rem; }
+      .rest-card { align-items: flex-start; flex-wrap: wrap; }
+      .timer-main { min-width: calc(100% - 90px); }
+      .rest-actions { width: 100%; }
+      .rest-actions button { flex: 1; }
+      .record { width: 100%; margin-left: 0; }
+      .exercise-tools { display: grid; grid-template-columns: 1fr 1fr; }
+      .exercise-tools .secondary-btn { width: 100%; }
+      .macro-grid { gap: 6px; }
+      .macro { font-size: .78rem; }
+      .bottom-actions button { font-size: .73rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" id="brandHome" aria-label="Ir para Hoje"><span class="brand">MARSB-<span>GYM</span></span></button>
+      <button class="icon-btn" id="menuBtn" aria-label="Abrir menu"><span class="hamburger" aria-hidden="true"><i></i><i></i><i></i></span></button>
+    </header>
+    <main>
+      <section class="screen active" data-screen="home">
+        <p class="eyebrow">Painel semanal</p>
+        <h1>Bom dia, Marcelo.</h1>
+        <p class="muted">Foco hoje, resultado sempre.</p>
+        <article class="card hero">
+          <p class="eyebrow">Treino de hoje</p>
+          <h2>Treino A</h2>
+          <p class="hero-sub">Peito, tríceps e ombros</p>
+          <div class="meta-row"><span>◷ <strong>60–75 min</strong></span><span>4 exercícios</span><span>Alta intensidade</span></div>
+          <div class="hero-action"><button class="primary-btn" data-open-workout>▶ Iniciar treino</button><span class="muted">Semana 1 de 4</span></div>
+        </article>
+        <div class="section-head"><div><p class="eyebrow">31 ago. – 6 set.</p><h2>Esta semana</h2></div><button class="text-link" id="calendarBtn">Ver calendário →</button></div>
+        <div class="week-grid" aria-label="Calendário da semana"><div class="day done"><b>SEG</b><span>31</span></div><div class="day done"><b>TER</b><span>1</span></div><div class="day current"><b>QUA</b><span>2</span></div><div class="day pending"><b>QUI</b><span>3</span></div><div class="day pending"><b>SEX</b><span>4</span></div><div class="day pending"><b>SÁB</b><span>5</span></div><div class="day pending"><b>DOM</b><span>6</span></div></div>
+        <div class="section-head"><h2>Resumo da semana</h2><span class="muted">2 de 4 treinos</span></div>
+        <div class="summary-grid"><article class="card summary-card"><span class="eyebrow">Feitos</span><div class="summary-value lime">2</div><span class="muted">treinos concluídos</span><div class="progress-line"><i style="width:50%"></i></div></article><article class="card summary-card"><span class="eyebrow">Pendentes</span><div class="summary-value">2</div><span class="muted">nesta semana</span><div class="progress-line"><i style="width:50%;background:var(--warning)"></i></div></article></div>
+        <div class="section-head"><h2>Treinos da semana</h2><button class="text-link" data-screen-link="workouts">Ver todos →</button></div>
+        <div class="workout-list"><article class="card workout-card" data-open-workout><span class="workout-letter">A</span><span class="workout-copy"><strong>Peito, tríceps e ombros</strong><span class="muted">4 exercícios · 60–75 min</span><span class="status done">Feito nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">B</span><span class="workout-copy"><strong>Costas, bíceps e ombros</strong><span class="muted">5 exercícios · 55–70 min</span><span class="status done">Feito nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">C</span><span class="workout-copy"><strong>Pernas completas</strong><span class="muted">6 exercícios · 70–85 min</span><span class="status pending">Pendente nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">D</span><span class="workout-copy"><strong>Ombros e braços</strong><span class="muted">5 exercícios · 50–65 min</span><span class="status pending">Pendente nesta semana</span></span><span class="chevron">›</span></article></div>
+      </section>
+
+      <section class="screen" data-screen="workouts">
+        <p class="eyebrow">Plano de treino</p><h1>Treinos</h1><p class="muted">Escolha uma sessão e execute sem distrações.</p>
+        <div class="card pad" style="margin-top:16px"><div class="section-head" style="margin:0 0 10px"><h2>Semana atual</h2><span class="status done">2/4 feitos</span></div><div class="progress-line"><i style="width:50%"></i></div></div>
+        <div class="section-head"><h2>Seu plano</h2><button class="text-link" id="editPlanBtn">Editar</button></div>
+        <div class="workout-list"><article class="card workout-card" data-open-workout><span class="workout-letter">A</span><span class="workout-copy"><strong>Peito, tríceps e ombros</strong><span class="muted">Supino · desenvolvimento · tríceps</span><span class="status done">Feito nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">B</span><span class="workout-copy"><strong>Costas, bíceps e ombros</strong><span class="muted">Puxada · remada · rosca</span><span class="status done">Feito nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">C</span><span class="workout-copy"><strong>Pernas completas</strong><span class="muted">Agachamento · leg press · posterior</span><span class="status pending">Pendente nesta semana</span></span><span class="chevron">›</span></article><article class="card workout-card" data-open-workout><span class="workout-letter">D</span><span class="workout-copy"><strong>Ombros e braços</strong><span class="muted">Desenvolvimento · elevação · braços</span><span class="status pending">Pendente nesta semana</span></span><span class="chevron">›</span></article></div>
+        <div class="section-head"><h2>Atalhos</h2></div><div class="summary-grid"><button class="card summary-card secondary-btn" id="freeWorkoutBtn"><span class="eyebrow">Modo livre</span><div class="summary-value">＋</div><span class="muted">Começar vazio</span></button><button class="card summary-card secondary-btn" id="historyBtn"><span class="eyebrow">Histórico</span><div class="summary-value">▥</div><span class="muted">Ver sessões</span></button></div>
+      </section>
+
+      <section class="screen" data-screen="focus">
+        <div class="focus-top"><button class="icon-btn" id="focusBack" aria-label="Voltar">←</button><div class="title"><h1>Treino A</h1><span class="muted" id="exerciseCounter">1 de 8 exercícios</span></div><button class="icon-btn" id="focusExit" aria-label="Sair do treino">×</button></div>
+        <div class="segments" aria-label="Progresso do treino"><i class="done"></i><i class="current"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <article class="card exercise-card"><p class="eyebrow">Peito</p><h2 id="exerciseName">Supino inclinado com halteres</h2><div class="exercise-tools"><button class="secondary-btn" id="executionBtn">▷ Ver execução</button><button class="secondary-btn" id="copyPreviousBtn">↻ Usar último treino</button><span class="record">◆ Melhor marca: 22,5 kg</span></div></article>
+        <div class="section-head" style="margin-top:18px"><h2>Séries</h2><span class="muted">4 séries</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Série</th><th>Reps</th><th>Carga</th><th>Último treino</th><th aria-label="Concluir"></th></tr></thead><tbody id="setRows"></tbody></table></div>
+        <article class="card rest-card"><div class="timer-ring" id="timerRing">60s</div><div class="timer-main"><span class="eyebrow">Descanso</span><strong id="timerText">01:00</strong><span class="muted">Pausa para a próxima série</span></div><div class="rest-actions"><button class="secondary-btn" id="pauseTimer">Ⅱ Pausar</button><button class="secondary-btn" id="skipTimer">▶▶ Pular</button></div></article>
+        <article class="card next-card"><div><span class="eyebrow">Próximo</span><h3 id="nextExercise">Crucifixo inclinado</h3></div><span class="chevron">›</span></article>
+        <article class="card history-card"><button class="text-link" id="exerciseHistory">▥ Histórico do exercício →</button></article>
+        <div class="bottom-actions"><button class="secondary-btn" id="backWorkout">← Voltar</button><button class="secondary-btn" id="skipExercise">▶| Pular exercício</button><button class="primary-btn" id="completeExercise">✓ Concluir exercício</button></div>
+      </section>
+
+      <section class="screen" data-screen="progress">
+        <p class="eyebrow">Evolução</p><h1>Progresso</h1><p class="muted">Veja o que mudou, não apenas números.</p>
+        <div class="metric-grid" style="margin-top:18px"><article class="card metric"><span class="muted">Treinos esta semana</span><strong>2/4</strong></article><article class="card metric"><span class="muted">Consistência</span><strong>85%</strong></article><article class="card metric"><span class="muted">Melhor marca</span><strong>22,5 kg</strong></article></div>
+        <div class="section-head"><h2>Força ao longo do tempo</h2><span class="status done">4 semanas</span></div><article class="card chart"><span class="eyebrow">Carga no supino inclinado</span><svg viewBox="0 0 600 190" role="img" aria-label="Gráfico de evolução de carga"><path d="M35 155H570M35 110H570M35 65H570" stroke="#39413d" stroke-dasharray="5 7"/><path d="M45 145 C170 135 215 125 300 110 S440 77 555 42" fill="none" stroke="#b9f21a" stroke-width="5"/><circle cx="45" cy="145" r="7" fill="#b9f21a"/><circle cx="210" cy="124" r="7" fill="#b9f21a"/><circle cx="350" cy="100" r="7" fill="#b9f21a"/><circle cx="555" cy="42" r="8" fill="#b9f21a"/><text x="37" y="181" fill="#a7b0ab" font-size="14">SEM 1</text><text x="195" y="181" fill="#a7b0ab" font-size="14">SEM 2</text><text x="335" y="181" fill="#a7b0ab" font-size="14">SEM 3</text><text x="530" y="181" fill="#a7b0ab" font-size="14">SEM 4</text></svg></article>
+        <div class="section-head"><h2>Por grupo muscular</h2></div><article class="card pad"><div class="bar-list"><div class="bar-row"><span>Peito</span><span class="progress-line"><i style="width:78%"></i></span><b>78%</b></div><div class="bar-row"><span>Costas</span><span class="progress-line"><i style="width:72%"></i></span><b>72%</b></div><div class="bar-row"><span>Pernas</span><span class="progress-line"><i style="width:68%"></i></span><b>68%</b></div><div class="bar-row"><span>Ombros</span><span class="progress-line"><i style="width:64%"></i></span><b>64%</b></div></div></article>
+        <div class="section-head"><h2>Recordes pessoais</h2><button class="text-link" id="allRecordsBtn">Ver todos →</button></div><div class="library-list"><article class="card library-item"><span class="library-symbol">↗</span><span class="library-copy"><strong>Supino inclinado com halteres</strong><small>22,5 kg · 8 reps</small></span><span class="chevron">›</span></article><article class="card library-item"><span class="library-symbol">↗</span><span class="library-copy"><strong>Agachamento livre</strong><small>100 kg · 6 reps</small></span><span class="chevron">›</span></article></div>
+      </section>
+
+      <section class="screen" data-screen="diet">
+        <p class="eyebrow">Nutrição</p><h1>Dieta</h1><p class="muted">Hoje, 1 de setembro · registre sem complicação.</p>
+        <article class="card food-goal" style="margin-top:18px"><span class="eyebrow">Meta diária</span><div class="calorie"><span>Calorias</span><strong>1.850 <small class="muted">/ 2.200 kcal</small></strong></div><div class="progress-line"><i style="width:84%"></i></div><div class="macro-grid"><div class="macro"><span class="muted">Proteínas</span><b>120 / 160 g</b><div class="progress-line"><i style="width:75%"></i></div></div><div class="macro"><span class="muted">Carboidratos</span><b>210 / 275 g</b><div class="progress-line"><i style="width:76%"></i></div></div><div class="macro"><span class="muted">Gorduras</span><b>58 / 73 g</b><div class="progress-line"><i style="width:79%"></i></div></div></div></article>
+        <button class="primary-btn wide" id="addMealBtn" style="margin-top:12px">＋ Adicionar refeição</button><div class="section-head"><h2>Refeições</h2><button class="text-link" id="favoritesBtn">Favoritos</button></div><div class="meal-list"><article class="card meal"><span class="meal-icon">☼</span><span class="meal-copy"><strong>Café da manhã</strong><span class="muted">450 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao café da manhã">＋</button></article><article class="card meal"><span class="meal-icon">◉</span><span class="meal-copy"><strong>Almoço</strong><span class="muted">650 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao almoço">＋</button></article><article class="card meal"><span class="meal-icon">☕</span><span class="meal-copy"><strong>Lanche</strong><span class="muted">250 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao lanche">＋</button></article><article class="card meal"><span class="meal-icon">◐</span><span class="meal-copy"><strong>Jantar</strong><span class="muted">Ainda não registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao jantar">＋</button></article></div>
+        <div class="section-head"><h2>Hidratação</h2></div><article class="card pad"><span class="eyebrow">Água</span><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><strong style="font-size:1.7rem">5 <span class="muted" style="font-size:1rem">/ 8 copos</span></strong><button class="secondary-btn" id="waterBtn">＋ Registrar copo</button></div></article>
+      </section>
+
+      <section class="screen" data-screen="library">
+        <p class="eyebrow">Conhecimento</p><h1>Biblioteca</h1><p class="muted">Exercícios para evoluir com inteligência.</p><input class="search" id="exerciseSearch" style="margin-top:17px" placeholder="⌕  Buscar exercício" aria-label="Buscar exercício"><div class="chips"><button class="active">Peito</button><button>Costas</button><button>Pernas</button><button>Ombros</button><button>Braços</button></div><div class="library-list" id="libraryList"><article class="card library-item"><span class="library-symbol">╱╲</span><span class="library-copy"><strong>Supino inclinado</strong><small>Peito superior · Barra</small></span><span class="chevron">›</span></article><article class="card library-item"><span class="library-symbol">⇆</span><span class="library-copy"><strong>Remada baixa</strong><small>Costas · Cabo</small></span><span class="chevron">›</span></article><article class="card library-item"><span class="library-symbol">⌁</span><span class="library-copy"><strong>Agachamento livre</strong><small>Pernas · Barra</small></span><span class="chevron">›</span></article><article class="card library-item"><span class="library-symbol">↟</span><span class="library-copy"><strong>Desenvolvimento</strong><small>Ombros · Halteres</small></span><span class="chevron">›</span></article></div><article class="card pad" style="margin-top:13px"><p class="eyebrow">Alternativas por equipamento</p><p class="muted" style="margin-top:5px">Encontre variações conforme o equipamento disponível.</p></article><article class="card pad" style="margin-top:13px"><p class="eyebrow">Dados</p><p class="muted" style="margin-top:5px">Backup, exportação e migração da versão atual ficam no menu.</p></article>
+      </section>
+    </main>
+    <nav class="bottom-nav" aria-label="Navegação principal" style="position:fixed;z-index:25;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-bottom));padding:8px 8px var(--safe-bottom);background:rgba(21,25,24,.97);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);gap:4px;backdrop-filter:blur(16px)">
+      <button class="nav-item active" data-screen-link="home" aria-label="Hoje"><span>⌂</span><small>Hoje</small></button><button class="nav-item" data-screen-link="workouts" aria-label="Treinos"><span>▦</span><small>Treinos</small></button><button class="nav-item" data-screen-link="progress" aria-label="Progresso"><span>▥</span><small>Progresso</small></button><button class="nav-item" data-screen-link="diet" aria-label="Dieta"><span>♧</span><small>Dieta</small></button><button class="nav-item" data-screen-link="library" aria-label="Biblioteca"><span>⊞</span><small>Biblioteca</small></button>
+    </nav>
+  </div>
+  <div class="drawer-backdrop" id="drawerBackdrop"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle"><div style="display:flex;justify-content:space-between;align-items:center"><h2 id="drawerTitle">Menu</h2><button class="icon-btn" id="closeDrawer" aria-label="Fechar menu">×</button></div><div class="drawer-row"><span>Versão do protótipo</span><strong>2.0.0</strong></div><button class="drawer-row wide" id="importDataBtn" style="background:none;border:0;border-bottom:1px solid var(--line);text-align:left"><span>Importar dados da v1</span><span class="chevron">›</span></button><button class="drawer-row wide" id="exportDataBtn" style="background:none;border:0;border-bottom:1px solid var(--line);text-align:left"><span>Exportar dados da v2</span><span class="chevron">›</span></button><button class="drawer-row wide" id="settingsBtn" style="background:none;border:0;text-align:left"><span>Preferências e privacidade</span><span class="chevron">›</span></button></aside></div>
+  <div class="modal-backdrop" id="copyModal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="copyTitle"><h2 id="copyTitle">Usar dados do último treino?</h2><p class="muted">Os valores de reps e carga serão copiados somente para esta sessão. As séries continuarão desmarcadas.</p><label style="display:flex;gap:9px;align-items:center;margin-top:15px"><input type="checkbox" id="applyAll"> Aplicar a todas as séries</label><div class="modal-actions"><button class="secondary-btn" id="cancelCopy">Cancelar</button><button class="primary-btn" id="confirmCopy">Copiar valores</button></div></div></div>
+  <div class="modal-backdrop" id="rpeModal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="rpeTitle"><h2 id="rpeTitle">Como foi esta atividade?</h2><p class="muted">Selecione o esforço percebido antes de avançar.</p><div class="rpe-grid" id="rpeGrid"></div><textarea id="rpeNote" rows="3" placeholder="Comentário opcional" style="width:100%;margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--text);padding:10px"></textarea><div class="modal-actions"><button class="secondary-btn" id="cancelRpe">Cancelar</button><button class="primary-btn" id="saveRpe">Salvar e continuar</button></div></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      'use strict';
+      const KEY = 'marsbGym_v2_preview';
+      const state = JSON.parse(localStorage.getItem(KEY) || 'null') || { sets: [{reps:'12', weight:'15', previous:'12 × 12,5 kg', done:true}, {reps:'10', weight:'17,5', previous:'10 × 15 kg', done:true}, {reps:'8', weight:'20', previous:'8 × 17,5 kg', done:false}, {reps:'8', weight:'22,5', previous:'—', done:false}], rest: 60, rpe: null, sessions: [] };
+      let timer = null; let remaining = state.rest || 60; let timerRunning = false; let selectedRpe = null;
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+      const toast = (message) => { const el = $('#toast'); el.textContent = message; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2400); };
+      const showScreen = (name) => { $$('.screen').forEach(s => s.classList.toggle('active', s.dataset.screen === name)); $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screenLink === name)); window.scrollTo({top:0, behavior:'smooth'}); };
+      const openFocus = () => { renderSets(); showScreen('focus'); startTimer(); };
+      const closeModal = id => $('#' + id).classList.remove('open');
+      const openModal = id => $('#' + id).classList.add('open');
+      const renderSets = () => { $('#setRows').innerHTML = state.sets.map((set, i) => `<tr><td>${i + 1}</td><td><input class="set-input" data-field="reps" data-index="${i}" value="${set.reps}" inputmode="numeric" aria-label="Repetições da série ${i + 1}"></td><td><input class="set-input" data-field="weight" data-index="${i}" value="${set.weight}" inputmode="decimal" aria-label="Carga da série ${i + 1}"></td><td class="muted">${set.previous}</td><td><input class="check" type="checkbox" data-field="done" data-index="${i}" ${set.done ? 'checked' : ''} aria-label="Concluir série ${i + 1}"></td></tr>`).join(''); };
+      const formatTime = seconds => `${String(Math.floor(seconds / 60)).padStart(2,'0')}:${String(seconds % 60).padStart(2,'0')}`;
+      const paintTimer = () => { $('#timerText').textContent = formatTime(remaining); $('#timerRing').textContent = remaining + 's'; };
+      const startTimer = () => { clearInterval(timer); remaining = state.rest || 60; paintTimer(); timerRunning = true; timer = setInterval(() => { remaining--; paintTimer(); if (remaining <= 0) { clearInterval(timer); timerRunning = false; remaining = 0; paintTimer(); toast('Descanso concluído'); } }, 1000); };
+      const pauseTimer = () => { if (timerRunning) { clearInterval(timer); timerRunning = false; toast('Timer pausado'); } else { timerRunning = true; timer = setInterval(() => { remaining--; paintTimer(); if (remaining <= 0) { clearInterval(timer); timerRunning = false; toast('Descanso concluído'); } }, 1000); toast('Timer retomado'); } };
+      const resetTimer = () => { clearInterval(timer); timerRunning = false; remaining = 0; paintTimer(); toast('Descanso pulado'); };
+      const copyPrevious = () => { state.sets.forEach(set => { if (!set.reps) set.reps = set.previous.split(' ')[0] || ''; }); renderSets(); save(); toast('Valores anteriores aplicados; confirme cada série'); };
+      const finishExercise = () => { openModal('rpeModal'); selectedRpe = null; $$('.rpe-grid button').forEach(b => b.classList.remove('selected')); };
+      const goNext = () => { clearInterval(timer); toast('Atividade concluída'); setTimeout(() => showScreen('home'), 650); };
+      $('#setRows').addEventListener('input', e => { const input = e.target.closest('[data-index]'); if (!input) return; const i = Number(input.dataset.index); state.sets[i][input.dataset.field] = input.value; save(); });
+      $('#setRows').addEventListener('change', e => { const input = e.target.closest('[data-index]'); if (!input) return; const i = Number(input.dataset.index); state.sets[i][input.dataset.field] = input.type === 'checkbox' ? input.checked : input.value; save(); });
+      $$('[data-screen-link]').forEach(btn => btn.addEventListener('click', () => showScreen(btn.dataset.screenLink)));
+      $$('[data-open-workout]').forEach(btn => btn.addEventListener('click', openFocus));
+      $('#brandHome').addEventListener('click', () => showScreen('home')); $('#menuBtn').addEventListener('click', () => openModal('drawerBackdrop')); $('#closeDrawer').addEventListener('click', () => closeModal('drawerBackdrop')); $('#drawerBackdrop').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal('drawerBackdrop'); });
+      $('#focusBack').addEventListener('click', () => { clearInterval(timer); showScreen('workouts'); }); $('#focusExit').addEventListener('click', () => { clearInterval(timer); showScreen('home'); }); $('#backWorkout').addEventListener('click', () => { clearInterval(timer); showScreen('workouts'); }); $('#skipExercise').addEventListener('click', () => { toast('Exercício mantido para retorno'); }); $('#completeExercise').addEventListener('click', finishExercise);
+      $('#pauseTimer').addEventListener('click', pauseTimer); $('#skipTimer').addEventListener('click', resetTimer); $('#copyPreviousBtn').addEventListener('click', () => openModal('copyModal')); $('#cancelCopy').addEventListener('click', () => closeModal('copyModal')); $('#confirmCopy').addEventListener('click', () => { copyPrevious(); closeModal('copyModal'); });
+      $('#executionBtn').addEventListener('click', () => toast('Ficha de execução aberta')); $('#exerciseHistory').addEventListener('click', () => toast('Histórico do exercício aberto')); $('#calendarBtn').addEventListener('click', () => toast('Calendário semanal')); $('#editPlanBtn').addEventListener('click', () => toast('Edição segura do plano')); $('#freeWorkoutBtn').addEventListener('click', () => toast('Modo livre pronto')); $('#historyBtn').addEventListener('click', () => toast('Histórico de sessões')); $('#allRecordsBtn').addEventListener('click', () => toast('Todos os recordes')); $('#addMealBtn').addEventListener('click', () => toast('Escolha uma refeição para adicionar')); $('#favoritesBtn').addEventListener('click', () => toast('Favoritos da dieta')); $('#waterBtn').addEventListener('click', () => toast('Copo registrado'));
+      $('#rpeGrid').innerHTML = Array.from({length:10}, (_, i) => `<button type="button" data-rpe="${i+1}">${i+1}</button>`).join(''); $('#rpeGrid').addEventListener('click', e => { const btn = e.target.closest('[data-rpe]'); if (!btn) return; selectedRpe = Number(btn.dataset.rpe); $$('#rpeGrid button').forEach(b => b.classList.toggle('selected', b === btn)); }); $('#cancelRpe').addEventListener('click', () => closeModal('rpeModal')); $('#saveRpe').addEventListener('click', () => { if (!selectedRpe) { toast('Selecione um esforço de 1 a 10'); return; } state.rpe = {value:selectedRpe, note:$('#rpeNote').value, at:new Date().toISOString()}; state.sessions.push({at:state.rpe.at, exercise:'Supino inclinado com halteres', rpe:selectedRpe}); save(); closeModal('rpeModal'); goNext(); });
+      $('#exerciseSearch').addEventListener('input', e => { const term = e.target.value.toLowerCase(); $$('#libraryList .library-item').forEach(item => item.hidden = !item.textContent.toLowerCase().includes(term)); }); $$('.chips button').forEach(chip => chip.addEventListener('click', () => { $$('.chips button').forEach(c => c.classList.remove('active')); chip.classList.add('active'); toast('Filtro: ' + chip.textContent); }));
+      $('#importDataBtn').addEventListener('click', () => { const old = localStorage.getItem('marsbGym_v2'); if (old) { toast('Dados da v1 encontrados; migração não destrutiva disponível'); } else { toast('Nenhum dado da v1 encontrado neste navegador'); } }); $('#exportDataBtn').addEventListener('click', () => { const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'marsb-gym-v2-backup.json'; a.click(); URL.revokeObjectURL(url); toast('Backup da v2 exportado'); }); $('#settingsBtn').addEventListener('click', () => toast('Preferências em preparação'));
+      renderSets(); paintTimer();
+    })();
+  </script>
+</body>
+</html>
