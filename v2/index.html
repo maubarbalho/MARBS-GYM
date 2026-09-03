@@ -283,7 +283,7 @@
       <section class="screen" data-screen="diet">
         <p class="eyebrow">Nutrição</p><h1>Dieta</h1><p class="muted">Hoje, 1 de setembro · registre sem complicação.</p>
         <article class="card food-goal" style="margin-top:18px"><span class="eyebrow">Meta diária</span><div class="calorie"><span>Calorias</span><strong>1.850 <small class="muted">/ 2.200 kcal</small></strong></div><div class="progress-line"><i style="width:84%"></i></div><div class="macro-grid"><div class="macro"><span class="muted">Proteínas</span><b>120 / 160 g</b><div class="progress-line"><i style="width:75%"></i></div></div><div class="macro"><span class="muted">Carboidratos</span><b>210 / 275 g</b><div class="progress-line"><i style="width:76%"></i></div></div><div class="macro"><span class="muted">Gorduras</span><b>58 / 73 g</b><div class="progress-line"><i style="width:79%"></i></div></div></div></article>
-        <button class="primary-btn wide" id="addMealBtn" style="margin-top:12px">＋ Adicionar refeição</button><details class="card pad" id="menuPlanner" style="margin-top:13px"><summary style="cursor:pointer;font-weight:850;color:var(--lime)">Planejar cardápio do dia</summary><p class="muted" style="margin-top:9px;font-size:.88rem">Gere uma sugestão de 3 refeições usando alimentos de referência da tabela TACO. O plano pode ser ajustado antes de ser copiado ao diário.</p><div class="summary-grid" style="margin-top:12px"><label class="muted">Calorias-alvo<input class="search" id="menuCalories" inputmode="numeric" value="2200" style="margin-top:5px"></label><label class="muted">Objetivo<select class="search" id="menuGoal" style="margin-top:5px"><option value="maintain">Manutenção</option><option value="gain">Hipertrofia</option><option value="cut">Déficit</option></select></label></div><button class="primary-btn wide" id="generateMenuBtn" style="margin-top:12px">Gerar cardápio TACO</button><div id="menuResult" style="display:none;margin-top:13px"></div></details><div class="section-head"><h2>Refeições</h2><button class="text-link" id="favoritesBtn">Favoritos</button></div><div class="meal-list"><article class="card meal"><span class="meal-icon">☼</span><span class="meal-copy"><strong>Café da manhã</strong><span class="muted">450 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao café da manhã">＋</button></article><article class="card meal"><span class="meal-icon">◉</span><span class="meal-copy"><strong>Almoço</strong><span class="muted">650 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao almoço">＋</button></article><article class="card meal"><span class="meal-icon">☕</span><span class="meal-copy"><strong>Lanche</strong><span class="muted">250 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao lanche">＋</button></article><article class="card meal"><span class="meal-icon">◐</span><span class="meal-copy"><strong>Jantar</strong><span class="muted">Ainda não registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao jantar">＋</button></article></div>
+        <button class="primary-btn wide" id="addMealBtn" style="margin-top:12px">＋ Adicionar refeição</button><details class="card pad" id="menuPlanner" style="margin-top:13px"><summary style="cursor:pointer;font-weight:850;color:var(--lime)">Montar dieta do dia</summary><div class="card pad" style="margin-top:10px"><h2>Montar dieta do dia</h2><p class="muted" style="margin-top:6px">Informe seus dados para gerar <strong>hipertrofia</strong> ou <strong>déficit (−400 kcal)</strong> com 3 refeições, quantidades em gramas e macros (base TACO).</p><label class="muted" style="display:block;margin-top:13px">Objetivo<div class="seg-control" id="menuGoal" role="group" aria-label="Objetivo da dieta" style="margin-top:5px"><button type="button" class="active" data-goal="hipertrofia">Hipertrofia</button><button type="button" data-goal="deficit">Déficit −400 kcal</button></div></label><label class="muted" style="display:block;margin-top:12px">Peso corporal (kg) *<input class="search" id="menuWeight" inputmode="decimal" placeholder="Ex: 80,0" style="margin-top:5px"></label><div class="summary-grid" style="margin-top:10px"><label class="muted">Altura (cm)<input class="search" id="menuHeight" inputmode="numeric" placeholder="Ex: 175" style="margin-top:5px"></label><label class="muted">Idade (anos)<input class="search" id="menuAge" inputmode="numeric" placeholder="Ex: 28" style="margin-top:5px"></label></div><label class="muted" style="display:block;margin-top:12px">Sexo<select class="search" id="menuSex" style="margin-top:5px"><option value="M">Masculino</option><option value="F">Feminino</option></select></label><label class="muted" style="display:block;margin-top:12px">Nível de atividade<select class="search" id="menuActivity" style="margin-top:5px"><option value="1.2">Leve</option><option value="1.55" selected>Moderado</option><option value="1.725">Alto</option></select></label><label class="muted" style="display:block;margin-top:12px">Estilo do cardápio<select class="search" id="menuStyle" style="margin-top:5px"><option value="padrao">Padrão</option><option value="whey">Com whey</option><option value="simples">Simples</option></select></label><button class="primary-btn wide" id="runMenuBtn" style="margin-top:14px">Gerar dieta</button><div id="menuResult" class="calc-result" style="display:none;margin-top:13px"></div></div></details><div class="section-head"><h2>Refeições</h2><button class="text-link" id="favoritesBtn">Favoritos</button></div><div class="meal-list"><article class="card meal"><span class="meal-icon">☼</span><span class="meal-copy"><strong>Café da manhã</strong><span class="muted">450 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao café da manhã">＋</button></article><article class="card meal"><span class="meal-icon">◉</span><span class="meal-copy"><strong>Almoço</strong><span class="muted">650 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao almoço">＋</button></article><article class="card meal"><span class="meal-icon">☕</span><span class="meal-copy"><strong>Lanche</strong><span class="muted">250 kcal · registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao lanche">＋</button></article><article class="card meal"><span class="meal-icon">◐</span><span class="meal-copy"><strong>Jantar</strong><span class="muted">Ainda não registrado</span></span><button class="secondary-btn" aria-label="Adicionar ao jantar">＋</button></article></div>
         <div class="section-head"><h2>Hidratação</h2></div><article class="card pad"><span class="eyebrow">Água</span><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><strong style="font-size:1.7rem">5 <span class="muted" style="font-size:1rem">/ 8 copos</span></strong><button class="secondary-btn" id="waterBtn">＋ Registrar copo</button></div></article>
       </section>
 
@@ -343,9 +343,416 @@
       $('#progressBtn').addEventListener('click', () => { const weight = num($('#progressWeight').value); const pct = num($('#progressPct').value) || 2.5; if (!weight || weight <= 0) { toast('Informe a carga atual'); return; } const next = weight * (1 + pct / 100); const rounded05 = Math.round(next * 2) / 2; const rounded125 = Math.round(next / 1.25) * 1.25; showCalc('progressResult', `<div class="card pad" style="background:var(--lime-soft);border-color:var(--lime)"><strong>${weight.toFixed(1).replace('.', ',')} kg → ${rounded05.toFixed(1).replace('.', ',')} kg</strong><p class="muted" style="margin-top:5px">+${String(pct).replace('.', ',')}% com passo de 0,5 kg.</p><p class="muted" style="margin-top:4px">Alternativa com microplaca de 1,25 kg: ${rounded125.toFixed(2).replace('.', ',')} kg.</p><small class="muted">Suba somente se concluir as repetições com técnica e recuperação adequadas.</small></div>`); });
       $('#oneRmBtn').addEventListener('click', () => { const weight = num($('#oneRmWeight').value); const reps = Math.round(num($('#oneRmReps').value)); if (!weight || reps < 1 || reps > 30) { toast('Informe carga e repetições válidas'); return; } const epley = weight * (1 + reps / 30); const brzycki = reps < 37 ? weight * (36 / (37 - reps)) : epley; const estimate = ((epley + brzycki) / 2).toFixed(1).replace('.', ','); showCalc('oneRmResult', `<div class="card pad" style="background:var(--lime-soft);border-color:var(--lime)"><strong>1RM estimado: ${estimate} kg</strong><p class="muted" style="margin-top:4px">Referência pelos métodos Epley e Brzycki; não é necessário testar a carga máxima.</p></div>`); });
       $('#unitBtn').addEventListener('click', () => { const value = num($('#unitValue').value); const mode = $('#unitFrom').value; const factors = {'kg-lb':[2.20462262,'kg','lb'],'lb-kg':[.45359237,'lb','kg'],'cm-in':[.393700787,'cm','in'],'in-cm':[2.54,'in','cm']}; const [factor, from, to] = factors[mode]; if (!value) { toast('Informe um valor para converter'); return; } showCalc('unitResult', `<div class="card pad"><strong>${value} ${from} = ${(value * factor).toFixed(2).replace('.', ',')} ${to}</strong></div>`); });
-      const TACO = [{name:'Aveia em flocos',k:394,p:13.9,c:66.6,f:8.5},{name:'Banana prata',k:98,p:1.3,c:26.0,f:.1},{name:'Arroz branco cozido',k:128,p:2.5,c:28.1,f:.2},{name:'Feijão carioca cozido',k:76,p:4.8,c:13.6,f:.5},{name:'Peito de frango grelhado',k:159,p:32.0,c:0,f:2.5},{name:'Ovo de galinha cozido',k:146,p:13.3,c:.6,f:9.5},{name:'Batata inglesa cozida',k:52,p:1.2,c:11.9,f:0},{name:'Abacate',k:96,p:1.2,c:6.0,f:8.4}];
-      const menuMacros = item => ({k:item.k,itemK:item.k,p:item.p,c:item.c,f:item.f});
-      $('#generateMenuBtn').addEventListener('click', () => { const target = Math.max(800, num($('#menuCalories').value) || 2200) * ($('#menuGoal').value === 'gain' ? 1.08 : $('#menuGoal').value === 'cut' ? .82 : 1); const portions = [{meal:'Café da manhã',items:[['Aveia em flocos',60],['Banana prata',100],['Ovo de galinha cozido',100]]},{meal:'Almoço',items:[['Arroz branco cozido',180],['Feijão carioca cozido',120],['Peito de frango grelhado',180],['Abacate',50]]},{meal:'Jantar',items:[['Batata inglesa cozida',250],['Peito de frango grelhado',150],['Ovo de galinha cozido',50]]}]; const find = name => TACO.find(item => item.name === name); const total = portions.flatMap(x => x.items).reduce((sum,[name,g]) => { const food=find(name); return {k:sum.k+food.k*g/100,p:sum.p+food.p*g/100,c:sum.c+food.c*g/100,f:sum.f+food.f*g/100}; },{k:0,p:0,c:0,f:0}); state.menuPlan = {target, goal:$('#menuGoal').value, portions, total, source:'TACO'}; save(); const rows = portions.map(section => `<div class="card pad" style="margin-top:8px"><strong>${section.meal}</strong>${section.items.map(([name,g]) => `<p class="muted" style="margin-top:4px">${name} · ${g} g</p>`).join('')}</div>`).join(''); $('#menuResult').innerHTML = `<span class="eyebrow">Sugestão gerada</span>${rows}<div class="card pad" style="margin-top:9px;background:var(--lime-soft);border-color:var(--lime)"><strong>${Math.round(total.k)} kcal · ${Math.round(total.p)} g de proteína</strong><p class="muted" style="margin-top:4px">Meta ajustada: ${Math.round(target)} kcal</p></div><button class="secondary-btn wide" id="copyMenuBtn" style="margin-top:9px">Copiar para o diário</button><small class="muted" style="display:block;margin-top:8px">Referência: Tabela TACO/NEPA-UNICAMP. Confira porções e orientação profissional.</small>`; $('#menuResult').style.display = 'block'; $('#copyMenuBtn').addEventListener('click', () => { state.lastCopiedMenu = new Date().toISOString(); save(); toast('Cardápio copiado para o diário'); }); toast('Cardápio TACO gerado'); });
+      const menuSeg = (id, attr) => { const root = document.getElementById(id); const btn = root?.querySelector('button.active'); if (btn) return btn.getAttribute(attr); const select = root?.tagName === 'SELECT' ? root : root?.querySelector('select'); return select ? select.value : null; };
+    function runMenuCalc() {
+      let weight = num(document.getElementById('menuWeight').value);
+      if (!weight && typeof getBodyWeightsSorted === 'function') {
+        const sorted = getBodyWeightsSorted();
+        if (sorted.length) weight = sorted[sorted.length - 1].kg;
+      }
+      if (!weight || weight < 30) {
+        toast('Informe o peso corporal');
+        return;
+      }
+
+      const height = parseFloat(document.getElementById('menuHeight').value) || 0;
+      const age = parseFloat(document.getElementById('menuAge').value) || 0;
+      const sex = menuSeg('menuSex', 'data-sex') || 'M';
+      const act = parseFloat(menuSeg('menuActivity', 'data-act') || '1.55');
+      const goal = menuSeg('menuGoal', 'data-goal') || 'hipertrofia';
+      const style = menuSeg('menuStyle', 'data-style') || 'padrao';
+
+      // Estimate TDEE when possible (Mifflin-St Jeor)
+      let tmb = 0, tdee = 0;
+      if (height >= 120 && age >= 14) {
+        if (sex === 'F') tmb = 10 * weight + 6.25 * height - 5 * age - 161;
+        else tmb = 10 * weight + 6.25 * height - 5 * age + 5;
+        tdee = tmb * act;
+      }
+
+      // Base hypertrophy macros
+      let protT = weight * 2.0;
+      let carbT = weight * 4.5;
+      let fatT = weight * 0.8;
+      let kcalT = protT * 4 + carbT * 4 + fatT * 9;
+
+      // If TDEE known, gently align hypertrophy kcal near TDEE+250 by adjusting carbs
+      if (tdee > 0 && goal === 'hipertrofia') {
+        const targetK = tdee + 250;
+        const fixedK = protT * 4 + fatT * 9;
+        carbT = Math.max(weight * 3.0, (targetK - fixedK) / 4);
+        kcalT = protT * 4 + carbT * 4 + fatT * 9;
+      }
+
+      // Deficit: -400 kcal mainly from carbohydrates (~100 g)
+      if (goal === 'deficit') {
+        carbT = Math.max(weight * 2.5, carbT - 100);
+        // keep protein high, fat similar
+        fatT = weight * 0.8;
+        protT = weight * 2.0;
+        kcalT = protT * 4 + carbT * 4 + fatT * 9;
+        // If TDEE known, prefer TDEE-400 as kcal target via carbs
+        if (tdee > 0) {
+          const targetK = Math.max(tdee - 400, protT * 4 + fatT * 9 + weight * 2.5 * 4);
+          const fixedK = protT * 4 + fatT * 9;
+          carbT = Math.max(weight * 2.5, (targetK - fixedK) / 4);
+          kcalT = protT * 4 + carbT * 4 + fatT * 9;
+        }
+      }
+
+      const T = {
+        aveia:   { n: 'Aveia em flocos (seca)', p: 13.9, c: 66.6, f: 8.5, k: 394 },
+        ovo:     { n: 'Ovo cozido', p: 13.3, c: 0.6, f: 9.5, k: 146 },
+        banana:  { n: 'Banana-prata', p: 1.3, c: 26.0, f: 0.1, k: 98 },
+        pao:     { n: 'Pão francês', p: 8.0, c: 58.6, f: 3.1, k: 300 },
+        frango:  { n: 'Frango peito cozido', p: 31.5, c: 0, f: 3.2, k: 163 },
+        arroz:   { n: 'Arroz branco cozido', p: 2.5, c: 28.1, f: 0.2, k: 128 },
+        feijao:  { n: 'Feijão preto cozido', p: 4.5, c: 14.0, f: 0.5, k: 77 },
+        batata:  { n: 'Batata inglesa cozida', p: 1.2, c: 11.9, f: 0, k: 52 },
+        patinho: { n: 'Patinho grelhado', p: 35.9, c: 0, f: 7.3, k: 219 },
+        azeite:  { n: 'Azeite de oliva', p: 0, c: 0, f: 100, k: 884 },
+        amendoim:{ n: 'Amendoim torrado', p: 22.5, c: 18.7, f: 54, k: 606 },
+        abacate: { n: 'Abacate', p: 1.2, c: 6.0, f: 8.4, k: 96 },
+        legumes: { n: 'Legumes/verduras', p: 1.5, c: 5, f: 0.2, k: 30 }
+      };
+      const WHEY = { n: 'Whey protein (pó)', p: 80, c: 8, f: 5, k: 400 };
+
+      const shares = [
+        { id: 'cafe', name: 'Café da manhã', pct: 0.28 },
+        { id: 'almoco', name: 'Almoço', pct: 0.40 },
+        { id: 'jantar', name: 'Jantar', pct: 0.32 }
+      ];
+
+      function macrosOf(food, g) {
+        return { p: g * food.p / 100, c: g * food.c / 100, f: g * food.f / 100, k: g * food.k / 100 };
+      }
+      function roundFood(g) {
+        if (g <= 0) return 0;
+        if (g >= 100) return Math.round(g / 5) * 5;
+        if (g >= 20) return Math.round(g / 5) * 5;
+        return Math.max(1, Math.round(g));
+      }
+
+      function templatesFor(style) {
+        if (style === 'whey') {
+          return {
+            cafe: [
+              { food: WHEY, role: 'p', w: 1 },
+              { food: T.aveia, role: 'c', w: 0.70 },
+              { food: T.banana, role: 'c', w: 0.30 },
+              { food: T.amendoim, role: 'f', w: 1 }
+            ],
+            almoco: [
+              { food: T.frango, role: 'p', w: 1 },
+              { food: T.arroz, role: 'c', w: 0.72 },
+              { food: T.feijao, role: 'c', w: 0.28 },
+              { food: T.azeite, role: 'f', w: 1 },
+              { food: T.legumes, role: 'v', w: 1 }
+            ],
+            jantar: [
+              { food: T.patinho, role: 'p', w: 1 },
+              { food: T.batata, role: 'c', w: 0.80 },
+              { food: T.arroz, role: 'c', w: 0.20 },
+              { food: T.abacate, role: 'f', w: 1 },
+              { food: T.legumes, role: 'v', w: 1 }
+            ]
+          };
+        }
+        if (style === 'simples') {
+          return {
+            cafe: [
+              { food: T.ovo, role: 'p', w: 1 },
+              { food: T.pao, role: 'c', w: 1 },
+              { food: T.azeite, role: 'f', w: 1 }
+            ],
+            almoco: [
+              { food: T.frango, role: 'p', w: 1 },
+              { food: T.arroz, role: 'c', w: 0.75 },
+              { food: T.feijao, role: 'c', w: 0.25 },
+              { food: T.azeite, role: 'f', w: 1 },
+              { food: T.legumes, role: 'v', w: 1 }
+            ],
+            jantar: [
+              { food: T.frango, role: 'p', w: 1 },
+              { food: T.batata, role: 'c', w: 1 },
+              { food: T.azeite, role: 'f', w: 1 },
+              { food: T.legumes, role: 'v', w: 1 }
+            ]
+          };
+        }
+        return {
+          cafe: [
+            { food: T.ovo, role: 'p', w: 1 },
+            { food: T.aveia, role: 'c', w: 0.65 },
+            { food: T.banana, role: 'c', w: 0.35 },
+            { food: T.amendoim, role: 'f', w: 1 }
+          ],
+          almoco: [
+            { food: T.frango, role: 'p', w: 1 },
+            { food: T.arroz, role: 'c', w: 0.70 },
+            { food: T.feijao, role: 'c', w: 0.30 },
+            { food: T.azeite, role: 'f', w: 1 },
+            { food: T.legumes, role: 'v', w: 1 }
+          ],
+          jantar: [
+            { food: T.patinho, role: 'p', w: 1 },
+            { food: T.batata, role: 'c', w: 0.75 },
+            { food: T.arroz, role: 'c', w: 0.25 },
+            { food: T.abacate, role: 'f', w: 1 },
+            { food: T.legumes, role: 'v', w: 1 }
+          ]
+        };
+      }
+
+      const tpl = templatesFor(style);
+
+      function buildRawMeal(share, itemsTpl) {
+        const pNeed = protT * share.pct;
+        const cNeed = carbT * share.pct;
+        const fNeed = fatT * share.pct;
+        const items = [];
+
+        const pFoods = itemsTpl.filter(x => x.role === 'p');
+        const pW = pFoods.reduce((s, x) => s + x.w, 0) || 1;
+        pFoods.forEach(x => {
+          const need = pNeed * (x.w / pW);
+          const dens = x.food.p / 100;
+          items.push({ food: x.food, g: dens > 0 ? need / dens : 0, role: 'p', note: '' });
+        });
+
+        const cFoods = itemsTpl.filter(x => x.role === 'c');
+        const cW = cFoods.reduce((s, x) => s + x.w, 0) || 1;
+        cFoods.forEach(x => {
+          const need = cNeed * (x.w / cW);
+          const dens = x.food.c / 100;
+          items.push({ food: x.food, g: dens > 0 ? need / dens : 0, role: 'c', note: '' });
+        });
+
+        let fatFromPC = 0;
+        items.forEach(it => { fatFromPC += macrosOf(it.food, it.g).f; });
+        const fatRemain = Math.max(0, fNeed - fatFromPC);
+        const fFoods = itemsTpl.filter(x => x.role === 'f');
+        const fW = fFoods.reduce((s, x) => s + x.w, 0) || 1;
+        fFoods.forEach(x => {
+          const need = fatRemain * (x.w / fW);
+          const dens = x.food.f / 100;
+          items.push({ food: x.food, g: dens > 0 ? need / dens : 0, role: 'f', note: '' });
+        });
+
+        itemsTpl.filter(x => x.role === 'v').forEach(x => {
+          items.push({ food: x.food, g: weight * 1.8 * (share.pct / 0.35), role: 'v', note: 'variados' });
+        });
+
+        return items;
+      }
+
+      let meals = shares.map(sh => ({ share: sh, items: buildRawMeal(sh, tpl[sh.id]) }));
+
+      function dayTotals(mealsArr) {
+        const t = { p: 0, c: 0, f: 0, k: 0 };
+        mealsArr.forEach(m => m.items.forEach(it => {
+          const mm = macrosOf(it.food, it.g);
+          t.p += mm.p; t.c += mm.c; t.f += mm.f; t.k += mm.k;
+        }));
+        return t;
+      }
+
+      let tot = dayTotals(meals);
+      if (tot.p > 1) {
+        const sp = protT / tot.p;
+        meals.forEach(m => m.items.forEach(it => { if (it.role === 'p') it.g *= sp; }));
+      }
+      tot = dayTotals(meals);
+      if (tot.c > 1) {
+        const sc = carbT / tot.c;
+        meals.forEach(m => m.items.forEach(it => { if (it.role === 'c') it.g *= sc; }));
+      }
+      tot = dayTotals(meals);
+      let fatFromF = 0;
+      meals.forEach(m => m.items.forEach(it => { if (it.role === 'f') fatFromF += macrosOf(it.food, it.g).f; }));
+      const fatFromOther = tot.f - fatFromF;
+      const fatNeedFromF = Math.max(0, fatT - fatFromOther);
+      if (fatFromF > 1 && fatNeedFromF > 0) {
+        const sf = fatNeedFromF / fatFromF;
+        meals.forEach(m => m.items.forEach(it => { if (it.role === 'f') it.g *= sf; }));
+      }
+
+      meals.forEach(m => m.items.forEach(it => {
+        it.g = roundFood(it.g);
+        if (it.food === WHEY) {
+          it.g = Math.max(15, Math.round(it.g / 15) * 15);
+          it.note = Math.max(1, Math.round(it.g / 30)) + ' dose(s)';
+        }
+        if (it.food === T.ovo) {
+          const n = Math.max(1, Math.round(it.g / 50));
+          it.g = n * 50;
+          it.note = n + ' ovo(s)';
+        }
+        if (it.food === T.azeite && it.g > 0) it.note = 'ml ≈ g';
+        if (it.food === T.aveia) it.note = 'peso seco';
+        if ((it.food === T.arroz || it.food === T.feijao || it.food === T.batata) && !it.note) it.note = 'cozido';
+      }));
+      meals.forEach(m => { m.items = m.items.filter(it => it.g >= 5); });
+
+      tot = dayTotals(meals);
+      if (Math.abs(protT - tot.p) > 6) {
+        const mainP = meals[1].items.find(it => it.role === 'p');
+        if (mainP) mainP.g = roundFood(mainP.g + (protT - tot.p) / (mainP.food.p / 100));
+      }
+      tot = dayTotals(meals);
+      if (Math.abs(carbT - tot.c) > 10) {
+        const mainC = meals[1].items.find(it => it.food === T.arroz) || meals[1].items.find(it => it.role === 'c');
+        if (mainC) mainC.g = roundFood(mainC.g + (carbT - tot.c) / (mainC.food.c / 100));
+      }
+      tot = dayTotals(meals);
+      if (Math.abs(fatT - tot.f) > 4) {
+        let oil = meals[1].items.find(it => it.food === T.azeite);
+        if (!oil) { oil = { food: T.azeite, g: 0, role: 'f', note: 'ml ≈ g' }; meals[1].items.push(oil); }
+        oil.g = roundFood(Math.max(5, oil.g + (fatT - tot.f)));
+      }
+
+      tot = dayTotals(meals);
+      meals.forEach(m => {
+        m.totals = { p: 0, c: 0, f: 0, k: 0 };
+        m.items.forEach(it => {
+          const mm = macrosOf(it.food, it.g);
+          m.totals.p += mm.p; m.totals.c += mm.c; m.totals.f += mm.f; m.totals.k += mm.k;
+        });
+      });
+
+      // Shopping / day list: aggregate same foods
+      const shop = {};
+      meals.forEach(m => m.items.forEach(it => {
+        const key = it.food.n;
+        if (!shop[key]) shop[key] = { name: it.food.n, g: 0, note: it.note || '' };
+        shop[key].g += it.g;
+        if (it.note && !shop[key].note) shop[key].note = it.note;
+      }));
+      const shopList = Object.values(shop).sort((a, b) => b.g - a.g);
+
+      function mealHtml(meal) {
+        const t = meal.totals;
+        const itemsHtml = meal.items.map(it => {
+          const m = macrosOf(it.food, it.g);
+          let qty = it.g + ' g';
+          if (it.food === T.ovo && it.note) qty = it.note + ' (' + it.g + ' g)';
+          if (it.food === WHEY && it.note) qty = it.note + ' (' + it.g + ' g)';
+          return (
+            '<div class="menu-item">' +
+              '<div><div class="menu-item-name">' + it.food.n + '</div>' +
+              '<div class="menu-item-sub">' + Math.round(m.p) + 'p · ' + Math.round(m.c) + 'c · ' + Math.round(m.f) + 'g · ' + Math.round(m.k) + ' kcal' +
+              (it.note && it.food !== T.ovo && it.food !== WHEY ? ' · ' + it.note : '') + '</div></div>' +
+              '<div class="menu-item-g">' + qty + '</div>' +
+            '</div>'
+          );
+        }).join('');
+        return (
+          '<div class="menu-meal">' +
+            '<div class="menu-meal-head">' +
+              '<div class="menu-meal-title">' + meal.share.name + '</div>' +
+              '<div class="menu-meal-kcal">' + Math.round(t.k) + ' kcal · ' + Math.round(meal.share.pct * 100) + '%</div>' +
+            '</div>' +
+            '<div class="menu-macros">' +
+              '<span>Prot ' + Math.round(t.p) + ' g</span>' +
+              '<span>Carbo ' + Math.round(t.c) + ' g</span>' +
+              '<span>Gord ' + Math.round(t.f) + ' g</span>' +
+            '</div>' +
+            itemsHtml +
+          '</div>'
+        );
+      }
+
+      const goalLabel = goal === 'deficit' ? 'Déficit (−400 kcal)' : 'Hipertrofia';
+      const styleLabel = style === 'whey' ? 'Com whey' : (style === 'simples' ? 'Simples' : 'Padrão');
+      function errLabel(v, unit) {
+        const r = Math.round(v);
+        if (Math.abs(r) <= 2) return 'na meta';
+        return (r > 0 ? '+' : '') + r + (unit ? ' ' + unit : '');
+      }
+
+      let metaExtra = '';
+      if (tdee > 0) {
+        metaExtra = '<br>TMB ≈ ' + Math.round(tmb) + ' · gasto est. ≈ ' + Math.round(tdee) + ' kcal' +
+          (goal === 'deficit' ? ' → meta ~' + Math.round(tdee - 400) + ' kcal' : ' → meta ~' + Math.round(tdee + 250) + ' kcal');
+      }
+
+      const shopHtml = shopList.map(it =>
+        '<div class="menu-item">' +
+          '<div class="menu-item-name">' + it.name + (it.note ? ' <span class="menu-item-sub">(' + it.note + ')</span>' : '') + '</div>' +
+          '<div class="menu-item-g">' + Math.round(it.g) + ' g</div>' +
+        '</div>'
+      ).join('');
+
+      // Água do dia: ~35 ml/kg base, ajustada por atividade e objetivo
+      var waterMlPerKg = 35;
+      if (act >= 1.725) waterMlPerKg = 40;
+      else if (act <= 1.2) waterMlPerKg = 32;
+      if (goal === 'hipertrofia') waterMlPerKg += 2;
+      if (goal === 'deficit') waterMlPerKg += 1; // ajuda saciedade
+      var waterMl = Math.round(weight * waterMlPerKg);
+      // arredonda para 50 ml
+      waterMl = Math.round(waterMl / 50) * 50;
+      var waterL = waterMl / 1000;
+      var waterCups = Math.max(1, Math.round(waterMl / 250)); // copos de 250 ml
+      var waterBottles = (waterMl / 500);
+      var waterBottles1L = (waterMl / 1000);
+
+      const shopTotalG = shopList.reduce(function (s, it) { return s + it.g; }, 0);
+      const shopTotalKg = shopTotalG / 1000;
+
+      state.menuPlan = { source: 'TACO', goal, style, weight, height, age, sex, act, targets: { kcal: Math.round(kcalT), protein: Math.round(protT), carbs: Math.round(carbT), fats: Math.round(fatT), waterMl: Math.round(waterMl) }, meals: meals.map(function (meal) { return { mealType: meal.share.name, items: meal.items.map(function (it) { return { name: it.food.n, grams: Math.max(1, Math.round(it.g || 0)), role: it.role }; }).filter(function (it) { return it.grams > 0; }) }; }) };
+      save();
+      const box = document.getElementById('menuResult');
+      box.style.display = 'block';
+      box.innerHTML =
+        '<div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;line-height:1.45;">' +
+          'Objetivo <strong style="color:var(--text)">' + goalLabel + '</strong> · estilo <strong style="color:var(--text)">' + styleLabel + '</strong><br>' +
+          'Peso <strong style="color:var(--text)">' + weight + ' kg</strong>' +
+          (height ? ' · ' + height + ' cm' : '') +
+          (age ? ' · ' + age + ' anos' : '') +
+          ' · ' + (sex === 'F' ? 'Feminino' : 'Masculino') +
+          metaExtra + '<br>' +
+          'Meta: <strong style="color:var(--accent)">' + Math.round(protT) + 'g</strong> prot · ' +
+          Math.round(carbT) + 'g carbo · ' + Math.round(fatT) + 'g gord · ~' + Math.round(kcalT) + ' kcal' +
+        '</div>' +
+        // Macros + água no topo — logo abaixo de Gerar dieta
+        '<div class="menu-day-total" style="margin-bottom:8px;">' +
+          '<div class="calc-metric highlight"><div class="val">' + Math.round(tot.k) + '</div><div class="lbl">kcal (' + errLabel(tot.k - kcalT, '') + ')</div></div>' +
+          '<div class="calc-metric"><div class="val">' + Math.round(tot.p) + ' g</div><div class="lbl">Prot (' + errLabel(tot.p - protT, 'g') + ')</div></div>' +
+          '<div class="calc-metric"><div class="val">' + Math.round(tot.c) + ' g</div><div class="lbl">Carbo (' + errLabel(tot.c - carbT, 'g') + ')</div></div>' +
+          '<div class="calc-metric"><div class="val">' + Math.round(tot.f) + ' g</div><div class="lbl">Gord (' + errLabel(tot.f - fatT, 'g') + ')</div></div>' +
+        '</div>' +
+        '<div class="menu-day-total" style="margin-bottom:12px;grid-template-columns:1fr;">' +
+          '<div class="calc-metric highlight" style="text-align:left;padding:12px 14px;">' +
+            '<div class="val" style="font-size:1.25rem;">💧 ' + waterMl + ' ml · ' + waterL.toFixed(2).replace('.', ',') + ' L</div>' +
+            '<div class="lbl" style="margin-top:4px;line-height:1.4;">Água no dia · ~' + waterMlPerKg + ' ml/kg · ' +
+              waterCups + ' copos (250 ml) · ~' + waterBottles.toFixed(1).replace('.', ',') + '× 500 ml · ~' + waterBottles1L.toFixed(1).replace('.', ',') + '× 1 L</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="diet-menu-copy"><button type="button" class="btn-action primary" id="copyV2MenuBtn">Copiar este cardápio para o Diário Alimentar</button><div class="calc-hint">As refeições e gramas serão adicionadas ao dia selecionado no Diário, sem apagar registros existentes.</div></div>' +
+        meals.map(mealHtml).join('') +
+        '<div class="menu-meal" style="margin-top:4px;">' +
+          '<div class="menu-meal-title" style="margin-bottom:8px;">🛒 Quantidades do dia (peso total)</div>' +
+          shopHtml +
+          '<div class="menu-item" style="border-top:2px solid var(--border);margin-top:6px;padding-top:10px;">' +
+            '<div class="menu-item-name"><strong>Total do dia</strong></div>' +
+            '<div class="menu-item-g">' + Math.round(shopTotalG) + ' g · ' + shopTotalKg.toFixed(2).replace('.', ',') + ' kg</div>' +
+          '</div>' +
+        '</div>' +
+        '<p class="calc-hint">' +
+          (goal === 'deficit'
+            ? 'Déficit de cerca de 400 kcal em relação à manutenção/hipertrofia, cortando principalmente carboidrato. '
+            : 'Plano voltado a hipertrofia com proteína alta e carbo generoso. ') +
+          'Fonte: <strong>Tabela TACO</strong> (NEPA/UNICAMP); whey é referência comercial. Não substitui nutricionista.' +
+        '</p>';
+
+      const copyButton = document.getElementById('copyV2MenuBtn');
+      if (copyButton) copyButton.addEventListener('click', () => { state.menuPlanCopiedAt = new Date().toISOString(); save(); toast('Cardápio copiado para o diário'); });
+      const mw = document.getElementById('menuWeight');
+      if (mw && !mw.value) mw.value = String(weight);
+    }
+      $$('#menuGoal button').forEach(btn => btn.addEventListener('click', () => { $$('#menuGoal button').forEach(item => item.classList.remove('active')); btn.classList.add('active'); }));
+      $('#runMenuBtn').addEventListener('click', runMenuCalc);
       $('#saveWeight').addEventListener('click', () => { const value = Number(String($('#weightInput').value).replace(',', '.')); if (!value || value < 20 || value > 400) { toast('Informe um peso válido'); return; } state.weight = {value, at:new Date().toISOString()}; save(); toast('Peso salvo com segurança'); });
       $('#v2ImportSettings').addEventListener('click', () => { const old = localStorage.getItem('marsbGym_v2'); toast(old ? 'Dados da v1 encontrados; confirme a migração antes de importar' : 'Nenhum dado da v1 encontrado neste navegador'); });
       $('#v2ExportSettings').addEventListener('click', () => $('#exportDataBtn').click());
