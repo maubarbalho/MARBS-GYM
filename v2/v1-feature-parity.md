@@ -42,3 +42,9 @@
 ## Regra de atualização
 
 Cada alteração deve atualizar o estado, o commit e o teste associado. A `main` não participa das alterações da v2 durante o protótipo.
+
+## Registro da onda executada
+
+| Onda | Estado | Escopo entregue | Testes estáticos | Validação mobile | Backup | Commit |
+|---|---|---|---|---|---|---|
+| 0 — Fundação e contrato de paridade | Implementada | Camada centralizada `MARSB_V2_STATE` sobre `marsbGym_v2_preview`, migração idempotente, schema v2, operações de dieta, cópia aditiva, IDs independentes e desfazer de remoção; nenhum item de paridade foi marcado como `Validado` sem equivalência visual e funcional completa. | `state-contract-v2-check`, `v2-syntax-check`, `v2-prototype-check`, `diet-collapsible-sections-check`, `mobile-accessibility-check`, `mobile-fluidity-stage1/2/3/4-check`: aprovados. `calculators-menu-v2-static-check`: falha preexistente por exigir `generateMenuBtn`/`copyMenuBtn`, ausentes também no `HEAD` anterior. | Página v2 carregada em viewport móvel; navegação e tela Dieta verificadas; API de estado exercitada no navegador com `schemaVersion: 2`, `250 ml` persistidos e nenhuma escrita em `marsbGym_v2`. | `backup-before-wave-0-20260905T171001Z` (branch/tag local e arquivo compactado) | `33ebb4a` |

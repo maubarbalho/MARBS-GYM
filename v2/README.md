@@ -12,6 +12,8 @@ O treino guiado permite editar repetições e carga decimal, marcar séries, con
 
 O protótipo usa a chave local `marsbGym_v2_preview` para não tocar na chave da versão atual. A importação da v1 é apenas explícita e sinaliza a existência de `marsbGym_v2`; não existe limpeza automática, `localStorage.clear()` ou sobrescrita silenciosa do plano atual. A exportação gera `marsb-gym-v2-backup.json`.
 
+A onda 0 adiciona uma camada centralizada `MARSB_V2_STATE` em torno de `loadState`, `saveState`, `migrateState`, `getNutritionDay`, `updateNutritionDay`, `addFoodEntry`, `updateFoodEntry`, `removeFoodEntry`, `updateTargets`, `addWater`, `copyPlanToDay`, `cloneDay` e `recalculateDay`. A migração é idempotente, preserva campos desconhecidos, mantém `schemaVersion: 2` e não grava na chave da v1. A cópia de cardápio é aditiva por padrão; a duplicação gera novos IDs; e a remoção mantém informação suficiente para desfazer.
+
 Antes de uma eventual migração, será necessário criar um adaptador de dados real, validar o schema atual, oferecer exportação e restauração e pedir confirmação do usuário. A v2 não deve substituir a v1 publicada até que esses testes sejam concluídos.
 
 ## Execução local
