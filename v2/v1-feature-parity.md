@@ -1,17 +1,19 @@
 # Matriz de paridade funcional v1 → v2
 
 **Branch:** `v2-rebuild`  
-**Onda:** 0 — Fundação e contrato de paridade  
+**Onda:** 1 — Dieta P0 (D01–D06)
 **Regra:** uma função só pode ser marcada como concluída quando possuir implementação real, persistência adequada, teste e validação mobile.
 
-| ID | Área | Função | Prioridade | Estado inicial | Critério de aceite |
+**Nota de execução (2026-09-06):** o arquivo `/home/ubuntu/plano-acao-tecnico-v1-para-v2.md` não estava disponível no ambiente nem foi encontrado no histórico Git. Para não interromper a execução, a priorização desta rodada foi derivada da primeira sequência P0 ainda pendente nesta matriz: D01–D06. Os itens posteriores permanecem sem alteração.
+
+| ID | Área | Função | Prioridade | Estado atual | Critério de aceite |
 |---|---|---|---|---|---|
-| D01 | Dieta | Diário por data | P0 | Pendente | Trocar a data carrega registros, metas e água corretos |
-| D02 | Dieta | Registrar água em ml | P0 | Pendente | Adicionar, editar e remover ml atualiza consumo e percentual |
-| D03 | Dieta | Metas de kcal, macros e água | P0 | Pendente | Salvar metas altera cartões e cálculos do dia |
-| D04 | Dieta | Adicionar alimento da TACO | P0 | Pendente | Buscar, selecionar, informar gramas e salvar na refeição |
-| D05 | Dieta | Editar e remover alimento | P0 | Pendente | Totais são recalculados imediatamente |
-| D06 | Dieta | Cartões reais de refeições | P0 | Pendente | Cartões refletem o estado persistido, sem placeholders |
+| D01 | Dieta | Diário por data | P0 | Validado | Trocar a data carrega registros, metas e água corretos |
+| D02 | Dieta | Registrar água em ml | P0 | Validado | Adicionar, editar e remover ml atualiza consumo e percentual |
+| D03 | Dieta | Metas de kcal, macros e água | P0 | Validado | Salvar metas altera cartões e cálculos do dia |
+| D04 | Dieta | Adicionar alimento da TACO | P0 | Validado | Buscar, selecionar, informar gramas e salvar na refeição |
+| D05 | Dieta | Editar e remover alimento | P0 | Validado | Totais são recalculados imediatamente |
+| D06 | Dieta | Cartões reais de refeições | P0 | Validado | Cartões refletem o estado persistido, sem placeholders |
 | D07 | Dieta | Aderência de 7 dias | P1 | Pendente | Indicador usa registros reais da semana |
 | D08 | Dieta | Duplicar dia | P1 | Pendente | Cria cópia independente sem apagar a origem |
 | D09 | Dieta | Favoritos | P1 | Pendente | Salvar, listar, aplicar e remover favorito |
@@ -48,3 +50,4 @@ Cada alteração deve atualizar o estado, o commit e o teste associado. A `main`
 | Onda | Estado | Escopo entregue | Testes estáticos | Validação mobile | Backup | Commit |
 |---|---|---|---|---|---|---|
 | 0 — Fundação e contrato de paridade | Implementada | Camada centralizada `MARSB_V2_STATE` sobre `marsbGym_v2_preview`, migração idempotente, schema v2, operações de dieta, cópia aditiva, IDs independentes e desfazer de remoção; nenhum item de paridade foi marcado como `Validado` sem equivalência visual e funcional completa. | `state-contract-v2-check`, `v2-syntax-check`, `v2-prototype-check`, `diet-collapsible-sections-check`, `mobile-accessibility-check`, `mobile-fluidity-stage1/2/3/4-check`: aprovados. `calculators-menu-v2-static-check`: falha preexistente por exigir `generateMenuBtn`/`copyMenuBtn`, ausentes também no `HEAD` anterior. | Página v2 carregada em viewport móvel; navegação e tela Dieta verificadas; API de estado exercitada no navegador com `schemaVersion: 2`, `250 ml` persistidos e nenhuma escrita em `marsbGym_v2`. | `backup-before-wave-0-20260905T171001Z` (branch/tag local e arquivo compactado) | `40ac197` |
+| 1 — Dieta P0 (D01–D06) | Implementada | Diário por data; metas de kcal, macros e água; catálogo TACO com snapshot nutricional; adição, edição e remoção de alimentos; cartões de refeições calculados a partir do estado; água com adicionar, editar total e zerar; tudo persistido em `marsbGym_v2_preview`, sem escrita em `marsbGym`. | `diet-wave1-v2-check`, `v2-syntax-check`, `state-contract-v2-check`, `v2-prototype-check`, `mobile-accessibility-check`, `mobile-fluidity-stage1/2/3/4-check`: aprovados. | Teste de navegador em viewport móvel com troca de data, metas, alimento TACO, edição/remoção de alimento, adição/edição/remoção de água, recálculo e verificação de ausência da chave `marsbGym`. | `backup-before-wave-1-20260906T171012Z` (branch/tag local e `/home/ubuntu/MARBS-GYM-wave1-before-20260906T171012Z.tar.gz`) | `e36e491` |
