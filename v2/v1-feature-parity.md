@@ -1,7 +1,7 @@
 # Matriz de paridade funcional v1 → v2
 
 **Branch:** `v2-rebuild`  
-**Onda:** 1 — Dieta P0 (D01–D06)
+**Onda:** 2 — Integração do planejador (D14)
 **Regra:** uma função só pode ser marcada como concluída quando possuir implementação real, persistência adequada, teste e validação mobile.
 
 **Nota de execução (2026-09-06):** o arquivo `/home/ubuntu/plano-acao-tecnico-v1-para-v2.md` não estava disponível no ambiente nem foi encontrado no histórico Git. Para não interromper a execução, a priorização desta rodada foi derivada da primeira sequência P0 ainda pendente nesta matriz: D01–D06. Os itens posteriores permanecem sem alteração.
@@ -21,7 +21,7 @@
 | D11 | Dieta | Restrições e alergias | P1 | Pendente | Preferências persistem e são exibidas no fluxo correto |
 | D12 | Dieta | Lista de compras do diário | P1 | Pendente | Agrupa alimentos reais por nome, preparo e quantidade |
 | D13 | Dieta | Explicação de metas | P1 | Pendente | Fórmulas e referências em bloco expansível |
-| D14 | Dieta | Copiar plano para diário | P0 | Parcial | Acrescenta itens e nunca substitui registros existentes |
+| D14 | Dieta | Copiar plano para diário | P0 | Validado | Acrescenta itens e nunca substitui registros existentes |
 | C01 | Calculadora | IMC | P1 | Parcial | Fórmula e classificação iguais à v1 |
 | C02 | Calculadora | Calorias e macros | P0 | Parcial | TMB, TDEE, objetivos, macros e água equivalentes |
 | C03 | Calculadora | Porções | P1 | Parcial | Campos e referências iguais à v1 |
@@ -51,3 +51,4 @@ Cada alteração deve atualizar o estado, o commit e o teste associado. A `main`
 |---|---|---|---|---|---|---|
 | 0 — Fundação e contrato de paridade | Implementada | Camada centralizada `MARSB_V2_STATE` sobre `marsbGym_v2_preview`, migração idempotente, schema v2, operações de dieta, cópia aditiva, IDs independentes e desfazer de remoção; nenhum item de paridade foi marcado como `Validado` sem equivalência visual e funcional completa. | `state-contract-v2-check`, `v2-syntax-check`, `v2-prototype-check`, `diet-collapsible-sections-check`, `mobile-accessibility-check`, `mobile-fluidity-stage1/2/3/4-check`: aprovados. `calculators-menu-v2-static-check`: falha preexistente por exigir `generateMenuBtn`/`copyMenuBtn`, ausentes também no `HEAD` anterior. | Página v2 carregada em viewport móvel; navegação e tela Dieta verificadas; API de estado exercitada no navegador com `schemaVersion: 2`, `250 ml` persistidos e nenhuma escrita em `marsbGym_v2`. | `backup-before-wave-0-20260905T171001Z` (branch/tag local e arquivo compactado) | `40ac197` |
 | 1 — Dieta P0 (D01–D06) | Implementada | Diário por data; metas de kcal, macros e água; catálogo TACO com snapshot nutricional; adição, edição e remoção de alimentos; cartões de refeições calculados a partir do estado; água com adicionar, editar total e zerar; tudo persistido em `marsbGym_v2_preview`, sem escrita em `marsbGym`. | `diet-wave1-v2-check`, `v2-syntax-check`, `state-contract-v2-check`, `v2-prototype-check`, `mobile-accessibility-check`, `mobile-fluidity-stage1/2/3/4-check`: aprovados. | Teste de navegador em viewport móvel com troca de data, metas, alimento TACO, edição/remoção de alimento, adição/edição/remoção de água, recálculo e verificação de ausência da chave `marsbGym`. | `backup-before-wave-1-20260906T171012Z` (branch/tag local e `/home/ubuntu/MARBS-GYM-wave1-before-20260906T171012Z.tar.gz`) | `e36e491` |
+| 2 — Integração do planejador (D14) | Implementada | Interface funcional do planejador na Calculadora; plano gerado com snapshot TACO; cópia aditiva para o dia selecionado; metas do plano preenchidas somente quando ausentes; registros existentes preservados. | `diet-wave1-v2-check`, `diet-wave2-v2-check`, checagem de sintaxe e teste mobile: aprovados. | Cardápio gerado no navegador e copiado ao diário; 13 itens adicionados, registro pré-existente preservado e meta kcal existente mantida. | `backup-before-wave-2-20261007T090001Z` (tag local e `/home/ubuntu/MARBS-GYM-wave2-before-20261007T090001Z.tar.gz`) | pendente |
