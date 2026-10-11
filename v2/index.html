@@ -355,9 +355,127 @@
       function cloneDay(sourceDate, targetDate) { const source = normalizeDay(getNutritionDay(sourceDate)); const copy = clone(source); copy.meals = Object.fromEntries(MEALS.map(meal => [meal, source.meals[meal].map(entry => normalizeFoodEntry({ ...entry, id: newId('food-entry') }, meal))])); state.nutrition.days[targetDate] = copy; saveState(state); return copy; }
       function recalculateDayValue(day) { const totals = { kcal: 0, protein: 0, carbs: 0, fats: 0 }; MEALS.flatMap(meal => day.meals[meal] || []).forEach(entry => { const factor = Number(entry.grams || 0) / 100; const nutrition = entry.nutritionPer100g || {}; totals.kcal += Number(nutrition.kcal || 0) * factor; totals.protein += Number(nutrition.protein || 0) * factor; totals.carbs += Number(nutrition.carbs || 0) * factor; totals.fats += Number(nutrition.fats || 0) * factor; }); day.totals = totals; return day; }
       function recalculateDay(date) { return updateNutritionDay(date, recalculateDayValue); }
+
+      const LEGACY_IMPORT_KEYS = ['marsbGym_v2', 'marsbGym_v1'];
+      const MIGRATION_BACKUP_PREFIX = 'marsbGym_v2_migration_backup_';
+      const legacyMealKey = value => {
+        const text = String(value || '').toLowerCase();
+        if (text.includes('café') || text.includes('cafe') || text.includes('manhã') || text.includes('manha')) return 'cafe';
+        if (text.includes('almoço') || text.includes('almoco')) return 'almoco';
+        if (text.includes('lanche')) return 'lanche';
+        if (text.includes('jantar')) return 'jantar';
+        if (text.includes('pós') || text.includes('pos') || text.includes('treino')) return 'posTreino';
+        return 'cafe';
+      };
+      const safeLegacyText = (value, fallback = '') => String(value ?? fallback).replace(/[\u0000-\u001f]/g, '').trim().slice(0, 500);
+      const legacyFoodSnapshot = item => {
+        const key = safeLegacyText(item?.foodKey, '').toLowerCase();
+        const name = safeLegacyText(item?.name, '') || key || 'Alimento importado';
+        const match = typeof DIET_FOODS !== 'undefined' ? DIET_FOODS.find(food => food.id === key || food.name.toLowerCase() === name.toLowerCase() || food.name.toLowerCase().includes(name.toLowerCase())) : null;
+        return { foodId: match?.id || (key || `legacy-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50)}`), name: match?.name || name, source: match ? 'TACO' : 'v1', nutritionPer100g: match ? { kcal: match.kcal, protein: match.protein, carbs: match.carbs, fats: match.fats } : { kcal: 0, protein: 0, carbs: 0, fats: 0 } };
+      };
+      function readLegacyStorage() {
+        for (const key of LEGACY_IMPORT_KEYS) {
+          try {
+            const raw = key === 'marsbGym_v2' ? localStorage.getItem('marsbGym_v2') : localStorage.getItem(key);
+            if (!raw) continue;
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object') return { key, raw, state: parsed };
+          } catch (error) { return { key, raw: '', state: null, error: 'JSON inválido' }; }
+        }
+        return null;
+      }
+      function convertLegacyDay(date, legacyDay) {
+        const day = normalizeDay({ waterMl: Number(legacyDay?.waterMl) || 0 });
+        const meals = Array.isArray(legacyDay?.meals) ? legacyDay.meals : [];
+        meals.forEach((item, index) => {
+          const food = legacyFoodSnapshot(item);
+          const grams = Math.max(0, Number(item?.grams) || 0);
+          if (!grams && !food.name) return;
+          const meal = legacyMealKey(item?.mealType);
+          day.meals[meal].push({ ...food, id: newId('legacy-food'), meal, grams, unit: 'g', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), legacyId: safeLegacyText(item?.id, `legacy-${date}-${index}`), importedFrom: 'marsbGym_v2' });
+        });
+        return recalculateDayValue(day);
+      }
+      function countLegacyState(legacy) {
+        const dietDays = Object.entries(legacy?.dietDiary || {}).filter(([date, day]) => /^\d{4}-\d{2}-\d{2}$/.test(date) && day && typeof day === 'object');
+        const foodEntries = dietDays.reduce((total, [, day]) => total + (Array.isArray(day.meals) ? day.meals.length : 0), 0);
+        return { dietDays: dietDays.length, foodEntries, completedWorkouts: Array.isArray(legacy?.completedWorkouts) ? legacy.completedWorkouts.length : 0, bodyWeights: Array.isArray(legacy?.bodyWeights) ? legacy.bodyWeights.length : 0, favorites: Array.isArray(legacy?.dietFavorites) ? legacy.dietFavorites.length : 0, recipes: Array.isArray(legacy?.dietRecipes) ? legacy.dietRecipes.length : 0, customProgram: Boolean(legacy?.customProgram && Object.keys(legacy.customProgram).length), scheduleEntries: legacy?.workoutSchedule && typeof legacy.workoutSchedule === 'object' ? Object.keys(legacy.workoutSchedule).length : 0 };
+      }
+      function buildLegacyImportPreview(legacyRecord = readLegacyStorage()) {
+        if (!legacyRecord?.state) return { ok: false, reason: legacyRecord?.error || 'Nenhum dado da v1 encontrado', sourceKey: legacyRecord?.key || null, counts: countLegacyState({}) };
+        const legacy = legacyRecord.state;
+        const counts = countLegacyState(legacy);
+        const imported = migrateState(state);
+        imported.schemaVersion = 2;
+        imported.migration = { sourceKey: legacyRecord.key, sourceSchemaVersion: legacy._schemaVersion || null, previewedAt: new Date().toISOString(), counts };
+        imported.profile = { ...imported.profile, name: imported.profile.name || safeLegacyText(legacy.profile?.name), sex: (String(legacy.profile?.metrics?.sex || '').toUpperCase() === 'F' ? 'F' : (imported.profile.sex || 'M')), weightKg: imported.profile.weightKg || Number(legacy.profile?.metrics?.weightKg) || null, heightCm: imported.profile.heightCm || Number(legacy.profile?.metrics?.heightCm) || null, age: imported.profile.age || Number(legacy.profile?.metrics?.age) || null, preferences: { ...imported.profile.preferences, restrictions: imported.profile.preferences.restrictions || safeLegacyText(legacy.dietPrefs?.restrictions), allergies: imported.profile.preferences.allergies || safeLegacyText(legacy.dietPrefs?.allergies) } };
+        const targetDays = imported.nutrition.days;
+        Object.entries(legacy.dietDiary || {}).forEach(([date, legacyDay]) => {
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+          const converted = convertLegacyDay(date, legacyDay);
+          const current = normalizeDay(targetDays[date]);
+          const hasCurrent = MEALS.some(meal => current.meals[meal].length);
+          if (!hasCurrent) targetDays[date] = converted;
+          else {
+            MEALS.forEach(meal => { current.meals[meal] = [...current.meals[meal], ...converted.meals[meal].map(item => ({ ...item, id: newId('legacy-food') }))]; });
+            current.waterMl = Math.max(Number(current.waterMl) || 0, Number(converted.waterMl) || 0);
+            targetDays[date] = recalculateDayValue(current);
+          }
+          const oldTargets = legacy.dietPrefs?.targets || {};
+          targetDays[date].targets = { ...targetDays[date].targets, kcal: targetDays[date].targets.kcal ?? (Number(oldTargets.kcal) || null), protein: targetDays[date].targets.protein ?? (Number(oldTargets.protein) || null), carbs: targetDays[date].targets.carbs ?? (Number(oldTargets.carbs) || null), fats: targetDays[date].targets.fats ?? (Number(oldTargets.fats) || null), waterMl: targetDays[date].targets.waterMl ?? (Number(oldTargets.waterMl) || null) };
+        });
+        imported.nutrition.favorites = [...(imported.nutrition.favorites || []), ...(Array.isArray(legacy.dietFavorites) ? legacy.dietFavorites.map(item => ({ ...item, importedFrom: 'marsbGym_v2' })) : [])].slice(-50);
+        imported.nutrition.recipes = [...(imported.nutrition.recipes || []), ...(Array.isArray(legacy.dietRecipes) ? legacy.dietRecipes.map(item => ({ ...item, importedFrom: 'marsbGym_v2' })) : [])].slice(-50);
+        imported.workouts = { ...imported.workouts, customProgram: imported.workouts.customProgram || legacy.customProgram || null, customProgramMeta: imported.workouts.customProgramMeta || legacy.customProgramMeta || null, activeWorkout: imported.workouts.activeWorkout || legacy.activeWorkout || null, pausedWorkouts: imported.workouts.pausedWorkouts || legacy.pausedWorkouts || [], schedule: imported.workouts.schedule || legacy.workoutSchedule || {} };
+        imported.progress = { ...imported.progress, completedWorkouts: [...(imported.progress.completedWorkouts || []), ...(Array.isArray(legacy.completedWorkouts) ? legacy.completedWorkouts : [])].slice(-1000), weightHistory: imported.progress.weightHistory || legacy.weightHistory || {}, bodyWeights: [...(imported.progress.bodyWeights || []), ...(Array.isArray(legacy.bodyWeights) ? legacy.bodyWeights : [])].slice(-1000), checkins: imported.progress.checkins || legacy.workoutCheckins || {} };
+        imported.profile.preferences = { ...imported.profile.preferences, restrictions: imported.profile.preferences.restrictions || safeLegacyText(legacy.dietPrefs?.restrictions), allergies: imported.profile.preferences.allergies || safeLegacyText(legacy.dietPrefs?.allergies) };
+        return { ok: true, sourceKey: legacyRecord.key, counts, state: imported };
+      }
+      function previewLegacyImport() {
+        const preview = buildLegacyImportPreview();
+        if (!preview.ok) { toast(preview.reason); return preview; }
+        const c = preview.counts;
+        const summary = `Prévia v1\n\n${c.dietDays} dias de dieta · ${c.foodEntries} alimentos\n${c.completedWorkouts} treinos concluídos · ${c.bodyWeights} pesos\n${c.favorites} favoritos · ${c.recipes} receitas\nPlano personalizado: ${c.customProgram ? 'sim' : 'não'}\n${c.scheduleEntries} itens de agenda\n\nA v1 não será alterada. Confirmar importação para a v2?`;
+        preview.confirmed = window.confirm(summary);
+        if (preview.confirmed) confirmLegacyImport(preview);
+        else toast('Importação cancelada; a v1 permaneceu intacta');
+        return preview;
+      }
+      function confirmLegacyImport(preview) {
+        if (!preview?.ok || !preview.state) return { ok: false, reason: 'Prévia inválida' };
+        const migrationId = `migration-${Date.now()}`;
+        const backupKey = `${MIGRATION_BACKUP_PREFIX}${migrationId}`;
+        try {
+          localStorage.setItem(backupKey, JSON.stringify({ version: 1, migrationId, savedAt: new Date().toISOString(), state: migrateState(state) }));
+          const next = migrateState(preview.state);
+          next.migration = { ...(next.migration || {}), migrationId, importedAt: new Date().toISOString(), sourceKey: preview.sourceKey, counts: preview.counts, backupKey };
+          saveState(next);
+          state.nutrition = next.nutrition; state.profile = next.profile; state.workouts = next.workouts; state.progress = next.progress; state.migration = next.migration;
+          if (typeof renderDiet === 'function') renderDiet();
+          toast('Importação concluída com backup e sem alterar a v1');
+          return { ok: true, migrationId, backupKey, counts: preview.counts };
+        } catch (error) {
+          toast('Falha na importação; nenhum dado da v1 foi alterado');
+          return { ok: false, reason: 'Falha ao salvar a v2' };
+        }
+      }
+      function rollbackLastLegacyImport() {
+        const backupKey = state.migration?.backupKey;
+        if (!backupKey) return { ok: false, reason: 'Nenhuma migração para desfazer' };
+        try {
+          const backup = JSON.parse(localStorage.getItem(backupKey) || 'null');
+          if (!backup?.state) return { ok: false, reason: 'Backup da migração não encontrado' };
+          saveState(backup.state);
+          state.nutrition = backup.state.nutrition; state.profile = backup.state.profile; state.workouts = backup.state.workouts; state.progress = backup.state.progress; state.migration = { ...(state.migration || {}), rolledBackAt: new Date().toISOString() };
+          if (typeof renderDiet === 'function') renderDiet();
+          toast('Última importação desfeita; a v1 permaneceu intacta');
+          return { ok: true, backupKey };
+        } catch (error) { return { ok: false, reason: 'Falha ao restaurar o backup' }; }
+      }
       const state = loadState();
       const save = () => saveState(state);
-      window.MARSB_V2_STATE = { KEY, loadState, saveState, migrateState, getNutritionDay, updateNutritionDay, addFoodEntry, updateFoodEntry, removeFoodEntry, undoLastFoodRemoval, updateTargets, addWater, copyPlanToDay, cloneDay, recalculateDay };
+      window.MARSB_V2_STATE = { KEY, loadState, saveState, migrateState, getNutritionDay, updateNutritionDay, addFoodEntry, updateFoodEntry, removeFoodEntry, undoLastFoodRemoval, updateTargets, addWater, copyPlanToDay, cloneDay, recalculateDay, readLegacyStorage, countLegacyState, buildLegacyImportPreview, previewLegacyImport, confirmLegacyImport, rollbackLastLegacyImport };
       let timer = null; let remaining = state.rest || 60; let timerRunning = false; let selectedRpe = null;
       const $ = (selector, root = document) => root.querySelector(selector);
       const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -412,7 +530,7 @@
       $('#executionBtn').addEventListener('click', () => toast('Ficha de execução aberta')); $('#exerciseHistory').addEventListener('click', () => toast('Histórico do exercício aberto')); $('#calendarBtn').addEventListener('click', () => toast('Calendário semanal')); $('#editPlanBtn').addEventListener('click', () => toast('Edição segura do plano')); $('#freeWorkoutBtn').addEventListener('click', () => toast('Modo livre pronto')); $('#historyBtn').addEventListener('click', () => toast('Histórico de sessões')); $('#allRecordsBtn').addEventListener('click', () => toast('Todos os recordes'));
       $('#rpeGrid').innerHTML = Array.from({length:10}, (_, i) => `<button type="button" data-rpe="${i+1}">${i+1}</button>`).join(''); $('#rpeGrid').addEventListener('click', e => { const btn = e.target.closest('[data-rpe]'); if (!btn) return; selectedRpe = Number(btn.dataset.rpe); $$('#rpeGrid button').forEach(b => b.classList.toggle('selected', b === btn)); }); $('#cancelRpe').addEventListener('click', () => closeModal('rpeModal')); $('#saveRpe').addEventListener('click', () => { if (!selectedRpe) { toast('Selecione um esforço de 1 a 10'); return; } state.rpe = {value:selectedRpe, note:$('#rpeNote').value, at:new Date().toISOString()}; state.sessions.push({at:state.rpe.at, exercise:'Supino inclinado com halteres', rpe:selectedRpe}); save(); closeModal('rpeModal'); goNext(); });
       $('#exerciseSearch').addEventListener('input', e => { const term = e.target.value.toLowerCase(); $$('#libraryList .library-item').forEach(item => item.hidden = !item.textContent.toLowerCase().includes(term)); }); $$('.chips button').forEach(chip => chip.addEventListener('click', () => { $$('.chips button').forEach(c => c.classList.remove('active')); chip.classList.add('active'); toast('Filtro: ' + chip.textContent); }));
-      $('#importDataBtn').addEventListener('click', () => { const old = localStorage.getItem('marsbGym_v2'); if (old) { toast('Dados da v1 encontrados; migração não destrutiva disponível'); } else { toast('Nenhum dado da v1 encontrado neste navegador'); } }); $('#exportDataBtn').addEventListener('click', () => { const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'marsb-gym-v2-backup.json'; a.click(); URL.revokeObjectURL(url); toast('Backup da v2 exportado'); });
+      $('#importDataBtn').addEventListener('click', previewLegacyImport); $('#exportDataBtn').addEventListener('click', () => { const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'marsb-gym-v2-backup.json'; a.click(); URL.revokeObjectURL(url); toast('Backup da v2 exportado'); });
       const num = value => Number(String(value ?? '').replace(',', '.')) || 0;
       const showCalc = (id, html) => { const box = $('#' + id); box.innerHTML = html; box.style.display = 'block'; };
       $$('[data-calc-tab]').forEach(tab => tab.addEventListener('click', () => { const name = tab.dataset.calcTab; $$('[data-calc-tab]').forEach(t => t.classList.toggle('active', t === tab)); $$('[data-calc-panel]').forEach(panel => { panel.hidden = panel.dataset.calcPanel !== name; }); }));
@@ -876,7 +994,7 @@
       $$('#menuGoal button').forEach(btn => btn.addEventListener('click', () => { $$('#menuGoal button').forEach(item => item.classList.remove('active')); btn.classList.add('active'); }));
       $('#runMenuBtn').addEventListener('click', runMenuCalc);
       $('#saveWeight').addEventListener('click', () => { const value = Number(String($('#weightInput').value).replace(',', '.')); if (!value || value < 20 || value > 400) { toast('Informe um peso válido'); return; } state.weight = {value, at:new Date().toISOString()}; save(); toast('Peso salvo com segurança'); });
-      $('#v2ImportSettings').addEventListener('click', () => { const old = localStorage.getItem('marsbGym_v2'); toast(old ? 'Dados da v1 encontrados; confirme a migração antes de importar' : 'Nenhum dado da v1 encontrado neste navegador'); });
+      $('#v2ImportSettings').addEventListener('click', previewLegacyImport);
       $('#v2ExportSettings').addEventListener('click', () => $('#exportDataBtn').click());
       $$('[data-settings-action]').forEach(btn => btn.addEventListener('click', () => toast(btn.dataset.settingsAction + ' em preparação')));
       if (state.calcProfile) { const profile = state.calcProfile; if (profile.weight) $('#macroWeight').value = String(profile.weight).replace('.', ','); if (profile.height) $('#macroHeight').value = profile.height; if (profile.age) $('#macroAge').value = profile.age; if (profile.sex) $('#macroSex').value = profile.sex; if (profile.act) $('#macroActivity').value = profile.act; if (profile.surplus !== undefined) $('#macroGoal').value = profile.surplus; }

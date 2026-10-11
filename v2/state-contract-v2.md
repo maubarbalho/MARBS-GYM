@@ -96,6 +96,11 @@ addWater(date, milliliters)
 copyPlanToDay(date, plan, options)
 cloneDay(sourceDate, targetDate)
 recalculateDay(date)
+readLegacyStorage()
+countLegacyState(state)
+buildLegacyImportPreview(legacyRecord)
+confirmLegacyImport(preview)
+rollbackLastLegacyImport()
 ```
 
 ## Regras de segurança
@@ -104,4 +109,4 @@ A operação de copiar um cardápio deve ser aditiva por padrão. Duplicar um di
 
 ## Migrações
 
-Cada mudança estrutural deve aumentar `schemaVersion`. A migração deve ser determinística, idempotente e testável. Durante o protótipo, a migração entre v1 e v2 não será automática; qualquer importação futura deverá ser explícita, precedida por backup local e acompanhada de uma prévia dos dados que serão copiados.
+Cada mudança estrutural deve aumentar `schemaVersion`. A migração deve ser determinística, idempotente e testável. Durante o protótipo, a importação entre v1 e v2 ocorre somente por ação explícita do usuário; a origem é lida em modo somente leitura, a prévia informa contagens, a v2 recebe backup antes da escrita e existe rollback por migração.
