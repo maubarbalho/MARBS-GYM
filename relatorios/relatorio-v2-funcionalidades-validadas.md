@@ -40,7 +40,8 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 | D14 — Copiar plano para o diário | **Validado** |
 | Calculadoras C01–C05 | Parcial na matriz; testes de regressão aprovados |
 | C06 — Conversões | Pendente na matriz |
-| D07–D13 — Melhorias avançadas de dieta | Pendente |
+| D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
+| D10–D13 — Melhorias avançadas de dieta | Pendente |
 | P01–P03 — Progresso e configuração | Pendente |
 | T01–T02 — Treino guiado e timer | Parcial na matriz; testes de regressão aprovados |
 
@@ -472,9 +473,9 @@ Os seguintes itens permanecem fora do grupo de funcionalidades oficialmente vali
 
 | ID | Funcionalidade | Estado |
 |---|---|---|
-| D07 | Aderência de 7 dias | Pendente |
-| D08 | Duplicar dia | Pendente |
-| D09 | Favoritos | Pendente |
+| D07 | Aderência de 7 dias | Validado na Onda 4 |
+| D08 | Duplicar dia | Validado na Onda 4 |
+| D09 | Favoritos | Validado na Onda 4 |
 | D10 | Receitas salvas | Pendente |
 | D11 | Restrições e alergias | Pendente |
 | D12 | Lista de compras | Pendente |
