@@ -88,6 +88,11 @@ saveState(nextState)
 migrateState(state)
 getNutritionDay(date)
 updateNutritionDay(date, updater)
+saveDietRecipe(name, date)
+applyDietRecipe(recipeId, date, meal)
+removeDietRecipe(recipeId)
+saveDietPreferences(restrictions, allergies)
+getDietShopping(date)
 addFoodEntry(date, meal, entry)
 updateFoodEntry(date, meal, entryId, patch)
 removeFoodEntry(date, meal, entryId)
@@ -105,7 +110,7 @@ rollbackLastLegacyImport()
 
 ## Regras de segurança
 
-A operação de copiar um cardápio deve ser aditiva por padrão. Duplicar um dia deve criar novos identificadores para os alimentos. A remoção deve permitir desfazer. Uma migração deve preservar campos desconhecidos e somente salvar depois da validação estrutural. Nenhuma atualização de aplicativo pode reinstalar dados padrão sobre um estado existente.
+A operação de copiar um cardápio deve ser aditiva por padrão. Duplicar um dia deve criar novos identificadores para os alimentos. Receitas devem guardar snapshots dos ingredientes e aplicar novos identificadores ao diário. Restrições e alergias são preferências persistentes e apenas alertam, sem alterar registros antigos automaticamente. A lista de compras deve agrupar apenas alimentos reais do diário. A remoção deve permitir desfazer. Uma migração deve preservar campos desconhecidos e somente salvar depois da validação estrutural. Nenhuma atualização de aplicativo pode reinstalar dados padrão sobre um estado existente.
 
 ## Migrações
 

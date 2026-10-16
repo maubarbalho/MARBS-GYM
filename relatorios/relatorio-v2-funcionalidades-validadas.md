@@ -41,7 +41,7 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 | Calculadoras C01–C05 | Parcial na matriz; testes de regressão aprovados |
 | C06 — Conversões | Pendente na matriz |
 | D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
-| D10–D13 — Melhorias avançadas de dieta | Pendente |
+| D10–D13 — Receitas, preferências, compras e metas | Validado nesta Onda 5 |
 | P01–P03 — Progresso e configuração | Pendente |
 | T01–T02 — Treino guiado e timer | Parcial na matriz; testes de regressão aprovados |
 
@@ -476,10 +476,10 @@ Os seguintes itens permanecem fora do grupo de funcionalidades oficialmente vali
 | D07 | Aderência de 7 dias | Validado na Onda 4 |
 | D08 | Duplicar dia | Validado na Onda 4 |
 | D09 | Favoritos | Validado na Onda 4 |
-| D10 | Receitas salvas | Pendente |
-| D11 | Restrições e alergias | Pendente |
-| D12 | Lista de compras | Pendente |
-| D13 | Explicação de metas | Pendente |
+| D10 | Receitas salvas | Validado na Onda 5 |
+| D11 | Restrições e alergias | Validado na Onda 5 |
+| D12 | Lista de compras | Validado na Onda 5 |
+| D13 | Explicação de metas | Validado na Onda 5 |
 | C01–C05 | Calculadoras com equivalência formal completa | Parcial |
 | C06 | Conversões | Pendente |
 | P01 | Histórico de treinos real | Pendente |
