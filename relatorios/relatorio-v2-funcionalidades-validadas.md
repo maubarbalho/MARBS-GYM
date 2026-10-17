@@ -38,8 +38,8 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 |---|---:|
 | D01–D06 — Diário alimentar P0 | **Validado** |
 | D14 — Copiar plano para o diário | **Validado** |
-| Calculadoras C01–C05 | Parcial na matriz; testes de regressão aprovados |
-| C06 — Conversões | Pendente na matriz |
+| Calculadoras C01–C06 | Validado nesta Onda 6 |
+| C06 — Conversões | Validado nesta Onda 6 |
 | D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
 | D10–D13 — Receitas, preferências, compras e metas | Validado nesta Onda 5 |
 | P01–P03 — Progresso e configuração | Pendente |
@@ -507,3 +507,9 @@ A v2 possui uma base funcional sólida e verificável, com o núcleo de nutriç�
 A arquitetura de persistência está isolada da v1 e protegida por contrato de estado versionado. A suíte completa de 43 testes aprovados reduz o risco de regressões nas funcionalidades já implementadas, especialmente nos fluxos mobile e de treino.
 
 A v2, entretanto, **não deve ser considerada funcionalmente equivalente a 100% da v1 ainda**, porque a própria matriz mantém itens Pendente e Parcial. O próximo trabalho deve seguir a ordem da matriz, priorizando os itens P0/P1 ainda não validados, sem alterar a `main` e mantendo o processo Backup → Implementar → Testar → Atualizar matriz → Commit → Push.
+
+## Onda 6 — Paridade formal das calculadoras
+
+C01–C06 foram centralizados na API `MARSB_V2_CALCULATORS`, com fórmulas e arredondamentos equivalentes à v1. A validação mobile confirmou IMC, TMB/TDEE, objetivos, macros, água, porções TACO incluindo whey, pesos fracionados e alternativas de anilhas, progressão e conversões de unidades.
+
+Os testes específicos passaram e a suíte completa de fechamento do bloco das Ondas 4–6 passou com **51/51 testes**. O servidor local foi iniciado explicitamente na porta esperada pelos testes de navegador; não houve falha funcional da aplicação.

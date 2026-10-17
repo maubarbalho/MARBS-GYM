@@ -115,3 +115,7 @@ A operação de copiar um cardápio deve ser aditiva por padrão. Duplicar um di
 ## Migrações
 
 Cada mudança estrutural deve aumentar `schemaVersion`. A migração deve ser determinística, idempotente e testável. Durante o protótipo, a importação entre v1 e v2 ocorre somente por ação explícita do usuário; a origem é lida em modo somente leitura, a prévia informa contagens, a v2 recebe backup antes da escrita e existe rollback por migração.
+
+## Calculadoras v2
+
+As calculadoras usam funções determinísticas equivalentes às fórmulas da v1 e não escrevem nas chaves de produção. A API `MARSB_V2_CALCULATORS` cobre IMC, macros, porções TACO, anilhas, progressão e conversões; entradas são normalizadas para ponto decimal e resultados são arredondados apenas na apresentação ou conforme a referência v1.
