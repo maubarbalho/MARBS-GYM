@@ -42,7 +42,7 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 | C06 — Conversões | Validado nesta Onda 6 |
 | D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
 | D10–D13 — Receitas, preferências, compras e metas | Validado nesta Onda 5 |
-| P01–P03 — Progresso e configuração | Pendente |
+| P01–P03 — Progresso e configuração | Validado nesta Onda 7 |
 | T01–T02 — Treino guiado e timer | Parcial na matriz; testes de regressão aprovados |
 
 ---
@@ -513,3 +513,9 @@ A v2, entretanto, **não deve ser considerada funcionalmente equivalente a 100% 
 C01–C06 foram centralizados na API `MARSB_V2_CALCULATORS`, com fórmulas e arredondamentos equivalentes à v1. A validação mobile confirmou IMC, TMB/TDEE, objetivos, macros, água, porções TACO incluindo whey, pesos fracionados e alternativas de anilhas, progressão e conversões de unidades.
 
 Os testes específicos passaram e a suíte completa de fechamento do bloco das Ondas 4–6 passou com **51/51 testes**. O servidor local foi iniciado explicitamente na porta esperada pelos testes de navegador; não houve falha funcional da aplicação.
+
+## Onda 7 — Progresso e configurações
+
+P01–P03 foram implementados com dados reais. O histórico combina sessões concluídas da v2 e registros importados da v1 sem modificar a origem. Filtros por período e exercício alimentam os agregados de sessões, volume total, média semanal, evolução por exercício e melhor carga. A tela vazia não exibe números ou gráficos fictícios.
+
+As preferências de aparência, unidades e notificações são persistidas em `marsbGym_v2_preview` e a validação mobile confirmou que salvá-las não altera sessões, treinos importados ou plano. Os testes específicos da Onda 7 passaram; a suíte completa permanece programada para após a Onda 9.

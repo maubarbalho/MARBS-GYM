@@ -119,3 +119,9 @@ Cada mudança estrutural deve aumentar `schemaVersion`. A migração deve ser de
 ## Calculadoras v2
 
 As calculadoras usam funções determinísticas equivalentes às fórmulas da v1 e não escrevem nas chaves de produção. A API `MARSB_V2_CALCULATORS` cobre IMC, macros, porções TACO, anilhas, progressão e conversões; entradas são normalizadas para ponto decimal e resultados são arredondados apenas na apresentação ou conforme a referência v1.
+
+## Progresso e preferências v2
+
+As sessões concluídas da v2 são armazenadas em `sessions` com data, status, exercício, séries e volume. Registros importados da v1 permanecem em `progress.completedWorkouts` e são tratados como somente leitura para os agregados de histórico, sem alterar a origem. A tela de Progresso filtra por período e exercício e calcula sessões, volume total, média semanal, evolução e melhor carga a partir desses registros reais; estado vazio é tratado sem gráficos ou números fictícios.
+
+As preferências da interface são persistidas em `settings` (`appearance`, `units`, `notifications`), com alteração aditiva e sem reinstalar plano, sessões ou histórico.
