@@ -43,7 +43,7 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 | D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
 | D10–D13 — Receitas, preferências, compras e metas | Validado nesta Onda 5 |
 | P01–P03 — Progresso e configuração | Validado nesta Onda 7 |
-| T01–T02 — Treino guiado e timer | Parcial na matriz; testes de regressão aprovados |
+| T01–T02 — Treino guiado e timer | Implementado e validado automaticamente nesta Onda 8; teste manual em iPhone pendente |
 
 ---
 
@@ -519,3 +519,9 @@ Os testes específicos passaram e a suíte completa de fechamento do bloco das O
 P01–P03 foram implementados com dados reais. O histórico combina sessões concluídas da v2 e registros importados da v1 sem modificar a origem. Filtros por período e exercício alimentam os agregados de sessões, volume total, média semanal, evolução por exercício e melhor carga. A tela vazia não exibe números ou gráficos fictícios.
 
 As preferências de aparência, unidades e notificações são persistidas em `marsbGym_v2_preview` e a validação mobile confirmou que salvá-las não altera sessões, treinos importados ou plano. Os testes específicos da Onda 7 passaram; a suíte completa permanece programada para após a Onda 9.
+
+## Onda 8 — Treino guiado e timer
+
+O fluxo guiado da v2 agora mantém uma sessão com quatro exercícios, permite pular sem apagar, retornar explicitamente aos exercícios pulados e avançar sempre para um exercício pendente. A sessão não é registrada como concluída até que o usuário informe esforço, energia, desconforto e observações. Ao sair e retornar, o estado guiado e os registros permanecem na chave isolada `marsbGym_v2_preview`.
+
+O timer foi migrado para prazo absoluto (`deadlineAt`) em vez de decremento cego por intervalo. A recuperação ocorre em `visibilitychange`, `pageshow` e `focus`, com persistência defensiva em `pagehide`. A notificação local usa permissão explícita e fallback para aviso dentro do app. O Playwright mobile foi aprovado; a entrega em tela bloqueada no iOS continua sujeita às limitações do PWA e requer teste manual em um iPhone real antes de considerar a paridade operacional completa.

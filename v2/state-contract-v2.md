@@ -125,3 +125,9 @@ As calculadoras usam funções determinísticas equivalentes às fórmulas da v1
 As sessões concluídas da v2 são armazenadas em `sessions` com data, status, exercício, séries e volume. Registros importados da v1 permanecem em `progress.completedWorkouts` e são tratados como somente leitura para os agregados de histórico, sem alterar a origem. A tela de Progresso filtra por período e exercício e calcula sessões, volume total, média semanal, evolução e melhor carga a partir desses registros reais; estado vazio é tratado sem gráficos ou números fictícios.
 
 As preferências da interface são persistidas em `settings` (`appearance`, `units`, `notifications`), com alteração aditiva e sem reinstalar plano, sessões ou histórico.
+
+## Treino guiado e timer v2
+
+A sessão guiada mantém `guided.active`, índice atual, exercícios concluídos e exercícios pulados dentro do estado v2. Pular não apaga o exercício; `returnSkippedExercise` permite retomá-lo posteriormente. A sessão só é encerrada após a avaliação final de esforço, energia, desconforto e observações, e então é adicionada a `sessions` sem recarregar uma sessão concluída como nova.
+
+O timer usa `timer.deadlineAt` como prazo absoluto, `pausedRemaining` para pausa explícita e `running` para distinguir execução de pausa. O estado é persistido antes de sair, restaurado em `pageshow`, `visibilitychange` e `focus`, e recalculado pelo relógio do sistema ao retornar. Notificações locais dependem de permissão do navegador/service worker; no iOS/PWA há limitações de entrega em tela bloqueada e suspensão que exigem validação manual no dispositivo real.
