@@ -1,0 +1,34 @@
+{
+  "wave": 9,
+  "executedAt": "2026-10-20T17:12:23.084Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "sourceKey": "marsbGym_v2",
+  "targetKey": "marsbGym_v2_preview",
+  "counts": {
+    "dietDays": 1,
+    "foodEntries": 1,
+    "completedWorkouts": 1,
+    "bodyWeights": 1,
+    "favorites": 0,
+    "recipes": 0,
+    "customProgram": true,
+    "scheduleEntries": 1
+  },
+  "sourcePreserved": true,
+  "mobile": true,
+  "planner": true,
+  "calculators": true,
+  "guided": true,
+  "offline": true,
+  "updatePreserved": true,
+  "rollback": true,
+  "reimportReady": true,
+  "fullSuite": {
+    "passed": 56,
+    "failed": 0
+  },
+  "mainTouched": false
+}

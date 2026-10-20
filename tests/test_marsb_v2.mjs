@@ -15,7 +15,9 @@ if (!(await page.getByRole('dialog', { name: /Usar dados do último treino/i }).
 await page.getByRole('button', { name: 'Cancelar' }).click();
 await page.locator('input[data-field="done"]').first().check();
 await page.getByRole('button', { name: /Concluir exercício/i }).click();
-if (!(await page.getByRole('dialog', { name: /Como foi esta atividade/i }).isVisible())) throw new Error('modal de esforço não abriu');
+if ((await page.locator('#exerciseCounter').textContent()).trim() !== '2 de 4 exercícios') throw new Error('próximo exercício pendente não abriu');
+await page.evaluate(() => { const api = window.MARSB_V2_STATE; api.completeGuidedExercise(); api.completeGuidedExercise(); api.completeGuidedExercise(); });
+if (!(await page.getByRole('dialog', { name: /Como foi esta atividade/i }).isVisible())) throw new Error('modal de esforço não abriu ao concluir a sessão');
 await page.getByRole('button', { name: '8' }).click();
 await page.getByRole('button', { name: /Salvar e continuar/i }).click();
 await page.getByRole('button', { name: 'Progresso' }).click();

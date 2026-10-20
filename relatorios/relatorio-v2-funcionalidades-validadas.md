@@ -16,7 +16,7 @@
 
 A versão 2 do MARSB-GYM foi verificada na branch isolada `v2-rebuild`, sem alteração da versão estável em `main`.
 
-A suíte automatizada completa foi executada em 9 de outubro de 2026:
+A suíte automatizada completa foi executada novamente no fechamento do bloco 7–9:
 
 ```text
 43 testes executados
@@ -43,7 +43,7 @@ A validação mobile cobriu navegação entre telas, treino guiado, tabela compa
 | D07–D09 — Aderência, duplicação e favoritos | Validado nesta Onda 4 |
 | D10–D13 — Receitas, preferências, compras e metas | Validado nesta Onda 5 |
 | P01–P03 — Progresso e configuração | Validado nesta Onda 7 |
-| T01–T02 — Treino guiado e timer | Implementado e validado automaticamente nesta Onda 8; teste manual em iPhone pendente |
+| T01–T02 — Treino guiado e timer | Validado automaticamente nas Ondas 8–9; teste manual em iPhone pendente |
 
 ---
 
@@ -525,3 +525,11 @@ As preferências de aparência, unidades e notificações são persistidas em `m
 O fluxo guiado da v2 agora mantém uma sessão com quatro exercícios, permite pular sem apagar, retornar explicitamente aos exercícios pulados e avançar sempre para um exercício pendente. A sessão não é registrada como concluída até que o usuário informe esforço, energia, desconforto e observações. Ao sair e retornar, o estado guiado e os registros permanecem na chave isolada `marsbGym_v2_preview`.
 
 O timer foi migrado para prazo absoluto (`deadlineAt`) em vez de decremento cego por intervalo. A recuperação ocorre em `visibilitychange`, `pageshow` e `focus`, com persistência defensiva em `pagehide`. A notificação local usa permissão explícita e fallback para aviso dentro do app. O Playwright mobile foi aprovado; a entrega em tela bloqueada no iOS continua sujeita às limitações do PWA e requer teste manual em um iPhone real antes de considerar a paridade operacional completa.
+
+## Onda 9 — Ensaio de migração e auditoria final
+
+Foi executado um ensaio ponta a ponta usando uma cópia anonimizada da v1. A prévia encontrou 1 alimento, 1 treino concluído, 1 registro de peso e 1 plano personalizado; a importação preservou perfil, diário, histórico, plano e agenda. A chave de origem `marsbGym_v2` permaneceu idêntica antes e depois do processo.
+
+Em viewport mobile de 390×844 foram auditados diário, planejador, calculadoras, treino guiado e histórico. O armazenamento continuou funcional offline, o reload usado como atualização simulada preservou os dados e o rollback restaurou o estado anterior. A suíte completa do bloco 7–9 passou com **56/56 testes aprovados e 0 falhas**.
+
+O teste manual em iPhone real continua pendente para confirmar o comportamento de notificações com tela bloqueada; isso permanece explicitamente limitado pela natureza PWA/iOS e não foi declarado como validado neste ambiente.

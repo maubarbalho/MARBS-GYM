@@ -131,3 +131,9 @@ As preferências da interface são persistidas em `settings` (`appearance`, `uni
 A sessão guiada mantém `guided.active`, índice atual, exercícios concluídos e exercícios pulados dentro do estado v2. Pular não apaga o exercício; `returnSkippedExercise` permite retomá-lo posteriormente. A sessão só é encerrada após a avaliação final de esforço, energia, desconforto e observações, e então é adicionada a `sessions` sem recarregar uma sessão concluída como nova.
 
 O timer usa `timer.deadlineAt` como prazo absoluto, `pausedRemaining` para pausa explícita e `running` para distinguir execução de pausa. O estado é persistido antes de sair, restaurado em `pageshow`, `visibilitychange` e `focus`, e recalculado pelo relógio do sistema ao retornar. Notificações locais dependem de permissão do navegador/service worker; no iOS/PWA há limitações de entrega em tela bloqueada e suspensão que exigem validação manual no dispositivo real.
+
+## Ensaio de migração e auditoria v2
+
+O ensaio da Onda 9 usa uma cópia anonimizada da v1 e valida a sequência prévia → importação → comparação → uso mobile → offline → atualização simulada → rollback. A origem `marsbGym_v2` permanece byte a byte inalterada; o destino usa exclusivamente `marsbGym_v2_preview`. A atualização simulada por reload/query string preserva o estado migrado e o rollback restaura o estado anterior da v2.
+
+A suíte completa do bloco 7–9 foi executada com 56 testes aprovados e nenhuma falha. O teste de navegador legado foi alinhado ao fluxo guiado atual: a avaliação final aparece após a conclusão dos exercícios pendentes, não após o primeiro exercício isolado.
