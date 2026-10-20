@@ -1,10 +1,10 @@
 # Relatório técnico — Funcionalidades validadas do MARSB-GYM v2
 
-**Data do relatório:** 11 de outubro de 2026  
+**Data do relatório:** 20 de outubro de 2026  
 **Branch analisada:** `v2-rebuild`  
 **Repositório:** `maubarbalho/MARBS-GYM`  
-**Último commit verificado:** `7321232 docs(v2): close wave 2 parity record`  
-**Commit funcional da Onda 2:** `0cac049 feat(v2): integrate diet planner with diary`  
+**Último commit verificado:** `ef9a100 test(v2): complete wave 9 migration audit`  
+**Commit da Onda 9:** `ef9a100 test(v2): complete wave 9 migration audit`  
 **Estado do Git:** branch limpa e alinhada com `origin/v2-rebuild`  
 **Status da `main`:** não modificada
 
