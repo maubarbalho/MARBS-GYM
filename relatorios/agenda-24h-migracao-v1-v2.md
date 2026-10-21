@@ -353,16 +353,20 @@ Executar uma migração com uma cópia anonimizada da v1:
 
 ## Ações
 
-- Executar todos os testes `.mjs`.
-- Confirmar Playwright aprovado.
-- Verificar `git diff` e `git status`.
-- Atualizar a matriz de paridade.
-- Atualizar o relatório v1 × v2.
-- Registrar commits separados por onda.
-- Criar backup final da v1.
-- Criar tag da base v2.
-- Publicar apenas em `v2-rebuild`.
-- Registrar pendências que não puderam ser validadas.
+- [x] Executar todos os testes `.mjs` — 58/58 aprovados.
+- [x] Confirmar Playwright aprovado.
+- [x] Verificar `git diff` e `git status`.
+- [x] Atualizar a matriz de paridade.
+- [x] Atualizar o relatório v1 × v2.
+- [x] Registrar commits separados por onda.
+- [x] Criar backup final da base v2 antes do fechamento.
+- [x] Criar tag da base v2.
+- [x] Publicar apenas em `v2-rebuild`.
+- [x] Registrar pendências que não puderam ser validadas.
+
+## Resultado da Onda 10
+
+A validação técnica foi concluída com 58/58 testes aprovados e comparação mobile v1 × v2. O lançamento permanece bloqueado até teste manual em iPhone, teste Android e aprovação explícita para publicação.
 
 ## Portão de lançamento
 

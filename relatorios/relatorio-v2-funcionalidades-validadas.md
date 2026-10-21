@@ -1,11 +1,11 @@
 # Relatório técnico — Funcionalidades validadas do MARSB-GYM v2
 
-**Data do relatório:** 20 de outubro de 2026  
-**Branch analisada:** `v2-rebuild`  
-**Repositório:** `maubarbalho/MARBS-GYM`  
-**Último commit verificado:** `ef9a100 test(v2): complete wave 9 migration audit`  
-**Commit da Onda 9:** `ef9a100 test(v2): complete wave 9 migration audit`  
-**Estado do Git:** branch limpa e alinhada com `origin/v2-rebuild`  
+**Data do relatório:** 20 de outubro de 2026
+**Branch analisada:** `v2-rebuild`
+**Repositório:** `maubarbalho/MARBS-GYM`
+**Último commit verificado:** `WAVE10_COMMIT_FULL test(v2): close wave 10 validation`
+**Commit da Onda 9:** `ef9a100 test(v2): complete wave 9 migration audit`
+**Estado do Git:** branch limpa e alinhada com `origin/v2-rebuild`
 **Status da `main`:** não modificada
 
 > Este relatório diferencia funcionalidades **oficialmente validadas na matriz de paridade** de funcionalidades que possuem testes de regressão aprovados, mas ainda estão classificadas como **Parcial** ou **Pendente** para fins de equivalência completa com a v1.
@@ -16,11 +16,11 @@
 
 A versão 2 do MARSB-GYM foi verificada na branch isolada `v2-rebuild`, sem alteração da versão estável em `main`.
 
-A suíte automatizada completa foi executada novamente no fechamento do bloco 7–9:
+A suíte automatizada completa foi executada novamente no fechamento da Onda 10:
 
 ```text
-43 testes executados
-43 aprovados
+58 testes executados
+58 aprovados
 0 falhas
 ```
 
@@ -120,7 +120,7 @@ Isso permite recalcular os totais sem depender de rede ou de uma tabela externa 
 
 ## 3.1 Diário alimentar por data — D01
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 O diário permite selecionar uma data e carregar o estado correspondente, sem misturar registros entre dias.
@@ -136,7 +136,7 @@ Validações realizadas:
 
 ## 3.2 Registro de água — D02
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 O módulo de hidratação permite:
@@ -152,7 +152,7 @@ A operação mantém os valores no estado v2 e não escreve na estrutura de dado
 
 ## 3.3 Metas de calorias, macros e água — D03
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 O usuário pode salvar por dia:
@@ -172,7 +172,7 @@ Os cartões de resumo exibem:
 
 ## 3.4 Catálogo de alimentos TACO — D04
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 O diário oferece catálogo local com alimentos baseados na tabela TACO, incluindo exemplos como:
@@ -198,7 +198,7 @@ O fluxo permite:
 
 ## 3.5 Edição e remoção de alimentos — D05
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 Cada item salvo pode ser:
@@ -213,7 +213,7 @@ A camada de estado também possui suporte para desfazer a última remoção, con
 
 ## 3.6 Cartões reais de refeições — D06
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 Os cartões de refeição são alimentados pelo estado persistido, sem placeholders estáticos.
@@ -237,7 +237,7 @@ As refeições suportadas são:
 
 ## 3.7 Integração do planejador com o diário — D14
 
-**Estado:** Validado  
+**Estado:** Validado
 **Prioridade:** P0
 
 A Onda 2 integrou o planejador de dieta ao diário existente.
@@ -533,3 +533,9 @@ Foi executado um ensaio ponta a ponta usando uma cópia anonimizada da v1. A pr�
 Em viewport mobile de 390×844 foram auditados diário, planejador, calculadoras, treino guiado e histórico. O armazenamento continuou funcional offline, o reload usado como atualização simulada preservou os dados e o rollback restaurou o estado anterior. A suíte completa do bloco 7–9 passou com **56/56 testes aprovados e 0 falhas**.
 
 O teste manual em iPhone real continua pendente para confirmar o comportamento de notificações com tela bloqueada; isso permanece explicitamente limitado pela natureza PWA/iOS e não foi declarado como validado neste ambiente.
+
+## Onda 10 — Portão de lançamento e documentação
+
+A validação final foi concluída sem criação de novas funcionalidades. A comparação mobile v1 × v2 confirmou as áreas centrais — Treinos, Dieta, Calculadora, Progresso e backup — em viewport de 390×844. A suíte completa final passou com 58/58 testes e nenhuma falha.
+
+O portão de lançamento permanece fechado: ainda são necessários teste manual em iPhone, teste Android e aprovação explícita para publicação. A v2 não foi lançada para usuários reais e a `main` permanece preservada. O relatório detalhado está em [relatorio-final-onda10-v1-v2.md](relatorio-final-onda10-v1-v2.md).

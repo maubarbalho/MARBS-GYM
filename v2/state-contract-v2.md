@@ -137,3 +137,7 @@ O timer usa `timer.deadlineAt` como prazo absoluto, `pausedRemaining` para pausa
 O ensaio da Onda 9 usa uma cópia anonimizada da v1 e valida a sequência prévia → importação → comparação → uso mobile → offline → atualização simulada → rollback. A origem `marsbGym_v2` permanece byte a byte inalterada; o destino usa exclusivamente `marsbGym_v2_preview`. A atualização simulada por reload/query string preserva o estado migrado e o rollback restaura o estado anterior da v2.
 
 A suíte completa do bloco 7–9 foi executada com 56 testes aprovados e nenhuma falha. O teste de navegador legado foi alinhado ao fluxo guiado atual: a avaliação final aparece após a conclusão dos exercícios pendentes, não após o primeiro exercício isolado.
+
+## Fechamento da Onda 10
+
+A validação final automatizada confirmou 58 testes aprovados, isolamento da `main`, preservação das chaves da v1 e comparação mobile das áreas centrais. O protótipo permanece sem lançamento: a entrega em iPhone real, o teste Android e a aprovação explícita para publicação ainda são portões externos ao ambiente automatizado.

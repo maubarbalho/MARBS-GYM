@@ -1,0 +1,37 @@
+{
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "v1": {
+    "title": "MARSB-GYM",
+    "nav": [
+      "⌂Início",
+      "◉Treinos",
+      "Calc",
+      "◒Dieta",
+      "⚙Config."
+    ],
+    "screens": 15,
+    "hasDiet": true,
+    "hasCalc": true,
+    "hasProgress": true,
+    "hasBackup": true
+  },
+  "v2": {
+    "title": "MARSB-GYM 2.0",
+    "nav": [
+      "⌂Hoje",
+      "▦Treinos",
+      "▥Progresso",
+      "♧Dieta",
+      "⊞Calculadora"
+    ],
+    "screens": 9,
+    "hasDiet": true,
+    "hasCalc": true,
+    "hasProgress": true,
+    "hasBackup": true
+  },
+  "executedAt": "2026-10-21T17:09:41.278Z"
+}
