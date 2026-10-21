@@ -3,7 +3,7 @@
 **Data do relatório:** 20 de outubro de 2026
 **Branch analisada:** `v2-rebuild`
 **Repositório:** `maubarbalho/MARBS-GYM`
-**Último commit verificado:** `WAVE10_COMMIT_FULL test(v2): close wave 10 validation`
+**Último commit verificado:** `3520ce3 docs(v2): close wave 10 validation gate`
 **Commit da Onda 9:** `ef9a100 test(v2): complete wave 9 migration audit`
 **Estado do Git:** branch limpa e alinhada com `origin/v2-rebuild`
 **Status da `main`:** não modificada
