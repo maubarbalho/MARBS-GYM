@@ -82,7 +82,7 @@ Backup final criado antes da Onda 10:
 - Tag: `backup-before-wave-10-20261021T140800-0300`.
 - Arquivo: `/home/ubuntu/MARBS-GYM-wave10-before-20261021T140800-0300.tar.gz`.
 
-Os artefatos da Onda 10 serão publicados somente em `origin/v2-rebuild`, após a atualização da matriz e desta documentação.
+Os artefatos da Onda 10 foram publicados somente em `origin/v2-rebuild`, sem lançamento para usuários reais.
 
 ## 7. Próximas ações permitidas
 
