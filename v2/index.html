@@ -148,6 +148,9 @@
     .meal-copy { flex: 1; }
     .meal .secondary-btn { min-width: 43px; min-height: 43px; padding: 5px; color: var(--lime); font-size: 1.35rem; }
     .search { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); padding: 12px 15px; }
+    .filter-card { width: 100%; max-width: 100%; min-width: 0; margin-inline: 0; overflow: hidden; }
+    .filter-card .summary-grid, .filter-card label { min-width: 0; }
+    .filter-card input, .filter-card select { max-width: 100%; min-width: 0; }
     .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; scrollbar-width: none; }
     .chips button { min-height: 40px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface-2); white-space: nowrap; cursor: pointer; }
     .chips button.active { border-color: var(--lime); color: var(--lime); background: var(--lime-soft); }
@@ -280,7 +283,7 @@
 
       <section class="screen" data-screen="progress">
         <p class="eyebrow">Evolução</p><h1>Progresso</h1><p class="muted">Histórico e volume calculados a partir das sessões reais salvas.</p>
-        <article class="card pad" style="margin-top:18px"><div class="section-head" style="margin:0 0 10px"><h2>Filtros</h2><span class="eyebrow" id="progressDataStatus">Dados locais</span></div><div class="summary-grid"><label class="muted">De<input class="search" id="progressFrom" type="date"></label><label class="muted">Até<input class="search" id="progressTo" type="date"></label><label class="muted">Exercício<select class="search" id="progressExercise"><option value="all">Todos</option></select></label></div></article>
+        <article class="card pad filter-card" style="margin-top:18px"><div class="section-head" style="margin:0 0 10px"><h2>Filtros</h2><span class="eyebrow" id="progressDataStatus">Dados locais</span></div><div class="summary-grid"><label class="muted">De<input class="search" id="progressFrom" type="date"></label><label class="muted">Até<input class="search" id="progressTo" type="date"></label><label class="muted">Exercício<select class="search" id="progressExercise"><option value="all">Todos</option></select></label></div></article>
         <div class="metric-grid" style="margin-top:12px"><article class="card metric"><span class="muted">Sessões no período</span><strong id="progressSessionCount">0</strong></article><article class="card metric"><span class="muted">Volume total</span><strong id="progressVolumeTotal">0 kg</strong></article><article class="card metric"><span class="muted">Média semanal</span><strong id="progressWeeklyAverage">0 kg</strong></article></div>
         <article class="card pad" style="margin-top:12px"><div class="section-head" style="margin:0"><h2>Evolução por exercício</h2><span class="status done" id="progressBestValue">Sem registros</span></div><div id="progressEvolution" class="library-list" style="margin-top:10px"><p class="muted">Conclua uma sessão para visualizar a evolução.</p></div></article>
         <article class="card pad" style="margin-top:12px"><div class="section-head" style="margin:0"><h2>Histórico de treinos</h2><span class="eyebrow" id="progressHistoryCount">0 registros</span></div><div id="progressHistory" class="library-list" style="margin-top:10px"><p class="muted">Nenhum treino registrado no período.</p></div></article>
