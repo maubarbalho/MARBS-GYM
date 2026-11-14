@@ -149,8 +149,8 @@
     .meal .secondary-btn { min-width: 43px; min-height: 43px; padding: 5px; color: var(--lime); font-size: 1.35rem; }
     .search { width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--text); padding: 12px 15px; }
     .filter-card { width: 100%; max-width: 100%; min-width: 0; margin-inline: 0; overflow: hidden; }
-    .filter-card .summary-grid, .filter-card label { min-width: 0; }
-    .filter-card input, .filter-card select { max-width: 100%; min-width: 0; }
+    .filter-card .summary-grid, .filter-card label { min-width: 0; width: 100%; }
+    .filter-card input, .filter-card select { display: block; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; }
     .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; scrollbar-width: none; }
     .chips button { min-height: 40px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface-2); white-space: nowrap; cursor: pointer; }
     .chips button.active { border-color: var(--lime); color: var(--lime); background: var(--lime-soft); }
