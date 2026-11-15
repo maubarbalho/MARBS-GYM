@@ -16,7 +16,7 @@ for (const token of [
   'resetCompletedWorkoutForNewSession(treinoId);',
   "const resetCompleted = resetCompletedWorkoutForNewSession(treinoId);",
   "const APP_UPDATE_VERSION = 'v95-weekly-card-layout'",
-  "CACHE_NAME = 'marsb-gym-v95-weekly-card-layout'"
+  "CACHE_NAME = 'marsb-gym-v2-phase-a-20261115'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Correção de sessão sem suporte esperado: ${token}`);
 }
