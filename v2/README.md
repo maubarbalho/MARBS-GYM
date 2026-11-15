@@ -1,6 +1,6 @@
 # MARSB-GYM 2.0 — protótipo funcional
 
-Esta pasta contém o protótipo funcional da versão 2.0 do MARSB-GYM. Ele foi criado em uma branch separada (`v2-rebuild`) e **não é servido pelo GitHub Pages enquanto a branch principal continuar na v1**.
+Esta pasta contém a fonte de desenvolvimento da versão 2.0 do MARSB-GYM, mantida na branch `v2-rebuild`. A versão validada é promovida para a `main` somente após backup, testes e verificação de integridade; a V1 permanece preservada por tags e por sua chave de armazenamento separada.
 
 ## Telas disponíveis
 
@@ -14,7 +14,7 @@ O protótipo usa a chave local `marsbGym_v2_preview` para não tocar na chave da
 
 A onda 0 adiciona uma camada centralizada `MARSB_V2_STATE` em torno de `loadState`, `saveState`, `migrateState`, `getNutritionDay`, `updateNutritionDay`, `addFoodEntry`, `updateFoodEntry`, `removeFoodEntry`, `updateTargets`, `addWater`, `copyPlanToDay`, `cloneDay` e `recalculateDay`. A migração é idempotente, preserva campos desconhecidos, mantém `schemaVersion: 2` e não grava na chave da v1. A cópia de cardápio é aditiva por padrão; a duplicação gera novos IDs; e a remoção mantém informação suficiente para desfazer.
 
-Antes de uma eventual migração, será necessário criar um adaptador de dados real, validar o schema atual, oferecer exportação e restauração e pedir confirmação do usuário. A v2 não deve substituir a v1 publicada até que esses testes sejam concluídos.
+A Fase A adiciona diagnóstico local, backup versionado, restauração com validação e backup automático antes de restaurar. A importação da v1 continua explícita, com prévia, confirmação, backup e rollback. A V2 usa `schemaVersion: 2` e não reinstala dados padrão sobre um estado existente.
 
 ## Execução local
 
@@ -32,4 +32,4 @@ O protótipo foi validado em viewport móvel de 390 px com teste de navegador. O
 
 ## Status de publicação
 
-A branch de desenvolvimento pode ser revisada no Git. A branch `main` e o GitHub Pages continuam apontando para a versão atual do MARSB-GYM. O deploy da v2 não deve ser acionado até aprovação explícita.
+A V2 está publicada no GitHub Pages. A atualização do PWA usa cache versionado e registro do Service Worker com `updateViaCache: 'none'`. O diagnóstico da versão e o fluxo de restauração ficam em Configurações. A versão atual da Fase A possui 59 testes aprovados; notificações com tela bloqueada no iOS continuam sujeitas às limitações do sistema e devem ser verificadas em uso real.
