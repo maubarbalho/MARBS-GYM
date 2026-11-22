@@ -64,3 +64,7 @@ Cada alteração deve atualizar o estado, o commit e o teste associado. A `main`
 ## Fase A — Estabilização pós-produção (2026-11-15)
 
 A Fase A adicionou backup local versionado da V2, restauração validada com backup de segurança, diagnóstico de armazenamento/rede/versão, registro controlado do Service Worker, cache versionado e atualização dos testes para o novo cache. A chave `marsbGym_v2` da V1 continua somente leitura e a chave `marsbGym_v2_preview` permanece protegida pelo contrato de estado. A suíte final passou com **59/59 testes**; a confirmação de notificações em tela bloqueada continua sendo uma observação prática do usuário no iPhone.
+
+## Fase B — UX mobile e acessibilidade (2026-11-22)
+
+A Fase B adicionou foco visível, navegação por Escape e foco preso em diálogos, estados vazios orientativos, semântica de abas e grupos, descrições para VoiceOver, alvos touch e respeito a `prefers-reduced-motion`. A exportação da V2 permaneceu versionada e sem duplicidade. A suíte final passou com **60/60 testes**. A validação física com VoiceOver, TalkBack, teclado externo, rotação e modo standalone permanece pendente e deve ser feita pelo usuário após a publicação.

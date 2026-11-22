@@ -33,3 +33,5 @@ O protótipo foi validado em viewport móvel de 390 px com teste de navegador. O
 ## Status de publicação
 
 A V2 está publicada no GitHub Pages. A atualização do PWA usa cache versionado e registro do Service Worker com `updateViaCache: 'none'`. O diagnóstico da versão e o fluxo de restauração ficam em Configurações. A versão atual da Fase A possui 59 testes aprovados; notificações com tela bloqueada no iOS continuam sujeitas às limitações do sistema e devem ser verificadas em uso real.
+
+A Fase B adiciona foco visível, navegação por Escape e foco preso em diálogos, estados vazios orientativos, semântica de abas e grupos, descrições para VoiceOver, alvos touch e respeito a `prefers-reduced-motion`. A versão da Fase B foi validada com 60 testes automatizados; o uso físico com VoiceOver, TalkBack e teclado externo permanece uma etapa prática do usuário.
