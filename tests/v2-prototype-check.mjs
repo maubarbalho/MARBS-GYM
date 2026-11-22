@@ -29,7 +29,7 @@ assert.match(html, /\.bottom-actions\s*\{\s*position:\s*fixed[\s\S]*?z-index:\s*
 assert.match(html, /--safe-bottom:\s*env\(safe-area-inset-bottom/, 'safe area do aparelho não foi considerada');
 assert.match(html, /localStorage\.getItem\(KEY\)/, 'estado local da v2 ausente');
 assert.match(html, /localStorage\.getItem\('marsbGym_v2'\)/, 'importação explícita da v1 ausente');
-assert.match(html, /download = 'marsb-gym-v2-backup\.json'/, 'exportação da v2 ausente');
+assert.ok(html.includes('downloadV2Backup') && html.includes('marsb-gym-v2-backup-${today()}.json'), 'exportação da v2 ausente');
 assert.match(html, /inputmode="decimal"/, 'carga decimal ausente');
 assert.match(html, /selectedRpe/, 'registro de esforço ausente');
 console.log('v2-prototype-check: ok');
