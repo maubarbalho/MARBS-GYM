@@ -26,7 +26,7 @@ const missingHtml = requiredHtml.filter((token) => !html.includes(token));
 if (missingHtml.length) throw new Error(`Painel/atualização forçada incompletos: ${missingHtml.join(', ')}`);
 
 const requiredSw = [
-  "CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124'",
+  "CACHE_NAME = 'marsb-gym-v2-new-session-reset-20261124'",
   'async function purgeOldCaches()',
   'purgeOldCaches()',
   "event.data.type === 'PURGE_OLD_CACHES'",
