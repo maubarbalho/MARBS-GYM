@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marsb-gym-v2-phase-a-20261115';
+const CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124';
 const APP_SHELL = [
   './',
   './index.html',
