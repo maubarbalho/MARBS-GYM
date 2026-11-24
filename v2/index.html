@@ -47,7 +47,7 @@
     .hamburger i { display: block; height: 3px; border-radius: 99px; background: var(--lime); }
     main { width: min(100% - 28px, 760px); margin: 0 auto; padding: 22px 0 24px; }
     .screen { display: none; animation: enter .22s ease both; }
-    .screen.active { display: block; }
+    .screen.active { display: block; animation: none; }
     @keyframes enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
     h1,h2,h3,p { margin: 0; }
     h1 { font-size: clamp(1.8rem, 6vw, 2.45rem); line-height: 1.05; letter-spacing: -.05em; }
@@ -229,7 +229,7 @@
     <main>
       <section class="screen active" data-screen="home">
         <p class="eyebrow">Painel semanal</p>
-        <h1>Bom dia, Marcelo.</h1>
+        <h1 id="homeGreeting">Bom dia, atleta.</h1>
         <p class="muted">Foco hoje, resultado sempre.</p>
         <article class="card hero">
           <p class="eyebrow">Treino de hoje</p>
@@ -628,7 +628,8 @@
         $('#dietFood').innerHTML = DIET_FOODS.map(food => `<option value="${food.id}">${food.name}</option>`).join('');
         $('#dietMeals').innerHTML = Object.entries(DIET_MEALS).map(([meal, name]) => { const entries = day.meals[meal] || []; const kcal = entries.reduce((sum, entry) => sum + Number(entry.nutritionPer100g?.kcal || 0) * Number(entry.grams || 0) / 100, 0); const rows = entries.length ? entries.map(entry => `<div class="meal-entry" style="display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid var(--line);padding:9px 0"><span><strong>${entry.name}</strong><span class="muted" style="display:block">${fmtNumber(entry.grams)} g · ${fmtNumber(Number(entry.nutritionPer100g?.kcal || 0) * Number(entry.grams || 0) / 100)} kcal</span></span><span style="display:flex;gap:5px"><button class="secondary-btn diet-edit-food" data-meal="${meal}" data-id="${entry.id}" type="button" aria-label="Editar ${entry.name}">Editar</button><button class="secondary-btn diet-remove-food" data-meal="${meal}" data-id="${entry.id}" type="button" aria-label="Remover ${entry.name}">×</button></span></div>`).join('') : '<p class="muted" style="margin-top:8px">Nenhum alimento registrado.</p>'; return `<article class="card meal" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center"><strong>${name}</strong><span class="muted">${fmtNumber(kcal)} kcal</span></div>${rows}</article>`; }).join(''); renderWave4Diet(); renderWave5Diet();
       };
-      const showScreen = (name) => { $$('.screen').forEach(s => s.classList.toggle('active', s.dataset.screen === name)); $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screenLink === name)); const drawer = $('#drawerBackdrop'); if (drawer) drawer.classList.remove('open'); if (name === 'diet') renderDiet(); if (name === 'progress') renderProgress(); if (name === 'settings') renderV2Preferences(); window.scrollTo({top:0, behavior:'smooth'}); };
+      const renderHome = () => { const name = String(state.profile?.name || '').trim(); const greeting = $('#homeGreeting'); if (greeting) greeting.textContent = `Bom dia, ${name || 'atleta'}.`; };
+      const showScreen = (name) => { $$('.screen').forEach(s => s.classList.toggle('active', s.dataset.screen === name)); $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screenLink === name)); const drawer = $('#drawerBackdrop'); if (drawer) drawer.classList.remove('open'); if (name === 'home') renderHome(); if (name === 'diet') renderDiet(); if (name === 'progress') renderProgress(); if (name === 'settings') renderV2Preferences(); window.scrollTo({top:0, behavior:'smooth'}); };
       const openFocus = () => { startGuided(); };
       let modalOrigin = null;
       const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -1151,10 +1152,10 @@
       $('#v2RestoreFile').addEventListener('change', async event => { const file = event.target.files?.[0]; if (!file) return; try { const payload = JSON.parse(await file.text()); if (!window.confirm('Restaurar este backup? O estado atual será salvo em um backup de segurança antes da restauração.')) return; const result = restoreV2Backup(payload); if (!result.ok) { toast(result.reason); return; } toast('Backup restaurado com segurança'); setTimeout(() => window.location.reload(), 500); } catch { toast('Não foi possível ler o arquivo de backup'); } finally { event.target.value = ''; } });
       window.addEventListener('online', renderV2Diagnostics); window.addEventListener('offline', renderV2Diagnostics);
       const renderV2Preferences = () => { const prefs = state.settings || {}; $('#profileName').value = state.profile?.name || ''; $('#v2Appearance').value = prefs.appearance || 'dark'; $('#v2Units').value = prefs.units || 'metric'; $('#v2Notifications').value = prefs.notifications === false ? 'off' : 'on'; $('#v2PreferencesStatus').textContent = `Última configuração local: ${prefs.updatedAt ? new Date(prefs.updatedAt).toLocaleString('pt-BR') : 'ainda não salva'}`; };
-      $('#saveV2Preferences').addEventListener('click', () => { state.profile = { ...state.profile, name: String($('#profileName').value || '').trim().slice(0, 80) }; saveV2Preferences({ appearance: $('#v2Appearance').value, units: $('#v2Units').value, notifications: $('#v2Notifications').value === 'on', updatedAt: new Date().toISOString() }); toast('Nome e preferências salvos sem alterar treinos ou histórico'); renderV2Preferences(); });
+      $('#saveV2Preferences').addEventListener('click', () => { state.profile = { ...state.profile, name: String($('#profileName').value || '').trim().slice(0, 80) }; saveV2Preferences({ appearance: $('#v2Appearance').value, units: $('#v2Units').value, notifications: $('#v2Notifications').value === 'on', updatedAt: new Date().toISOString() }); renderHome(); toast('Nome e preferências salvos sem alterar treinos ou histórico'); renderV2Preferences(); });
       $$('.calc-tab').forEach(tab => { tab.addEventListener('click', () => { $$('.calc-tab').forEach(item => { item.classList.toggle('active', item === tab); item.setAttribute('aria-selected', item === tab ? 'true' : 'false'); }); $$('.calc-panel').forEach(panel => { const active = panel.dataset.calcPanel === tab.dataset.calcTab; panel.hidden = !active; }); }); });
       ['progressFrom','progressTo','progressExercise'].forEach(id => $('#'+id).addEventListener('change', renderProgress));
-      renderV2Preferences(); renderProgress(); renderV2Diagnostics();
+      renderHome(); renderV2Preferences(); renderProgress(); renderV2Diagnostics();
       if (state.calcProfile) { const profile = state.calcProfile; if (profile.weight) $('#macroWeight').value = String(profile.weight).replace('.', ','); if (profile.height) $('#macroHeight').value = profile.height; if (profile.age) $('#macroAge').value = profile.age; if (profile.sex) $('#macroSex').value = profile.sex; if (profile.act) $('#macroActivity').value = profile.act; if (profile.surplus !== undefined) $('#macroGoal').value = profile.surplus; }
       renderSets(); renderGuided(); restoreTimer();
       try { const latest = JSON.parse(localStorage.getItem(BACKUP_LATEST_KEY) || 'null'); if (!latest || Date.now() - Date.parse(latest.savedAt || 0) > 7 * 24 * 60 * 60 * 1000) createV2Backup('auto-start'); } catch {}

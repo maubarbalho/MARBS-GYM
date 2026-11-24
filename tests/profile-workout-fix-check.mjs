@@ -9,9 +9,11 @@ if (html.includes('localStorage.removeItem(STORAGE_KEY)') || html.includes('loca
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
-const seed = { schemaVersion: 2, profile: { name: '', preferences: {} }, nutrition: { selectedDate: '2026-11-24', days: {}, favorites: [], recipes: [] }, workouts: {}, progress: {}, settings: { appearance: 'dark', units: 'metric', notifications: false }, guided: { active: false, index: 0, skipped: [], completed: [], startedAt: null, workout: 'Treino A' }, timer: { deadlineAt: 0, pausedRemaining: 0, running: false }, sets: [], sessions: [] };
+const seed = { schemaVersion: 2, profile: { name: 'Mauricio', preferences: {} }, nutrition: { selectedDate: '2026-11-24', days: {}, favorites: [], recipes: [] }, workouts: {}, progress: {}, settings: { appearance: 'dark', units: 'metric', notifications: false }, guided: { active: false, index: 0, skipped: [], completed: [], startedAt: null, workout: 'Treino A' }, timer: { deadlineAt: 0, pausedRemaining: 0, running: false }, sets: [], sessions: [] };
 await page.addInitScript(value => localStorage.setItem('marsbGym_v2_preview', JSON.stringify(value)), seed);
 await page.goto('http://127.0.0.1:4173/v2/?profile-workout-fix=1');
+
+if ((await page.locator('#homeGreeting').textContent()).trim() !== 'Bom dia, Mauricio.') throw new Error('o painel inicial não usa o nome salvo');
 
 await page.evaluate(() => document.querySelector('[data-screen="settings"]').classList.add('active'));
 await page.locator('#profileName').fill('Mauricio');
@@ -21,6 +23,8 @@ if (savedName !== 'Mauricio') throw new Error('nome não foi persistido');
 
 await page.locator('[data-open-workout]').first().click();
 await page.locator('[data-screen="focus"]').waitFor();
+const actionButtonsVisible = await page.locator('.bottom-actions button').evaluateAll(buttons => buttons.every(button => { const rect = button.getBoundingClientRect(); return getComputedStyle(button).display !== 'none' && rect.bottom > 0 && rect.top < window.innerHeight; }));
+if (!actionButtonsVisible) throw new Error('ações do treino ficaram fora da área tocável no celular');
 await page.locator('#nextExerciseBtn').click();
 let guided = await page.evaluate(() => JSON.parse(localStorage.getItem('marsbGym_v2_preview')).guided);
 if (guided.index !== 1 || !guided.skipped.includes(0)) throw new Error('próximo sem concluir não preservou o exercício atual como pulado');
