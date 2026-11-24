@@ -31,7 +31,7 @@
 | P01 | Progresso | Histórico de treinos | P1 | Validado | Filtros e registros correspondem à v1 |
 | P02 | Progresso | Evolução e volume | P1 | Validado | Agregações usam sessões reais |
 | P03 | Configuração | Preferências e edição segura | P1 | Validado | Atualização não substitui treinos salvos |
-| T01 | Treinos | Treino guiado e foco | P0 | Validado | Pular, voltar aos pulados, avançar ao pendente, encerrar e avaliação completa persistidos |
+| T01 | Treinos | Treino guiado e foco | P0 | Validado | Pular, voltar aos pulados, avançar sem concluir, avançar ao pendente, encerrar e avaliação completa persistidos |
 | T02 | Treinos | Timer em segundo plano | P0 | Validado com limitação PWA | Prazo absoluto, persistência, recuperação e notificação local; entrega em iOS bloqueado depende de validação no aparelho |
 
 ## Estados permitidos
@@ -68,3 +68,7 @@ A Fase A adicionou backup local versionado da V2, restauração validada com bac
 ## Fase B — UX mobile e acessibilidade (2026-11-22)
 
 A Fase B adicionou foco visível, navegação por Escape e foco preso em diálogos, estados vazios orientativos, semântica de abas e grupos, descrições para VoiceOver, alvos touch e respeito a `prefers-reduced-motion`. A exportação da V2 permaneceu versionada e sem duplicidade. A suíte final passou com **60/60 testes**. A validação física com VoiceOver, TalkBack, teclado externo, rotação e modo standalone permanece pendente e deve ser feita pelo usuário após a publicação.
+
+## Correção pós-Fase B — perfil e treino guiado (2026-11-24)
+
+Foi corrigida a edição do nome em Configurações e reforçada a recuperação do estado guiado salvo. O treino agora aceita avanço explícito sem concluir, conclusão do exercício atual, retomada dos exercícios pulados e abertura da avaliação final somente após todos os exercícios serem concluídos. O teste específico `profile-workout-fix-check.mjs` foi adicionado e a suíte completa da V2 terminou com 61 testes aprovados e 0 falhas.
