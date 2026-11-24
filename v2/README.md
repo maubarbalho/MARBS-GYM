@@ -35,3 +35,7 @@ O protótipo foi validado em viewport móvel de 390 px com teste de navegador. O
 A V2 está publicada no GitHub Pages. A atualização do PWA usa cache versionado e registro do Service Worker com `updateViaCache: 'none'`. O diagnóstico da versão e o fluxo de restauração ficam em Configurações. A versão atual da Fase A possui 59 testes aprovados; notificações com tela bloqueada no iOS continuam sujeitas às limitações do sistema e devem ser verificadas em uso real.
 
 A Fase B adiciona foco visível, navegação por Escape e foco preso em diálogos, estados vazios orientativos, semântica de abas e grupos, descrições para VoiceOver, alvos touch e respeito a `prefers-reduced-motion`. A versão da Fase B foi validada com 60 testes automatizados; o uso físico com VoiceOver, TalkBack e teclado externo permanece uma etapa prática do usuário.
+
+## Correção pós-Fase B — perfil e treino guiado (2026-11-24)
+
+As Configurações agora permitem editar e persistir o nome do usuário em `profile.name`, sem alterar treinos, sessões, dieta ou histórico. O estado do treino guiado também normaliza índices e listas salvas, oferece avanço explícito sem concluir o exercício atual, permite concluir o exercício atual e retoma exercícios pulados antes de abrir a avaliação final. A chave legada `marsbGym_v2` continua somente leitura e o novo teste `profile-workout-fix-check.mjs` cobre nome, avanço, conclusão, salto, retorno e encerramento.
