@@ -48,3 +48,7 @@ As branches locais de desenvolvimento e produção ficaram limpas e sincronizada
 ## Observação
 
 O teste automatizado confirma o comportamento do código. O uso físico no iPhone ou Android ainda deve ser feito pelo usuário para verificar teclado virtual, toque, rotação, modo instalado e persistência em um dispositivo real.
+
+## Ajuste complementar de interface
+
+Após a primeira publicação, foi identificado que a saudação inicial ainda estava fixa em “Marcelo” e que a barra de ações do treino ficava fora da área visível durante a animação da tela em viewport móvel. A saudação agora usa `profile.name` e os controles do treino permanecem visíveis e tocáveis na viewport de 390 × 844. A suíte foi repetida com servidor local ativo: **61 testes aprovados e 0 falhas**.
