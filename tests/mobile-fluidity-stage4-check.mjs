@@ -16,7 +16,7 @@ for (const token of [
   'derivedSummaryCache.calendar.set(cacheKey, days)',
   'const dialogRoots = [...document.querySelectorAll(\'[role="dialog"]\')]',
   'dialogObserver.observe(dialogRoot, { subtree: true, attributes: true, attributeFilter: [\'class\'] })',
-  "CACHE_NAME = 'marsb-gym-v2-phase-a-20261115'"
+  "CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 4 sem suporte esperado: ${token}`);
 }

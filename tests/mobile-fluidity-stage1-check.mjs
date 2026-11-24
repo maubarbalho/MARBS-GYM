@@ -5,7 +5,7 @@ const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
 
 const required = [
   "const APP_UPDATE_VERSION = 'v95-weekly-card-layout'",
-  "const CACHE_NAME = 'marsb-gym-v2-phase-a-20261115'",
+  "const CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124'",
   "field.addEventListener('change'",
   'let dietFoodSearchTimer = null',
   'setTimeout(() => renderDietFoodOptions(search.value), 180)',

@@ -11,7 +11,7 @@ for (const token of [
   "button.setAttribute('aria-pressed', String(done))",
   "guidedBody.querySelector('.guided-focus-set strong')",
   "guidedBody.querySelector('.js-guided-next')",
-  "CACHE_NAME = 'marsb-gym-v2-phase-a-20261115'"
+  "CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 3 sem suporte esperado: ${token}`);
 }

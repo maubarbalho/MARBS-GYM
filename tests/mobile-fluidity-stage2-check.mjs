@@ -12,7 +12,7 @@ for (const token of [
   'renderProgressionPanel();',
   'renderProgressSnapshot();',
   'renderAdherenceCard();',
-  "CACHE_NAME = 'marsb-gym-v2-phase-a-20261115'"
+  "CACHE_NAME = 'marsb-gym-v2-workout-fix-20261124'"
 ]) {
   if (!html.includes(token) && !sw.includes(token)) throw new Error(`Etapa 2 sem suporte esperado: ${token}`);
 }

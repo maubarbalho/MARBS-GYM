@@ -14,7 +14,7 @@ for (const token of [
 ]) {
   if (!html.includes(token)) throw new Error(`Fase A sem recurso esperado: ${token}`);
 }
-if (!sw.includes("marsb-gym-v2-phase-a-20261115")) throw new Error('Service Worker sem cache versionado da Fase A.');
+if (!sw.includes("marsb-gym-v2-workout-fix-20261124")) throw new Error('Service Worker sem cache versionado da Fase A.');
 if (manifest.version !== '2.0.0-phase-a') throw new Error('Manifest sem versão da Fase A.');
 if (!html.includes("type !== 'marsb-gym-v2-backup'") || !html.includes('before-restore')) throw new Error('Restauração sem validação ou backup de segurança.');
 
